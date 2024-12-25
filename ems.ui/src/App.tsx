@@ -1,12 +1,12 @@
 import React from "react";
-import { Button } from "primereact/button";
 import "./App.css";
 import "primeflex/primeflex.css";
+import Task from "./Components/Task/Task.tsx";
 
 function App() {
   return (
     <div className="App">
-      <Button label="Submit" />
+      <Task />
     </div>
   );
 }
