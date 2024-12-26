@@ -10,5 +10,6 @@ namespace EMS.CORE.Entities
     public class AppUserEntity : IdentityUser
     {
         public ICollection<TaskEntity> TaskEntity { get; set; } = new List<TaskEntity>();
+        public ICollection<EmployeeEntity> EmployeeEntities { get; set; } = new List<EmployeeEntity>();
     }
 }

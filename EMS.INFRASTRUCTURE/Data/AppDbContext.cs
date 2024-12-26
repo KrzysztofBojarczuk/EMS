@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,14 +22,20 @@ namespace EMS.INFRASTRUCTURE.Data
         }
 
         public DbSet<TaskEntity> Tasks { get; set; }
-
+        public DbSet<EmployeeEntity> Employees { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<AppUserEntity>()
                 .HasMany(e => e.TaskEntity)
                 .WithOne(e => e.AppUserEntity)
                 .HasForeignKey(e => e.AppUserId)
-                .IsRequired();
+            .IsRequired();
+
+            builder.Entity<AppUserEntity>()
+               .HasMany(e => e.EmployeeEntities)
+               .WithOne(e => e.AppUserEntity)
+               .HasForeignKey(e => e.AppUserId)
+               .IsRequired();
 
             List<IdentityRole> roles = new List<IdentityRole>
             {
