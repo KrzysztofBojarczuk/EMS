@@ -24,6 +24,7 @@ namespace EMS.INFRASTRUCTURE
 
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             return services;
         }

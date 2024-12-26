@@ -16,6 +16,10 @@ namespace EMS.APPLICATION.AutoMapper
             CreateMap<TaskCreateDto, TaskEntity>();
 
             CreateMap<TaskEntity, TaskGetDto>();
+
+            CreateMap<EmployeeCreateDto, EmployeeEntity>();
+
+            CreateMap<EmployeeEntity, EmployeeGetDto>();
         }
     }
 }
