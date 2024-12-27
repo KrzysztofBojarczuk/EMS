@@ -1,9 +1,9 @@
-import React from "react";
+import React, { JSX } from "react";
 import Employee from "../Employee/Employee.tsx";
 
 interface Props {}
 
-const EmployeeList = (props: Props) => {
+const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <div>
       <Employee

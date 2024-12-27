@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 
 interface Props {
   name: string;
@@ -7,7 +7,13 @@ interface Props {
   salary: number;
 }
 
-const Employee = ({ name, email, phone, salary }: Props) => {
+// state to obiekt, który służy do przechowywania danych dynamicznych, które mogą zmieniać się w czasie i wpływają na sposób renderowania komponentu.
+const Employee: React.FC<Props> = ({
+  name,
+  email,
+  phone,
+  salary,
+}: Props): JSX.Element => {
   return (
     <div>
       Employee
