@@ -6,7 +6,7 @@ interface Props {}
 const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <div>
-      <Employee
+      {/* <Employee
         name="Tomek Kowalski"
         email="tomek.kowalski@example.com"
         phone="+48 123 456 789"
@@ -23,7 +23,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         email="jan.wisniewski@example.com"
         phone="+48 111 222 333"
         salary={4500}
-      />
+      /> */}
     </div>
   );
 };
