@@ -1,5 +1,4 @@
 import React, { JSX } from "react";
-import Employee from "../Employee/Employee.tsx";
 
 interface Props {}
 
