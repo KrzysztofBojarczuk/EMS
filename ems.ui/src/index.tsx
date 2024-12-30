@@ -3,7 +3,12 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx"; // Should point to App.tsx
 import { PrimeReactProvider } from "primereact/api";
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
+import { RouterProvider } from "react-router/dom";
+import { router } from "./Components/Routes/Routes.tsx";
 
 // import reportWebVitals from "./reportWebVitals";
 
@@ -13,7 +18,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <PrimeReactProvider>
-      <App />
+      <RouterProvider router={router} />
     </PrimeReactProvider>
   </React.StrictMode>
 );
