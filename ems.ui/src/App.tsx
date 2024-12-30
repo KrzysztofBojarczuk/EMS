@@ -1,20 +1,20 @@
 import React from "react";
 import "./App.css";
 import "primeflex/primeflex.css";
-import Task from "./Components/Task/Task.tsx";
-import Search from "./Components/Search/Search.tsx";
-import ListEmployee from "./Components/Employee/ListEmployee/ListEmployee.tsx";
-import AddEmployee from "./Components/Employee/AddEmployee/AddEmployee.tsx";
 import Navbar from "./Components/Navbar/Navbar.tsx";
+import { Outlet } from "react-router";
+import { UserProvider } from "./Context/useAuth.tsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <Search />
-      <ListEmployee />
-      {/* <AddEmployee /> */}
-    </div>
+    <>
+      <UserProvider>
+        <Navbar />
+        <Outlet />
+      </UserProvider>
+    </>
   );
 }
 

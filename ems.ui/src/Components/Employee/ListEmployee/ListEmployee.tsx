@@ -1,28 +1,23 @@
-import React, { JSX } from "react";
+import React, { JSX, useState, useEffect } from "react";
+import { TreeTable } from "primereact/treetable";
+import { EmployeeGet } from "../../../Models/Employee";
+import { fetchUserEmployees } from "../../../Services/EmployeeService.tsx";
 
 interface Props {}
 
 const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
+  const [employees, setEmployees] = useState<EmployeeGet[]>([]);
+
+  useEffect(() => {
+    fetchUserEmployees().then((data) => setEmployees(data));
+  }, []);
+
   return (
-    <div>
-      {/* <Employee
-        name="Tomek Kowalski"
-        email="tomek.kowalski@example.com"
-        phone="+48 123 456 789"
-        salary={5000}
-      />
-      <Employee
-        name="Anna Nowak"
-        email="anna.nowak@example.com"
-        phone="+48 987 654 321"
-        salary={6000}
-      />
-      <Employee
-        name="Jan Wiśniewski"
-        email="jan.wisniewski@example.com"
-        phone="+48 111 222 333"
-        salary={4500}
-      /> */}
+    <div className="card">
+      <TreeTable
+        value={employees}
+        tableStyle={{ minWidth: "50rem" }}
+      ></TreeTable>
     </div>
   );
 };

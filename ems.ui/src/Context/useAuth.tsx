@@ -1,9 +1,9 @@
 import { createContext, useEffect, useState } from "react";
-import { UserProfile } from "../Models/User.ts";
+import { UserProfile } from "../Models/User";
+import { useNavigate } from "react-router-dom";
 import { loginAPI, registerAPI } from "../Services/AuthService.tsx";
 import React from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
 
 type UserContextType = {
   user: UserProfile | null;
@@ -50,25 +50,22 @@ export const UserProvider = ({ children }: Props) => {
         localStorage.setItem("user", JSON.stringify(userObj));
         setToken(res?.data.token!);
         setUser(userObj!);
-        navigate("/search");
+        navigate("/Employee");
       }
     });
   };
 
   const loginUser = async (username: string, password: string) => {
     await loginAPI(username, password).then((res) => {
-      if (res) {
-        localStorage.setItem("token", res?.data.token);
-        const userObj = {
-          userName: res?.data.userName,
-          email: res?.data.email,
-        };
-        localStorage.setItem("user", JSON.stringify(userObj));
-        setToken(res?.data.token!);
-        setUser(userObj!);
-
-        navigate("/search");
-      }
+      localStorage.setItem("token", res?.data.token);
+      const userObj = {
+        userName: res?.data.userName,
+        email: res?.data.email,
+      };
+      localStorage.setItem("user", JSON.stringify(userObj));
+      setToken(res?.data.token!);
+      setUser(userObj!);
+      navigate("/Employee");
     });
   };
 
