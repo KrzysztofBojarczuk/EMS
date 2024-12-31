@@ -56,7 +56,8 @@ export const UserProvider = ({ children }: Props) => {
   };
 
   const loginUser = async (username: string, password: string) => {
-    await loginAPI(username, password).then((res) => {
+    try {
+      const res = await loginAPI(username, password);
       localStorage.setItem("token", res?.data.token);
       const userObj = {
         userName: res?.data.userName,
@@ -65,8 +66,16 @@ export const UserProvider = ({ children }: Props) => {
       localStorage.setItem("user", JSON.stringify(userObj));
       setToken(res?.data.token!);
       setUser(userObj!);
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       navigate("/Employee");
-    });
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        throw new Error("Invalid username or password");
+      } else {
+        throw new Error("An unexpected error occurred");
+      }
+    }
   };
 
   const isLoggedIn = () => {
