@@ -1,7 +1,8 @@
-import React, { JSX, useState, useEffect } from "react";
-import { TreeTable } from "primereact/treetable";
+import React, { useState, useEffect, JSX } from "react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import { EmployeeGet } from "../../../Models/Employee";
-import { fetchUserEmployees } from "../../../Services/EmployeeService.tsx";
+import { UserEmployeesService } from "../../../Services/EmployeeService.tsx";
 
 interface Props {}
 
@@ -9,15 +10,18 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
 
   useEffect(() => {
-    fetchUserEmployees().then((data) => setEmployees(data));
+    UserEmployeesService().then((data) => setEmployees(data));
   }, []);
 
   return (
     <div className="card">
-      <TreeTable
-        value={employees}
-        tableStyle={{ minWidth: "50rem" }}
-      ></TreeTable>
+      <DataTable value={employees} tableStyle={{ minWidth: "50rem" }}>
+        <Column field="id" header="Id"></Column>
+        <Column field="name" header="Name"></Column>
+        <Column field="email" header="Email"></Column>
+        <Column field="phone" header="Phone"></Column>
+        <Column field="salary" header="Salary"></Column>
+      </DataTable>
     </div>
   );
 };

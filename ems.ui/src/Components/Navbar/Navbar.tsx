@@ -14,7 +14,7 @@ const Navbar = (props: Props) => {
     {
       label: "Task",
       icon: "pi pi-home",
-      command: () => navigate("/"),
+      command: () => navigate("/Task"),
     },
   ];
 

@@ -3,7 +3,8 @@ import { EmployeeGet } from "../Models/Employee";
 
 const api = "https://localhost:7256/api/";
 
-export const fetchUserEmployees = async () => {
+export const UserEmployeesService = async () => {
   const response = await axios.get<EmployeeGet[]>(api + "Employees/User");
+
   return response.data;
 };

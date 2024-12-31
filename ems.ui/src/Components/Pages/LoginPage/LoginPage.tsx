@@ -28,9 +28,17 @@ const LoginPage = (props: Props) => {
     formState: { errors },
   } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
 
-  const handleLogin = (form: LoginFormsInputs) => {
-    loginUser(form.userName, form.password); //
+  const handleLogin = async (form: LoginFormsInputs) => {
+    try {
+      await loginUser(form.userName, form.password);
+    } catch (error: any) {
+      if (error.message) {
+        setErrorMessage(error.message);
+      }
+    }
   };
+
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   return (
     <div className="login-container">
@@ -54,6 +62,9 @@ const LoginPage = (props: Props) => {
               ) : (
                 ""
               )}
+            </div>
+            <div>
+              {errorMessage && <p className="text-red">{errorMessage}</p>}
             </div>
             <Button
               label="Sign up
