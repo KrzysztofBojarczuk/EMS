@@ -1,45 +1,69 @@
-import React, { SyntheticEvent } from "react";
-import { Message } from "primereact/message";
+import React, { useState } from "react";
 import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
 import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
-type Props = {
-  onEmployeeCreate: (e: SyntheticEvent) => void;
-};
+import { Button } from "primereact/button";
+import { UserPostEmployeesService } from "../../../Services/EmployeeService.tsx";
 
-const AddEmployee = ({ onEmployeeCreate }: Props) => {
+const AddEmployee = ({ onClose }) => {
+  const [employee, setEmployee] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    salary: 0,
+  });
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setEmployee((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleSalaryChange = (e) => {
+    setEmployee((prev) => ({ ...prev, salary: e.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await UserPostEmployeesService(employee);
+    onClose();
+  };
+
   return (
-    <div className="card">
-      <form onSubmit={onEmployeeCreate}>
-        <div className="flex flex-column align-items-center mb-3 gap-2">
-          <InputText
-            id="username"
-            placeholder="Username"
-            className="p-invalid mr-2"
-          />
-
-          <InputText
-            id="Email"
-            placeholder="Email"
-            className="p-invalid mr-2"
-          />
-          <InputMask
-            id="ssn"
-            placeholder="Phone"
-            mask="999-999-999"
-          ></InputMask>
-          <InputNumber
-            inputId="currency-PLN"
-            placeholder="Salary"
-            mode="currency"
-            currency="PLN"
-            locale="pl-PL"
-          />
-        </div>
-        <Button label="Submit" />
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div className="flex flex-column align-items-center mb-3 gap-2">
+        <InputText
+          id="name"
+          placeholder="Name"
+          value={employee.name}
+          onChange={handleInputChange}
+          required
+        />
+        <InputText
+          id="email"
+          placeholder="Email"
+          value={employee.email}
+          onChange={handleInputChange}
+          required
+        />
+        <InputMask
+          id="phone"
+          placeholder="Phone"
+          mask="999-999-999"
+          value={employee.phone}
+          onChange={handleInputChange}
+        />
+        <InputNumber
+          inputId="salary"
+          placeholder="Salary"
+          mode="currency"
+          currency="PLN"
+          locale="pl-PL"
+          value={employee.salary}
+          onValueChange={handleSalaryChange}
+        />
+      </div>
+      <Button label="Submit" type="submit" />
+    </form>
   );
 };
 
