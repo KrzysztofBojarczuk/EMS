@@ -10,16 +10,15 @@ const Navbar = (props: Props) => {
   const navigate = useNavigate();
   const { isLoggedIn, user, logout } = useAuth();
 
-  const items: MenuItem[] = [
-    {
-      label: "Task",
-      icon: "pi pi-home",
-      command: () => navigate("/Task"),
-    },
-  ];
+  const items: MenuItem[] = [];
 
   if (isLoggedIn()) {
     items.push(
+      {
+        label: "Task",
+        icon: "pi pi-home",
+        command: () => navigate("/Task"),
+      },
       {
         label: "Employees",
         icon: "pi pi-users",

@@ -1,5 +1,7 @@
 ﻿using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Account;
+using EMS.APPLICATION.Features.Account.Commands;
+using EMS.APPLICATION.Features.Account.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
@@ -57,6 +59,22 @@ namespace EMS.API.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
+        }
+
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAllUserAsync()
+        {
+            var result = await sender.Send(new GetAllUserQuery());
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{appUserId}")]
+        public async Task<IActionResult> DeleteEmployeeAsync([FromRoute] string appUserId)
+        {
+            var result = await sender.Send(new DeleteUserCommand(appUserId));
+
+            return Ok(result);
         }
     }
 }

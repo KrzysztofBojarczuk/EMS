@@ -18,19 +18,18 @@ namespace EMS.API.Controllers
     public class EmployeesController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
         [HttpGet("User")]
-        public async Task<IActionResult> GetUserEmployeesAsync()
+        public async Task<IActionResult> GetUserEmployeesAsync(string searchTerm = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserEmployeesQuery(appUser.Id));
+            var result = await sender.Send(new GetUserEmployeesQuery(appUser.Id, searchTerm));
 
             var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(result);
 
             return Ok(employeeDtos);
         }
-
 
         [HttpGet("GetUserNumberOfEmployee")]
         public async Task<IActionResult> GetUserNumberOfEmployeesAsync()
