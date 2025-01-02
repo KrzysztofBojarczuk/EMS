@@ -50,7 +50,7 @@ export const UserProvider = ({ children }: Props) => {
         localStorage.setItem("user", JSON.stringify(userObj));
         setToken(res?.data.token!);
         setUser(userObj!);
-        navigate("/Employee");
+        navigate("/login");
       }
     });
   };

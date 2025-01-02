@@ -5,7 +5,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { UserPostEmployeesService } from "../../../Services/EmployeeService.tsx";
 
-const AddEmployee = ({ onClose }) => {
+const AddEmployee = ({ onClose, onAddSuccess }) => {
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
@@ -25,6 +25,7 @@ const AddEmployee = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await UserPostEmployeesService(employee);
+    onAddSuccess();
     onClose();
   };
 

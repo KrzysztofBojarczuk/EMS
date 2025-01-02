@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EMS.APPLICATION.Features.Account
+namespace EMS.APPLICATION.Features.Account.Commands
 {
     public record RegisterUserCommand(string Username, string Email, string Password) : IRequest<NewUserDto>;
 

@@ -12,11 +12,18 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class EmployeeRepository(AppDbContext dbContext) : IEmployeeRepository
     {
-        public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesAsync(string appUserId)
+        public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, string searchTerm)
         {
-            return await dbContext.Employees
-                .Where(x => x.AppUserId == appUserId)
-                .ToListAsync();
+            var query = dbContext.Employees.AsQueryable();
+
+            query = query.Where(x => x.AppUserId == appUserId);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<int> GetUserNumberOfEmployeesAsync(string appUserId)

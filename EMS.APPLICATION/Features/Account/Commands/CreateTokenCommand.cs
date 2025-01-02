@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EMS.APPLICATION.Features.Account
+namespace EMS.APPLICATION.Features.Account.Commands
 {
     public record CreateTokenCommand(AppUserEntity User) : IRequest<string>;
 
@@ -15,7 +15,7 @@ namespace EMS.APPLICATION.Features.Account
     {
         public async Task<string> Handle(CreateTokenCommand request, CancellationToken cancellationToken)
         {
-           return tokenService.CreateToken(request.User);
+            return tokenService.CreateToken(request.User);
         }
     }
 }

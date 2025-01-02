@@ -5,8 +5,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../../Context/useAuth.tsx";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
-import { Card } from "primereact/card";
-import "./LoginPage.css";
+import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -37,6 +36,8 @@ const LoginPage = (props: Props) => {
       }
     }
   };
+
+  const navigate = useNavigate();
 
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
@@ -93,6 +94,7 @@ const LoginPage = (props: Props) => {
               type="submit"
               label="Create Account"
               className="p-3 w-full text-primary-50 border-1 border-primary hover:bg-primary-700"
+              onClick={() => navigate("/register")}
             />
           </div>
         </div>
