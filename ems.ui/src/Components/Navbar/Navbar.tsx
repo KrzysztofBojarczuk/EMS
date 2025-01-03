@@ -13,17 +13,30 @@ const Navbar = (props: Props) => {
   const items: MenuItem[] = [];
 
   if (isLoggedIn()) {
-    items.push(
-      {
-        label: "Task",
-        icon: "pi pi-home",
-        command: () => navigate("/Task"),
-      },
-      {
-        label: "Employees",
+    if (user?.roles.includes("Admin")) {
+      items.push({
+        label: "Admin",
         icon: "pi pi-users",
-        command: () => navigate("/Employee"),
-      },
+        command: () => navigate("/Admin"),
+      });
+    }
+
+    if (user?.roles.includes("User")) {
+      items.push(
+        {
+          label: "Task",
+          icon: "pi pi-home",
+          command: () => navigate("/Task"),
+        },
+        {
+          label: "Employees",
+          icon: "pi pi-user",
+          command: () => navigate("/Employee"),
+        }
+      );
+    }
+
+    items.push(
       {
         label: `Welcome, ${user?.userName}`,
         icon: "pi pi-user",

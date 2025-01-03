@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,13 +36,16 @@ namespace EMS.APPLICATION.Features.Account.Commands
                     throw new Exception("Error assigning role");
                 }
 
-                var token = tokenService.CreateToken(appUser);
+                var roles = await userManager.GetRolesAsync(appUser);
+
+                var token = tokenService.CreateToken(appUser, roles);
 
                 return new NewUserDto
                 {
                     UserName = appUser.UserName,
                     Email = appUser.Email,
-                    Token = token
+                    Token = token,
+                    Roles = roles
                 };
             }
             else

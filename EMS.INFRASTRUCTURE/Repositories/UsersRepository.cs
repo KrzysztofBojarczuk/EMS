@@ -27,9 +27,16 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return false;
         }
 
-        public async Task<ICollection<AppUserEntity>> GettAllUsersAsync()
+        public async Task<ICollection<AppUserEntity>> GettAllUsersAsync(string searchTerm)
         {
-            return await userManager.Users.ToListAsync();
+            var query = userManager.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.UserName.ToLower().Contains(searchTerm.ToLower()) || x.Email.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

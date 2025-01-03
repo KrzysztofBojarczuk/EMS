@@ -9,6 +9,6 @@ namespace EMS.CORE.Interfaces
 {
     public interface ITokenService
     {
-        string CreateToken(AppUserEntity user);
+        string CreateToken(AppUserEntity user, IList<string> roles);
     }
 }
