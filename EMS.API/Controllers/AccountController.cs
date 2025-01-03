@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Reflection;
 
 namespace EMS.API.Controllers
@@ -30,19 +31,20 @@ namespace EMS.API.Controllers
 
             if (user == null) return Unauthorized("Invalid username!");
 
-            var role = userManager.GetClaimsAsync(user);
+            var roles = await userManager.GetRolesAsync(user);
 
             var result = await signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
 
-            var token = await sender.Send(new CreateTokenCommand(user));
+            var token = await sender.Send(new CreateTokenCommand(user, roles));
 
             return Ok(new NewUserDto
             {
                 UserName = user.UserName,
                 Email = user.Email,
-                Token = token
+                Token = token,
+                Roles = roles
             });
         }
 
@@ -62,14 +64,16 @@ namespace EMS.API.Controllers
         }
 
         [HttpGet("GetAllUser")]
-        public async Task<IActionResult> GetAllUserAsync()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllUserAsync(string searchTerm = null)
         {
-            var result = await sender.Send(new GetAllUserQuery());
+            var result = await sender.Send(new GetAllUserQuery(searchTerm));
 
             return Ok(result);
         }
 
         [HttpDelete("{appUserId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployeeAsync([FromRoute] string appUserId)
         {
             var result = await sender.Send(new DeleteUserCommand(appUserId));

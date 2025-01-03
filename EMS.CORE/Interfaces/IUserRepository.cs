@@ -9,7 +9,7 @@ namespace EMS.CORE.Interfaces
 {
     public interface IUserRepository
     {
-        Task<ICollection<AppUserEntity>> GettAllUsersAsync();
+        Task<ICollection<AppUserEntity>> GettAllUsersAsync(string searchTerm);
         Task<bool> DeleteUserAsync(string appUserId);
     }
 }

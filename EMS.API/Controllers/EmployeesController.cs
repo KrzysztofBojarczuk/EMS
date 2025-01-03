@@ -14,10 +14,10 @@ namespace EMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class EmployeesController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
         [HttpGet("User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserEmployeesAsync(string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -32,6 +32,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpGet("GetUserNumberOfEmployee")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserNumberOfEmployeesAsync()
         {
             var username = User.GetUsername();
@@ -44,6 +45,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpPost()]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddEmployeeAsync([FromBody] EmployeeCreateDto employeeDto)
         {
             if (!ModelState.IsValid)
@@ -64,6 +66,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpGet()]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllEmployeesAsync()
         {
             var employees = await sender.Send(new GetAllEmployeesQuery());
@@ -74,6 +77,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpGet("GetNumberOfEmployee")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetNumberOfEmployeesAsync()
         {
             var result = await sender.Send(new GetNumberOfEmployeesQuery());
@@ -82,6 +86,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpGet("{employeeId}")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> GetEmployeeByIdAsync([FromRoute] Guid employeeId)
         {
             var result = await sender.Send(new GetEmployeeByIdQuery(employeeId));
@@ -92,6 +97,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpPut("{employeeId}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateEmployeeAsync([FromRoute] Guid employeeId, [FromBody] EmployeeCreateDto updateEmployeeDto)
         {
             if (!ModelState.IsValid)
@@ -105,6 +111,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpDelete("{employeeId}")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> DeleteEmployeeAsync([FromRoute] Guid employeeId)
         {
             var result = await sender.Send(new DeleteEmployeeCommand(employeeId));
