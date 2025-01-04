@@ -14,3 +14,15 @@ export const UserGetEmployeesService = async (searchTerm: string) => {
 export const UserPostEmployeesService = async (employeePost: EmployeePost) => {
   return await axios.post<EmployeePost>(api + "Employees", employeePost);
 };
+
+export const UserDeleteEmployeesService = async (id: string) => {
+  const response = await axios.delete(`${api}Employees/${id}`);
+  return response;
+};
+
+export const UserUpdateEmployeesService = async (
+  employeePost: EmployeePost,
+  id: string
+) => {
+  return await axios.put<EmployeePost>(`${api}Employees/${id}`, employeePost);
+};
