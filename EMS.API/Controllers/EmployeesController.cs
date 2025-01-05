@@ -67,9 +67,9 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllEmployeesAsync()
+        public async Task<IActionResult> GetAllEmployeesAsync(string searchTerm = null)
         {
-            var employees = await sender.Send(new GetAllEmployeesQuery());
+            var employees = await sender.Send(new GetAllEmployeesQuery(searchTerm));
 
             var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(employees);
 

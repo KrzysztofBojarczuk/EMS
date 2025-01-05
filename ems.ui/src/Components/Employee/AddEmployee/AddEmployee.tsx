@@ -42,6 +42,7 @@ const AddEmployee = ({ onClose, onAddSuccess }) => {
         <InputText
           id="email"
           placeholder="Email"
+          type="email"
           value={employee.email}
           onChange={handleInputChange}
           required
@@ -52,6 +53,7 @@ const AddEmployee = ({ onClose, onAddSuccess }) => {
           mask="999-999-999"
           value={employee.phone}
           onChange={handleInputChange}
+          required
         />
         <InputNumber
           inputId="salary"
@@ -61,6 +63,7 @@ const AddEmployee = ({ onClose, onAddSuccess }) => {
           locale="pl-PL"
           value={employee.salary}
           onValueChange={handleSalaryChange}
+          required
         />
       </div>
       <Button label="Submit" type="submit" />

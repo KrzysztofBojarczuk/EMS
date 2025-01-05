@@ -2,6 +2,7 @@
 using EMS.APPLICATION.Features.Account;
 using EMS.APPLICATION.Features.Account.Commands;
 using EMS.APPLICATION.Features.Account.Queries;
+using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
@@ -77,6 +78,15 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> DeleteEmployeeAsync([FromRoute] string appUserId)
         {
             var result = await sender.Send(new DeleteUserCommand(appUserId));
+
+            return Ok(result);
+        }
+
+        [HttpGet("GetNumberOfUsers")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetNumberOfUsersAsync()
+        {
+            var result = await sender.Send(new GetNumberOfUsersQuery());
 
             return Ok(result);
         }

@@ -36,9 +36,16 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Employees.CountAsync();
         }
 
-        public async Task<IEnumerable<EmployeeEntity>> GetEmployeesAsync()
+        public async Task<IEnumerable<EmployeeEntity>> GetEmployeesAsync(string searchTerm)
         {
-            return await dbContext.Employees.ToListAsync();
+            var query = dbContext.Employees.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<EmployeeEntity> GetEmployeeByIdAsync(Guid id)
@@ -65,6 +72,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 employee.Name = entity.Name;
                 employee.Email = entity.Email;
                 employee.Phone = entity.Phone;
+                employee.Salary = entity.Salary;
 
                 await dbContext.SaveChangesAsync();
 

@@ -11,5 +11,6 @@ namespace EMS.CORE.Interfaces
     {
         Task<ICollection<AppUserEntity>> GettAllUsersAsync(string searchTerm);
         Task<bool> DeleteUserAsync(string appUserId);
+        Task<int> GetNumberOfUsersAsync();
     }
 }
