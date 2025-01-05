@@ -3,6 +3,14 @@ import { EmployeeGet, EmployeePost } from "../Models/Employee";
 
 const api = "https://localhost:7256/api/";
 
+export const GetEmployeesService = async (searchTerm: string) => {
+  const response = await axios.get<EmployeeGet[]>(api + "Employees", {
+    params: { searchTerm },
+  });
+
+  return response.data;
+};
+
 export const UserGetEmployeesService = async (searchTerm: string) => {
   const response = await axios.get<EmployeeGet[]>(api + "Employees/User", {
     params: { searchTerm },

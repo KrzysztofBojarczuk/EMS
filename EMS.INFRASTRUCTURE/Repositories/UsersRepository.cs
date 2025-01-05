@@ -27,6 +27,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return false;
         }
 
+        public async Task<int> GetNumberOfUsersAsync()
+        {
+            return await userManager.Users.CountAsync();
+        }
+
         public async Task<ICollection<AppUserEntity>> GettAllUsersAsync(string searchTerm)
         {
             var query = userManager.Users.AsQueryable();

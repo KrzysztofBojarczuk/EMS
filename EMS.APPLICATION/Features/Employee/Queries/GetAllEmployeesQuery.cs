@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace EMS.APPLICATION.Features.Employee.Queries
 {
-    public record GetAllEmployeesQuery() : IRequest<IEnumerable<EmployeeEntity>>;
+    public record GetAllEmployeesQuery(string searchTerm) : IRequest<IEnumerable<EmployeeEntity>>;
 
     public class GetAllEmployeesQueryHandler(IEmployeeRepository employeeRepository)
         : IRequestHandler<GetAllEmployeesQuery, IEnumerable<EmployeeEntity>>
     {
         public async Task<IEnumerable<EmployeeEntity>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
         {
-            return await employeeRepository.GetEmployeesAsync();
+            return await employeeRepository.GetEmployeesAsync(request.searchTerm);
         }
     }
 }

@@ -90,7 +90,6 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         <Column field="email" header="Email"></Column>
         <Column field="phone" header="Phone"></Column>
         <Column field="salary" header="Salary"></Column>
-        <Column field="salary" header="Action"></Column>
         <Column
           header="Action"
           body={(rowData) => (

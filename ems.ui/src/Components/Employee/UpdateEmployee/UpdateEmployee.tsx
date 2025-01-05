@@ -56,6 +56,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
         <InputText
           id="email"
           placeholder="Email"
+          type="email"
           value={updatedEmployee.email}
           onChange={handleInputChange}
           required
@@ -66,6 +67,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
           mask="999-999-999"
           value={updatedEmployee.phone}
           onChange={handleInputChange}
+          required
         />
         <InputNumber
           inputId="salary"
@@ -75,6 +77,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
           locale="pl-PL"
           value={updatedEmployee.salary}
           onValueChange={handleSalaryChange}
+          required
         />
       </div>
       <Button label="Update" type="submit" />
