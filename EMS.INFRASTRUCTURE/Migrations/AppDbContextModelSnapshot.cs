@@ -22,6 +22,27 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EMS.APPLICATION.Dtos.BudgetEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Budget")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique();
+
+                    b.ToTable("Budgets");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.AppUserEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -119,6 +140,32 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("BudgetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DueDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
+
+                    b.ToTable("PlannedExpenses");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -142,6 +189,35 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasIndex("AppUserId");
 
                     b.ToTable("Tasks");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.TransactionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("BudgetId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreationDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BudgetId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -173,13 +249,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2dbd2b9b-1ad0-4000-9e4e-47531a6bc781",
+                            Id = "1d9955d7-afd4-4e38-9745-10995c8c326d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0588eeac-09a6-46b1-901e-927e2d2d97e9",
+                            Id = "28e09f77-32ca-47ff-b703-e6270ab43106",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -291,6 +367,17 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("EMS.APPLICATION.Dtos.BudgetEntity", b =>
+                {
+                    b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
+                        .WithOne("BudgetEntity")
+                        .HasForeignKey("EMS.APPLICATION.Dtos.BudgetEntity", "AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUserEntity");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.EmployeeEntity", b =>
                 {
                     b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
@@ -302,6 +389,17 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Navigation("AppUserEntity");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
+                {
+                    b.HasOne("EMS.APPLICATION.Dtos.BudgetEntity", "BudgetEntity")
+                        .WithMany("PlannedExpenseEntity")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BudgetEntity");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
                 {
                     b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
@@ -311,6 +409,17 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUserEntity");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.TransactionEntity", b =>
+                {
+                    b.HasOne("EMS.APPLICATION.Dtos.BudgetEntity", "BudgetEntity")
+                        .WithMany("TransactionEntity")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BudgetEntity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -364,8 +473,18 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("EMS.APPLICATION.Dtos.BudgetEntity", b =>
+                {
+                    b.Navigation("PlannedExpenseEntity");
+
+                    b.Navigation("TransactionEntity");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.AppUserEntity", b =>
                 {
+                    b.Navigation("BudgetEntity")
+                        .IsRequired();
+
                     b.Navigation("EmployeeEntities");
 
                     b.Navigation("TaskEntity");

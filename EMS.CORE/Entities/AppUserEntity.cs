@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EMS.APPLICATION.Dtos;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace EMS.CORE.Entities
     {
         public ICollection<TaskEntity> TaskEntity { get; set; } = new List<TaskEntity>();
         public ICollection<EmployeeEntity> EmployeeEntities { get; set; } = new List<EmployeeEntity>();
+        public BudgetEntity BudgetEntity { get; set; } = null!;
     }
 }
