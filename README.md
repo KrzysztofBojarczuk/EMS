@@ -1,8 +1,11 @@
 # EMS
 
 After login user has acces to his resources:
-![1](https://github.com/user-attachments/assets/e0022504-1bcf-4976-b920-f74da9e8a5ce)
-![2](https://github.com/user-attachments/assets/51f87933-ad3e-4dc9-8734-8889202ca963)
-![3](https://github.com/user-attachments/assets/b095f534-0232-4825-8570-6edc19fc746b)
-![4](https://github.com/user-attachments/assets/a90a2e16-4fdd-4d1d-ad5a-2289742af5ac)
-![5](https://github.com/user-attachments/assets/42674c80-03c2-484f-af1d-c9a9aa012394)
+![1](https://github.com/user-attachments/assets/b0bc9fd4-e8b0-4f4f-aa11-fd4995ba9401)
+![2](https://github.com/user-attachments/assets/07cf9dcb-54fc-4eb7-b3a6-6a02882c4448)
+![3](https://github.com/user-attachments/assets/a4ae866f-d2a4-4480-b14a-808c64e3aedf)
+![4](https://github.com/user-attachments/assets/1394085b-355f-4f2a-8888-b2008df5c33e)
+![5](https://github.com/user-attachments/assets/eb410c30-720c-4ce7-aac9-d1faced2f45d)
+
+Admin dashboard:
+![6](https://github.com/user-attachments/assets/c8ee29d5-f77d-4460-9fb4-2775408d0f49)
