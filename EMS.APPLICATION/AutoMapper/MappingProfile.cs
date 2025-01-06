@@ -14,12 +14,19 @@ namespace EMS.APPLICATION.AutoMapper
         public MappingProfile()
         {
             CreateMap<TaskCreateDto, TaskEntity>();
-
             CreateMap<TaskEntity, TaskGetDto>();
 
             CreateMap<EmployeeCreateDto, EmployeeEntity>();
-
             CreateMap<EmployeeEntity, EmployeeGetDto>();
+
+            CreateMap<TransactionCreateDto, TransactionEntity>();
+            CreateMap<TransactionEntity, TransactionGetDto>();
+
+            CreateMap<PlannedExpenseCreateDto, PlannedExpenseEntity>();
+            CreateMap<PlannedExpenseEntity, PlannedExpenseGetDto>();
+
+            CreateMap<BudgetCreateDto, BudgetEntity>();
+            CreateMap<BudgetEntity, BudgetGetDto>();
         }
     }
 }

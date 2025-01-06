@@ -1,4 +1,5 @@
-﻿using EMS.CORE.Entities;
+﻿using EMS.APPLICATION.Dtos;
+using EMS.CORE.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -23,19 +24,40 @@ namespace EMS.INFRASTRUCTURE.Data
 
         public DbSet<TaskEntity> Tasks { get; set; }
         public DbSet<EmployeeEntity> Employees { get; set; }
+        public DbSet<TransactionEntity> Transactions { get; set; }
+        public DbSet<PlannedExpenseEntity> PlannedExpenses { get; set; }
+        public DbSet<BudgetEntity> Budgets { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<AppUserEntity>()
                 .HasMany(e => e.TaskEntity)
                 .WithOne(e => e.AppUserEntity)
                 .HasForeignKey(e => e.AppUserId)
-            .IsRequired();
+                .IsRequired();
 
             builder.Entity<AppUserEntity>()
                .HasMany(e => e.EmployeeEntities)
                .WithOne(e => e.AppUserEntity)
                .HasForeignKey(e => e.AppUserId)
                .IsRequired();
+
+            builder.Entity<BudgetEntity>()
+                .HasMany(e => e.TransactionEntity)
+                .WithOne(e => e.BudgetEntity)
+                .HasForeignKey(e => e.BudgetId)
+                .IsRequired();
+
+            builder.Entity<BudgetEntity>()
+                .HasMany(e => e.PlannedExpenseEntity)
+                .WithOne(e => e.BudgetEntity)
+                .HasForeignKey(e => e.BudgetId)
+                .IsRequired();
+
+            builder.Entity<AppUserEntity>()
+                .HasOne(e => e.BudgetEntity)
+                .WithOne(e => e.AppUserEntity)
+                .HasForeignKey<BudgetEntity>(e => e.AppUserId) 
+                .IsRequired();
 
             List<IdentityRole> roles = new List<IdentityRole>
             {
@@ -52,7 +74,7 @@ namespace EMS.INFRASTRUCTURE.Data
             };
 
             builder.Entity<IdentityRole>().HasData(roles);
-            
+
             base.OnModelCreating(builder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
