@@ -5,7 +5,7 @@ After login user has acces to his resources:
 ![2](https://github.com/user-attachments/assets/07cf9dcb-54fc-4eb7-b3a6-6a02882c4448)
 ![3](https://github.com/user-attachments/assets/a4ae866f-d2a4-4480-b14a-808c64e3aedf)
 ![4](https://github.com/user-attachments/assets/84970966-1f25-4a5c-9f49-1081053663d0)
-//![5](https://github.com/user-attachments/assets/eb410c30-720c-4ce7-aac9-d1faced2f45d)
+![5](https://github.com/user-attachments/assets/eb410c30-720c-4ce7-aac9-d1faced2f45d)
 
 Budget:
 ![5](https://github.com/user-attachments/assets/3c560d2e-17e4-462a-a7ae-fdcb0c37f4d8)
