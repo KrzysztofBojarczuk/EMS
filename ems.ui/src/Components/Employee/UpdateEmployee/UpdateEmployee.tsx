@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
-import { InputMask, InputMaskChangeEvent } from "primereact/inputmask";
+import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { UserUpdateEmployeesService } from "../../../Services/EmployeeService.tsx";
-import { EmployeeGet } from "../../../Models/Employee";
+import { EmployeeGet, EmployeePost } from "../../../Models/Employee";
 
 interface UpdateEmployeeProps {
   employee: EmployeeGet;
@@ -17,70 +18,110 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
   onClose,
   onUpdateSuccess,
 }) => {
-  const [updatedEmployee, setUpdatedEmployee] = useState<EmployeeGet>({
-    id: employee.id,
-    name: employee.name,
-    email: employee.email,
-    phone: employee.phone,
-    salary: employee.salary,
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<EmployeePost>({
+    defaultValues: {
+      name: employee.name,
+      email: employee.email,
+      phone: employee.phone,
+      salary: employee.salary,
+    },
   });
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement> | InputMaskChangeEvent
-  ) => {
-    const { id, value } = e.target;
-    setUpdatedEmployee((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleSalaryChange = (e: any) => {
-    setUpdatedEmployee((prev) => ({ ...prev, salary: e.value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await UserUpdateEmployeesService(updatedEmployee, updatedEmployee.id);
+  const onSubmit = async (data: EmployeePost) => {
+    await UserUpdateEmployeesService(data, employee.id);
     onUpdateSuccess();
     onClose();
   };
 
+  useEffect(() => {
+    reset({
+      name: employee.name,
+      email: employee.email,
+      phone: employee.phone,
+      salary: employee.salary,
+    });
+  }, [employee, reset]);
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex flex-column align-items-center mb-3 gap-2">
-        <InputText
-          id="name"
-          placeholder="Name"
-          value={updatedEmployee.name}
-          onChange={handleInputChange}
-          required
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-column px-8 py-5 gap-4">
+        <Controller
+          name="name"
+          control={control}
+          rules={{ required: "Name is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputText {...field} placeholder="Name" />
+              {errors.name && (
+                <small className="p-error">{errors.name.message}</small>
+              )}
+            </div>
+          )}
         />
-        <InputText
-          id="email"
-          placeholder="Email"
-          type="email"
-          value={updatedEmployee.email}
-          onChange={handleInputChange}
-          required
+        <Controller
+          name="email"
+          control={control}
+          rules={{
+            required: "Email is required",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Invalid email format",
+            },
+          }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputText {...field} placeholder="Email" />
+              {errors.email && (
+                <small className="p-error">{errors.email.message}</small>
+              )}
+            </div>
+          )}
         />
-        <InputMask
-          id="phone"
-          placeholder="Phone"
-          mask="999-999-999"
-          value={updatedEmployee.phone}
-          onChange={handleInputChange}
-          required
+        <Controller
+          name="phone"
+          control={control}
+          rules={{ required: "Phone is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputMask {...field} mask="999-999-999" placeholder="Phone" />
+              {errors.phone && (
+                <small className="p-error">{errors.phone.message}</small>
+              )}
+            </div>
+          )}
         />
-        <InputNumber
-          inputId="salary"
-          placeholder="Salary"
-          mode="currency"
-          currency="PLN"
-          locale="pl-PL"
-          value={updatedEmployee.salary}
-          onValueChange={handleSalaryChange}
-          required
+        <Controller
+          name="salary"
+          control={control}
+          rules={{
+            required: "Salary is required",
+            min: { value: 1, message: "Salary must be greater than 0" },
+          }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputNumber
+                mode="currency"
+                currency="PLN"
+                locale="pl-PL"
+                placeholder="Salary"
+                value={field.value}
+                onValueChange={(e) => field.onChange(e.value)}
+              />
+              {errors.salary && (
+                <small className="p-error">{errors.salary.message}</small>
+              )}
+            </div>
+          )}
         />
+        <div className="inline-flex flex-column gap-2">
+          <Button label="Update" type="submit" />
+        </div>
       </div>
-      <Button label="Update" type="submit" />
     </form>
   );
 };

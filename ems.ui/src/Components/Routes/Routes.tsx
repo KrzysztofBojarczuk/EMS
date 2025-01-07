@@ -7,6 +7,7 @@ import RegisterPage from "../Pages/RegisterPage/RegisterPage.tsx";
 import ListEmployee from "../Employee/ListEmployee/ListEmployee.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import AdministrationPanel from "../Admin/AdministrationPanel.tsx";
+import Budget from "../Budget/Budget.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
             <Task />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "Budget",
+        element: (
+          <ProtectedRoute allowedRoles={["User"]}>
+            <Budget />
           </ProtectedRoute>
         ),
       },
