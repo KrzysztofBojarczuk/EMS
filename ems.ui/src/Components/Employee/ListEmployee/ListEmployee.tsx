@@ -55,7 +55,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="card m-4">
+    <div className="m-4">
       <div className="flex align-items-center justify-content-start mb-4">
         <InputText
           value={searchTerm}

@@ -1,35 +1,29 @@
 import React from "react";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { useAuth } from "../../../Context/useAuth.tsx";
+import { useForm, Controller } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { useAuth } from "../../../Context/useAuth.tsx";
 import { useNavigate } from "react-router-dom";
 
-type Props = {};
-
-type LoginFormsInputs = {
-  userName: string;
-  password: string;
-};
-
-const validation = Yup.object().shape({
-  userName: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required"),
-});
-
-const LoginPage = (props: Props) => {
+const LoginPage = () => {
   const { loginUser } = useAuth();
+  const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormsInputs>({ resolver: yupResolver(validation) });
+  } = useForm({
+    defaultValues: {
+      userName: "",
+      password: "",
+    },
+  });
 
-  const handleLogin = async (form: LoginFormsInputs) => {
+  const handleLogin = async (data: { userName: string; password: string }) => {
     try {
-      await loginUser(form.userName, form.password);
+      await loginUser(data.userName, data.password);
     } catch (error: any) {
       if (error.message) {
         setErrorMessage(error.message);
@@ -37,17 +31,8 @@ const LoginPage = (props: Props) => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-
   return (
-    <div
-      className="flex justify-content-center"
-      style={{
-        marginTop: "30vh",
-      }}
-    >
+    <div className="flex justify-content-center" style={{ marginTop: "30vh" }}>
       <form onSubmit={handleSubmit(handleLogin)}>
         <div
           className="flex flex-column px-8 py-5 gap-4"
@@ -57,43 +42,44 @@ const LoginPage = (props: Props) => {
             background: "#1e1e1e",
           }}
         >
-          <div className="inline-flex flex-column gap-2">
-            <label className="text-primary-50 font-semibold">Username</label>
-            <InputText
-              {...register("userName", { required: "Username is required" })}
-              className="bg-white-alpha-20 border-none p-3 text-primary-50"
-            />
-            {errors.userName && (
-              <p className="text-red">{errors.userName.message}</p>
+          <Controller
+            name="userName"
+            control={control}
+            rules={{ required: "Username is required" }}
+            render={({ field }) => (
+              <div className="inline-flex flex-column gap-2">
+                <label className="text-primary-50 font-semibold">
+                  Username
+                </label>
+                <InputText {...field} />
+                {errors.userName && (
+                  <small className="p-error">{errors.userName.message}</small>
+                )}
+              </div>
             )}
-          </div>
-
-          <div className="inline-flex flex-column gap-2">
-            <label className="text-primary-50 font-semibold">Password</label>
-            <InputText
-              {...register("password", { required: "Password is required" })}
-              type="password"
-              className="bg-white-alpha-20 border-none p-3 text-primary-50"
-            />
-            {errors.password && (
-              <p className="text-red">{errors.password.message}</p>
+          />
+          <Controller
+            name="password"
+            control={control}
+            rules={{ required: "Password is required" }}
+            render={({ field }) => (
+              <div className="inline-flex flex-column gap-2">
+                <label className="text-primary-50 font-semibold">
+                  Password
+                </label>
+                <InputText {...field} type="password" />
+                {errors.password && (
+                  <small className="p-error">{errors.password.message}</small>
+                )}
+              </div>
             )}
-          </div>
-
-          <div>
-            {errorMessage && <p className="text-red mt-2">{errorMessage}</p>}
-          </div>
-
-          <div className="inline-flex flex-column gap-2 ">
+          />
+          {errorMessage && <p className="text-red mt-2">{errorMessage}</p>}
+          <div className="inline-flex flex-column gap-2">
+            <Button type="submit" label="Sign In" />
             <Button
-              type="submit"
-              label="Sign In"
-              className="p-3 w-full text-primary-50 border-1 border-primary hover:bg-primary-700"
-            />
-            <Button
-              type="submit"
+              type="button"
               label="Create Account"
-              className="p-3 w-full text-primary-50 border-1 border-primary hover:bg-primary-700"
               onClick={() => navigate("/register")}
             />
           </div>
