@@ -4,9 +4,20 @@ import { TransactionGet, TransactionPost } from "../Models/Transaction";
 
 const api = "https://localhost:7256/api/";
 
-export const UserTransactionService = async () => {
-  const response = await axios.get<TransactionGet>(api + "Transaction");
-
+export const UserGetTransactionService = async (
+  budgetId: string,
+  searchTerm?: string,
+  category?: string[]
+) => {
+  const response = await axios.get<TransactionGet[]>(
+    `${api}Transaction/${budgetId}`,
+    {
+      params: {
+        category: category,
+        searchTerm: searchTerm,
+      },
+    }
+  );
   return response.data;
 };
 

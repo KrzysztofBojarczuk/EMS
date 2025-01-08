@@ -106,8 +106,8 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
             <div className="inline-flex flex-column gap-2">
               <InputNumber
                 mode="currency"
-                currency="PLN"
-                locale="pl-PL"
+                currency="EUR"
+                locale="de-DE"
                 placeholder="Salary"
                 value={field.value}
                 onValueChange={(e) => field.onChange(e.value)}

@@ -5,7 +5,6 @@ const api = "https://localhost:7256/api/";
 
 export const UserGetBudgetService = async () => {
   const response = await axios.get<BudgetGet>(api + "Budget/User");
-
   return response.data;
 };
 

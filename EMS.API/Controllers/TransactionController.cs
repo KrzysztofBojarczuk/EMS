@@ -5,6 +5,7 @@ using EMS.APPLICATION.Features.Employee.Commands;
 using EMS.APPLICATION.Features.Transaction.Commands;
 using EMS.APPLICATION.Features.Transaction.Queries;
 using EMS.CORE.Entities;
+using EMS.CORE.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -35,9 +36,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("{budgetId}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetTransactionsByBudgetId([FromRoute] Guid budgetId)
+        public async Task<IActionResult> GetTransactionsByBudgetId([FromRoute] Guid budgetId, [FromQuery] List<CategoryType> category, string? searchTerm = null)
         {
-            var result = await sender.Send(new GetTransactionByBudgetIdQuery(budgetId));
+            var result = await sender.Send(new GetTransactionByBudgetIdQuery(budgetId, category, searchTerm));
 
             var budgetDtos = mapper.Map<IEnumerable<TransactionGetDto>>(result);
 

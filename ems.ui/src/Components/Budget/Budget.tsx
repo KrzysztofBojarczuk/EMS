@@ -50,20 +50,23 @@ function Budget({}: Props) {
   };
 
   return (
-    <div className="m-4">
+    <div className="m-4 grid">
+      <div className="col">
+        <div></div>
+      </div>
       {budgetUser ? (
-        <div>
+        <div className="col">
           <div className="mb-4">
             <span className="font-bold text-xl">
               {new Intl.NumberFormat("pl-PL", {
                 style: "currency",
-                currency: "PLN",
+                currency: "EUR",
               }).format(budgetUser.budget)}
             </span>
           </div>
           <TabView>
             <TabPanel header="Transaction">
-              <Transaction />
+              <Transaction transactionId={budgetUser.id} />
             </TabPanel>
             <TabPanel header="Planned Expense">
               <div>
@@ -91,6 +94,9 @@ function Budget({}: Props) {
         </div>
       )}
 
+      <div className="col">
+        <div></div>
+      </div>
       <ConfirmationDialog
         visible={isDialogVisible}
         header="Confirm Deletion"

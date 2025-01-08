@@ -87,8 +87,8 @@ const AddEmployee = ({ onClose, onAddSuccess }) => {
             <div className="inline-flex flex-column gap-2">
               <InputNumber
                 mode="currency"
-                currency="PLN"
-                locale="pl-PL"
+                currency="EUR"
+                locale="de-DE"
                 placeholder="Salary"
                 onValueChange={(e) => field.onChange(e.value)}
               />
