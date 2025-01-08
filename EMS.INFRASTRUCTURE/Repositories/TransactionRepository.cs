@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EMS.INFRASTRUCTURE.Repositories
 {
@@ -25,9 +26,23 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id)
+        public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm)
         {
-            return await dbContext.Transactions.Where(x => x.BudgetId == id).ToListAsync();
+            var query = dbContext.Transactions.AsQueryable();
+
+            query = query.Where(x => x.BudgetId == id);
+
+            if (category.Any())
+            {
+                query = query.Where(x => category.Contains(x.Category));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                query = query.Where(x => x.Name.Contains(searchTerm));
+            }
+
+            return await query.ToListAsync();
         }
 
         private async Task UpdateBudgetAsync(Guid budgetId)
