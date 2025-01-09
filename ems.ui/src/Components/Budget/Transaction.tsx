@@ -47,7 +47,6 @@ const Transaction = ({ transactionId }: Props) => {
       searchTerm,
       category
     );
-    console.log(data);
     setTransaction(data);
   };
 
@@ -138,7 +137,7 @@ const Transaction = ({ transactionId }: Props) => {
 
   return (
     <div>
-      <div className="flex justify-content-center">
+      <div className="flex justify-content-center xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3">
         <InputText
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}

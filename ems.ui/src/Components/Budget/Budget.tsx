@@ -50,12 +50,9 @@ function Budget({}: Props) {
   };
 
   return (
-    <div className="m-4 grid">
-      <div className="col">
-        <div></div>
-      </div>
+    <div className="flex justify-content-center xl:m-4 lg:m-4 md:m-2">
       {budgetUser ? (
-        <div className="col">
+        <div>
           <div className="mb-4">
             <span className="font-bold text-xl">
               {new Intl.NumberFormat("pl-PL", {
@@ -94,9 +91,6 @@ function Budget({}: Props) {
         </div>
       )}
 
-      <div className="col">
-        <div></div>
-      </div>
       <ConfirmationDialog
         visible={isDialogVisible}
         header="Confirm Deletion"
