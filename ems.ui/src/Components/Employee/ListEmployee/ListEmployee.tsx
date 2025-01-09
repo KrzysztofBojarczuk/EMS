@@ -55,24 +55,18 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   };
 
   return (
-    <div className="m-4">
-      <div className="flex align-items-center justify-content-start mb-4">
+    <div className="xl:m-4 lg:m-4 md:m-2">
+      <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
         <InputText
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="mr-4"
           placeholder="Search"
         />
-        <Button
-          label="Add Employee"
-          onClick={() => setVisible(true)}
-          className="mr-4"
-        />
+        <Button label="Add Employee" onClick={() => setVisible(true)} />
 
         <Dialog
           header="Add Employee"
           visible={visible}
-          style={{ width: "20vw" }}
           onHide={() => {
             if (!visible) return;
             setVisible(false);
@@ -112,6 +106,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           )}
         ></Column>
       </DataTable>
+
       <ConfirmationDialog
         visible={confirmVisible}
         header="Confirm Deletion of Employee"
@@ -122,7 +117,6 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       <Dialog
         header="Update Employee"
         visible={updateVisible}
-        style={{ width: "20vw" }}
         onHide={() => setUpdateVisible(false)}
       >
         {selectedEmployee && (
