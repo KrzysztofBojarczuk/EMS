@@ -7,7 +7,7 @@ import RegisterPage from "../Pages/RegisterPage/RegisterPage.tsx";
 import ListEmployee from "../Employee/ListEmployee/ListEmployee.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import AdministrationPanel from "../Admin/AdministrationPanel.tsx";
-import Budget from "../Budget/Budget.tsx";
+import Budget from "../Budget/BudgetTransaction.tsx";
 
 export const router = createBrowserRouter([
   {

@@ -18,9 +18,9 @@ namespace EMS.API.Controllers
     [ApiController]
     public class TransactionController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
-        [HttpPost()]
+        [HttpPost("{budgetId}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddTransactionToUserAsync(Guid budgetId, [FromBody] TransactionCreateDto transactioDto)
+        public async Task<IActionResult> AddTransactionToUserAsync([FromRoute] Guid budgetId, [FromBody] TransactionCreateDto transactioDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
