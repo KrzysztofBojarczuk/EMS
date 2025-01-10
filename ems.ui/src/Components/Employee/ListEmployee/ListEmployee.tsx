@@ -18,8 +18,8 @@ interface Props {}
 const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [confirmVisible, setConfirmVisible] = useState(false);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeGet | null>(
     null
