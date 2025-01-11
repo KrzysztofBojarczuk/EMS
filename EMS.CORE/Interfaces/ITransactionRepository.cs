@@ -12,5 +12,6 @@ namespace EMS.CORE.Interfaces
     {
         Task<TransactionEntity> AddTransactionAsync(TransactionEntity entity);
         Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm);
+        Task<bool> DeleteTransactionsAsync(Guid transactionId);
     }
 }

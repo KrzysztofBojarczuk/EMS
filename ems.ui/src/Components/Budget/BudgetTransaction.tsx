@@ -15,7 +15,10 @@ import {
   UserPostBudgetService,
   UserDeleteBudgetService,
 } from "../../Services/BudgetService.tsx";
-import { UserGetTransactionService } from "../../Services/TransactionService.tsx";
+import {
+  UserDeleteTransactionService,
+  UserGetTransactionService,
+} from "../../Services/TransactionService.tsx";
 import AddTransaction from "./AddTransaction/AddTransaction.tsx";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
 import "./BudgetTransaction.css";
@@ -67,7 +70,7 @@ const BudgetTransaction = ({}: Props) => {
       budget: 0,
     };
     await UserPostBudgetService(newBudget);
-    fetchBudgetUser();
+    await fetchBudgetUser();
   };
 
   const handleConfirmDeleteBudget = async () => {
@@ -93,7 +96,9 @@ const BudgetTransaction = ({}: Props) => {
 
   const handleConfirmDeleteTransaction = async () => {
     if (deleteId) {
-      // await UserDeleteEmployeesService(deleteId);  // Implement your delete logic here
+      await UserDeleteTransactionService(deleteId);
+      await fetchTransaction();
+      await fetchBudgetUser();
     }
     setConfirmVisible(false);
     setDeleteId(null);

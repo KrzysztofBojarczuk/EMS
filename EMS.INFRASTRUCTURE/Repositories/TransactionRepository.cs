@@ -26,6 +26,31 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
+        public async Task<bool> DeleteTransactionsAsync(Guid transactionId)
+        {
+            var transaction = await dbContext.Transactions.FirstOrDefaultAsync(t => t.Id == transactionId);
+
+            var budget = await dbContext.Budgets.FirstOrDefaultAsync(b => b.Id == transaction.BudgetId);
+
+            if (transaction is not null)
+            {
+                if (transaction.Category == CategoryType.Income)
+                {
+                    budget.Budget -= transaction.Amount;
+                }
+                else if (transaction.Category == CategoryType.Expense)
+                {
+                    budget.Budget += transaction.Amount;
+                }
+
+                dbContext.Transactions.Remove(transaction);
+
+                return await dbContext.SaveChangesAsync() > 0; 
+            }
+
+            return false;
+        }
+
         public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm)
         {
             var query = dbContext.Transactions.AsQueryable();
