@@ -8,7 +8,7 @@ After login user has acces to his resources:
 <!--![5](https://github.com/user-attachments/assets/eb410c30-720c-4ce7-aac9-d1faced2f45d)-->
 
 Budget:
-![5](https://github.com/user-attachments/assets/08a5ae1f-c5c2-483f-a1d8-7543b86a7206)
+![5](https://github.com/user-attachments/assets/e794e3cf-d9d2-4edd-9d62-4c698a685a65)
 ![6](https://github.com/user-attachments/assets/3d89259d-ee36-4dd2-9a18-4cb32fac42da)
 
 Admin dashboard:
