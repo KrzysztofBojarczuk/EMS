@@ -44,5 +44,15 @@ namespace EMS.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpDelete("{transactionId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeleteTransactionAsync([FromRoute] Guid transactionId)
+        {
+            var result = await sender.Send(new DeleteTransactionCommand(transactionId));
+
+            return Ok(result);
+        }
+
     }
 }
