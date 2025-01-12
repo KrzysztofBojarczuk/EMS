@@ -10,15 +10,13 @@ export const UserGetTransactionService = async (
   searchTerm?: string,
   category?: string[]
 ) => {
-  const response = await axios.get<TransactionGet[]>(
-    `${api}Transaction/${budgetId}`,
-    {
-      params: {
-        category: category,
-        searchTerm: searchTerm,
-      },
-    }
-  );
+  const url = `${api}Transaction/${budgetId}?searchTerm=${searchTerm}${
+    category && category.length > 0
+      ? `&${category.map((cat) => `category=${cat}`).join("&")}`
+      : ""
+  }`;
+
+  const response = await axios.get<TransactionGet[]>(url);
   return response.data;
 };
 
