@@ -120,6 +120,10 @@ const BudgetTransaction = ({}: Props) => {
     }
   };
 
+  const buttonToggleCategory = (selectedCategories: string[]) => {
+    setCategory(selectedCategories);
+  };
+
   const itemTemplate = (transaction: TransactionGet, index: number) => {
     return (
       <div className="col-12" key={transaction.id}>
@@ -139,11 +143,9 @@ const BudgetTransaction = ({}: Props) => {
                   <i className="pi pi-money-bill"></i>
                 </span>
                 <Tag
-                  value={transaction.category}
                   severity={getSeverity(transaction)}
-                >
-                  {categoryToText[transaction.category]}
-                </Tag>
+                  value={categoryToText[transaction.category]}
+                ></Tag>
               </div>
             </div>
             <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
@@ -192,7 +194,7 @@ const BudgetTransaction = ({}: Props) => {
               }).format(budgetUser.budget)}
             </span>
           </div>
-          <TabView className="custom-tabview">
+          <TabView>
             <TabPanel header="Transaction">
               <div className="flex justify-content-center xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3">
                 <InputText
@@ -202,8 +204,8 @@ const BudgetTransaction = ({}: Props) => {
                   placeholder="Search"
                 />
                 <SelectButton
-                  value={value}
-                  onChange={(e) => setValue(e.value)}
+                  value={category}
+                  onChange={(e) => buttonToggleCategory(e.value)}
                   optionLabel="name"
                   options={items}
                   multiple

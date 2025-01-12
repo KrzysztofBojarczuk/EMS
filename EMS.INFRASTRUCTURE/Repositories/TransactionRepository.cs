@@ -53,7 +53,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm)
         {
-            var query = dbContext.Transactions.AsQueryable();
+            var query = dbContext.Transactions.OrderByDescending(x => x.CreationDate).AsQueryable();
 
             query = query.Where(x => x.BudgetId == id);
 
