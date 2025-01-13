@@ -27,6 +27,7 @@ namespace EMS.INFRASTRUCTURE.Data
         public DbSet<TransactionEntity> Transactions { get; set; }
         public DbSet<PlannedExpenseEntity> PlannedExpenses { get; set; }
         public DbSet<BudgetEntity> Budgets { get; set; }
+        public DbSet<AddressEntity> Address { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<AppUserEntity>()
@@ -54,10 +55,17 @@ namespace EMS.INFRASTRUCTURE.Data
                 .IsRequired();
 
             builder.Entity<AppUserEntity>()
+                .HasMany(e => e.AddressEntities)
+                .WithOne(e => e.AppUserEntity)
+                .HasForeignKey(e => e.AppUserId)
+                .IsRequired();
+
+            builder.Entity<AppUserEntity>()
                 .HasOne(e => e.BudgetEntity)
                 .WithOne(e => e.AppUserEntity)
-                .HasForeignKey<BudgetEntity>(e => e.AppUserId) 
+                .HasForeignKey<BudgetEntity>(e => e.AppUserId)
                 .IsRequired();
+
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

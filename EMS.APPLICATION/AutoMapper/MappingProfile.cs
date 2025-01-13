@@ -27,6 +27,9 @@ namespace EMS.APPLICATION.AutoMapper
 
             CreateMap<BudgetCreateDto, BudgetEntity>();
             CreateMap<BudgetEntity, BudgetGetDto>();
+
+            CreateMap<AddressCreateDto, AddressEntity>();
+            CreateMap<AddressEntity, AddressGetDto>();
         }
     }
 }
