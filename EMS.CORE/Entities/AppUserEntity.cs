@@ -12,6 +12,7 @@ namespace EMS.CORE.Entities
     {
         public ICollection<TaskEntity> TaskEntity { get; set; } = new List<TaskEntity>();
         public ICollection<EmployeeEntity> EmployeeEntities { get; set; } = new List<EmployeeEntity>();
+        public ICollection<AddressEntity> AddressEntities { get; set; } = new List<AddressEntity>();
         public BudgetEntity BudgetEntity { get; set; } = null!;
     }
 }
