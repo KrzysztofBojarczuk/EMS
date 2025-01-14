@@ -8,6 +8,7 @@ import ListEmployee from "../Employee/ListEmployee/ListEmployee.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 import AdministrationPanel from "../Admin/AdministrationPanel.tsx";
 import Budget from "../Budget/BudgetTransaction.tsx";
+import ListAddress from "../Address/ListAddress/ListAddress.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
             <ListEmployee />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "Address",
+        element: (
+          <ProtectedRoute allowedRoles={["User"]}>
+            <ListAddress />
           </ProtectedRoute>
         ),
       },
