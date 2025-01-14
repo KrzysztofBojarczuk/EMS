@@ -37,6 +37,11 @@ const Navbar = (props: Props) => {
           label: "Budget",
           icon: "pi pi-wallet",
           command: () => navigate("/Budget"),
+        },
+        {
+          label: "Addresses",
+          icon: "pi pi-wallet",
+          command: () => navigate("/Address"),
         }
       );
     }
