@@ -12,7 +12,7 @@ export const UserGetAddressService = async (searchTerm: string) => {
 };
 
 export const UserPostAddressService = async (addressPost: AddressPost) => {
-  return await axios.post<AddressPost>(api + "Adress", addressPost);
+  return await axios.post<AddressPost>(api + "Address", addressPost);
 };
 
 export const UserDeleteAddressService = async (id: string) => {

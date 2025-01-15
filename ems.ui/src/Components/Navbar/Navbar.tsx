@@ -40,7 +40,7 @@ const Navbar = (props: Props) => {
         },
         {
           label: "Addresses",
-          icon: "pi pi-wallet",
+          icon: "pi pi-address-book",
           command: () => navigate("/Address"),
         }
       );

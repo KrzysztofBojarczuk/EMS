@@ -10,6 +10,7 @@ import {
   UserGetAddressService,
 } from "../../../Services/AddressService.tsx";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
+import AddAddress from "../AddAddress/AddAddress.tsx";
 
 type Props = {};
 
@@ -18,6 +19,7 @@ const ListAddress = (props: Props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [visible, setVisible] = useState<boolean>(false);
 
   const fetchAddreses = async () => {
     const data = await UserGetAddressService(searchTerm);
@@ -50,6 +52,21 @@ const ListAddress = (props: Props) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search"
         />
+        <Button label="Add Address" onClick={() => setVisible(true)} />
+
+        <Dialog
+          header="Add Address"
+          visible={visible}
+          onHide={() => {
+            if (!visible) return;
+            setVisible(false);
+          }}
+        >
+          <AddAddress
+            onClose={() => setVisible(false)}
+            onAddSuccess={fetchAddreses}
+          />
+        </Dialog>
       </div>
 
       <DataTable value={addresses} tableStyle={{ minWidth: "50rem" }}>
