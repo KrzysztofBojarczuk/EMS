@@ -11,6 +11,8 @@ import {
 } from "../../../Services/AddressService.tsx";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import AddAddress from "../AddAddress/AddAddress.tsx";
+import UpdateEmployee from "../../Employee/UpdateEmployee/UpdateEmployee.tsx";
+import UpdateAddress from "../UpdateAddress/UpdateAddress.tsx";
 
 type Props = {};
 
@@ -20,6 +22,10 @@ const ListAddress = (props: Props) => {
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [visible, setVisible] = useState<boolean>(false);
+  const [selectedAddress, setSelectedAddress] = useState<AddressGet | null>(
+    null
+  );
+  const [updateVisible, setUpdateVisible] = useState(false);
 
   const fetchAddreses = async () => {
     const data = await UserGetAddressService(searchTerm);
@@ -42,6 +48,11 @@ const ListAddress = (props: Props) => {
     }
     setConfirmVisible(false);
     setDeleteId(null);
+  };
+
+  const showUpdateDialog = (address: AddressGet) => {
+    setSelectedAddress(address);
+    setUpdateVisible(true);
   };
 
   return (
@@ -79,6 +90,15 @@ const ListAddress = (props: Props) => {
           body={(rowData) => (
             <>
               <i
+                className="pi pi-pencil"
+                style={{
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  marginRight: "10px",
+                }}
+                onClick={() => showUpdateDialog(rowData)}
+              ></i>
+              <i
                 className="pi pi-trash"
                 style={{ fontSize: "1.5rem", cursor: "pointer" }}
                 onClick={() => showDeleteConfirmation(rowData.id)}
@@ -95,6 +115,19 @@ const ListAddress = (props: Props) => {
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmVisible(false)}
       />
+      <Dialog
+        header="Update Address"
+        visible={updateVisible}
+        onHide={() => setUpdateVisible(false)}
+      >
+        {selectedAddress && (
+          <UpdateAddress
+            address={selectedAddress}
+            onClose={() => setUpdateVisible(false)}
+            onUpdateSuccess={fetchAddreses}
+          />
+        )}
+      </Dialog>
     </div>
   );
 };

@@ -54,6 +54,20 @@ namespace EMS.API.Controllers
             return Ok(result);
         }
 
+        [HttpPut("{addressId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateAddressAsync([FromRoute] Guid addressId, [FromBody] AddressCreateDto updateAddressDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var addressEntity = mapper.Map<AddressEntity>(updateAddressDto);
+
+            var result = await sender.Send(new UpdateAddressCommand(addressId, addressEntity));
+
+            return Ok(result);
+        }
+
         [HttpDelete("{addressId}")]
         [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> DeleteAddressAsync([FromRoute] Guid addressId)
