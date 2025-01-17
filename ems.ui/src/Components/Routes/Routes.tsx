@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../../App.tsx";
-import Task from "../Task/Task.tsx";
+
 import React from "react";
 import LoginPage from "../Pages/LoginPage/LoginPage.tsx";
 import RegisterPage from "../Pages/RegisterPage/RegisterPage.tsx";
@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoute.tsx";
 import AdministrationPanel from "../Admin/AdministrationPanel.tsx";
 import Budget from "../Budget/BudgetTransaction.tsx";
 import ListAddress from "../Address/ListAddress/ListAddress.tsx";
+import ListTask from "../Task/ListTask/ListTask.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ export const router = createBrowserRouter([
         path: "Task",
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
-            <Task />
+            <ListTask />
           </ProtectedRoute>
         ),
       },
