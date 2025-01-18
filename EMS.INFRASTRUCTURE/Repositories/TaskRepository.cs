@@ -12,11 +12,19 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class TaskRepository(AppDbContext dbContext) : ITaskRepository
     {
-        public async Task<IEnumerable<TaskEntity>> GetUserTasksAsync(string appUserId)
+        public async Task<IEnumerable<TaskEntity>> GetUserTasksAsync(string appUserId, string searchTerm)
         {
-            return await dbContext.Tasks
-                .Where(t => t.AppUserId == appUserId)
-                .ToListAsync();
+            var query = dbContext.Tasks.AsQueryable();
+
+            query = query.Where(x => x.AppUserId == appUserId);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Description.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<TaskEntity> GetTaskByIdAsync(Guid id)

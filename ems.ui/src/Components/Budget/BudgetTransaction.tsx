@@ -23,6 +23,9 @@ import AddTransaction from "./AddTransaction/AddTransaction.tsx";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
 import "./BudgetTransaction.css";
 
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+
 type Props = {};
 
 const BudgetTransaction = ({}: Props) => {
@@ -197,12 +200,15 @@ const BudgetTransaction = ({}: Props) => {
           <TabView>
             <TabPanel header="Transaction">
               <div className="flex justify-content-center xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3">
-                <InputText
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="mr-4"
-                  placeholder="Search"
-                />
+                <IconField iconPosition="left">
+                  <InputIcon className="pi pi-search"> </InputIcon>
+                  <InputText
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="mr-4"
+                    placeholder="Search"
+                  />
+                </IconField>
                 <SelectButton
                   value={category}
                   onChange={(e) => buttonToggleCategory(e.value)}

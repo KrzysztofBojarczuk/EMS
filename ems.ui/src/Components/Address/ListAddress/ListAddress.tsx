@@ -13,6 +13,8 @@ import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import AddAddress from "../AddAddress/AddAddress.tsx";
 import UpdateEmployee from "../../Employee/UpdateEmployee/UpdateEmployee.tsx";
 import UpdateAddress from "../UpdateAddress/UpdateAddress.tsx";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 
 type Props = {};
 
@@ -58,11 +60,14 @@ const ListAddress = (props: Props) => {
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
-        <InputText
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search"
-        />
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search"
+          />
+        </IconField>
         <Button label="Add Address" onClick={() => setVisible(true)} />
 
         <Dialog
@@ -85,6 +90,7 @@ const ListAddress = (props: Props) => {
         <Column field="city" header="City"></Column>
         <Column field="street" header="Street"></Column>
         <Column field="number" header="Number"></Column>
+        <Column field="zipCode" header="ZIP Code"></Column>
         <Column
           header="Action"
           body={(rowData) => (
