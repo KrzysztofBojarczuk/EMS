@@ -3,7 +3,7 @@ import { AddressGet, AddressPost } from "../Models/Address";
 
 const api = "https://localhost:7256/api/";
 
-export const UserGetAddressService = async (searchTerm: string) => {
+export const UserGetAddressService = async (searchTerm?: string) => {
   const response = await axios.get<AddressGet[]>(api + "Address/User", {
     params: { searchTerm },
   });

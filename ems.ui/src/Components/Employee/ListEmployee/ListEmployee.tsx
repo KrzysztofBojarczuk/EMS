@@ -12,6 +12,8 @@ import AddEmployee from "../AddEmployee/AddEmployee.tsx";
 import { InputText } from "primereact/inputtext";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import UpdateEmployee from "../UpdateEmployee/UpdateEmployee.tsx";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 
 interface Props {}
 
@@ -57,11 +59,14 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
-        <InputText
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search"
-        />
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search"
+          />
+        </IconField>
         <Button label="Add Employee" onClick={() => setVisible(true)} />
 
         <Dialog

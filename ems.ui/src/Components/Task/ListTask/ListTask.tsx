@@ -16,6 +16,9 @@ import {
   DataTableRowEvent,
   DataTableValueArray,
 } from "primereact/datatable";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+import { AddressGet } from "../../../Models/Address.ts";
 
 type Props = {};
 
@@ -54,11 +57,14 @@ const ListTask = (props: Props) => {
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
-        <InputText
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search"
-        />{" "}
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search"
+          />
+        </IconField>
         <Button label="Add Task" onClick={() => setVisible(true)} />
         <Dialog
           header="Add Task"

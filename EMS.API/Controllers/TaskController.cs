@@ -18,13 +18,13 @@ namespace EMS.API.Controllers
     public class TaskController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
         [HttpGet("User")]
-        public async Task<IActionResult> GetUserTaskssAsync()
+        public async Task<IActionResult> GetUserTaskssAsync(string searchTerm = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserTasksQuery(appUser.Id));
+            var result = await sender.Send(new GetUserTasksQuery(appUser.Id, searchTerm));
 
             var employeeDtos = mapper.Map<IEnumerable<TaskGetDto>>(result);
 
