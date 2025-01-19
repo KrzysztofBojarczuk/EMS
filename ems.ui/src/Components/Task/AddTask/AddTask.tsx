@@ -7,20 +7,24 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { AutoComplete } from "primereact/autocomplete";
 import { UserGetAddressService } from "../../../Services/AddressService.tsx";
 import { AddressGet } from "../../../Models/Address.ts";
-type Props = {};
 
-const AddTask = ({ onClose, onAddSuccess }) => {
+type Props = {
+  onClose: () => void;
+  onAddSuccess: () => void;
+};
+
+const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   const [value, setValue] = useState("");
-  const [items, setItems] = useState<AddressGet[] | string[]>([]);
+  const [items, setItems] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<AddressGet[]>([]);
 
-  const fetchAddreses = async () => {
+  const fetchAddresses = async () => {
     const data = await UserGetAddressService();
     setAddresses(data);
   };
 
   useEffect(() => {
-    fetchAddreses();
+    fetchAddresses();
   }, []);
 
   const {
@@ -28,23 +32,50 @@ const AddTask = ({ onClose, onAddSuccess }) => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue: setFormValue,
   } = useForm({
     defaultValues: {
       name: "",
       description: "",
+      city: "",
+      street: "",
+      number: "",
+      zipCode: "",
     },
   });
 
-  const search = async (event) => {
+  const search = async (event: any) => {
     const query = event.query;
-    const filtered = await UserGetAddressService(query);
-
+    const filtered = addresses.filter((item) =>
+      `${item.city}, ${item.street}, ${item.zipCode}`
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    );
     setItems(
       filtered.map((item) => `${item.city}, ${item.street}, ${item.zipCode}`)
     );
   };
 
-  const onSubmit = async (data) => {
+  const handleAddressChange = (e: any) => {
+    const selected = addresses.find(
+      (item) => `${item.city}, ${item.street}, ${item.zipCode}` === e.value
+    );
+
+    if (selected) {
+      setFormValue("city", selected.city);
+      setFormValue("street", selected.street);
+      setFormValue("number", selected.number);
+      setFormValue("zipCode", selected.zipCode);
+    } else {
+      setFormValue("city", "");
+      setFormValue("street", "");
+      setFormValue("number", "");
+      setFormValue("zipCode", "");
+    }
+    setValue(e.value);
+  };
+
+  const onSubmit = async (data: any) => {
     await UserPostTaskService(data);
     onAddSuccess();
     onClose();
@@ -52,9 +83,9 @@ const AddTask = ({ onClose, onAddSuccess }) => {
   };
 
   return (
-    <div className="flex flex-wrap">
-      <div className="flex">
-        <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="formgrid grid">
+        <div className="col-6">
           <div className="flex flex-column px-8 py-5 gap-4">
             <Controller
               name="name"
@@ -72,41 +103,92 @@ const AddTask = ({ onClose, onAddSuccess }) => {
             <Controller
               name="description"
               control={control}
-              rules={{ required: "Name is required" }}
+              rules={{ required: "Description is required" }}
               render={({ field }) => (
                 <div className="inline-flex flex-column gap-2">
                   <InputTextarea
                     {...field}
-                    placeholder=" description"
+                    placeholder="Description"
                     rows={5}
                     cols={30}
                   />
-                  {errors.name && (
-                    <small className="p-error">{errors.name.message}</small>
+                  {errors.description && (
+                    <small className="p-error">
+                      {errors.description.message}
+                    </small>
                   )}
                 </div>
               )}
             />
+          </div>
+        </div>
 
-            <div className="inline-flex flex-column gap-2">
+        <div className="col-6">
+          <div className="flex flex-column px-8 py-5 gap-4">
+            <AutoComplete
+              value={value}
+              suggestions={items}
+              completeMethod={search}
+              onChange={handleAddressChange}
+              placeholder="Search for an address"
+              dropdown
+            />
+            <Controller
+              name="city"
+              control={control}
+              render={({ field }) => (
+                <div className="inline-flex flex-column gap-2">
+                  <label htmlFor="city">
+                    <strong>City:</strong>
+                  </label>
+                  <InputText {...field} />
+                </div>
+              )}
+            />
+            <Controller
+              name="street"
+              control={control}
+              render={({ field }) => (
+                <div className="inline-flex flex-column gap-2">
+                  <label htmlFor="street">
+                    <strong>Street:</strong>
+                  </label>
+                  <InputText {...field} />
+                </div>
+              )}
+            />
+            <Controller
+              name="number"
+              control={control}
+              render={({ field }) => (
+                <div className="inline-flex flex-column gap-2">
+                  <label htmlFor="number">
+                    <strong>Number:</strong>
+                  </label>
+                  <InputText {...field} />
+                </div>
+              )}
+            />
+            <Controller
+              name="zipCode"
+              control={control}
+              render={({ field }) => (
+                <div className="inline-flex flex-column gap-2">
+                  <label htmlFor="zipCode">
+                    <strong>Zip Code:</strong>
+                  </label>
+                  <InputText {...field} />
+                </div>
+              )}
+            />
+
+            <div className="inline-flex flex-column gap-2 mt-8">
               <Button label="Submit" type="submit" />
             </div>
           </div>
-        </form>
-      </div>
-      <div className="flex">
-        <div className="flex flex-column px-8 py-5 gap-4">
-          <AutoComplete
-            value={value}
-            suggestions={items}
-            completeMethod={search}
-            onChange={(e) => setValue(e.value)}
-            placeholder="Search for an address"
-            dropdown
-          />
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
