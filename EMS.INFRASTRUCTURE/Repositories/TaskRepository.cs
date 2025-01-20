@@ -33,7 +33,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
         }
 
         public async Task<TaskEntity> AddTaskAsync(TaskEntity entity)
-        {
+        { 
             entity.Id = Guid.NewGuid(); // Przypisanie nowego identyfikatora
             dbContext.Tasks.Add(entity);
 

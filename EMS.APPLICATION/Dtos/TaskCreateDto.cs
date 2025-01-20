@@ -11,5 +11,6 @@ namespace EMS.APPLICATION.Dtos
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; }
+        public AddressCreateDto? Address { get; set; }
     }
 }
