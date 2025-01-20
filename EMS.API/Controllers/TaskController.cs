@@ -46,6 +46,13 @@ namespace EMS.API.Controllers
             taskEntity.AppUserId = appUser.Id;
             taskEntity.AppUserEntity = appUser;
 
+            if (taskDto.Address is not null)
+            {
+                taskEntity.AddressEntity = mapper.Map<AddressEntity>(taskDto.Address);
+
+                taskEntity.AddressEntity.AppUserId = appUser.Id;
+            }
+
             var result = await sender.Send(new AddTaskCommand(taskEntity));
 
             return Ok(result);

@@ -66,6 +66,12 @@ namespace EMS.INFRASTRUCTURE.Data
                 .HasForeignKey<BudgetEntity>(e => e.AppUserId)
                 .IsRequired();
 
+            builder.Entity<TaskEntity>()
+                .HasOne(t => t.AddressEntity)
+                .WithOne(a => a.TaskEntity)
+                .HasForeignKey<TaskEntity>(t => t.AddressId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

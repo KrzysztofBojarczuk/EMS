@@ -208,6 +208,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AddressId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("AppUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -221,6 +224,10 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique()
+                        .HasFilter("[AddressId] IS NOT NULL");
 
                     b.HasIndex("AppUserId");
 
@@ -285,13 +292,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "98c3084d-c6a9-489c-8771-1eb321052afa",
+                            Id = "b2d12e2c-ea38-47bb-9c08-a0217141edd0",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5ebc0263-8346-4fe8-8f07-03b388416ad0",
+                            Id = "df68b013-a32e-4fa6-b8fe-abd0f65c842b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -449,11 +456,18 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
                 {
+                    b.HasOne("EMS.CORE.Entities.AddressEntity", "AddressEntity")
+                        .WithOne("TaskEntity")
+                        .HasForeignKey("EMS.CORE.Entities.TaskEntity", "AddressId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
                         .WithMany("TaskEntity")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AddressEntity");
 
                     b.Navigation("AppUserEntity");
                 });
@@ -525,6 +539,12 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Navigation("PlannedExpenseEntity");
 
                     b.Navigation("TransactionEntity");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.AddressEntity", b =>
+                {
+                    b.Navigation("TaskEntity")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EMS.CORE.Entities.AppUserEntity", b =>

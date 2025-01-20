@@ -37,10 +37,12 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     defaultValues: {
       name: "",
       description: "",
-      city: "",
-      street: "",
-      number: "",
-      zipCode: "",
+      address: {
+        city: "",
+        street: "",
+        number: "",
+        zipCode: "",
+      },
     },
   });
 
@@ -62,21 +64,30 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     );
 
     if (selected) {
-      setFormValue("city", selected.city);
-      setFormValue("street", selected.street);
-      setFormValue("number", selected.number);
-      setFormValue("zipCode", selected.zipCode);
+      setFormValue("address.city", selected.city);
+      setFormValue("address.street", selected.street);
+      setFormValue("address.number", selected.number);
+      setFormValue("address.zipCode", selected.zipCode);
     } else {
-      setFormValue("city", "");
-      setFormValue("street", "");
-      setFormValue("number", "");
-      setFormValue("zipCode", "");
+      setFormValue("address.city", "");
+      setFormValue("address.street", "");
+      setFormValue("address.number", "");
+      setFormValue("address.zipCode", "");
     }
     setValue(e.value);
   };
 
   const onSubmit = async (data: any) => {
-    await UserPostTaskService(data);
+    await UserPostTaskService({
+      name: data.name,
+      description: data.description,
+      address: {
+        city: data.address.city,
+        street: data.address.street,
+        number: data.address.number,
+        zipCode: data.address.zipCode,
+      },
+    });
     onAddSuccess();
     onClose();
     reset();
@@ -134,7 +145,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               dropdown
             />
             <Controller
-              name="city"
+              name="address.city"
               control={control}
               render={({ field }) => (
                 <div className="inline-flex flex-column gap-2">
@@ -146,7 +157,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               )}
             />
             <Controller
-              name="street"
+              name="address.street"
               control={control}
               render={({ field }) => (
                 <div className="inline-flex flex-column gap-2">
@@ -158,7 +169,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               )}
             />
             <Controller
-              name="number"
+              name="address.number"
               control={control}
               render={({ field }) => (
                 <div className="inline-flex flex-column gap-2">
@@ -170,7 +181,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               )}
             />
             <Controller
-              name="zipCode"
+              name="address.zipCode"
               control={control}
               render={({ field }) => (
                 <div className="inline-flex flex-column gap-2">

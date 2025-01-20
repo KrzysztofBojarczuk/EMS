@@ -1,3 +1,5 @@
+import { AddressPost } from "./Address";
+
 export interface TaskGet {
   id: string;
   name: string;
@@ -5,7 +7,7 @@ export interface TaskGet {
 }
 
 export interface TaskPost {
-  id: string;
   name: string;
   description: string;
+  address: AddressPost;
 }

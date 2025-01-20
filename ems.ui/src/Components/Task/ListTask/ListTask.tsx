@@ -19,6 +19,7 @@ import {
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { AddressGet } from "../../../Models/Address.ts";
+import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 
 type Props = {};
 
@@ -26,6 +27,9 @@ const ListTask = (props: Props) => {
   const [tasks, setTasks] = useState<TaskGet[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [visible, setVisible] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
+
   const [expandedRows, setExpandedRows] = useState<
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
@@ -41,6 +45,20 @@ const ListTask = (props: Props) => {
 
   const allowExpansion = (rowData: TaskGet) => {
     return rowData.id!.length > 0;
+  };
+
+  const showDeleteConfirmation = (id: string) => {
+    setDeleteId(id);
+    setConfirmVisible(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteId) {
+      await UserDeleteTaskService(deleteId);
+      fetchTask();
+    }
+    setConfirmVisible(false);
+    setDeleteId(null);
   };
 
   const rowExpansionTemplate = (data) => {
@@ -88,7 +106,26 @@ const ListTask = (props: Props) => {
         <Column expander={allowExpansion} style={{ width: "5rem" }} />
         <Column field="id" header="Id"></Column>
         <Column field="name" header="Name"></Column>
+        <Column
+          header="Action"
+          body={(rowData) => (
+            <>
+              <i
+                className="pi pi-trash"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => showDeleteConfirmation(rowData.id)}
+              ></i>
+            </>
+          )}
+        ></Column>
       </DataTable>
+      <ConfirmationDialog
+        visible={confirmVisible}
+        header="Confirm Deletion of Taske"
+        message="Are you sure you want to delete this Task?"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setConfirmVisible(false)}
+      />
     </div>
   );
 };

@@ -13,5 +13,7 @@ namespace EMS.CORE.Entities
         public string Description { get; set; } = null!;
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
+        public Guid? AddressId { get; set; } 
+        public AddressEntity AddressEntity { get; set; } = null!; 
     }
 }

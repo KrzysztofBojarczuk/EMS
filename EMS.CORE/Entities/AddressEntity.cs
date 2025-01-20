@@ -15,5 +15,6 @@ namespace EMS.CORE.Entities
         public string ZipCode { get; set; } = null!;
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
+        public TaskEntity TaskEntity { get; set; } = null!;
     }
 }
