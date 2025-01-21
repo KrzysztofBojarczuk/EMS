@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { UserPostAddressService } from "../../../Services/AddressService.tsx";
 import { InputText } from "primereact/inputtext";
+import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
 
 type Props = {};
@@ -63,7 +64,7 @@ const AddAddress = ({ onClose, onAddSuccess }) => {
           rules={{ required: "Number is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputText {...field} placeholder="Number" />
+              <InputMask {...field} mask="999" placeholder="Number" />
               {errors.number && (
                 <small className="p-error">{errors.number.message}</small>
               )}
@@ -76,7 +77,7 @@ const AddAddress = ({ onClose, onAddSuccess }) => {
           rules={{ required: "Zip Code is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputText {...field} placeholder="Zip Code" />
+              <InputMask {...field} mask="99-999" placeholder="Zip-Code" />
               {errors.zipCode && (
                 <small className="p-error">{errors.zipCode.message}</small>
               )}
