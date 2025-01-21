@@ -38,6 +38,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
       name: "",
       description: "",
       address: {
+        id: "",
         city: "",
         street: "",
         number: "",
@@ -64,11 +65,13 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     );
 
     if (selected) {
+      setFormValue("address.id", selected.id);
       setFormValue("address.city", selected.city);
       setFormValue("address.street", selected.street);
       setFormValue("address.number", selected.number);
       setFormValue("address.zipCode", selected.zipCode);
     } else {
+      setFormValue("address.id", "");
       setFormValue("address.city", "");
       setFormValue("address.street", "");
       setFormValue("address.number", "");
@@ -78,15 +81,11 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   };
 
   const onSubmit = async (data: any) => {
+    console.log(data);
     await UserPostTaskService({
       name: data.name,
       description: data.description,
-      address: {
-        city: data.address.city,
-        street: data.address.street,
-        number: data.address.number,
-        zipCode: data.address.zipCode,
-      },
+      addressId: data.address.id || undefined,
     });
     onAddSuccess();
     onClose();

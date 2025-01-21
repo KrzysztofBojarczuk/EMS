@@ -11,5 +11,6 @@ namespace EMS.APPLICATION.Dtos
         public Guid Id { get; set; } //unikalny identyfikator
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
+        public AddressGetDto Address { get; set; } = null!;
     }
 }

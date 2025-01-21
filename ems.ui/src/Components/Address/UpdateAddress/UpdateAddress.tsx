@@ -4,6 +4,7 @@ import { Button } from "primereact/button";
 import { UserUpdateAddressService } from "../../../Services/AddressService.tsx";
 import { AddressGet } from "../../../Models/Address.ts";
 import { InputText } from "primereact/inputtext";
+import { InputMask } from "primereact/inputmask";
 
 interface UpdateAddressProps {
   address: AddressGet;
@@ -72,7 +73,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
           rules={{ required: "Number is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputText {...field} placeholder="Number" />
+              <InputMask {...field} mask="999" />
               {errors.number && (
                 <small className="p-error">{errors.number.message}</small>
               )}
@@ -85,7 +86,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
           rules={{ required: "Zip Code is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputText {...field} placeholder="Zip Code" />
+              <InputMask {...field} mask="99-999" />
               {errors.zipCode && (
                 <small className="p-error">{errors.zipCode.message}</small>
               )}

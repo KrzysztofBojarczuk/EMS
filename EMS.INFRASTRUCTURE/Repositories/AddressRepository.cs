@@ -26,8 +26,18 @@ namespace EMS.INFRASTRUCTURE.Repositories
         {
             var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId);
 
-            if (address is not null) { 
-            
+            var addressTaskId = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == addressId);
+
+            if (address is not null)
+            {
+
+                var tasksWithAddress = await dbContext.Tasks.Where(t => t.AddressId == addressId).ToListAsync();
+
+                foreach (var task in tasksWithAddress)
+                {
+                    task.AddressId = null;
+                }
+
                 dbContext.Address.Remove(address);
 
                 return await dbContext.SaveChangesAsync() > 0;
@@ -49,8 +59,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(x => x.Street.ToLower().Contains(searchTerm.ToLower()) 
-                                      || x.City.ToLower().Contains(searchTerm.ToLower()) 
+                query = query.Where(x => x.Street.ToLower().Contains(searchTerm.ToLower())
+                                      || x.City.ToLower().Contains(searchTerm.ToLower())
                                       || x.ZipCode.ToLower().Contains(searchTerm.ToLower())
                                       || x.Number.ToLower().Contains(searchTerm.ToLower()));
             }

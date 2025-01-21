@@ -68,8 +68,8 @@ namespace EMS.INFRASTRUCTURE.Data
 
             builder.Entity<TaskEntity>()
                 .HasOne(t => t.AddressEntity)
-                .WithOne(a => a.TaskEntity)
-                .HasForeignKey<TaskEntity>(t => t.AddressId)
+                .WithMany(a => a.TaskEntities)
+                .HasForeignKey(t => t.AddressId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 

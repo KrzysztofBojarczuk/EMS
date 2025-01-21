@@ -26,9 +26,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new GetUserTasksQuery(appUser.Id, searchTerm));
 
-            var employeeDtos = mapper.Map<IEnumerable<TaskGetDto>>(result);
+            var taskDtos = mapper.Map<IEnumerable<TaskGetDto>>(result);
 
-            return Ok(employeeDtos);
+            return Ok(taskDtos);
         }
 
         [HttpPost()]
@@ -45,13 +45,6 @@ namespace EMS.API.Controllers
 
             taskEntity.AppUserId = appUser.Id;
             taskEntity.AppUserEntity = appUser;
-
-            if (taskDto.Address is not null)
-            {
-                taskEntity.AddressEntity = mapper.Map<AddressEntity>(taskDto.Address);
-
-                taskEntity.AddressEntity.AppUserId = appUser.Id;
-            }
 
             var result = await sender.Send(new AddTaskCommand(taskEntity));
 

@@ -14,7 +14,8 @@ namespace EMS.APPLICATION.AutoMapper
         public MappingProfile()
         {
             CreateMap<TaskCreateDto, TaskEntity>();
-            CreateMap<TaskEntity, TaskGetDto>();
+            CreateMap<TaskEntity, TaskGetDto>()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.AddressEntity)); 
 
             CreateMap<EmployeeCreateDto, EmployeeEntity>();
             CreateMap<EmployeeEntity, EmployeeGetDto>();
