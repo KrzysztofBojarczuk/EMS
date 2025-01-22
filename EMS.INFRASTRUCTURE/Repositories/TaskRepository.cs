@@ -16,7 +16,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
         {
             var query = dbContext.Tasks.Include(x => x.AddressEntity).AsQueryable();
 
-            query = query.Where(x => x.AppUserId == appUserId);
+            query = query.OrderByDescending(x => x.EndDate).Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

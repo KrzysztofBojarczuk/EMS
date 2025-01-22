@@ -20,6 +20,8 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { AddressGet } from "../../../Models/Address.ts";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
+import { StatusOfTask } from "../../../Enum/StatusOfTask.ts";
+import { Tag } from "primereact/tag";
 
 type Props = {};
 
@@ -37,6 +39,7 @@ const ListTask = (props: Props) => {
   const fetchTask = async () => {
     const data = await UserGetTaskService(searchTerm);
     setTasks(data);
+    console.log(data);
   };
 
   useEffect(() => {
@@ -61,13 +64,76 @@ const ListTask = (props: Props) => {
     setDeleteId(null);
   };
 
+  const statusToText = {
+    [StatusOfTask.Active]: "Active",
+    [StatusOfTask.Done]: "Done",
+    [StatusOfTask.Archive]: "Archive",
+  };
+
+  const statusOfTaskBodyTemplate = (rowData) => {
+    return (
+      <Tag
+        value={statusToText[rowData.status]}
+        severity={getStatusOfTask(rowData)}
+      ></Tag>
+    );
+  };
+
+  const getStatusOfTask = (task) => {
+    switch (task.status) {
+      case StatusOfTask.Active:
+        return "success";
+      case StatusOfTask.Done:
+        return "warning";
+      case StatusOfTask.Archive:
+        return "info";
+      default:
+        return null;
+    }
+  };
+
+  const formatDate = (value: Date) => {
+    return value.toLocaleDateString("en-EN", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const dateBodyTemplate = (rowData: TaskGet) => {
+    return formatDate(new Date(rowData.startDate));
+  };
+
   const rowExpansionTemplate = (data) => {
     return (
       <div className="p-3">
-        <h5>Task Details</h5>
-        <p>
-          <strong>Description:</strong> {data.description}
-        </p>
+        <div>
+          <h4>Task Details</h4>
+          <p>
+            <strong>Description:</strong> {data.description}
+          </p>
+        </div>
+        <div className="mt-5">
+          <h4>Address</h4>
+          {data.address ? (
+            <>
+              <p>
+                <strong>City:</strong> {data.address.city}
+              </p>
+              <p>
+                <strong>Street:</strong> {data.address.street}
+              </p>
+              <p>
+                <strong>Number:</strong> {data.address.number}
+              </p>
+              <p>
+                <strong>Zip Code:</strong> {data.address.zipCode}
+              </p>
+            </>
+          ) : (
+            <p>No available address for this task.</p>
+          )}
+        </div>
       </div>
     );
   };
@@ -106,6 +172,24 @@ const ListTask = (props: Props) => {
         <Column expander={allowExpansion} style={{ width: "5rem" }} />
         <Column field="id" header="Id"></Column>
         <Column field="name" header="Name"></Column>
+        <Column
+          field="startDate"
+          dataType="date"
+          body={dateBodyTemplate}
+          header="Start Date"
+        ></Column>
+
+        <Column
+          field="endDate"
+          dataType="date"
+          body={dateBodyTemplate}
+          header="End Date"
+        ></Column>
+        <Column
+          field="status"
+          header="Status"
+          body={statusOfTaskBodyTemplate}
+        ></Column>
         <Column
           header="Action"
           body={(rowData) => (

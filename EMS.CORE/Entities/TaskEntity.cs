@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EMS.CORE.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,9 @@ namespace EMS.CORE.Entities
         public Guid Id { get; set; } //unikalny identyfikator
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; } 
+        public StatusOfTask Status { get; set; } = StatusOfTask.Active;
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
         public Guid? AddressId { get; set; }

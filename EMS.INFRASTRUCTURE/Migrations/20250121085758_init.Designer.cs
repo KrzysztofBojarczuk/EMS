@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250119081133_Init")]
-    partial class Init
+    [Migration("20250121085758_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -222,15 +222,22 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique()
-                        .HasFilter("[AddressId] IS NOT NULL");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("AppUserId");
 
@@ -295,13 +302,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b2d12e2c-ea38-47bb-9c08-a0217141edd0",
+                            Id = "f8c0c79e-e1f1-4771-85f0-01bce1058985",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "df68b013-a32e-4fa6-b8fe-abd0f65c842b",
+                            Id = "d899ea0b-003b-44fa-b641-09db359cc95a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -460,8 +467,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
             modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
                 {
                     b.HasOne("EMS.CORE.Entities.AddressEntity", "AddressEntity")
-                        .WithOne("TaskEntity")
-                        .HasForeignKey("EMS.CORE.Entities.TaskEntity", "AddressId")
+                        .WithMany("TaskEntities")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
@@ -546,8 +553,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             modelBuilder.Entity("EMS.CORE.Entities.AddressEntity", b =>
                 {
-                    b.Navigation("TaskEntity")
-                        .IsRequired();
+                    b.Navigation("TaskEntities");
                 });
 
             modelBuilder.Entity("EMS.CORE.Entities.AppUserEntity", b =>
