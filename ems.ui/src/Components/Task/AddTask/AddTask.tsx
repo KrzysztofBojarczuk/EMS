@@ -7,6 +7,7 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { AutoComplete } from "primereact/autocomplete";
 import { UserGetAddressService } from "../../../Services/AddressService.tsx";
 import { AddressGet } from "../../../Models/Address.ts";
+import { Calendar } from "primereact/calendar";
 
 type Props = {
   onClose: () => void;
@@ -37,6 +38,8 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     defaultValues: {
       name: "",
       description: "",
+      startDate: null,
+      endDate: null,
       address: {
         id: "",
         city: "",
@@ -81,10 +84,11 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   };
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     await UserPostTaskService({
       name: data.name,
       description: data.description,
+      startDate: data.startDate.toISOString(),
+      endDate: data.endDate.toISOString(),
       addressId: data.address.id || undefined,
     });
     onAddSuccess();
@@ -126,6 +130,46 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                     <small className="p-error">
                       {errors.description.message}
                     </small>
+                  )}
+                </div>
+              )}
+            />
+
+            <Controller
+              name="startDate"
+              control={control}
+              rules={{ required: "Start date is required" }}
+              render={({ field }) => (
+                <div className="inline-flex flex-column gap-2">
+                  <Calendar
+                    {...field}
+                    id="startDate"
+                    dateFormat="yy-mm-dd"
+                    placeholder="Select Start Date"
+                  />
+                  {errors.startDate && (
+                    <small className="p-error">
+                      {errors.startDate.message}
+                    </small>
+                  )}
+                </div>
+              )}
+            />
+
+            <Controller
+              name="endDate"
+              control={control}
+              rules={{ required: "End date is required" }}
+              render={({ field }) => (
+                <div className="inline-flex flex-column gap-2">
+                  <Calendar
+                    {...field}
+                    id="endDate"
+                    dateFormat="yy-mm-dd"
+                    placeholder="Select End Date"
+                  />
+                  {errors.endDate && (
+                    <small className="p-error">{errors.endDate.message}</small>
                   )}
                 </div>
               )}

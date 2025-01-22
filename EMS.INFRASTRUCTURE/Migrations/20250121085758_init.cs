@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -228,6 +228,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -297,8 +300,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "b2d12e2c-ea38-47bb-9c08-a0217141edd0", null, "Admin", "ADMIN" },
-                    { "df68b013-a32e-4fa6-b8fe-abd0f65c842b", null, "User", "USER" }
+                    { "d899ea0b-003b-44fa-b641-09db359cc95a", null, "User", "USER" },
+                    { "f8c0c79e-e1f1-4771-85f0-01bce1058985", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -364,9 +367,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_AddressId",
                 table: "Tasks",
-                column: "AddressId",
-                unique: true,
-                filter: "[AddressId] IS NOT NULL");
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_AppUserId",

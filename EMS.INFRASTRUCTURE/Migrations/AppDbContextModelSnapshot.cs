@@ -219,9 +219,18 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -290,13 +299,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b2934cb0-93cc-4cf8-a908-c98a2b9fa594",
+                            Id = "f8c0c79e-e1f1-4771-85f0-01bce1058985",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "979ed47b-f070-41dc-8ac4-c7e29c5ff055",
+                            Id = "d899ea0b-003b-44fa-b641-09db359cc95a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
