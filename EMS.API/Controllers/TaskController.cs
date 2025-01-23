@@ -4,6 +4,7 @@ using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Task.Commands;
 using EMS.APPLICATION.Features.Task.Queries;
 using EMS.CORE.Entities;
+using EMS.CORE.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -60,6 +61,14 @@ namespace EMS.API.Controllers
             var taskEntity = mapper.Map<TaskEntity>(updateTaskDto);
 
             var result = await sender.Send(new UpdateTaskCommand(taskId, taskEntity));
+
+            return Ok(result);
+        }
+
+        [HttpPatch("{taskId}/status")]
+        public async Task<IActionResult> UpdateTaskStatusAsync([FromRoute] Guid taskId, [FromBody] StatusOfTask newStatus)
+        {
+            var result = await sender.Send(new UpdateTaskStatusCommand(taskId, newStatus));
 
             return Ok(result);
         }

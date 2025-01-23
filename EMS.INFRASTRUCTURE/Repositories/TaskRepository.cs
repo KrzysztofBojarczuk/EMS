@@ -1,4 +1,5 @@
 ﻿using EMS.CORE.Entities;
+using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,20 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 dbContext.Tasks.Remove(task);
                 return await dbContext.SaveChangesAsync() > 0;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> UpdateTaskStatusAsync(Guid taskId, StatusOfTask newStatus)
+        {
+            var task = await dbContext.Tasks.FirstOrDefaultAsync(t => t.Id == taskId);
+
+            if (task is not null)
+            {
+               task.Status = newStatus;
+
+               return await dbContext.SaveChangesAsync() > 0;
             }
 
             return false;
