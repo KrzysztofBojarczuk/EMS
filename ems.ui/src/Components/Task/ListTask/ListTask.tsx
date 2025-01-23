@@ -8,6 +8,7 @@ import { Dialog } from "primereact/dialog";
 import {
   UserGetTaskService,
   UserDeleteTaskService,
+  UserUpdateTaskStatusService,
 } from "../../../Services/TaskService.tsx";
 import AddTask from "../AddTask/AddTask.tsx";
 import {
@@ -22,6 +23,7 @@ import { AddressGet } from "../../../Models/Address.ts";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import { StatusOfTask } from "../../../Enum/StatusOfTask.ts";
 import { Tag } from "primereact/tag";
+import { Dropdown } from "primereact/dropdown";
 
 type Props = {};
 
@@ -39,7 +41,6 @@ const ListTask = (props: Props) => {
   const fetchTask = async () => {
     const data = await UserGetTaskService(searchTerm);
     setTasks(data);
-    console.log(data);
   };
 
   useEffect(() => {
@@ -105,15 +106,29 @@ const ListTask = (props: Props) => {
   };
 
   const rowExpansionTemplate = (data) => {
+    const handleStatusChange = async (taskId, newStatus) => {
+      await UserUpdateTaskStatusService(taskId, newStatus);
+      // const updatedTasks = tasks.map((task) => {
+      //   if (task.id === taskId) {
+      //     return { ...task, status: newStatus };
+      //   }
+      //   return task;
+      // });
+      // setTasks(updatedTasks);
+      fetchTask();
+    };
+
     return (
-      <div className="p-3">
-        <div>
-          <h4>Task Details</h4>
-          <p>
-            <strong>Description:</strong> {data.description}
-          </p>
+      <div className="grid">
+        <div className="col ml-4">
+          <div>
+            <h4>Task Details</h4>
+            <p>
+              <strong>Description:</strong> {data.description}
+            </p>
+          </div>
         </div>
-        <div className="mt-5">
+        <div className="col">
           <h4>Address</h4>
           {data.address ? (
             <>
@@ -133,6 +148,18 @@ const ListTask = (props: Props) => {
           ) : (
             <p>No available address for this task.</p>
           )}
+        </div>
+        <div className="col">
+          <Dropdown
+            value={data.status}
+            options={[
+              { label: "Active", value: 1 },
+              { label: "Done", value: 2 },
+              { label: "Archive", value: 3 },
+            ]}
+            onChange={(e) => handleStatusChange(data.id, e.value)}
+            placeholder="Select a status"
+          />
         </div>
       </div>
     );

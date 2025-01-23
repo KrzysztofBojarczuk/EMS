@@ -31,3 +31,14 @@ export const UserDeleteTaskService = async (id: string) => {
 export const UserUpdateTaskService = async (taskPost: TaskPost, id: string) => {
   return await axios.put<TaskPost>(`${api}Task/${id}`, taskPost);
 };
+
+export const UserUpdateTaskStatusService = async (
+  id: string,
+  status: number
+) => {
+  return await axios.patch(`${api}Task/${id}/status`, status, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+};
