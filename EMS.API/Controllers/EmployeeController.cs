@@ -14,7 +14,7 @@ namespace EMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeesController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
+    public class EmployeeController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
         [HttpGet("User")]
         [Authorize(Roles = "User")]
