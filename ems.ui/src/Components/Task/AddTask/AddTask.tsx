@@ -195,7 +195,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   <label htmlFor="city">
                     <strong>City:</strong>
                   </label>
-                  <InputText {...field} />
+                  <InputText {...field} disabled />
                 </div>
               )}
             />
@@ -207,7 +207,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   <label htmlFor="street">
                     <strong>Street:</strong>
                   </label>
-                  <InputText {...field} />
+                  <InputText {...field} disabled />
                 </div>
               )}
             />
@@ -219,7 +219,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   <label htmlFor="number">
                     <strong>Number:</strong>
                   </label>
-                  <InputText {...field} />
+                  <InputText {...field} disabled />
                 </div>
               )}
             />
@@ -231,7 +231,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   <label htmlFor="zipCode">
                     <strong>Zip Code:</strong>
                   </label>
-                  <InputText {...field} />
+                  <InputText {...field} disabled />
                 </div>
               )}
             />
