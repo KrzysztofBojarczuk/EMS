@@ -1,10 +1,15 @@
 import React, { useState, useEffect, JSX } from "react";
-import { DataTable } from "primereact/datatable";
+import {
+  DataTable,
+  DataTableExpandedRows,
+  DataTableValueArray,
+} from "primereact/datatable";
 import { Column } from "primereact/column";
 import { EmployeeGet } from "../../../Models/Employee";
 import {
   UserGetEmployeesService,
   UserDeleteEmployeesService,
+  UserGetListEmployeesService,
 } from "../../../Services/EmployeeService.tsx";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
@@ -14,19 +19,30 @@ import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import UpdateEmployee from "../UpdateEmployee/UpdateEmployee.tsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
+import AddListEmployee from "../AddListEmployee/AddListEmployee.tsx";
+import { EmployeeListGet } from "../../../Models/EmployeeList.tsx";
+import { Card } from "primereact/card";
 
 interface Props {}
 
 const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
+  const [employeesList, setEmployeesList] = useState<EmployeeListGet[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTermList, setSearchTermList] = useState("");
   const [visible, setVisible] = useState<boolean>(false);
+  const [visibleListEmploeyee, setVisibleListEmploeyee] =
+    useState<boolean>(false);
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeGet | null>(
     null
   );
   const [updateVisible, setUpdateVisible] = useState(false);
+
+  const [expandedRows, setExpandedRows] = useState<
+    DataTableExpandedRows | DataTableValueArray | undefined
+  >(undefined);
 
   const fetchEmployees = async () => {
     const data = await UserGetEmployeesService(searchTerm);
@@ -36,6 +52,22 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   useEffect(() => {
     fetchEmployees();
   }, [searchTerm]);
+
+  const fetchEmployeesList = async () => {
+    const data = await UserGetListEmployeesService(searchTermList);
+
+    const transformedList: EmployeeListGet[] = data.map((employee) => ({
+      id: employee.id,
+      name: employee.name,
+      employees: [employee],
+    }));
+    console.log(transformedList);
+    setEmployeesList(transformedList);
+  };
+
+  useEffect(() => {
+    fetchEmployeesList();
+  }, [searchTermList]);
 
   const showDeleteConfirmation = (id: string) => {
     setDeleteId(id);
@@ -56,15 +88,56 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     setUpdateVisible(true);
   };
 
+  const allowExpansion = (rowData: EmployeeListGet) => {
+    return rowData.id!.length > 0;
+  };
+
+  const rowExpansionTemplate = (data) => {
+    return (
+      <div>
+        {data.employees && data.employees.length > 0
+          ? data.employees.map((group) => (
+              <div className="flex flex-row flex-wrap" key={group.id}>
+                {group.employees && group.employees.length > 0 ? (
+                  group.employees.map((employee) => (
+                    <div key={employee.id}>
+                      <Card
+                        className="flex flex-column m-2"
+                        style={{ border: "2px solid #81c784" }}
+                      >
+                        <p>
+                          <strong>Employee Name:</strong> {employee.name}
+                        </p>
+                        <p>
+                          <strong>Email:</strong> {employee.email}
+                        </p>
+                        <p>
+                          <strong>Phone:</strong> {employee.phone}
+                        </p>
+                        <p>
+                          <strong>Salary:</strong> {employee.salary}
+                        </p>
+                      </Card>
+                    </div>
+                  ))
+                ) : (
+                  <div>No Employees in this list</div>
+                )}
+              </div>
+            ))
+          : null}
+      </div>
+    );
+  };
+
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
         <IconField iconPosition="left">
-          <InputIcon className="pi pi-search"> </InputIcon>
           <InputText
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search"
+            placeholder="Search Name"
           />
         </IconField>
         <Button label="Add Employee" onClick={() => setVisible(true)} />
@@ -112,6 +185,41 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         ></Column>
       </DataTable>
 
+      <Dialog
+        header="Add Employee"
+        visible={visibleListEmploeyee}
+        onHide={() => setVisibleListEmploeyee(false)}
+      >
+        <AddListEmployee
+          onClose={() => setVisibleListEmploeyee(false)}
+          onAddSuccess={fetchEmployeesList}
+        />
+      </Dialog>
+      <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
+        <IconField iconPosition="left">
+          <InputText
+            value={searchTermList}
+            onChange={(e) => setSearchTermList(e.target.value)}
+            placeholder="Search Name"
+          />
+        </IconField>
+        <Button
+          label="Create List Employees"
+          onClick={() => setVisibleListEmploeyee(true)}
+        />
+      </div>
+      <DataTable
+        value={employeesList}
+        expandedRows={expandedRows}
+        dataKey="id"
+        onRowToggle={(e) => setExpandedRows(e.data)}
+        rowExpansionTemplate={rowExpansionTemplate}
+        tableStyle={{ minWidth: "50rem" }}
+      >
+        <Column expander={allowExpansion} style={{ width: "5rem" }} />
+        <Column field="id" header="Id"></Column>
+        <Column field="name" header="Name"></Column>
+      </DataTable>
       <ConfirmationDialog
         visible={confirmVisible}
         header="Confirm Deletion of Employee"

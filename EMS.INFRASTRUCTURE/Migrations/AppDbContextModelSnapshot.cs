@@ -155,6 +155,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("EmployeeListId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -170,7 +173,30 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
                     b.HasIndex("AppUserId");
 
+                    b.HasIndex("EmployeeListId");
+
                     b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.EmployeeListsEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("EmployeeLists");
                 });
 
             modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
@@ -299,13 +325,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f8c0c79e-e1f1-4771-85f0-01bce1058985",
+                            Id = "61c866ad-0614-4a86-9b4a-ce46116899c2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d899ea0b-003b-44fa-b641-09db359cc95a",
+                            Id = "c4f25f7f-36bf-46fd-8fa4-18644c215c1e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -447,6 +473,24 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EMS.CORE.Entities.EmployeeListsEntity", "EmployeeListsEntity")
+                        .WithMany("EmployeesEntities")
+                        .HasForeignKey("EmployeeListId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AppUserEntity");
+
+                    b.Navigation("EmployeeListsEntity");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.EmployeeListsEntity", b =>
+                {
+                    b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
+                        .WithMany("EmployeeListsEntities")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("AppUserEntity");
                 });
 
@@ -562,7 +606,14 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
                     b.Navigation("EmployeeEntities");
 
+                    b.Navigation("EmployeeListsEntities");
+
                     b.Navigation("TaskEntity");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.EmployeeListsEntity", b =>
+                {
+                    b.Navigation("EmployeesEntities");
                 });
 #pragma warning restore 612, 618
         }

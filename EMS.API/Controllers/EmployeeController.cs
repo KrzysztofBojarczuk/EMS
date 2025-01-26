@@ -31,6 +31,21 @@ namespace EMS.API.Controllers
             return Ok(employeeDtos);
         }
 
+        [HttpGet("UserList")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserEmployeesForListAsync(string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserEmployeesForListQuery(appUser.Id, searchTerm));
+
+            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(result);
+
+            return Ok(employeeDtos);
+        }
+
         [HttpGet("GetUserNumberOfEmployee")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserNumberOfEmployeesAsync()
@@ -115,6 +130,42 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> DeleteEmployeeAsync([FromRoute] Guid employeeId)
         {
             var result = await sender.Send(new DeleteEmployeeCommand(employeeId));
+
+            return Ok(result);
+        }
+
+        [HttpGet("UserEmployeeList")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserEmployeeListAsync(string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserEmployeeListsQuery(appUser.Id, searchTerm));
+
+            var listEmployeeDtos = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
+
+            return Ok(listEmployeeDtos);
+        }
+
+        [HttpPost("AddEmployeeList")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddEmployeeListAsync([FromBody] EmployeeListsCreateDto employeeListsDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var employeeListsEntity = mapper.Map<EmployeeListsEntity>(employeeListsDto);
+
+            employeeListsEntity.AppUserId = appUser.Id;
+            employeeListsEntity.AppUserEntity = appUser;
+
+            var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity));
 
             return Ok(result);
         }

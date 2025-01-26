@@ -200,25 +200,22 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "EmployeeLists",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_EmployeeLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employees_AspNetUsers_AppUserId",
+                        name: "FK_EmployeeLists_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,13 +292,42 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EmployeeListId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_EmployeeLists_EmployeeListId",
+                        column: x => x.EmployeeListId,
+                        principalTable: "EmployeeLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "d899ea0b-003b-44fa-b641-09db359cc95a", null, "User", "USER" },
-                    { "f8c0c79e-e1f1-4771-85f0-01bce1058985", null, "Admin", "ADMIN" }
+                    { "61c866ad-0614-4a86-9b4a-ce46116899c2", null, "Admin", "ADMIN" },
+                    { "c4f25f7f-36bf-46fd-8fa4-18644c215c1e", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -355,9 +381,19 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeLists_AppUserId",
+                table: "EmployeeLists",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employees_AppUserId",
                 table: "Employees",
                 column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_EmployeeListId",
+                table: "Employees",
+                column: "EmployeeListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlannedExpenses_BudgetId",
@@ -412,6 +448,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeLists");
 
             migrationBuilder.DropTable(
                 name: "Address");
