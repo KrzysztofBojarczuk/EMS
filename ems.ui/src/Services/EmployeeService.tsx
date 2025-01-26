@@ -1,5 +1,6 @@
 import axios from "axios";
 import { EmployeeGet, EmployeePost } from "../Models/Employee";
+import { EmployeeListPost } from "../Models/EmployeeList";
 
 const api = "https://localhost:7256/api/";
 
@@ -13,6 +14,14 @@ export const GetEmployeesService = async (searchTerm: string) => {
 
 export const UserGetEmployeesService = async (searchTerm: string) => {
   const response = await axios.get<EmployeeGet[]>(api + "Employee/User", {
+    params: { searchTerm },
+  });
+
+  return response.data;
+};
+
+export const UserGetEmployeesForListService = async (searchTerm: string) => {
+  const response = await axios.get<EmployeeGet[]>(api + "Employee/UserList", {
     params: { searchTerm },
   });
 
@@ -33,4 +42,24 @@ export const UserUpdateEmployeesService = async (
   id: string
 ) => {
   return await axios.put<EmployeePost>(`${api}Employee/${id}`, employeePost);
+};
+
+export const UserGetListEmployeesService = async (searchTerm: string) => {
+  const response = await axios.get<EmployeeGet[]>(
+    api + "Employee/UserEmployeeList",
+    {
+      params: { searchTerm },
+    }
+  );
+
+  return response.data;
+};
+
+export const UserPostListEmployeesService = async (
+  employeeListPost: EmployeeListPost
+) => {
+  return await axios.post<EmployeeListPost>(
+    api + "Employee/AddEmployeeList",
+    employeeListPost
+  );
 };

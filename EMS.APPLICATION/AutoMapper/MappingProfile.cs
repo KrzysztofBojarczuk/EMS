@@ -31,6 +31,10 @@ namespace EMS.APPLICATION.AutoMapper
 
             CreateMap<AddressCreateDto, AddressEntity>();
             CreateMap<AddressEntity, AddressGetDto>();
+
+            CreateMap<EmployeeListsCreateDto, EmployeeListsEntity>();
+            CreateMap<EmployeeListsEntity, EmployeeListsGetDto>()
+                .ForMember(dest => dest.Employees, opt => opt.MapFrom(src => src.EmployeesEntities));
         }
     }
 }

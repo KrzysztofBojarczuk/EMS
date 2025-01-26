@@ -28,6 +28,7 @@ namespace EMS.INFRASTRUCTURE.Data
         public DbSet<PlannedExpenseEntity> PlannedExpenses { get; set; }
         public DbSet<BudgetEntity> Budgets { get; set; }
         public DbSet<AddressEntity> Address { get; set; }
+        public DbSet<EmployeeListsEntity> EmployeeLists { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<AppUserEntity>()
@@ -73,7 +74,19 @@ namespace EMS.INFRASTRUCTURE.Data
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
-            List<IdentityRole> roles = new List<IdentityRole>
+            builder.Entity<EmployeeListsEntity>()
+                .HasOne(e => e.AppUserEntity)
+                .WithMany(e => e.EmployeeListsEntities)
+                .HasForeignKey(e => e.AppUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<EmployeeEntity>()
+                .HasOne(e => e.EmployeeListsEntity)
+                .WithMany(e => e.EmployeesEntities)
+                .HasForeignKey(e => e.EmployeeListId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            List <IdentityRole> roles = new List<IdentityRole>
             {
                 new IdentityRole
                 {
