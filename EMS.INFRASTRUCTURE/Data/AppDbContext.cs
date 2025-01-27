@@ -74,17 +74,16 @@ namespace EMS.INFRASTRUCTURE.Data
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
-            builder.Entity<EmployeeListsEntity>()
-                .HasOne(e => e.AppUserEntity)
-                .WithMany(e => e.EmployeeListsEntities)
+            builder.Entity<AppUserEntity>()
+                .HasMany(e => e.EmployeeListsEntities)
+                .WithOne(e => e.AppUserEntity)
                 .HasForeignKey(e => e.AppUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .IsRequired();
 
-            builder.Entity<EmployeeEntity>()
-                .HasOne(e => e.EmployeeListsEntity)
-                .WithMany(e => e.EmployeesEntities)
-                .HasForeignKey(e => e.EmployeeListId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Entity<EmployeeListsEntity>()
+                .HasMany(e => e.EmployeesEntities)
+                .WithOne(e => e.EmployeeListsEntity)
+                .HasForeignKey(e => e.EmployeeListId);
 
             List <IdentityRole> roles = new List<IdentityRole>
             {

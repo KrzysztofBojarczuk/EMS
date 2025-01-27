@@ -215,7 +215,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -317,8 +317,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         name: "FK_Employees_EmployeeLists_EmployeeListId",
                         column: x => x.EmployeeListId,
                         principalTable: "EmployeeLists",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -326,8 +325,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "61c866ad-0614-4a86-9b4a-ce46116899c2", null, "Admin", "ADMIN" },
-                    { "c4f25f7f-36bf-46fd-8fa4-18644c215c1e", null, "User", "USER" }
+                    { "0b945283-9aef-4643-828b-55f17053be6b", null, "Admin", "ADMIN" },
+                    { "1f86af41-5245-4ac1-9364-c394b407eac2", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

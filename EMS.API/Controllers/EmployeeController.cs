@@ -165,7 +165,16 @@ namespace EMS.API.Controllers
             employeeListsEntity.AppUserId = appUser.Id;
             employeeListsEntity.AppUserEntity = appUser;
 
-            var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity));
+            var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity, employeeListsDto.EmployeeIds));
+
+            return Ok(result);
+        }
+
+        [HttpDelete("EmployeeList/{employeeListId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeletedEmployeeListAsync([FromRoute] Guid employeeListId)
+        {
+            var result = await sender.Send(new DeleteEmployeeListCommand(employeeListId));
 
             return Ok(result);
         }

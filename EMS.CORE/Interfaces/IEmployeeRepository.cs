@@ -16,9 +16,10 @@ namespace EMS.CORE.Interfaces
         Task<EmployeeEntity> GetEmployeeByIdAsync(Guid id);
         Task<EmployeeEntity> AddEmployeeAsync(EmployeeEntity entity);
         Task<EmployeeEntity> UpdateEmployeeAsync(Guid employId, EmployeeEntity entity);
-        Task<bool> DeleteEmployeeAsync(Guid taskId);
+        Task<bool> DeleteEmployeeAsync(Guid employeeId);
         Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm);
         Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm);
-        Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity);
+        Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds);
+        Task<bool> DeleteEmployeeListsAsync(Guid employeeListId);
     }
 }

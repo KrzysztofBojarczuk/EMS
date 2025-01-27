@@ -96,10 +96,16 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return false;
         }
 
-        public async Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity)
+        public async Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds)
         {
-            entity.Id = Guid.NewGuid(); 
+            entity.Id = Guid.NewGuid();
             dbContext.EmployeeLists.Add(entity);
+
+            var employees = await dbContext.Employees
+                  .Where(e => employeeIds.Contains(e.Id))
+                  .ToListAsync();
+
+            entity.EmployeesEntities = employees;
 
             await dbContext.SaveChangesAsync();
 
@@ -132,6 +138,27 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task<bool> DeleteEmployeeListsAsync(Guid employeeListId)
+        {
+            var employeeList = await dbContext.EmployeeLists.FirstOrDefaultAsync(x => x.Id == employeeListId);
+
+            if (employeeList is not null)
+            {
+                var employees = await dbContext.Employees.Where(e => e.EmployeeListId == employeeListId).ToListAsync();
+
+                foreach (var employee in employees)
+                {
+                    employee.EmployeeListId = null;
+                }
+
+                dbContext.EmployeeLists.Remove(employeeList);
+
+                return await dbContext.SaveChangesAsync() > 0;
+            }
+
+            return false;
         }
     }
 }
