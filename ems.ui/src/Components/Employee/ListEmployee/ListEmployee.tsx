@@ -10,6 +10,7 @@ import {
   UserGetEmployeesService,
   UserDeleteEmployeesService,
   UserGetListEmployeesService,
+  UserDeleteEmployeesListService,
 } from "../../../Services/EmployeeService.tsx";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
@@ -33,7 +34,10 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const [visible, setVisible] = useState<boolean>(false);
   const [visibleListEmploeyee, setVisibleListEmploeyee] =
     useState<boolean>(false);
-  const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
+  const [confirmEmployeeVisible, setConfirmEmployeeVisible] =
+    useState<boolean>(false);
+  const [confirmListEmployeeVisible, setConfirmListEmployeeVisible] =
+    useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeGet | null>(
     null
@@ -61,7 +65,6 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       name: employee.name,
       employees: [employee],
     }));
-    console.log(transformedList);
     setEmployeesList(transformedList);
   };
 
@@ -69,17 +72,31 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     fetchEmployeesList();
   }, [searchTermList]);
 
-  const showDeleteConfirmation = (id: string) => {
+  const showDeleteEmployeeConfirmation = (id: string) => {
     setDeleteId(id);
-    setConfirmVisible(true);
+    setConfirmEmployeeVisible(true);
   };
 
-  const handleConfirmDelete = async () => {
+  const showDeleteListEmployeeConfirmation = (id: string) => {
+    setDeleteId(id);
+    setConfirmListEmployeeVisible(true);
+  };
+
+  const handleConfirmDeleteEmployee = async () => {
     if (deleteId) {
       await UserDeleteEmployeesService(deleteId);
       fetchEmployees();
     }
-    setConfirmVisible(false);
+    setConfirmEmployeeVisible(false);
+    setDeleteId(null);
+  };
+
+  const handleConfirmDeleteListEmployee = async () => {
+    if (deleteId) {
+      await UserDeleteEmployeesListService(deleteId);
+      fetchEmployeesList();
+    }
+    setConfirmListEmployeeVisible(false);
     setDeleteId(null);
   };
 
@@ -178,7 +195,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
               <i
                 className="pi pi-trash"
                 style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                onClick={() => showDeleteConfirmation(rowData.id)}
+                onClick={() => showDeleteEmployeeConfirmation(rowData.id)}
               ></i>
             </>
           )}
@@ -219,13 +236,32 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         <Column expander={allowExpansion} style={{ width: "5rem" }} />
         <Column field="id" header="Id"></Column>
         <Column field="name" header="Name"></Column>
+        <Column
+          header="Action"
+          body={(rowData) => (
+            <>
+              <i
+                className="pi pi-trash"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => showDeleteListEmployeeConfirmation(rowData.id)}
+              ></i>
+            </>
+          )}
+        ></Column>
       </DataTable>
       <ConfirmationDialog
-        visible={confirmVisible}
+        visible={confirmListEmployeeVisible}
+        header="Confirm Deletion of List Employee"
+        message="Are you sure you want to delete this List employee?"
+        onConfirm={handleConfirmDeleteListEmployee}
+        onCancel={() => setConfirmEmployeeVisible(false)}
+      />
+      <ConfirmationDialog
+        visible={confirmEmployeeVisible}
         header="Confirm Deletion of Employee"
         message="Are you sure you want to delete this employee?"
-        onConfirm={handleConfirmDelete}
-        onCancel={() => setConfirmVisible(false)}
+        onConfirm={handleConfirmDeleteEmployee}
+        onCancel={() => setConfirmListEmployeeVisible(false)}
       />
       <Dialog
         header="Update Employee"

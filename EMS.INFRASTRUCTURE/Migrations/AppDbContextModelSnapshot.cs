@@ -325,13 +325,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "61c866ad-0614-4a86-9b4a-ce46116899c2",
+                            Id = "0b945283-9aef-4643-828b-55f17053be6b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c4f25f7f-36bf-46fd-8fa4-18644c215c1e",
+                            Id = "1f86af41-5245-4ac1-9364-c394b407eac2",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -475,8 +475,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
                     b.HasOne("EMS.CORE.Entities.EmployeeListsEntity", "EmployeeListsEntity")
                         .WithMany("EmployeesEntities")
-                        .HasForeignKey("EmployeeListId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("EmployeeListId");
 
                     b.Navigation("AppUserEntity");
 
@@ -488,7 +487,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
                         .WithMany("EmployeeListsEntities")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("AppUserEntity");

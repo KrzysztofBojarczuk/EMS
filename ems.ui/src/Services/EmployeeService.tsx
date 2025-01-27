@@ -63,3 +63,8 @@ export const UserPostListEmployeesService = async (
     employeeListPost
   );
 };
+
+export const UserDeleteEmployeesListService = async (id: string) => {
+  const response = await axios.delete(`${api}Employee/EmployeeList/${id}`);
+  return response;
+};
