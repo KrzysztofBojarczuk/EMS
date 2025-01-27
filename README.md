@@ -1,7 +1,13 @@
 # EMS
 
 After login user has acces to his resources:
+
 ![1](https://github.com/user-attachments/assets/b0bc9fd4-e8b0-4f4f-aa11-fd4995ba9401)
+
+Tasks:
+![2](https://github.com/user-attachments/assets/02cc0aca-c6d5-4281-8a63-c6872e13c511)
+![3](https://github.com/user-attachments/assets/789ff925-cd37-40ef-87c9-ca7297308d84)
+
 ![2](https://github.com/user-attachments/assets/07cf9dcb-54fc-4eb7-b3a6-6a02882c4448)
 ![3](https://github.com/user-attachments/assets/a4ae866f-d2a4-4480-b14a-808c64e3aedf)
 ![4](https://github.com/user-attachments/assets/84970966-1f25-4a5c-9f49-1081053663d0)
