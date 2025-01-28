@@ -12,7 +12,7 @@ namespace EMS.CORE.Interfaces
     {
         Task<IEnumerable<TaskEntity>> GetUserTasksAsync(string appUserId, string searchTerm);
         Task<TaskEntity> GetTaskByIdAsync(Guid id);
-        Task<TaskEntity> AddTaskAsync(TaskEntity entity);
+        Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> employeeListIds);
         Task<TaskEntity> UpdateTaskAsync(Guid taskId, TaskEntity entity);
         Task<bool> UpdateTaskStatusAsync(Guid taskId, StatusOfTask Status); 
         Task<bool> DeleteTaskAsync(Guid taskId);

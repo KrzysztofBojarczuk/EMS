@@ -14,5 +14,6 @@ namespace EMS.APPLICATION.Dtos
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid? AddressId { get; set; }
+        public List<Guid> EmployeeListIds { get; set; } = new List<Guid>();
     }
 }

@@ -13,5 +13,7 @@ namespace EMS.CORE.Entities
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
         public ICollection<EmployeeEntity> EmployeesEntities { get; set; } = new List<EmployeeEntity>();
+        public Guid? TaskId { get; set; }
+        public TaskEntity TaskEntities { get; set; }
     }
 }

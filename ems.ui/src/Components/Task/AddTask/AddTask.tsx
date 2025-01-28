@@ -8,6 +8,13 @@ import { AutoComplete } from "primereact/autocomplete";
 import { UserGetAddressService } from "../../../Services/AddressService.tsx";
 import { AddressGet } from "../../../Models/Address.ts";
 import { Calendar } from "primereact/calendar";
+import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
+import {
+  UserGetListEmployeesService,
+  UserGetListForTaskEmployeesService,
+} from "../../../Services/EmployeeService.tsx";
+import { EmployeeListGet } from "../../../Models/EmployeeList.tsx";
+import { MultiSelect } from "primereact/multiselect";
 
 type Props = {
   onClose: () => void;
@@ -18,6 +25,34 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   const [value, setValue] = useState("");
   const [items, setItems] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<AddressGet[]>([]);
+  const [selectedListEmployees, setSelectedListEmployees] = useState<string[]>(
+    []
+  );
+  const [employeesList, setEmployeesList] = useState<EmployeeListGet[]>([]);
+  const [searchTermList, setSearchTermList] = useState("");
+
+  // const onSelectedListEmployee = (e: CheckboxChangeEvent) => {
+  //   let _selectedListEmployees = [...selectedListEmployees];
+
+  //   if (e.checked) {
+  //     _selectedListEmployees.push(e.value.id);
+  //   } else {
+  //     _selectedListEmployees = _selectedListEmployees.filter(
+  //       (id) => id !== e.value.id
+  //     );
+  //   }
+
+  //   setSelectedListEmployees(_selectedListEmployees);
+  // };
+
+  const fetchEmployeesList = async () => {
+    const data = await UserGetListForTaskEmployeesService(searchTermList);
+    setEmployeesList(data);
+  };
+
+  useEffect(() => {
+    fetchEmployeesList();
+  }, [searchTermList]);
 
   const fetchAddresses = async () => {
     const data = await UserGetAddressService();
@@ -38,6 +73,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     defaultValues: {
       name: "",
       description: "",
+      employeeListIds: [],
       startDate: null,
       endDate: null,
       address: {
@@ -87,6 +123,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     await UserPostTaskService({
       name: data.name,
       description: data.description,
+      employeeListIds: selectedListEmployees,
       startDate: data.startDate.toISOString(),
       endDate: data.endDate.toISOString(),
       addressId: data.address.id || undefined,
@@ -129,6 +166,35 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   {errors.description && (
                     <small className="p-error">
                       {errors.description.message}
+                    </small>
+                  )}
+                </div>
+              )}
+            />
+            <Controller
+              name="employeeListIds"
+              control={control}
+              rules={{ required: "List Employees is required" }}
+              render={({ field }) => (
+                <div className="inline-flex flex-column gap-2">
+                  <MultiSelect
+                    {...field}
+                    id="listemployeeIds"
+                    value={selectedListEmployees}
+                    options={employeesList}
+                    onChange={(e) => {
+                      setSelectedListEmployees(e.value);
+                      field.onChange(e.value);
+                    }}
+                    onFilter={(e) => setSearchTermList(e.filter)}
+                    optionLabel="name"
+                    optionValue="id"
+                    placeholder="Select List Employees"
+                    filter
+                  />
+                  {errors.employeeListIds && (
+                    <small className="p-error">
+                      {errors.employeeListIds.message}
                     </small>
                   )}
                 </div>

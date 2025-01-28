@@ -14,6 +14,7 @@ export interface TaskGet {
 export interface TaskPost {
   name: string;
   description: string;
+  employeeListIds: string[];
   startDate: string;
   endDate: string;
   addressId: string;
