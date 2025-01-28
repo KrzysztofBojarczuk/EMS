@@ -1,6 +1,6 @@
 import axios from "axios";
 import { EmployeeGet, EmployeePost } from "../Models/Employee";
-import { EmployeeListPost } from "../Models/EmployeeList";
+import { EmployeeListGet, EmployeeListPost } from "../Models/EmployeeList";
 
 const api = "https://localhost:7256/api/";
 
@@ -45,8 +45,21 @@ export const UserUpdateEmployeesService = async (
 };
 
 export const UserGetListEmployeesService = async (searchTerm: string) => {
-  const response = await axios.get<EmployeeGet[]>(
+  const response = await axios.get<EmployeeListGet[]>(
     api + "Employee/UserEmployeeList",
+    {
+      params: { searchTerm },
+    }
+  );
+
+  return response.data;
+};
+
+export const UserGetListForTaskEmployeesService = async (
+  searchTerm: string
+) => {
+  const response = await axios.get<EmployeeListGet[]>(
+    api + "Employee/UserEmployeeListForTask",
     {
       params: { searchTerm },
     }

@@ -200,25 +200,6 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployeeLists",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeLists", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EmployeeLists_AspNetUsers_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
@@ -293,6 +274,31 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EmployeeLists",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EmployeeLists_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeLists_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -325,8 +331,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0b945283-9aef-4643-828b-55f17053be6b", null, "Admin", "ADMIN" },
-                    { "1f86af41-5245-4ac1-9364-c394b407eac2", null, "User", "USER" }
+                    { "3c01d1a3-67b6-4ee7-8f30-e760d4e341a6", null, "Admin", "ADMIN" },
+                    { "dbbc755d-0ea4-4fa5-9cfa-1283ccd15e42", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -385,6 +391,11 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EmployeeLists_TaskId",
+                table: "EmployeeLists",
+                column: "TaskId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employees_AppUserId",
                 table: "Employees",
                 column: "AppUserId");
@@ -440,9 +451,6 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 name: "PlannedExpenses");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
-
-            migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
@@ -452,10 +460,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 name: "EmployeeLists");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "Budgets");
 
             migrationBuilder.DropTable(
-                name: "Budgets");
+                name: "Tasks");
+
+            migrationBuilder.DropTable(
+                name: "Address");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

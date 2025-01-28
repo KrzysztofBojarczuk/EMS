@@ -60,12 +60,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const fetchEmployeesList = async () => {
     const data = await UserGetListEmployeesService(searchTermList);
 
-    const transformedList: EmployeeListGet[] = data.map((employee) => ({
-      id: employee.id,
-      name: employee.name,
-      employees: [employee],
-    }));
-    setEmployeesList(transformedList);
+    setEmployeesList(data);
   };
 
   useEffect(() => {
@@ -112,37 +107,33 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const rowExpansionTemplate = (data) => {
     return (
       <div>
-        {data.employees && data.employees.length > 0
-          ? data.employees.map((group) => (
-              <div className="flex flex-row flex-wrap" key={group.id}>
-                {group.employees && group.employees.length > 0 ? (
-                  group.employees.map((employee) => (
-                    <div key={employee.id}>
-                      <Card
-                        className="flex flex-column m-2"
-                        style={{ border: "2px solid #81c784" }}
-                      >
-                        <p>
-                          <strong>Employee Name:</strong> {employee.name}
-                        </p>
-                        <p>
-                          <strong>Email:</strong> {employee.email}
-                        </p>
-                        <p>
-                          <strong>Phone:</strong> {employee.phone}
-                        </p>
-                        <p>
-                          <strong>Salary:</strong> {employee.salary}
-                        </p>
-                      </Card>
-                    </div>
-                  ))
-                ) : (
-                  <div>No Employees in this list</div>
-                )}
+        {data.employees ? (
+          <div className="flex flex-row flex-wrap">
+            {data.employees.map((employee) => (
+              <div key={employee.id}>
+                <Card
+                  className="flex flex-column m-2"
+                  style={{ border: "2px solid #81c784" }}
+                >
+                  <p>
+                    <strong>Employee Name:</strong> {employee.name}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {employee.email}
+                  </p>
+                  <p>
+                    <strong>Phone:</strong> {employee.phone}
+                  </p>
+                  <p>
+                    <strong>Salary:</strong> {employee.salary}
+                  </p>
+                </Card>
               </div>
-            ))
-          : null}
+            ))}
+          </div>
+        ) : (
+          <div>No Employees in this list</div>
+        )}
       </div>
     );
   };
@@ -203,7 +194,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       </DataTable>
 
       <Dialog
-        header="Add Employee"
+        header="Create List Employees"
         visible={visibleListEmploeyee}
         onHide={() => setVisibleListEmploeyee(false)}
       >

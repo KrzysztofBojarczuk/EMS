@@ -47,7 +47,7 @@ namespace EMS.API.Controllers
             taskEntity.AppUserId = appUser.Id;
             taskEntity.AppUserEntity = appUser;
 
-            var result = await sender.Send(new AddTaskCommand(taskEntity));
+            var result = await sender.Send(new AddTaskCommand(taskEntity, taskDto.EmployeeListIds));
 
             return Ok(result);
         }

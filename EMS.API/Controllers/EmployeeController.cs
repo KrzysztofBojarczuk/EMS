@@ -134,6 +134,21 @@ namespace EMS.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("UserEmployeeListForTask")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserEmployeeListForTaskAsync(string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserEmployeeListsForTaskQuery(appUser.Id, searchTerm));
+
+            var listEmployeeDtos = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
+
+            return Ok(listEmployeeDtos);
+        }
+
         [HttpGet("UserEmployeeList")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserEmployeeListAsync(string searchTerm = null)

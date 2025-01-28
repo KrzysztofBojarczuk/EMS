@@ -126,6 +126,20 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskAsync(string appUserId, string searchTerm)
+        {
+            var query = dbContext.EmployeeLists.Include(x => x.EmployeesEntities).AsQueryable();
+
+            query = query.Where(x => x.AppUserId == appUserId && x.TaskId == null);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
+        }
+
         public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm)
         {
             var query = dbContext.Employees.AsQueryable();

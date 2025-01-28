@@ -192,9 +192,14 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("TaskId");
 
                     b.ToTable("EmployeeLists");
                 });
@@ -325,13 +330,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0b945283-9aef-4643-828b-55f17053be6b",
+                            Id = "3c01d1a3-67b6-4ee7-8f30-e760d4e341a6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1f86af41-5245-4ac1-9364-c394b407eac2",
+                            Id = "dbbc755d-0ea4-4fa5-9cfa-1283ccd15e42",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -490,7 +495,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EMS.CORE.Entities.TaskEntity", "TaskEntities")
+                        .WithMany("EmployeeListsEntities")
+                        .HasForeignKey("TaskId");
+
                     b.Navigation("AppUserEntity");
+
+                    b.Navigation("TaskEntities");
                 });
 
             modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
@@ -613,6 +624,11 @@ namespace EMS.INFRASTRUCTURE.Migrations
             modelBuilder.Entity("EMS.CORE.Entities.EmployeeListsEntity", b =>
                 {
                     b.Navigation("EmployeesEntities");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
+                {
+                    b.Navigation("EmployeeListsEntities");
                 });
 #pragma warning restore 612, 618
         }
