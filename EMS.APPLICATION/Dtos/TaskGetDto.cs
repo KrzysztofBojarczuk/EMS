@@ -16,5 +16,6 @@ namespace EMS.APPLICATION.Dtos
         public DateTime EndDate { get; set; }
         public StatusOfTask Status { get; set; }
         public AddressGetDto Address { get; set; } = null!;
+        public List<EmployeeListsGetDto> EmployeeLists { get; set; } = null!;
     }
 }

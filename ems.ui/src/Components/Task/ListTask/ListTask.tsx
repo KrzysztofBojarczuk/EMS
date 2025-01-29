@@ -24,6 +24,7 @@ import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import { StatusOfTask } from "../../../Enum/StatusOfTask.ts";
 import { Tag } from "primereact/tag";
 import { Dropdown } from "primereact/dropdown";
+import { SplitButton } from "primereact/splitbutton";
 
 type Props = {};
 
@@ -160,6 +161,20 @@ const ListTask = (props: Props) => {
             onChange={(e) => handleStatusChange(data.id, e.value)}
             placeholder="Select a status"
           />
+        </div>
+        <div className="col">
+          <h4>Assigned Employee Lists</h4>
+          {data.employeeLists.map((employeeList) => (
+            <SplitButton
+              label={employeeList.name}
+              className="m-2"
+              severity="info"
+              model={employeeList.employees.map((employee) => ({
+                label: `${employee.name}`,
+                icon: "pi pi-user",
+              }))}
+            />
+          ))}
         </div>
       </div>
     );
