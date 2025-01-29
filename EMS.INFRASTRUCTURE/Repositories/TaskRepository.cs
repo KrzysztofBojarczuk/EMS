@@ -15,7 +15,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<IEnumerable<TaskEntity>> GetUserTasksAsync(string appUserId, string searchTerm)
         {
-            var query = dbContext.Tasks.Include(x => x.AddressEntity).AsQueryable();
+            var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities).AsQueryable();
 
             query = query.OrderByDescending(x => x.EndDate).Where(x => x.AppUserId == appUserId);
 
