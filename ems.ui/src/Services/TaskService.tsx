@@ -20,8 +20,6 @@ export const UserGetTaskService = async (searchTerm: string) => {
 };
 
 export const UserPostTaskService = async (taskPost: TaskPost) => {
-  console.log("SERVICE:");
-  console.log(taskPost.employeeListIds);
   return await axios.post<TaskPost>(api + "Task", taskPost);
 };
 
