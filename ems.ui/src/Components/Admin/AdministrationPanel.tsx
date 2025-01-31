@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { UserGet } from "../../Models/User.ts";
 import {
   UserGetService,
@@ -14,11 +14,12 @@ import {
   UserDeleteEmployeesService,
 } from "../../Services/EmployeeService.tsx";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
+import { Button } from "primereact/button";
+import { Panel } from "primereact/panel";
 
 type Props = {};
 
 const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
-  //Tworzy zmienną numberUser, która przechowuje aktualną liczbę użytkowników, oraz funkcję setNumberUsers, która pozwala na aktualizację tej liczby.
   const [numberUser, setNumberUsers] = useState<number>(0);
   const [user, setUsers] = useState<UserGet[]>([]);
   const [searchUserTerm, setSearchUserTerm] = useState("");
@@ -29,14 +30,14 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
     null
   );
   const [confirmVisible, setConfirmVisible] = useState(false);
+  const userPanelRef = useRef<Panel>(null);
+  const employeePanelRef = useRef<Panel>(null);
 
-  //Funkcja fetchNumberUsers jest asynchroniczna i korzysta z serwisu GetNumberOfUsersService, aby pobrać liczbę użytkowników z backendu.
   const fetchNumberUsers = async () => {
     const data = await GetNumberOfUsersService();
     setNumberUsers(data);
   };
 
-  //useEffect uruchamia funkcję fetchNumberUsers po pierwszym wyrenderowaniu komponentu. Dzięki temu liczba użytkowników jest pobierana automatycznie, gdy komponent zostanie załadowany.
   useEffect(() => {
     fetchNumberUsers();
   }, []);
@@ -59,37 +60,20 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
     fetchEmployees();
   }, [searchEmployeeTerm]);
 
-  const showDeleteConfirmation = (id: string, type: "user" | "employee") => {
-    setDeleteId(id);
-    setDeleteType(type);
-    setConfirmVisible(true);
-  };
-
-  const handleDeleteUser = async () => {
-    if (deleteId) {
-      await UserDeleteService(deleteId);
-      fetchUser();
-      fetchEmployees();
-      fetchNumberUsers();
-    }
-    setConfirmVisible(false);
-    setDeleteId(null);
-    setDeleteType(null);
-  };
-
-  const handleDeleteEmployee = async () => {
-    if (deleteId) {
-      await UserDeleteEmployeesService(deleteId);
-      fetchEmployees();
-    }
-    setConfirmVisible(false);
-    setDeleteId(null);
-    setDeleteType(null);
-  };
-
   return (
     <div className="card m-4">
-      <div>
+      <div className="my-4">
+        <Button
+          label="Expand Users"
+          onClick={() => userPanelRef.current?.expand(undefined)}
+        />
+        <Button
+          label="Collapse Users"
+          className="ml-4"
+          onClick={() => userPanelRef.current?.collapse(undefined)}
+        />
+      </div>
+      <Panel ref={userPanelRef} header="Users" toggleable collapsed>
         <div className="flex align-items-center justify-content-start mb-4">
           <InputText
             value={searchUserTerm}
@@ -105,23 +89,21 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
           <Column field="id" header="Id"></Column>
           <Column field="userName" header="User name"></Column>
           <Column field="email" header="Email"></Column>
-          <Column
-            header="Action"
-            body={(rowData) => (
-              <>
-                <i
-                  className="pi pi-trash"
-                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  onClick={() => showDeleteConfirmation(rowData.id, "user")}
-                ></i>
-              </>
-            )}
-          ></Column>
         </DataTable>
+      </Panel>
+      <div className="my-4">
+        <Button
+          label="Expand Employees"
+          onClick={() => employeePanelRef.current?.expand(undefined)}
+        />
+        <Button
+          label="Collapse Employees"
+          className="ml-4"
+          onClick={() => employeePanelRef.current?.collapse(undefined)}
+        />
       </div>
-
-      <div className="mt-4">
-        <div className="flex align-items-center justify-content-start mb-4">
+      <Panel ref={employeePanelRef} header="Employees" toggleable collapsed>
+        <div className="mt-4">
           <InputText
             value={searchEmployeeTerm}
             onChange={(e) => setSearchEmployeeTerm(e.target.value)}
@@ -135,38 +117,8 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
           <Column field="email" header="Email"></Column>
           <Column field="phone" header="Phone"></Column>
           <Column field="salary" header="Salary"></Column>
-          <Column
-            header="Action"
-            body={(rowData) => (
-              <>
-                <i
-                  className="pi pi-trash"
-                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  onClick={() => showDeleteConfirmation(rowData.id, "employee")}
-                ></i>
-              </>
-            )}
-          ></Column>
         </DataTable>
-      </div>
-
-      <ConfirmationDialog
-        visible={confirmVisible}
-        header={`Confirm Deletion of ${
-          deleteType === "user" ? "User" : "Employee"
-        }`}
-        message={`Are you sure you want to delete this ${
-          deleteType === "user" ? "user" : "employee"
-        }?`}
-        onConfirm={
-          deleteType === "user" ? handleDeleteUser : handleDeleteEmployee
-        }
-        onCancel={() => {
-          setConfirmVisible(false);
-          setDeleteId(null);
-          setDeleteType(null);
-        }}
-      />
+      </Panel>
     </div>
   );
 };

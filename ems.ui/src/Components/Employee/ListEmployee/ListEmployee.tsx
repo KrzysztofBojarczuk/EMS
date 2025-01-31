@@ -164,7 +164,13 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           />
         </Dialog>
       </div>
-      <DataTable value={employees} tableStyle={{ minWidth: "50rem" }}>
+      <DataTable
+        value={employees}
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25, 50]}
+        tableStyle={{ minWidth: "50rem" }}
+      >
         <Column field="id" header="Id"></Column>
         <Column field="name" header="Name"></Column>
         <Column field="email" header="Email"></Column>
@@ -218,6 +224,9 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       </div>
       <DataTable
         value={employeesList}
+        paginator
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         expandedRows={expandedRows}
         dataKey="id"
         onRowToggle={(e) => setExpandedRows(e.data)}
