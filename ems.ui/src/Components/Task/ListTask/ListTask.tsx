@@ -205,6 +205,9 @@ const ListTask = (props: Props) => {
       </div>
       <DataTable
         value={tasks}
+        paginator
+        rows={5}
+        rowsPerPageOptions={[5, 10, 25, 50]}
         expandedRows={expandedRows}
         onRowToggle={(e) => setExpandedRows(e.data)}
         rowExpansionTemplate={rowExpansionTemplate}

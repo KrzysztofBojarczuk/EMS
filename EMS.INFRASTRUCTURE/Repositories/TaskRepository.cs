@@ -76,9 +76,16 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (task is not null)
             {
-               task.Status = newStatus;
+                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId).ToListAsync();
 
-               return await dbContext.SaveChangesAsync() > 0;
+                foreach (var item in employeeListsEntities)
+                {
+                    item.TaskId = null;
+                }
+
+                task.Status = newStatus;
+
+                return await dbContext.SaveChangesAsync() > 0;
             }
 
             return false;
