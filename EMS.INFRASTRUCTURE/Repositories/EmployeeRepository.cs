@@ -1,6 +1,7 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
+using EMS.INFRASTRUCTURE.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Employees.CountAsync();
         }
 
-        public async Task<IEnumerable<EmployeeEntity>> GetEmployeesAsync(string searchTerm)
+        public async Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Employees.AsQueryable();
 
@@ -45,7 +46,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return await query.ToListAsync();
+            return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
         public async Task<EmployeeEntity> GetEmployeeByIdAsync(Guid id)

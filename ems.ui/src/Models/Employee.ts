@@ -12,3 +12,10 @@ export interface EmployeePost {
   phone: string;
   salary: number;
 }
+
+export interface PaginatedEmployeeResponse {
+  employeeGet: EmployeeGet[];
+  totalItems: number;
+  totalPages: number;
+  pageIndex: number;
+}

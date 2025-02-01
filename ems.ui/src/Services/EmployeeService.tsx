@@ -1,13 +1,24 @@
 import axios from "axios";
-import { EmployeeGet, EmployeePost } from "../Models/Employee";
+import {
+  EmployeeGet,
+  EmployeePost,
+  PaginatedEmployeeResponse,
+} from "../Models/Employee";
 import { EmployeeListGet, EmployeeListPost } from "../Models/EmployeeList";
 
 const api = "https://localhost:7256/api/";
 
-export const GetEmployeesService = async (searchTerm: string) => {
-  const response = await axios.get<EmployeeGet[]>(api + "Employee", {
-    params: { searchTerm },
-  });
+export const GetEmployeesService = async (
+  pageNumber: number,
+  pageSize: number,
+  searchTerm: string
+) => {
+  const response = await axios.get<PaginatedEmployeeResponse>(
+    api + "Employee",
+    {
+      params: { pageNumber, pageSize, searchTerm },
+    }
+  );
 
   return response.data;
 };

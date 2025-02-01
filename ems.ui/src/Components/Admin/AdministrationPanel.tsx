@@ -16,6 +16,7 @@ import {
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
+import { Paginator } from "primereact/paginator";
 
 type Props = {};
 
@@ -32,6 +33,14 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
   const [confirmVisible, setConfirmVisible] = useState(false);
   const userPanelRef = useRef<Panel>(null);
   const employeePanelRef = useRef<Panel>(null);
+
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(10);
 
   const fetchNumberUsers = async () => {
     const data = await GetNumberOfUsersService();
@@ -51,14 +60,50 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
     fetchUser();
   }, [searchUserTerm]);
 
-  const fetchEmployees = async () => {
-    const data = await GetEmployeesService(searchEmployeeTerm);
-    setEmployees(data);
+  const fetchEmployees = async (page: number, size: number) => {
+    const data = await GetEmployeesService(page, size, searchEmployeeTerm);
+    setEmployees(data.employeeGet);
+    setTotalItems(data.totalItems);
+    setTotalPages(Math.ceil(data.totalItems / size));
   };
 
   useEffect(() => {
-    fetchEmployees();
-  }, [searchEmployeeTerm]);
+    fetchEmployees(pageNumber, pageSize);
+  }, [searchEmployeeTerm, pageNumber, pageSize]);
+
+  const showDeleteConfirmation = (id: string, type: "user" | "employee") => {
+    setDeleteId(id);
+    setDeleteType(type);
+    setConfirmVisible(true);
+  };
+
+  const handleDeleteUser = async () => {
+    if (deleteId) {
+      await UserDeleteService(deleteId);
+      fetchUser();
+      fetchNumberUsers();
+    }
+    setConfirmVisible(false);
+    setDeleteId(null);
+    setDeleteType(null);
+  };
+
+  const handleDeleteEmployee = async () => {
+    if (deleteId) {
+      await UserDeleteEmployeesService(deleteId);
+      fetchEmployees(pageNumber, pageSize);
+    }
+    setConfirmVisible(false);
+    setDeleteId(null);
+    setDeleteType(null);
+  };
+
+  const onPageChange = (event: any) => {
+    setPageNumber(event.page + 1);
+    setFirst(event.first);
+    setRows(event.rows);
+    fetchEmployees(event.page + 1, event.rows);
+  };
 
   return (
     <div className="card m-4">
@@ -85,12 +130,31 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
             Number of users: {numberUser}
           </div>
         </div>
-        <DataTable value={user} tableStyle={{ minWidth: "50rem" }}>
-          <Column field="id" header="Id"></Column>
-          <Column field="userName" header="User name"></Column>
-          <Column field="email" header="Email"></Column>
+        <DataTable
+          value={user}
+          paginator
+          rows={5}
+          rowsPerPageOptions={[5, 10, 25, 50]}
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          <Column field="id" header="Id" />
+          <Column field="userName" header="User name" />
+          <Column field="email" header="Email" />
+          <Column
+            header="Action"
+            body={(rowData) => (
+              <>
+                <i
+                  className="pi pi-trash"
+                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  onClick={() => showDeleteConfirmation(rowData.id, "user")}
+                ></i>
+              </>
+            )}
+          />
         </DataTable>
       </Panel>
+
       <div className="my-4">
         <Button
           label="Expand Employees"
@@ -112,13 +176,52 @@ const AdministrationPanel: React.FC<Props> = (props: Props): JSX.Element => {
           />
         </div>
         <DataTable value={employees} tableStyle={{ minWidth: "50rem" }}>
-          <Column field="id" header="Id"></Column>
-          <Column field="name" header="Name"></Column>
-          <Column field="email" header="Email"></Column>
-          <Column field="phone" header="Phone"></Column>
-          <Column field="salary" header="Salary"></Column>
+          <Column field="id" header="Id" />
+          <Column field="name" header="Name" />
+          <Column field="email" header="Email" />
+          <Column field="phone" header="Phone" />
+          <Column field="salary" header="Salary" />
+          <Column
+            header="Action"
+            body={(rowData) => (
+              <>
+                <i
+                  className="pi pi-trash"
+                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  onClick={() => showDeleteConfirmation(rowData.id, "employee")}
+                ></i>
+              </>
+            )}
+          />
         </DataTable>
+
+        <Paginator
+          first={first}
+          rows={rows}
+          totalRecords={totalItems}
+          rowsPerPageOptions={[5, 10, 20, 30]}
+          onPageChange={onPageChange}
+          style={{ border: "none" }}
+        />
       </Panel>
+
+      <ConfirmationDialog
+        visible={confirmVisible}
+        header={`Confirm Deletion of ${
+          deleteType === "user" ? "User" : "Employee"
+        }`}
+        message={`Are you sure you want to delete this ${
+          deleteType === "user" ? "user" : "employee"
+        }?`}
+        onConfirm={
+          deleteType === "user" ? handleDeleteUser : handleDeleteEmployee
+        }
+        onCancel={() => {
+          setConfirmVisible(false);
+          setDeleteId(null);
+          setDeleteType(null);
+        }}
+      />
     </div>
   );
 };
