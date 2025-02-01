@@ -1,4 +1,5 @@
 ﻿using EMS.CORE.Entities;
+using EMS.INFRASTRUCTURE.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace EMS.CORE.Interfaces
         Task<int> GetNumberOfEmployeesAsync();
         Task<int> GetUserNumberOfEmployeesAsync(string appUserId);
         Task<IEnumerable<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, string searchTerm);
-        Task<IEnumerable<EmployeeEntity>> GetEmployeesAsync(string searchTerm);
+        Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm);
         Task<EmployeeEntity> GetEmployeeByIdAsync(Guid id);
         Task<EmployeeEntity> AddEmployeeAsync(EmployeeEntity entity);
         Task<EmployeeEntity> UpdateEmployeeAsync(Guid employId, EmployeeEntity entity);

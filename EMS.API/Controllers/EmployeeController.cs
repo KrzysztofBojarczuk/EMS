@@ -82,13 +82,19 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllEmployeesAsync(string searchTerm = null)
+        public async Task<IActionResult> GetAllEmployeesAsync(int pageNumber, int pageSize, string searchTerm = null)
         {
-            var employees = await sender.Send(new GetAllEmployeesQuery(searchTerm));
+            var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm));
 
-            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(employees);
+            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items); 
 
-            return Ok(employeeDtos);
+            return Ok(new
+            {
+                EmployeeGet = employeeDtos,
+                paginatedEmployees.TotalItems,
+                paginatedEmployees.TotalPages,
+                paginatedEmployees.PageIndex
+            });
         }
 
         [HttpGet("GetNumberOfEmployee")]
