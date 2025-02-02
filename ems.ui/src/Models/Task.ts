@@ -21,3 +21,10 @@ export interface TaskPost {
   endDate: string;
   addressId: string;
 }
+
+export interface PaginatedTaskResponse {
+  taskGet: TaskGet[];
+  totalItems: number;
+  totalPages: number;
+  pageIndex: number;
+}
