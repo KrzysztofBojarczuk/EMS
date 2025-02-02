@@ -2,6 +2,7 @@
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
+using EMS.INFRASTRUCTURE.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,18 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return entity;
+        }
+
+        public async Task<PaginatedList<TaskEntity>> GetAllTasksAsync(int pageNumber, int pageSize, string searchTerm)
+        {
+            var query = dbContext.Tasks.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }
     }
 }

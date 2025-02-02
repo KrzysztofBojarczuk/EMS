@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import {
   UserGetTaskService,
-  UserDeleteTaskService,
+  DeleteTaskService,
   UserUpdateTaskStatusService,
 } from "../../../Services/TaskService.tsx";
 import AddTask from "../AddTask/AddTask.tsx";
@@ -59,7 +59,7 @@ const ListTask = (props: Props) => {
 
   const handleConfirmDelete = async () => {
     if (deleteId) {
-      await UserDeleteTaskService(deleteId);
+      await DeleteTaskService(deleteId);
       fetchTask();
     }
     setConfirmVisible(false);

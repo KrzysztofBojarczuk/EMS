@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
+using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.APPLICATION.Features.Task.Commands;
 using EMS.APPLICATION.Features.Task.Queries;
 using EMS.CORE.Entities;
@@ -15,10 +16,10 @@ namespace EMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "User")]
     public class TaskController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
         [HttpGet("User")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserTaskssAsync(string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -33,6 +34,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpPost()]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddTaskAsync([FromBody] TaskCreateDto taskDto)
         {
             if (!ModelState.IsValid)
@@ -53,6 +55,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpPut("{taskId}")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateTaskAsync([FromRoute] Guid taskId, [FromBody] TaskCreateDto updateTaskDto)
         {
             if (!ModelState.IsValid)
@@ -66,6 +69,7 @@ namespace EMS.API.Controllers
         }
 
         [HttpPatch("{taskId}/status")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateTaskStatusAsync([FromRoute] Guid taskId, [FromBody] StatusOfTask newStatus)
         {
             var result = await sender.Send(new UpdateTaskStatusCommand(taskId, newStatus));
@@ -74,11 +78,29 @@ namespace EMS.API.Controllers
         }
 
         [HttpDelete("{taskId}")]
+        [Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> DeleteTaskAsync([FromRoute] Guid taskId)
         {
             var result = await sender.Send(new DeleteTaskCommand(taskId));
 
             return Ok(result);
+        }
+
+        [HttpGet()]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllTaskAsync(int pageNumber, int pageSize, string searchTerm = null)
+        {
+            var paginatedTasks = await sender.Send(new GetAllTasksQuery(pageNumber, pageSize, searchTerm));
+
+            var taskDtos = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
+
+            return Ok(new
+            {
+                TaskGet = taskDtos,
+                paginatedTasks.TotalItems,
+                paginatedTasks.TotalPages,
+                paginatedTasks.PageIndex
+            });
         }
     }
 }

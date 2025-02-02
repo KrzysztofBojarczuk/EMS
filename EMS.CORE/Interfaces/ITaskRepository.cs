@@ -1,5 +1,6 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Enums;
+using EMS.INFRASTRUCTURE.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace EMS.CORE.Interfaces
         Task<TaskEntity> UpdateTaskAsync(Guid taskId, TaskEntity entity);
         Task<bool> UpdateTaskStatusAsync(Guid taskId, StatusOfTask Status); 
         Task<bool> DeleteTaskAsync(Guid taskId);
+        Task<PaginatedList<TaskEntity>> GetAllTasksAsync(int pageNumber, int pageSize, string searchTerm);
     }
 }
