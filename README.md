@@ -1,4 +1,5 @@
 # EMS
+Clean Architecture + CQRS + Asp.net Webapi + ASP.NET Identity + JWT Token + React + Prime React + Prime Flex (proper authorization/authentication after login user has acces to his resources - beginner React)
 
 After login user has acces to his resources:
 
