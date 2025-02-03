@@ -51,6 +51,10 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   const [rowsTask, setRowsTask] = useState(10);
   const [totalTasks, setTotalTasks] = useState(0);
 
+  const [firstUser, setFirstUser] = useState(0);
+  const [rowsUser, setRowsUser] = useState(10);
+  const [totalUsers, setTotalUsers] = useState(0);
+
   const userPanelRef = useRef<Panel>(null);
   const employeePanelRef = useRef<Panel>(null);
   const taskPanelRef = useRef<Panel>(null);
@@ -64,13 +68,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     fetchNumberUsers();
   }, []);
 
-  const fetchUsers = async () => {
-    const data = await UserGetService(searchUserTerm);
-    setUsers(data);
+  const fetchUsers = async (page: number, size: number) => {
+    const data = await UserGetService(page, size, searchUserTerm);
+    setUsers(data.userGet);
+    setTotalUsers(data.totalItems);
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(1, rowsUser);
   }, [searchUserTerm]);
 
   const fetchEmployees = async (page: number, size: number) => {
@@ -111,7 +116,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   const handleDeleteUser = async () => {
     if (deleteUserId) {
       await UserDeleteService(deleteUserId);
-      fetchUsers();
+      fetchUsers(1, rowsEmployee);
       fetchNumberUsers();
     }
     setConfirmUserVisible(false);
@@ -146,6 +151,12 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setFirstTask(event.first);
     setRowsTask(event.rows);
     fetchTasks(event.page + 1, event.rows);
+  };
+
+  const onPageChangeUsers = (event: any) => {
+    setFirstUser(event.first);
+    setRowsUser(event.rows);
+    fetchUsers(event.page + 1, event.rows);
   };
 
   const statusToText = {
@@ -211,6 +222,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
             )}
           />
         </DataTable>
+        <Paginator
+          first={firstUser}
+          rows={rowsUser}
+          totalRecords={totalUsers}
+          onPageChange={onPageChangeUsers}
+          rowsPerPageOptions={[5, 10, 20, 30]}
+          style={{ border: "none" }}
+        />
       </Panel>
 
       <Panel ref={employeePanelRef} header="Employees" toggleable collapsed>
