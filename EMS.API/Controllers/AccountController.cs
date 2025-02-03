@@ -66,11 +66,17 @@ namespace EMS.API.Controllers
 
         [HttpGet("GetAllUser")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllUserAsync(string searchTerm = null)
+        public async Task<IActionResult> GetAllUserAsync(int pageNumber, int pageSize, string searchTerm = null)
         {
-            var result = await sender.Send(new GetAllUserQuery(searchTerm));
+            var result = await sender.Send(new GetAllUserQuery(pageNumber, pageSize, searchTerm));
 
-            return Ok(result);
+            return Ok(new
+            {
+                userGet = result.Items,
+                result.TotalItems,
+                result.TotalPages,
+                result.PageIndex
+            });
         }
 
         [HttpDelete("{appUserId}")]

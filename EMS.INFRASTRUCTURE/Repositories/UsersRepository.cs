@@ -1,6 +1,7 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
+using EMS.INFRASTRUCTURE.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -32,7 +33,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await userManager.Users.CountAsync();
         }
 
-        public async Task<ICollection<AppUserEntity>> GettAllUsersAsync(string searchTerm)
+        public async Task<PaginatedList<AppUserEntity>> GettAllUsersAsync(int pageNumber, int pageSize, string searchTerm)
         {
             var query = userManager.Users.AsQueryable();
 
@@ -41,7 +42,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => x.UserName.ToLower().Contains(searchTerm.ToLower()) || x.Email.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return await query.ToListAsync();
+            return await PaginatedList<AppUserEntity>.CreateAsync(query, pageNumber, pageSize);
         }
     }
 }

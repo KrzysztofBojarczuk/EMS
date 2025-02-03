@@ -29,3 +29,10 @@ export interface UserGet {
   accessFailedCount: number;
   active: boolean;
 }
+
+export interface PaginatedUserResponse {
+  userGet: UserGet[];
+  totalItems: number;
+  totalPages: number;
+  pageIndex: number;
+}

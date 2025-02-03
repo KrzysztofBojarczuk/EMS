@@ -1,12 +1,19 @@
 import axios from "axios";
-import { UserGet } from "../Models/User";
+import { PaginatedUserResponse, UserGet } from "../Models/User";
 
 const api = "https://localhost:7256/api/";
 
-export const UserGetService = async (searchTerm: string) => {
-  const response = await axios.get<UserGet[]>(api + "account/GetAllUser", {
-    params: { searchTerm },
-  });
+export const UserGetService = async (
+  pageNumber: number,
+  pageSize: number,
+  searchTerm: string
+) => {
+  const response = await axios.get<PaginatedUserResponse>(
+    api + "account/GetAllUser",
+    {
+      params: { pageNumber, pageSize, searchTerm },
+    }
+  );
 
   return response.data;
 };
