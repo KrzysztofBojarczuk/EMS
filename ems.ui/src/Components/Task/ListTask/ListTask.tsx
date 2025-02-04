@@ -94,16 +94,20 @@ const ListTask = (props: Props) => {
     }
   };
 
-  const formatDate = (value: Date) => {
-    return value.toLocaleDateString("en-EN", {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
       day: "2-digit",
       month: "long",
       year: "numeric",
     });
   };
 
-  const dateBodyTemplate = (rowData: TaskGet) => {
-    return formatDate(new Date(rowData.startDate));
+  const dateBodyTemplate = (
+    rowData: TaskGet,
+    field: "startDate" | "endDate"
+  ) => {
+    return formatDate(rowData[field]);
   };
 
   const rowExpansionTemplate = (data) => {
@@ -164,14 +168,16 @@ const ListTask = (props: Props) => {
         </div>
         <div className="col">
           <h4>Assigned Employee Lists</h4>
-          {data.employeeLists.map((employeeList) => (
+          {data.employeeLists.map((employeeList, index) => (
             <SplitButton
+              key={index}
               label={employeeList.name}
               className="m-2"
               severity="info"
               model={employeeList.employees.map((employee) => ({
-                label: `${employee.name}`,
+                label: employee.name,
                 icon: "pi pi-user",
+                key: employee.id,
               }))}
             />
           ))}
@@ -219,15 +225,12 @@ const ListTask = (props: Props) => {
         <Column field="name" header="Name"></Column>
         <Column
           field="startDate"
-          dataType="date"
-          body={dateBodyTemplate}
+          body={(rowData) => dateBodyTemplate(rowData, "startDate")}
           header="Start Date"
         ></Column>
-
         <Column
           field="endDate"
-          dataType="date"
-          body={dateBodyTemplate}
+          body={(rowData) => dateBodyTemplate(rowData, "endDate")}
           header="End Date"
         ></Column>
         <Column

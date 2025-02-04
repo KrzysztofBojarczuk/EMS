@@ -44,6 +44,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 item.TaskId = entity.Id;
             }
+            entity.StartDate = entity.StartDate.ToLocalTime();
+            entity.EndDate = entity.EndDate.ToLocalTime();
 
             dbContext.Tasks.Add(entity);
 
