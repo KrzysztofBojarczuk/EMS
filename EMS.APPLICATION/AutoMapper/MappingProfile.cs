@@ -36,6 +36,9 @@ namespace EMS.APPLICATION.AutoMapper
             CreateMap<EmployeeListsCreateDto, EmployeeListsEntity>();
             CreateMap<EmployeeListsEntity, EmployeeListsGetDto>()
                 .ForMember(dest => dest.Employees, opt => opt.MapFrom(src => src.EmployeesEntities));
+
+            CreateMap<LocalCreateDto, LocalEntity>();
+            CreateMap<LocalEntity, LocalGetDto>();
         }
     }
 }

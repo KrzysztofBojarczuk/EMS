@@ -29,8 +29,27 @@ namespace EMS.INFRASTRUCTURE.Data
         public DbSet<BudgetEntity> Budgets { get; set; }
         public DbSet<AddressEntity> Address { get; set; }
         public DbSet<EmployeeListsEntity> EmployeeLists { get; set; }
+        public DbSet<LocalEntity> Locals { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //builder.Entity<ReservationEntity>()
+            //    .HasOne(r => r.LocalEntity)
+            //    .WithMany()
+            //    .HasForeignKey(r => r.LocalId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            //builder.Entity<ReservationEntity>()
+            //    .HasOne(r => r.AppUserEntity)
+            //    .WithMany()
+            //    .HasForeignKey(r => r.AppUserId)
+            //    .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AppUserEntity>()
+                .HasMany(e => e.LocalEntities)
+                .WithOne(e => e.AppUserEntity)
+                .HasForeignKey(e => e.AppUserId)
+                .IsRequired();
+
             builder.Entity<AppUserEntity>()
                 .HasMany(e => e.TaskEntity)
                 .WithOne(e => e.AppUserEntity)
@@ -90,7 +109,7 @@ namespace EMS.INFRASTRUCTURE.Data
                 .WithOne(e => e.EmployeeListsEntity)
                 .HasForeignKey(e => e.EmployeeListId);
 
-            List <IdentityRole> roles = new List<IdentityRole>
+            List<IdentityRole> roles = new List<IdentityRole>
             {
                 new IdentityRole
                 {

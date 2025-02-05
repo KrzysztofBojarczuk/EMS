@@ -1,0 +1,76 @@
+﻿using EMS.CORE.Entities;
+using EMS.INFRASTRUCTURE.Data;
+using EMS.INFRASTRUCTURE.Extensions;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EMS.INFRASTRUCTURE.Repositories
+{
+    internal class LocalRepository(AppDbContext dbContext) : ILocalRepository
+    {
+        public async Task<LocalEntity> AddLocalAsync(LocalEntity entity)
+        {
+            entity.Id = Guid.NewGuid(); //służy do przypisania nowego, unikalnego identyfikatora
+            dbContext.Locals.Add(entity);
+
+            await dbContext.SaveChangesAsync();
+
+            return entity;
+        }
+
+        public async Task<bool> DeleteLocalAsync(Guid localId)
+        {
+            var local = await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == localId);
+
+            if (local is not null)
+            {
+                dbContext.Locals.Remove(local);
+
+                return await dbContext.SaveChangesAsync() > 0; //Jeśli usunięcie się powiodło: SaveChangesAsync() zwróci liczbę większą od 0, więc metoda zwróci true.
+            }
+
+            return false;
+        }
+
+        public async Task<LocalEntity> GetLocalByIdAsync(Guid id)
+        {
+            return await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<PaginatedList<LocalEntity>> GetUserLocalAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
+        {
+            var query = dbContext.Locals.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.LocalNumber.ToString().Contains(searchTerm));
+            }
+
+            return await PaginatedList<LocalEntity>.CreateAsync(query, pageNumber, pageSize);
+        }
+
+        public async Task<LocalEntity> UpdateLocalAsync(Guid localId, LocalEntity entity)
+        {
+            var local = await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == localId);
+
+            if (local is not null)
+            {
+                local.LocalNumber = entity.LocalNumber;
+                local.Surface = entity.Surface;
+                local.NeedsRepair = entity.NeedsRepair;
+                local.BusyFrom = entity.BusyFrom;
+                local.BusyTo = entity.BusyTo;
+
+                await dbContext.SaveChangesAsync();
+
+                return local;
+            }
+
+            return entity;
+        }
+    }
+}

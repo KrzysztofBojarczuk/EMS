@@ -200,6 +200,29 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Locals",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoclalNumber = table.Column<int>(type: "int", nullable: false),
+                    Surface = table.Column<double>(type: "float", nullable: false),
+                    NeedsRepair = table.Column<bool>(type: "bit", nullable: false),
+                    BusyFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BusyTo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Locals_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
@@ -331,8 +354,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3c01d1a3-67b6-4ee7-8f30-e760d4e341a6", null, "Admin", "ADMIN" },
-                    { "dbbc755d-0ea4-4fa5-9cfa-1283ccd15e42", null, "User", "USER" }
+                    { "10bfa849-2653-4ac1-ae73-4399fbe67399", null, "User", "USER" },
+                    { "3b090bfd-b035-45b8-9f74-43f5c1ab6610", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -406,6 +429,11 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 column: "EmployeeListId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Locals_AppUserId",
+                table: "Locals",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlannedExpenses_BudgetId",
                 table: "PlannedExpenses",
                 column: "BudgetId");
@@ -446,6 +474,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Locals");
 
             migrationBuilder.DropTable(
                 name: "PlannedExpenses");
