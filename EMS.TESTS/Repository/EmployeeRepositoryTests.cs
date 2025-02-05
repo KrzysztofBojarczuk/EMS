@@ -78,12 +78,13 @@ namespace EMS.TESTS.Repository
             var repository = new EmployeeRepository(dbContext);
 
             // Act
-            var result = await repository.GetEmployeesAsync(searchTerm);
+            var result = await repository.GetEmployeesAsync(1,10,searchTerm);
 
             // Assert
+            // Assert
             result.Should().NotBeNull();
-            result.Count().Should().Be(1);
-            result.First().Name.Should().Be("Employee 1");
+            result.Items.Count.Should().Be(1);
+            result.Items.First().Name.Should().Be("Employee 1");
         }
 
         [Fact]

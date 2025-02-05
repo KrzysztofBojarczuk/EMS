@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250127125218_init")]
+    [Migration("20250204080406_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -207,6 +207,38 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.ToTable("EmployeeLists");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.LocalEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("BusyFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("BusyTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LoclalNumber")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("NeedsRepair")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Surface")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("Locals");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -333,13 +365,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3c01d1a3-67b6-4ee7-8f30-e760d4e341a6",
+                            Id = "3b090bfd-b035-45b8-9f74-43f5c1ab6610",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "dbbc755d-0ea4-4fa5-9cfa-1283ccd15e42",
+                            Id = "10bfa849-2653-4ac1-ae73-4399fbe67399",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -507,6 +539,17 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Navigation("TaskEntities");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.LocalEntity", b =>
+                {
+                    b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
+                        .WithMany("LocalEntities")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUserEntity");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
                 {
                     b.HasOne("EMS.APPLICATION.Dtos.BudgetEntity", "BudgetEntity")
@@ -620,6 +663,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Navigation("EmployeeEntities");
 
                     b.Navigation("EmployeeListsEntities");
+
+                    b.Navigation("LocalEntities");
 
                     b.Navigation("TaskEntity");
                 });
