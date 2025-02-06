@@ -10,6 +10,7 @@ import AdministrationPanel from "../Admin/AdministrationPanel.tsx";
 import Budget from "../Budget/BudgetTransaction.tsx";
 import ListAddress from "../Address/ListAddress/ListAddress.tsx";
 import ListTask from "../Task/ListTask/ListTask.tsx";
+import LocalReservation from "../LocalReservation/LocalReservationList/LocalReservation.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
             <ListTask />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "LocalsAndReservations",
+        element: (
+          <ProtectedRoute allowedRoles={["User"]}>
+            <LocalReservation />
           </ProtectedRoute>
         ),
       },
