@@ -29,6 +29,11 @@ const Navbar = (props: Props) => {
           command: () => navigate("/Task"),
         },
         {
+          label: "Local and Reservations",
+          icon: "pi pi-warehouse",
+          command: () => navigate("/LocalsAndReservations"),
+        },
+        {
           label: "Employees",
           icon: "pi pi-user",
           command: () => navigate("/Employee"),
