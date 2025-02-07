@@ -21,7 +21,7 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetAllEmployeesAsync(int pageNumber, int pageSize, string searchTerm = null)
+        public async Task<IActionResult> GetUserLocalAsync(int pageNumber, int pageSize, string searchTerm = null)
         {
             var username = User.GetUsername();
 

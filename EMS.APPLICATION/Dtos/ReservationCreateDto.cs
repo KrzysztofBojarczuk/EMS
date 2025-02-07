@@ -1,18 +1,16 @@
-﻿using System;
+﻿using EMS.CORE.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EMS.CORE.Entities
+namespace EMS.APPLICATION.Dtos
 {
-    public class ReservationEntity
+    public class ReservationCreateDto
     {
         public Guid Id { get; set; }
         public Guid LocalId { get; set; }
-        public LocalEntity LocalEntity { get; set; }
-        public string? AppUserId { get; set; } = null!;
-        public AppUserEntity AppUserEntity { get; set; } = null!;
         public DateTime? CheckInDate { get; set; }
         public DateTime? CheckoutDate { get; set; }
     }

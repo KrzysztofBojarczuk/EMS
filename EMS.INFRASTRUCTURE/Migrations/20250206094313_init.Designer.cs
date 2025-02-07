@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250205070240_fixadddescription")]
-    partial class fixadddescription
+    [Migration("20250206094313_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,6 +272,34 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.ToTable("PlannedExpenses");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.ReservationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CheckInDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CheckoutDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("LocalId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("LocalId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -369,13 +397,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f33794e5-b162-406e-afcf-dc5242219639",
+                            Id = "02fdb971-d528-403b-94d1-53c79c7a0682",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "13581d36-07f7-4af9-96fc-fac9af62c2fd",
+                            Id = "561d8f98-33f5-49e4-9299-24a2c45b993f",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -565,6 +593,25 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Navigation("BudgetEntity");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.ReservationEntity", b =>
+                {
+                    b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
+                        .WithMany("ReservationsEntities")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EMS.CORE.Entities.LocalEntity", "LocalEntity")
+                        .WithMany("ReservationsEntities")
+                        .HasForeignKey("LocalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppUserEntity");
+
+                    b.Navigation("LocalEntity");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
                 {
                     b.HasOne("EMS.CORE.Entities.AddressEntity", "AddressEntity")
@@ -670,12 +717,19 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
                     b.Navigation("LocalEntities");
 
+                    b.Navigation("ReservationsEntities");
+
                     b.Navigation("TaskEntity");
                 });
 
             modelBuilder.Entity("EMS.CORE.Entities.EmployeeListsEntity", b =>
                 {
                     b.Navigation("EmployeesEntities");
+                });
+
+            modelBuilder.Entity("EMS.CORE.Entities.LocalEntity", b =>
+                {
+                    b.Navigation("ReservationsEntities");
                 });
 
             modelBuilder.Entity("EMS.CORE.Entities.TaskEntity", b =>
