@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,84 +31,85 @@ namespace EMS.INFRASTRUCTURE.Data
         public DbSet<AddressEntity> Address { get; set; }
         public DbSet<EmployeeListsEntity> EmployeeLists { get; set; }
         public DbSet<LocalEntity> Locals { get; set; }
+        public DbSet<ReservationEntity> Reservations { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity<ReservationEntity>()
-            //    .HasOne(r => r.LocalEntity)
-            //    .WithMany()
-            //    .HasForeignKey(r => r.LocalId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //builder.Entity<ReservationEntity>()
-            //    .HasOne(r => r.AppUserEntity)
-            //    .WithMany()
-            //    .HasForeignKey(r => r.AppUserId)
-            //    .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<ReservationEntity>()
+                .HasOne(x => x.LocalEntity)
+                .WithMany(x => x.ReservationsEntities)
+                .HasForeignKey(x => x.LocalId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<AppUserEntity>()
-                .HasMany(e => e.LocalEntities)
-                .WithOne(e => e.AppUserEntity)
-                .HasForeignKey(e => e.AppUserId)
+                .HasMany(x => x.ReservationsEntities)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey(x => x.AppUserId)
                 .IsRequired();
 
             builder.Entity<AppUserEntity>()
-                .HasMany(e => e.TaskEntity)
-                .WithOne(e => e.AppUserEntity)
-                .HasForeignKey(e => e.AppUserId)
+                .HasMany(x => x.LocalEntities)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey(x => x.AppUserId)
                 .IsRequired();
 
             builder.Entity<AppUserEntity>()
-               .HasMany(e => e.EmployeeEntities)
-               .WithOne(e => e.AppUserEntity)
-               .HasForeignKey(e => e.AppUserId)
+                .HasMany(x => x.TaskEntity)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey( x => x.AppUserId)
+                .IsRequired();
+
+            builder.Entity<AppUserEntity>()
+               .HasMany(x => x.EmployeeEntities)
+               .WithOne(x => x.AppUserEntity)
+               .HasForeignKey(x => x.AppUserId)
                .IsRequired();
 
             builder.Entity<BudgetEntity>()
-                .HasMany(e => e.TransactionEntity)
-                .WithOne(e => e.BudgetEntity)
-                .HasForeignKey(e => e.BudgetId)
+                .HasMany(x => x.TransactionEntity)
+                .WithOne(x => x.BudgetEntity)
+                .HasForeignKey(x => x.BudgetId)
                 .IsRequired();
 
             builder.Entity<BudgetEntity>()
-                .HasMany(e => e.PlannedExpenseEntity)
-                .WithOne(e => e.BudgetEntity)
-                .HasForeignKey(e => e.BudgetId)
+                .HasMany(x => x.PlannedExpenseEntity)
+                .WithOne(x => x.BudgetEntity)
+                .HasForeignKey(x => x.BudgetId)
                 .IsRequired();
 
             builder.Entity<AppUserEntity>()
-                .HasMany(e => e.AddressEntities)
-                .WithOne(e => e.AppUserEntity)
-                .HasForeignKey(e => e.AppUserId)
+                .HasMany(x => x.AddressEntities)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey(x => x.AppUserId)
                 .IsRequired();
 
             builder.Entity<AppUserEntity>()
-                .HasOne(e => e.BudgetEntity)
-                .WithOne(e => e.AppUserEntity)
-                .HasForeignKey<BudgetEntity>(e => e.AppUserId)
+                .HasOne(x => x.BudgetEntity)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey<BudgetEntity>(x => x.AppUserId)
                 .IsRequired();
 
             builder.Entity<TaskEntity>()
-                .HasOne(e => e.AddressEntity)
-                .WithMany(e => e.TaskEntities)
-                .HasForeignKey(e => e.AddressId)
+                .HasOne(x => x.AddressEntity)
+                .WithMany(x => x.TaskEntities)
+                .HasForeignKey(x => x.AddressId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired(false);
 
             builder.Entity<TaskEntity>()
-                .HasMany(e => e.EmployeeListsEntities)
-                .WithOne(e => e.TaskEntities)
-                .HasForeignKey(e => e.TaskId);
+                .HasMany(x => x.EmployeeListsEntities)
+                .WithOne(x => x.TaskEntities)
+                .HasForeignKey(x => x.TaskId);
 
             builder.Entity<AppUserEntity>()
-                .HasMany(e => e.EmployeeListsEntities)
-                .WithOne(e => e.AppUserEntity)
-                .HasForeignKey(e => e.AppUserId)
+                .HasMany(x => x.EmployeeListsEntities)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey(x => x.AppUserId)
                 .IsRequired();
 
             builder.Entity<EmployeeListsEntity>()
-                .HasMany(e => e.EmployeesEntities)
-                .WithOne(e => e.EmployeeListsEntity)
-                .HasForeignKey(e => e.EmployeeListId);
+                .HasMany(x => x.EmployeesEntities)
+                .WithOne(x => x.EmployeeListsEntity)
+                .HasForeignKey(x => x.EmployeeListId);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

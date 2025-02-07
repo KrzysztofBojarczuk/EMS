@@ -17,5 +17,7 @@ namespace EMS.CORE.Entities
         public DateTime? BusyTo { get; set; } = null!;
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
+        public ICollection<ReservationEntity> ReservationsEntities { get; set; } = new List<ReservationEntity>();
+
     }
 }

@@ -204,7 +204,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoclalNumber = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LocalNumber = table.Column<int>(type: "int", nullable: false),
                     Surface = table.Column<double>(type: "float", nullable: false),
                     NeedsRepair = table.Column<bool>(type: "bit", nullable: false),
                     BusyFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -297,6 +298,33 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LocalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CheckoutDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reservations_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Locals_LocalId",
+                        column: x => x.LocalId,
+                        principalTable: "Locals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeLists",
                 columns: table => new
                 {
@@ -354,8 +382,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "10bfa849-2653-4ac1-ae73-4399fbe67399", null, "User", "USER" },
-                    { "3b090bfd-b035-45b8-9f74-43f5c1ab6610", null, "Admin", "ADMIN" }
+                    { "02fdb971-d528-403b-94d1-53c79c7a0682", null, "Admin", "ADMIN" },
+                    { "561d8f98-33f5-49e4-9299-24a2c45b993f", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -439,6 +467,16 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 column: "BudgetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservations_AppUserId",
+                table: "Reservations",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservations_LocalId",
+                table: "Reservations",
+                column: "LocalId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tasks_AddressId",
                 table: "Tasks",
                 column: "AddressId");
@@ -476,10 +514,10 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Locals");
+                name: "PlannedExpenses");
 
             migrationBuilder.DropTable(
-                name: "PlannedExpenses");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
                 name: "Transactions");
@@ -489,6 +527,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmployeeLists");
+
+            migrationBuilder.DropTable(
+                name: "Locals");
 
             migrationBuilder.DropTable(
                 name: "Budgets");

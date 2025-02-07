@@ -39,6 +39,9 @@ namespace EMS.APPLICATION.AutoMapper
 
             CreateMap<LocalCreateDto, LocalEntity>();
             CreateMap<LocalEntity, LocalGetDto>();
+
+            CreateMap<ReservationCreateDto, ReservationEntity>();
+            CreateMap<ReservationEntity, ReservationGetDto>();
         }
     }
 }
