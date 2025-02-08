@@ -305,7 +305,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     LocalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CheckoutDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -382,8 +382,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "02fdb971-d528-403b-94d1-53c79c7a0682", null, "Admin", "ADMIN" },
-                    { "561d8f98-33f5-49e4-9299-24a2c45b993f", null, "User", "USER" }
+                    { "0ed1cad0-08e6-4758-9ffb-22d1a5fb5f81", null, "User", "USER" },
+                    { "49acb59e-2d67-437d-aa71-7ad4ba4588bf", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

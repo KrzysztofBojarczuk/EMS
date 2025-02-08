@@ -1,6 +1,9 @@
 import { LocalPost, PaginatedLocalResponse } from "../Models/Local";
 import axios from "axios";
-import { ReservationPost } from "../Models/Reservation";
+import {
+  PaginatedReservationResponse,
+  ReservationPost,
+} from "../Models/Reservation";
 
 const api = "https://localhost:7256/api/";
 
@@ -23,8 +26,23 @@ export const UserPostLocalService = async (localPost: LocalPost) => {
 export const UserPostReservationService = async (
   reservationPost: ReservationPost
 ) => {
+  console.log(reservationPost);
   return await axios.post<ReservationPost>(
     api + "Reservation",
     reservationPost
   );
+};
+
+export const UserGetReservationService = async (
+  pageNumber: number,
+  pageSize: number
+) => {
+  const response = await axios.get<PaginatedReservationResponse>(
+    api + "Reservation",
+    {
+      params: { pageNumber, pageSize },
+    }
+  );
+
+  return response.data;
 };

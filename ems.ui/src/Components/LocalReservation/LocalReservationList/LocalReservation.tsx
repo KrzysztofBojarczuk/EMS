@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { LocalGet } from "../../../Models/Local.ts";
 import { Panel } from "primereact/panel";
-import { UserGetLocalService } from "../../../Services/LocalReservationService.tsx";
+import {
+  UserGetLocalService,
+  UserGetReservationService,
+} from "../../../Services/LocalReservationService.tsx";
 import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
 import { Paginator } from "primereact/paginator";
@@ -11,6 +14,8 @@ import { InputIcon } from "primereact/inputicon";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import AddLocal from "../AddLocal/AddLocal.tsx";
+import MakeReservation from "../MakeReservation/MakeReservation.tsx";
+import { ReservationGet } from "../../../Models/Reservation.ts";
 
 type Props = {};
 
@@ -23,7 +28,16 @@ const LocalReservation = (props: Props) => {
   const [rowsLocal, setRowsLocal] = useState(10);
   const [totalLocals, setTotalLocals] = useState(0);
 
+  const [reservations, setReservations] = useState<ReservationGet[]>([]);
+  const [firstReservation, setFirstReservation] = useState(0);
+  const [rows, setRows] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
+
+  const [visibleReservation, setVisibleReservation] = useState<boolean>(false);
+  const [selectedLocalId, setSelectedLocalId] = useState<string | null>(null);
+
   const localPanelRef = useRef<Panel>(null);
+  const reservationPanelRef = useRef<Panel>(null);
 
   const fetchLocal = async (page: number, size: number) => {
     const data = await UserGetLocalService(page, size, searchLocalTerm);
@@ -35,10 +49,32 @@ const LocalReservation = (props: Props) => {
     fetchLocal(1, rowsLocal);
   }, [searchLocalTerm]);
 
+  const fetchReservations = async (page, size) => {
+    const data = await UserGetReservationService(page, size);
+    console.log(data);
+    setReservations(data.reservationGet);
+    setTotalRecords(data.totalItems);
+  };
+
+  useEffect(() => {
+    fetchReservations(1, rows);
+  }, []);
+
   const onPageChangeLocals = (event: any) => {
     setFirstLocal(event.first);
     setRowsLocal(event.rows);
     fetchLocal(event.page + 1, event.rows);
+  };
+
+  const onPageChange = (event) => {
+    setFirstReservation(event.first);
+    setRows(event.rows);
+    fetchReservations(event.page + 1, event.rows);
+  };
+
+  const makeReservation = (localId: string) => {
+    setSelectedLocalId(localId);
+    setVisibleReservation(true);
   };
 
   return (
@@ -74,12 +110,60 @@ const LocalReservation = (props: Props) => {
           <Column field="localNumber" header="Local Number" />
           <Column field="surface" header="Surface" />
           <Column field="needsRepair" header="Needs Repair" />
+          <Column
+            header="Action"
+            body={(rowData) => (
+              <>
+                <i
+                  className="pi pi-warehouse"
+                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  onClick={() => makeReservation(rowData.id)}
+                ></i>
+              </>
+            )}
+          ></Column>
         </DataTable>
+        <Dialog
+          header="Make a Reservation"
+          visible={visibleReservation}
+          onHide={() => setVisibleReservation(false)}
+        >
+          {selectedLocalId && (
+            <MakeReservation
+              selectedLocalId={selectedLocalId}
+              onClose={() => setVisibleReservation(false)}
+              onReservationSuccess={() => {
+                setVisibleReservation(false);
+                fetchLocal(1, rowsLocal);
+              }}
+            />
+          )}
+        </Dialog>
         <Paginator
           first={firstLocal}
           rows={rowsLocal}
           totalRecords={totalLocals}
           onPageChange={onPageChangeLocals}
+          rowsPerPageOptions={[5, 10, 20, 30]}
+          style={{ border: "none" }}
+        />
+      </Panel>
+      <Panel
+        ref={reservationPanelRef}
+        header="All Reservations"
+        toggleable
+        collapsed
+      >
+        <DataTable value={reservations} paginator rows={rows}>
+          <Column field="id" header="ID" />
+          <Column field="checkInDate" header="Check In Date" />
+          <Column field="checkOutDate" header="Check Out Date" />
+        </DataTable>
+        <Paginator
+          first={firstReservation}
+          rows={rows}
+          totalRecords={totalRecords}
+          onPageChange={onPageChange}
           rowsPerPageOptions={[5, 10, 20, 30]}
           style={{ border: "none" }}
         />

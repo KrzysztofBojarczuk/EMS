@@ -15,14 +15,21 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<ReservationEntity> MakeReservationAsync(ReservationEntity reservation)
         {
-            var local = await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == reservation.Id);
+            reservation.Id = Guid.NewGuid();
+
+            reservation.CheckInDate = reservation.CheckInDate?.ToLocalTime();
+            reservation.CheckOutDate = reservation.CheckOutDate?.ToLocalTime();
+
+            var local = await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == reservation.LocalId);
 
             if (local is null || local.NeedsRepair)
             {
                 return null; // Nie można zarezerwować niedostępnego lokalu
             }
 
-            var isBusy = local.BusyFrom <= reservation.CheckInDate && local.BusyTo >= reservation.CheckInDate;
+            var localBusyFrom = local.BusyFrom == null ? default(DateTime) : local.BusyFrom;
+            var localBusyTo = local.BusyTo == null ? default(DateTime) : local.BusyTo;
+            var isBusy = reservation.CheckInDate >= localBusyFrom || reservation.CheckInDate <= localBusyTo;
 
             if (isBusy)
             {
@@ -30,7 +37,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             local.BusyFrom = reservation.CheckInDate;
-            local.BusyTo = reservation.CheckoutDate;
+            local.BusyTo = reservation.CheckOutDate;
 
             dbContext.Locals.Update(local);
             dbContext.Reservations.Add(reservation);

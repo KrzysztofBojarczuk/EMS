@@ -11,6 +11,6 @@ namespace EMS.APPLICATION.Dtos
     {
         public Guid Id { get; set; }
         public DateTime? CheckInDate { get; set; }
-        public DateTime? CheckoutDate { get; set; }
+        public DateTime? CheckOutDate { get; set; }
     }
 }
