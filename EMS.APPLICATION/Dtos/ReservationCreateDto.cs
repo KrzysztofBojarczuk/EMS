@@ -9,9 +9,8 @@ namespace EMS.APPLICATION.Dtos
 {
     public class ReservationCreateDto
     {
-        public Guid Id { get; set; }
         public Guid LocalId { get; set; }
         public DateTime? CheckInDate { get; set; }
-        public DateTime? CheckoutDate { get; set; }
+        public DateTime? CheckOutDate { get; set; }
     }
 }

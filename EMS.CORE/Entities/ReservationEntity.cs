@@ -14,6 +14,6 @@ namespace EMS.CORE.Entities
         public string? AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
         public DateTime? CheckInDate { get; set; }
-        public DateTime? CheckoutDate { get; set; }
+        public DateTime? CheckOutDate { get; set; }
     }
 }

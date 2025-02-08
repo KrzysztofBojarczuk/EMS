@@ -282,7 +282,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Property<DateTime?>("CheckInDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("CheckoutDate")
+                    b.Property<DateTime?>("CheckOutDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("LocalId")
@@ -394,13 +394,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "02fdb971-d528-403b-94d1-53c79c7a0682",
+                            Id = "49acb59e-2d67-437d-aa71-7ad4ba4588bf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "561d8f98-33f5-49e4-9299-24a2c45b993f",
+                            Id = "0ed1cad0-08e6-4758-9ffb-22d1a5fb5f81",
                             Name = "User",
                             NormalizedName = "USER"
                         });

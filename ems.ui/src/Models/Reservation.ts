@@ -1,6 +1,5 @@
 export interface ReservationGet {
   id: string;
-  localId: string;
   checkInDate: string;
   checkOutDate: string;
 }
@@ -12,7 +11,7 @@ export interface ReservationPost {
 }
 
 export interface PaginatedReservationResponse {
-  localGet: ReservationGet[];
+  reservationGet: ReservationGet[];
   totalItems: number;
   totalPages: number;
   pageIndex: number;
