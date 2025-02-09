@@ -13,8 +13,6 @@ namespace EMS.CORE.Entities
         public int LocalNumber { get; set; } 
         public double Surface { get; set; } 
         public bool NeedsRepair { get; set; } 
-        public DateTime? BusyFrom { get; set; } = null!;
-        public DateTime? BusyTo { get; set; } = null!;
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
         public ICollection<ReservationEntity> ReservationsEntities { get; set; } = new List<ReservationEntity>();

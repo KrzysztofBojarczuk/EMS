@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250207101412_init")]
+    [Migration("20250208104252_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -217,12 +217,6 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("BusyFrom")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("BusyTo")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -397,13 +391,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "49acb59e-2d67-437d-aa71-7ad4ba4588bf",
+                            Id = "777fd32f-063b-475e-be28-f4e92b8e8727",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0ed1cad0-08e6-4758-9ffb-22d1a5fb5f81",
+                            Id = "a1735e63-8cf2-4f8c-ab4f-79bc71f92e3c",
                             Name = "User",
                             NormalizedName = "USER"
                         });

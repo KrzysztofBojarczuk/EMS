@@ -43,7 +43,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<PaginatedList<LocalEntity>> GetUserLocalAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
-            var query = dbContext.Locals.AsQueryable();
+            var query = dbContext.Locals.Include(x => x.ReservationsEntities).AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -62,8 +62,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 local.LocalNumber = entity.LocalNumber;
                 local.Surface = entity.Surface;
                 local.NeedsRepair = entity.NeedsRepair;
-                local.BusyFrom = entity.BusyFrom;
-                local.BusyTo = entity.BusyTo;
 
                 await dbContext.SaveChangesAsync();
 

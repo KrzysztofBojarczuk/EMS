@@ -27,19 +27,14 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 return null; // Nie można zarezerwować niedostępnego lokalu
             }
 
-            var localBusyFrom = local.BusyFrom == null ? default(DateTime) : local.BusyFrom;
-            var localBusyTo = local.BusyTo == null ? default(DateTime) : local.BusyTo;
-            var isBusy = reservation.CheckInDate >= localBusyFrom || reservation.CheckInDate <= localBusyTo;
-
+            var isBusy = await dbContext.Reservations.AnyAsync(x => (reservation.CheckInDate >= x.CheckInDate && reservation.CheckInDate <= x.CheckOutDate)
+                                                                 || (reservation.CheckOutDate >= x.CheckInDate && reservation.CheckOutDate <= x.CheckOutDate));
             if (isBusy)
             {
                 return null; // Lokal jest zajęty
             }
 
-            local.BusyFrom = reservation.CheckInDate;
-            local.BusyTo = reservation.CheckOutDate;
-
-            dbContext.Locals.Update(local);
+            //dbContext.Locals.Update(local);
             dbContext.Reservations.Add(reservation);
             await dbContext.SaveChangesAsync();
 

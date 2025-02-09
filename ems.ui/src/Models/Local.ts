@@ -1,9 +1,12 @@
+import { ReservationGet } from "./Reservation";
+
 export interface LocalGet {
   id: string;
   description: string;
   localNumber: number;
   surface: number;
   needsRepair: boolean;
+  reservations: ReservationGet[];
 }
 
 export interface LocalPost {
