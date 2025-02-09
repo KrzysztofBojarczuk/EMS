@@ -6,7 +6,11 @@ import {
   UserGetReservationService,
 } from "../../../Services/LocalReservationService.tsx";
 import { InputText } from "primereact/inputtext";
-import { DataTable } from "primereact/datatable";
+import {
+  DataTable,
+  DataTableExpandedRows,
+  DataTableValueArray,
+} from "primereact/datatable";
 import { Paginator } from "primereact/paginator";
 import { Column } from "primereact/column";
 import { IconField } from "primereact/iconfield";
@@ -16,6 +20,7 @@ import { Dialog } from "primereact/dialog";
 import AddLocal from "../AddLocal/AddLocal.tsx";
 import MakeReservation from "../MakeReservation/MakeReservation.tsx";
 import { ReservationGet } from "../../../Models/Reservation.ts";
+import { Card } from "primereact/card";
 
 type Props = {};
 
@@ -39,6 +44,14 @@ const LocalReservation = (props: Props) => {
   const localPanelRef = useRef<Panel>(null);
   const reservationPanelRef = useRef<Panel>(null);
 
+  const [expandedRows, setExpandedRows] = useState<
+    DataTableExpandedRows | DataTableValueArray | undefined
+  >(undefined);
+
+  const allowExpansion = (rowData: LocalGet) => {
+    return rowData.id!.length > 0;
+  };
+
   const fetchLocal = async (page: number, size: number) => {
     const data = await UserGetLocalService(page, size, searchLocalTerm);
     setLocals(data.localGet);
@@ -51,7 +64,6 @@ const LocalReservation = (props: Props) => {
 
   const fetchReservations = async (page, size) => {
     const data = await UserGetReservationService(page, size);
-    console.log(data);
     setReservations(data.reservationGet);
     setTotalRecords(data.totalItems);
   };
@@ -75,6 +87,47 @@ const LocalReservation = (props: Props) => {
   const makeReservation = (localId: string) => {
     setSelectedLocalId(localId);
     setVisibleReservation(true);
+  };
+
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  };
+
+  const rowExpansionTemplate = (data) => {
+    return (
+      <div>
+        {data.reservationsEntities && data.reservationsEntities.length > 0 ? (
+          <div className="flex flex-row flex-wrap">
+            {data.reservationsEntities.map((reservation, index) => (
+              <div key={index}>
+                <Card
+                  className="flex flex-column m-2"
+                  style={{ border: "2px solid #81c784" }}
+                >
+                  <p className="text-green-400">
+                    Reservation ID: {reservation.id}
+                  </p>
+                  <p>Check-in: {formatDateTime(reservation.checkInDate)}</p>
+                  <span>
+                    Check-out: {formatDateTime(reservation.checkOutDate)}
+                  </span>
+                </Card>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>No data</div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -104,7 +157,13 @@ const LocalReservation = (props: Props) => {
             />
           </Dialog>
         </div>
-        <DataTable value={local} paginator rows={5}>
+        <DataTable
+          value={local}
+          expandedRows={expandedRows}
+          onRowToggle={(e) => setExpandedRows(e.data)}
+          rowExpansionTemplate={rowExpansionTemplate}
+        >
+          <Column expander={allowExpansion} style={{ width: "5rem" }} />
           <Column field="id" header="Id" />
           <Column field="description" header="Description" />
           <Column field="localNumber" header="Local Number" />
@@ -123,6 +182,14 @@ const LocalReservation = (props: Props) => {
             )}
           ></Column>
         </DataTable>
+        <Paginator
+          first={firstLocal}
+          rows={rowsLocal}
+          totalRecords={totalLocals}
+          onPageChange={onPageChangeLocals}
+          rowsPerPageOptions={[5, 10, 20, 30]}
+          style={{ border: "none" }}
+        />
         <Dialog
           header="Make a Reservation"
           visible={visibleReservation}
@@ -139,14 +206,6 @@ const LocalReservation = (props: Props) => {
             />
           )}
         </Dialog>
-        <Paginator
-          first={firstLocal}
-          rows={rowsLocal}
-          totalRecords={totalLocals}
-          onPageChange={onPageChangeLocals}
-          rowsPerPageOptions={[5, 10, 20, 30]}
-          style={{ border: "none" }}
-        />
       </Panel>
       <Panel
         ref={reservationPanelRef}
@@ -156,8 +215,16 @@ const LocalReservation = (props: Props) => {
       >
         <DataTable value={reservations} paginator rows={rows}>
           <Column field="id" header="ID" />
-          <Column field="checkInDate" header="Check In Date" />
-          <Column field="checkOutDate" header="Check Out Date" />
+          <Column
+            field="checkInDate"
+            header="Check In Date"
+            body={(rowData) => formatDateTime(rowData.checkInDate)}
+          />
+          <Column
+            field="checkOutDate"
+            header="Check Out Date"
+            body={(rowData) => formatDateTime(rowData.checkOutDate)}
+          />
         </DataTable>
         <Paginator
           first={firstReservation}

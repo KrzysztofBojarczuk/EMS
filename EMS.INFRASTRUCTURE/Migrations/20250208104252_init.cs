@@ -208,8 +208,6 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     LocalNumber = table.Column<int>(type: "int", nullable: false),
                     Surface = table.Column<double>(type: "float", nullable: false),
                     NeedsRepair = table.Column<bool>(type: "bit", nullable: false),
-                    BusyFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    BusyTo = table.Column<DateTime>(type: "datetime2", nullable: true),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -382,8 +380,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0ed1cad0-08e6-4758-9ffb-22d1a5fb5f81", null, "User", "USER" },
-                    { "49acb59e-2d67-437d-aa71-7ad4ba4588bf", null, "Admin", "ADMIN" }
+                    { "777fd32f-063b-475e-be28-f4e92b8e8727", null, "Admin", "ADMIN" },
+                    { "a1735e63-8cf2-4f8c-ab4f-79bc71f92e3c", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

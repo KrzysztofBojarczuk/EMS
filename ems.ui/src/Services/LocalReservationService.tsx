@@ -26,7 +26,6 @@ export const UserPostLocalService = async (localPost: LocalPost) => {
 export const UserPostReservationService = async (
   reservationPost: ReservationPost
 ) => {
-  console.log(reservationPost);
   return await axios.post<ReservationPost>(
     api + "Reservation",
     reservationPost

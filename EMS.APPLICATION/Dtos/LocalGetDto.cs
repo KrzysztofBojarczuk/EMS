@@ -14,6 +14,7 @@ namespace EMS.APPLICATION.Dtos
         public int LocalNumber { get; set; }
         public double Surface { get; set; }
         public bool NeedsRepair { get; set; }
+        public ICollection<ReservationGetDto> ReservationsEntities { get; set; } = new List<ReservationGetDto>();
     }
 }
 
