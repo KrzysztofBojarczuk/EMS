@@ -13,21 +13,22 @@ LocalsAndReservations:
 
 ![5](https://github.com/user-attachments/assets/aef20b30-12ad-47a6-900d-f8b9946b29a9)
 ![6](https://github.com/user-attachments/assets/92a4ce9d-4d75-4315-9786-6a341648f98e)
+![7](https://github.com/user-attachments/assets/f92663b3-ae19-426e-9bab-093a2f700e41)
 
 Employees and Employee Lists:
-![7](https://github.com/user-attachments/assets/07cf9dcb-54fc-4eb7-b3a6-6a02882c4448)
-![8](https://github.com/user-attachments/assets/f69c9080-bf3a-4970-89fe-77800a299717)
-![9](https://github.com/user-attachments/assets/592fa6c5-4631-48ad-a362-8a4b9d5dfc24)
-![10](https://github.com/user-attachments/assets/a4ae866f-d2a4-4480-b14a-808c64e3aedf)
-![11](https://github.com/user-attachments/assets/091e1491-22c0-42b0-ad2b-b7f5ce3fb8dd)
-![12](https://github.com/user-attachments/assets/84970966-1f25-4a5c-9f49-1081053663d0)
+![8](https://github.com/user-attachments/assets/07cf9dcb-54fc-4eb7-b3a6-6a02882c4448)
+![9](https://github.com/user-attachments/assets/f69c9080-bf3a-4970-89fe-77800a299717)
+![10](https://github.com/user-attachments/assets/592fa6c5-4631-48ad-a362-8a4b9d5dfc24)
+![11](https://github.com/user-attachments/assets/a4ae866f-d2a4-4480-b14a-808c64e3aedf)
+![12](https://github.com/user-attachments/assets/091e1491-22c0-42b0-ad2b-b7f5ce3fb8dd)
+![13](https://github.com/user-attachments/assets/84970966-1f25-4a5c-9f49-1081053663d0)
 <!--![5](https://github.com/user-attachments/assets/eb410c30-720c-4ce7-aac9-d1faced2f45d)-->
 
 Budget:
-![13](https://github.com/user-attachments/assets/e794e3cf-d9d2-4edd-9d62-4c698a685a65)
-![14](https://github.com/user-attachments/assets/3d89259d-ee36-4dd2-9a18-4cb32fac42da)
+![14](https://github.com/user-attachments/assets/e794e3cf-d9d2-4edd-9d62-4c698a685a65)
+![15](https://github.com/user-attachments/assets/3d89259d-ee36-4dd2-9a18-4cb32fac42da)
 
 Admin dashboard:
-![15](https://github.com/user-attachments/assets/f7d617f8-9a8c-42c8-97bd-96324aa4f962)
-![16](https://github.com/user-attachments/assets/4a37fb5e-5182-4719-ac55-b8667a8f1155)
-![17](https://github.com/user-attachments/assets/f417641b-07b2-4695-9a4f-5dff0ac7d357)
+![16](https://github.com/user-attachments/assets/f7d617f8-9a8c-42c8-97bd-96324aa4f962)
+![17](https://github.com/user-attachments/assets/4a37fb5e-5182-4719-ac55-b8667a8f1155)
+![18](https://github.com/user-attachments/assets/f417641b-07b2-4695-9a4f-5dff0ac7d357)
