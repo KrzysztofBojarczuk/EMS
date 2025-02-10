@@ -27,8 +27,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 return null; // Nie można zarezerwować niedostępnego lokalu
             }
 
-            var isBusy = await dbContext.Reservations.AnyAsync(x => (reservation.CheckInDate >= x.CheckInDate && reservation.CheckInDate <= x.CheckOutDate)
-                                                                 || (reservation.CheckOutDate >= x.CheckInDate && reservation.CheckOutDate <= x.CheckOutDate));
+            var isBusy = await dbContext.Reservations.AnyAsync(x => (reservation.CheckInDate >= x.CheckInDate && reservation.CheckInDate < x.CheckOutDate) // zaczyna się w trakcie
+                                                                 || (reservation.CheckOutDate > x.CheckInDate && reservation.CheckOutDate <= x.CheckOutDate) // kończy się w trakcie
+                                                                 || (reservation.CheckInDate <= x.CheckInDate && reservation.CheckOutDate >= x.CheckOutDate)); // obejmuje całą istniejącą rezerwacj
             if (isBusy)
             {
                 return null; // Lokal jest zajęty

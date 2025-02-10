@@ -45,3 +45,8 @@ export const UserGetReservationService = async (
 
   return response.data;
 };
+
+export const DeleteReservationService = async (id: string) => {
+  const response = await axios.delete(`${api}Reservation/${id}`);
+  return response;
+};
