@@ -3,6 +3,7 @@ using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Reservation.Commands;
 using EMS.APPLICATION.Features.Reservation.Queries;
+using EMS.APPLICATION.Features.Task.Commands;
 using EMS.CORE.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -56,6 +57,15 @@ namespace EMS.API.Controllers
                 paginatedReservation.TotalPages,
                 paginatedReservation.PageIndex
             });
+        }
+
+        [HttpDelete("{reservationId}")]
+        [Authorize(Roles = "User, Admin")]
+        public async Task<IActionResult> DeleteReservationAsync([FromRoute] Guid reservationId)
+        {
+            var result = await sender.Send(new DeleteReservationCommand(reservationId));
+
+            return Ok(result);
         }
     }
 }

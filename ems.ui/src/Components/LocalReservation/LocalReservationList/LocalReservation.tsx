@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { LocalGet } from "../../../Models/Local.ts";
 import { Panel } from "primereact/panel";
 import {
+  DeleteReservationService,
   UserGetLocalService,
   UserGetReservationService,
 } from "../../../Services/LocalReservationService.tsx";
@@ -21,6 +22,7 @@ import AddLocal from "../AddLocal/AddLocal.tsx";
 import MakeReservation from "../MakeReservation/MakeReservation.tsx";
 import { ReservationGet } from "../../../Models/Reservation.ts";
 import { Card } from "primereact/card";
+import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 
 type Props = {};
 
@@ -35,11 +37,17 @@ const LocalReservation = (props: Props) => {
 
   const [reservations, setReservations] = useState<ReservationGet[]>([]);
   const [firstReservation, setFirstReservation] = useState(0);
-  const [rows, setRows] = useState(10);
+  const [rowsReservation, setRowsReservation] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
 
   const [visibleReservation, setVisibleReservation] = useState<boolean>(false);
   const [selectedLocalId, setSelectedLocalId] = useState<string | null>(null);
+
+  const [deleteReservationId, setDeleteReservationId] = useState<string | null>(
+    null
+  );
+  const [confirmReservationVisible, setConfirmReservationVisible] =
+    useState(false);
 
   const localPanelRef = useRef<Panel>(null);
   const reservationPanelRef = useRef<Panel>(null);
@@ -69,7 +77,7 @@ const LocalReservation = (props: Props) => {
   };
 
   useEffect(() => {
-    fetchReservations(1, rows);
+    fetchReservations(1, rowsReservation);
   }, []);
 
   const onPageChangeLocals = (event: any) => {
@@ -80,13 +88,28 @@ const LocalReservation = (props: Props) => {
 
   const onPageChange = (event) => {
     setFirstReservation(event.first);
-    setRows(event.rows);
+    setReservations(event.rows);
     fetchReservations(event.page + 1, event.rows);
   };
 
   const makeReservation = (localId: string) => {
     setSelectedLocalId(localId);
     setVisibleReservation(true);
+  };
+
+  const showReservationDeleteConfirmation = (id: string) => {
+    setDeleteReservationId(id);
+    setConfirmReservationVisible(true);
+  };
+
+  const handleDeleteReservation = async () => {
+    if (deleteReservationId) {
+      await DeleteReservationService(deleteReservationId);
+      fetchReservations(1, rowsReservation);
+      fetchLocal(1, rowsLocal);
+    }
+    setConfirmReservationVisible(false);
+    setDeleteReservationId(null);
   };
 
   const formatDateTime = (dateString: string) => {
@@ -213,7 +236,7 @@ const LocalReservation = (props: Props) => {
         toggleable
         collapsed
       >
-        <DataTable value={reservations} paginator rows={rows}>
+        <DataTable value={reservations} paginator rows={rowsReservation}>
           <Column field="id" header="ID" />
           <Column
             field="checkInDate"
@@ -225,16 +248,33 @@ const LocalReservation = (props: Props) => {
             header="Check Out Date"
             body={(rowData) => formatDateTime(rowData.checkOutDate)}
           />
+          <Column
+            header="Action"
+            body={(rowData) => (
+              <i
+                className="pi pi-trash"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => showReservationDeleteConfirmation(rowData.id)}
+              ></i>
+            )}
+          />
         </DataTable>
         <Paginator
           first={firstReservation}
-          rows={rows}
+          rows={rowsLocal}
           totalRecords={totalRecords}
           onPageChange={onPageChange}
           rowsPerPageOptions={[5, 10, 20, 30]}
           style={{ border: "none" }}
         />
       </Panel>
+      <ConfirmationDialog
+        visible={confirmReservationVisible}
+        header="Confirm Task Deletion"
+        message="Are you sure you want to delete this task?"
+        onConfirm={handleDeleteReservation}
+        onCancel={() => setConfirmReservationVisible(false)}
+      />
     </div>
   );
 };
