@@ -50,3 +50,8 @@ export const DeleteReservationService = async (id: string) => {
   const response = await axios.delete(`${api}Reservation/${id}`);
   return response;
 };
+
+export const DeleteLocalService = async (id: string) => {
+  const response = await axios.delete(`${api}Local/${id}`);
+  return response;
+};
