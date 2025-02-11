@@ -24,10 +24,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<bool> DeleteLocalAsync(Guid localId)
         {
-            var local = await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == localId);
+            var local = await dbContext.Locals .Include(l => l.ReservationsEntities).FirstOrDefaultAsync(x => x.Id == localId);
 
             if (local is not null)
             {
+                dbContext.Reservations.RemoveRange(local.ReservationsEntities);
                 dbContext.Locals.Remove(local);
 
                 return await dbContext.SaveChangesAsync() > 0; //Jeśli usunięcie się powiodło: SaveChangesAsync() zwróci liczbę większą od 0, więc metoda zwróci true.

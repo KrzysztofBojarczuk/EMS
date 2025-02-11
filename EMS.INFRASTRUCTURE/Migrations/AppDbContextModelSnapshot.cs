@@ -388,13 +388,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "777fd32f-063b-475e-be28-f4e92b8e8727",
+                            Id = "5d9b8eab-6033-4a6a-bf62-33a4d9219630",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a1735e63-8cf2-4f8c-ab4f-79bc71f92e3c",
+                            Id = "3b3a5eb2-7b0e-400a-9279-508aac24bed4",
                             Name = "User",
                             NormalizedName = "USER"
                         });

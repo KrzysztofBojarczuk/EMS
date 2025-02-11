@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { LocalGet } from "../../../Models/Local.ts";
 import { Panel } from "primereact/panel";
 import {
+  DeleteLocalService,
   DeleteReservationService,
   UserGetLocalService,
   UserGetReservationService,
@@ -28,33 +29,38 @@ type Props = {};
 
 const LocalReservation = (props: Props) => {
   const [local, setLocals] = useState<LocalGet[]>([]);
-  const [visibleLocal, setVisibleLocal] = useState<boolean>(false);
+  const [reservations, setReservations] = useState<ReservationGet[]>([]);
+
   const [searchLocalTerm, setSearchLocalTerm] = useState("");
+
+  const [deleteLocalId, setDeleteLocalId] = useState<string | null>(null);
+  const [deleteReservationId, setDeleteReservationId] = useState<string | null>(
+    null
+  );
 
   const [firstLocal, setFirstLocal] = useState(0);
   const [rowsLocal, setRowsLocal] = useState(10);
   const [totalLocals, setTotalLocals] = useState(0);
 
-  const [reservations, setReservations] = useState<ReservationGet[]>([]);
   const [firstReservation, setFirstReservation] = useState(0);
   const [rowsReservation, setRowsReservation] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  const [visibleReservation, setVisibleReservation] = useState<boolean>(false);
   const [selectedLocalId, setSelectedLocalId] = useState<string | null>(null);
 
-  const [deleteReservationId, setDeleteReservationId] = useState<string | null>(
-    null
-  );
+  const [visibleReservation, setVisibleReservation] = useState<boolean>(false);
+  const [visibleLocal, setVisibleLocal] = useState<boolean>(false);
+
   const [confirmReservationVisible, setConfirmReservationVisible] =
     useState(false);
-
-  const localPanelRef = useRef<Panel>(null);
-  const reservationPanelRef = useRef<Panel>(null);
+  const [confirmLocalVisible, setConfirmLocalVisible] = useState(false);
 
   const [expandedRows, setExpandedRows] = useState<
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
+
+  const localPanelRef = useRef<Panel>(null);
+  const reservationPanelRef = useRef<Panel>(null);
 
   const allowExpansion = (rowData: LocalGet) => {
     return rowData.id!.length > 0;
@@ -86,9 +92,9 @@ const LocalReservation = (props: Props) => {
     fetchLocal(event.page + 1, event.rows);
   };
 
-  const onPageChange = (event) => {
+  const onPageChangeReservations = (event) => {
     setFirstReservation(event.first);
-    setReservations(event.rows);
+    setRowsReservation(event.rows);
     fetchReservations(event.page + 1, event.rows);
   };
 
@@ -110,6 +116,21 @@ const LocalReservation = (props: Props) => {
     }
     setConfirmReservationVisible(false);
     setDeleteReservationId(null);
+  };
+
+  const showLocalDeleteConfirmation = (id: string) => {
+    setDeleteLocalId(id);
+    setConfirmLocalVisible(true);
+  };
+
+  const handleDeleteLocal = async () => {
+    if (deleteLocalId) {
+      await DeleteLocalService(deleteLocalId);
+      fetchLocal(1, rowsLocal);
+      fetchReservations(1, rowsReservation);
+    }
+    setConfirmLocalVisible(false);
+    setDeleteLocalId(null);
   };
 
   const formatDateTime = (dateString: string) => {
@@ -198,8 +219,17 @@ const LocalReservation = (props: Props) => {
               <>
                 <i
                   className="pi pi-warehouse"
-                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  style={{
+                    fontSize: "1.5rem",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
                   onClick={() => makeReservation(rowData.id)}
+                ></i>
+                <i
+                  className="pi pi-trash"
+                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  onClick={() => showLocalDeleteConfirmation(rowData.id)}
                 ></i>
               </>
             )}
@@ -236,7 +266,7 @@ const LocalReservation = (props: Props) => {
         toggleable
         collapsed
       >
-        <DataTable value={reservations} paginator rows={rowsReservation}>
+        <DataTable value={reservations}>
           <Column field="id" header="ID" />
           <Column
             field="checkInDate"
@@ -261,13 +291,20 @@ const LocalReservation = (props: Props) => {
         </DataTable>
         <Paginator
           first={firstReservation}
-          rows={rowsLocal}
+          rows={rowsReservation}
           totalRecords={totalRecords}
-          onPageChange={onPageChange}
+          onPageChange={onPageChangeReservations}
           rowsPerPageOptions={[5, 10, 20, 30]}
           style={{ border: "none" }}
         />
       </Panel>
+      <ConfirmationDialog
+        visible={confirmLocalVisible}
+        header="Confirm Local Deletion"
+        message="Are you sure you want to delete this local?"
+        onConfirm={handleDeleteLocal}
+        onCancel={() => setConfirmLocalVisible(false)}
+      />
       <ConfirmationDialog
         visible={confirmReservationVisible}
         header="Confirm Task Deletion"
