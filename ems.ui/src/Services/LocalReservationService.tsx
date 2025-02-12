@@ -34,12 +34,13 @@ export const UserPostReservationService = async (
 
 export const UserGetReservationService = async (
   pageNumber: number,
-  pageSize: number
+  pageSize: number,
+  searchTerm: string
 ) => {
   const response = await axios.get<PaginatedReservationResponse>(
     api + "Reservation",
     {
-      params: { pageNumber, pageSize },
+      params: { pageNumber, pageSize, searchTerm },
     }
   );
 

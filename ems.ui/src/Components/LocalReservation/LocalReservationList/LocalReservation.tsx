@@ -32,6 +32,7 @@ const LocalReservation = (props: Props) => {
   const [reservations, setReservations] = useState<ReservationGet[]>([]);
 
   const [searchLocalTerm, setSearchLocalTerm] = useState("");
+  const [searchReservationTerm, setSearchReservationTerm] = useState("");
 
   const [deleteLocalId, setDeleteLocalId] = useState<string | null>(null);
   const [deleteReservationId, setDeleteReservationId] = useState<string | null>(
@@ -77,14 +78,18 @@ const LocalReservation = (props: Props) => {
   }, [searchLocalTerm]);
 
   const fetchReservations = async (page, size) => {
-    const data = await UserGetReservationService(page, size);
+    const data = await UserGetReservationService(
+      page,
+      size,
+      searchReservationTerm
+    );
     setReservations(data.reservationGet);
     setTotalRecords(data.totalItems);
   };
 
   useEffect(() => {
     fetchReservations(1, rowsReservation);
-  }, []);
+  }, [searchReservationTerm]);
 
   const onPageChangeLocals = (event: any) => {
     setFirstLocal(event.first);
@@ -266,6 +271,16 @@ const LocalReservation = (props: Props) => {
         toggleable
         collapsed
       >
+        <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search"> </InputIcon>
+            <InputText
+              value={searchReservationTerm}
+              onChange={(e) => setSearchReservationTerm(e.target.value)}
+              placeholder="Search Reservation"
+            />
+          </IconField>
+        </div>
         <DataTable value={reservations}>
           <Column field="id" header="ID" />
           <Column
