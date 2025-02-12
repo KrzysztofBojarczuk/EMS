@@ -13,6 +13,6 @@ namespace EMS.CORE.Interfaces
         Task<ReservationEntity> MakeReservationAsync(ReservationEntity reservation);
         Task<bool> DeleteReservationAsync(Guid reservationId);
         Task<ReservationEntity> GetReservationByIdAsync(Guid id);
-        Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize);
+        Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize, string searchTer);
     }
 }

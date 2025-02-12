@@ -61,9 +61,15 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize)
+        public async Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Reservations.Where(x => x.AppUserId == appUserId);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Id.ToString().ToLower().Contains(searchTerm.ToLower()));
+            }
+
             return await PaginatedList<ReservationEntity>.CreateAsync(query, pageNumber, pageSize);
         }
     }
