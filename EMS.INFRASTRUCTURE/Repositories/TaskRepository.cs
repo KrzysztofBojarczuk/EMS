@@ -14,7 +14,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class TaskRepository(AppDbContext dbContext) : ITaskRepository
     {
-        public async Task<IEnumerable<TaskEntity>> GetUserTasksAsync(string appUserId, string searchTerm)
+        public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities).AsQueryable();
 
@@ -26,7 +26,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return await query.ToListAsync();
+            return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
         public async Task<TaskEntity> GetTaskByIdAsync(Guid id)

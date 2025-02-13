@@ -1,5 +1,6 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
+using EMS.INFRASTRUCTURE.Extensions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace EMS.APPLICATION.Features.Task.Queries
 {
-    public record GetUserTasksQuery(string appUserId, string searchTerm) : IRequest<IEnumerable<TaskEntity>>;
+    public record GetUserTasksQuery(string appUserId, int pageNumber, int pageSize, string searchTerm) : IRequest<PaginatedList<TaskEntity>>;
 
     public class GetUserTasksQueryHandler(ITaskRepository taskRepository)
-        : IRequestHandler<GetUserTasksQuery, IEnumerable<TaskEntity>>
+        : IRequestHandler<GetUserTasksQuery, PaginatedList<TaskEntity>>
     {
-        public async Task<IEnumerable<TaskEntity>> Handle(GetUserTasksQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedList<TaskEntity>> Handle(GetUserTasksQuery request, CancellationToken cancellationToken)
         {
-            return await taskRepository.GetUserTasksAsync(request.appUserId, request.searchTerm);
+            return await taskRepository.GetUserTasksAsync(request.appUserId, request.pageNumber, request.pageSize, request.searchTerm);
         }
     }
 }

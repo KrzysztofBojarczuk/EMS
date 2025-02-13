@@ -11,7 +11,7 @@ namespace EMS.CORE.Interfaces
 {
     public interface ITaskRepository
     {
-        Task<IEnumerable<TaskEntity>> GetUserTasksAsync(string appUserId, string searchTerm);
+        Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm);
         Task<TaskEntity> GetTaskByIdAsync(Guid id);
         Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> employeeListIds);
         Task<TaskEntity> UpdateTaskAsync(Guid taskId, TaskEntity entity);
