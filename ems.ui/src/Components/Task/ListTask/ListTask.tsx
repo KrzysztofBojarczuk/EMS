@@ -25,6 +25,7 @@ import { StatusOfTask } from "../../../Enum/StatusOfTask.ts";
 import { Tag } from "primereact/tag";
 import { Dropdown } from "primereact/dropdown";
 import { SplitButton } from "primereact/splitbutton";
+import { Paginator } from "primereact/paginator";
 
 type Props = {};
 
@@ -35,17 +36,22 @@ const ListTask = (props: Props) => {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
 
+  const [firstTask, setFirstTask] = useState(0);
+  const [rowsTask, setRowsTask] = useState(10);
+  const [totalTasks, setTotalTasks] = useState(0);
+
   const [expandedRows, setExpandedRows] = useState<
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
-  const fetchTask = async () => {
-    const data = await UserGetTaskService(searchTerm);
-    setTasks(data);
+  const fetchTasks = async (page: number, size: number) => {
+    const data = await UserGetTaskService(page, size, searchTerm);
+    setTasks(data.taskGet);
+    setTotalTasks(data.totalItems);
   };
 
   useEffect(() => {
-    fetchTask();
+    fetchTasks(1, rowsTask);
   }, [searchTerm]);
 
   const allowExpansion = (rowData: TaskGet) => {
@@ -60,10 +66,16 @@ const ListTask = (props: Props) => {
   const handleConfirmDelete = async () => {
     if (deleteId) {
       await DeleteTaskService(deleteId);
-      fetchTask();
+      fetchTasks(1, rowsTask);
     }
     setConfirmVisible(false);
     setDeleteId(null);
+  };
+
+  const onPageChangeTasks = (event: any) => {
+    setFirstTask(event.first);
+    setRowsTask(event.rows);
+    fetchTasks(event.page + 1, event.rows);
   };
 
   const statusToText = {
@@ -120,7 +132,7 @@ const ListTask = (props: Props) => {
       //   return task;
       // });
       // setTasks(updatedTasks);
-      fetchTask();
+      fetchTasks(1, rowsTask);
     };
 
     return (
@@ -206,14 +218,14 @@ const ListTask = (props: Props) => {
             setVisible(false);
           }}
         >
-          <AddTask onClose={() => setVisible(false)} onAddSuccess={fetchTask} />
+          <AddTask
+            onClose={() => setVisible(false)}
+            onAddSuccess={() => fetchTasks(1, rowsTask)}
+          />
         </Dialog>
       </div>
       <DataTable
         value={tasks}
-        paginator
-        rows={5}
-        rowsPerPageOptions={[5, 10, 25, 50]}
         expandedRows={expandedRows}
         onRowToggle={(e) => setExpandedRows(e.data)}
         rowExpansionTemplate={rowExpansionTemplate}
@@ -251,6 +263,14 @@ const ListTask = (props: Props) => {
           )}
         ></Column>
       </DataTable>
+      <Paginator
+        first={firstTask}
+        rows={rowsTask}
+        totalRecords={totalTasks}
+        onPageChange={onPageChangeTasks}
+        rowsPerPageOptions={[5, 10, 20, 30]}
+        style={{ border: "none" }}
+      />
       <ConfirmationDialog
         visible={confirmVisible}
         header="Confirm Deletion of Taske"

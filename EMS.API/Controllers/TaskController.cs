@@ -20,17 +20,23 @@ namespace EMS.API.Controllers
     {
         [HttpGet("User")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserTaskssAsync(string searchTerm = null)
+        public async Task<IActionResult> GetUserTaskssAsync(int pageNumber, int pageSize, string searchTerm = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserTasksQuery(appUser.Id, searchTerm));
+            var paginatedTasks = await sender.Send(new GetUserTasksQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
-            var taskDtos = mapper.Map<IEnumerable<TaskGetDto>>(result);
+            var taskDtos = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
 
-            return Ok(taskDtos);
+            return Ok(new
+            {
+                TaskGet = taskDtos,
+                paginatedTasks.TotalItems,
+                paginatedTasks.TotalPages,
+                paginatedTasks.PageIndex
+            });
         }
 
         [HttpPost()]

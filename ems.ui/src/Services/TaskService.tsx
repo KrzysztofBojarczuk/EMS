@@ -15,9 +15,13 @@ export const GetTaskService = async (
   return response.data;
 };
 
-export const UserGetTaskService = async (searchTerm: string) => {
-  const response = await axios.get<TaskGet[]>(api + "Task/User", {
-    params: { searchTerm },
+export const UserGetTaskService = async (
+  pageNumber: number,
+  pageSize: number,
+  searchTerm: string
+) => {
+  const response = await axios.get<PaginatedTaskResponse>(api + "Task/User", {
+    params: { pageNumber, pageSize, searchTerm },
   });
 
   return response.data;
