@@ -23,10 +23,17 @@ export const GetEmployeesService = async (
   return response.data;
 };
 
-export const UserGetEmployeesService = async (searchTerm: string) => {
-  const response = await axios.get<EmployeeGet[]>(api + "Employee/User", {
-    params: { searchTerm },
-  });
+export const UserGetEmployeesService = async (
+  pageNumber: number,
+  pageSize: number,
+  searchTerm: string
+) => {
+  const response = await axios.get<PaginatedEmployeeResponse>(
+    api + "Employee/User",
+    {
+      params: { pageNumber, pageSize, searchTerm },
+    }
+  );
 
   return response.data;
 };

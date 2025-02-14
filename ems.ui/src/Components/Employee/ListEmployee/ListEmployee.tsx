@@ -23,6 +23,7 @@ import { InputIcon } from "primereact/inputicon";
 import AddListEmployee from "../AddListEmployee/AddListEmployee.tsx";
 import { EmployeeListGet } from "../../../Models/EmployeeList.tsx";
 import { Card } from "primereact/card";
+import { Paginator } from "primereact/paginator";
 
 interface Props {}
 
@@ -44,17 +45,22 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   );
   const [updateVisible, setUpdateVisible] = useState(false);
 
+  const [firstEmployee, setFirstEmployee] = useState(0);
+  const [rowsEmployee, setRowsEmployee] = useState(10);
+  const [totalEmployees, setTotalEmployees] = useState(0);
+
   const [expandedRows, setExpandedRows] = useState<
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
-  const fetchEmployees = async () => {
-    const data = await UserGetEmployeesService(searchTerm);
-    setEmployees(data);
+  const fetchEmployees = async (page: number, size: number) => {
+    const data = await UserGetEmployeesService(page, size, searchTerm);
+    setEmployees(data.employeeGet);
+    setTotalEmployees(data.totalItems);
   };
 
   useEffect(() => {
-    fetchEmployees();
+    fetchEmployees(1, rowsEmployee);
   }, [searchTerm]);
 
   const fetchEmployeesList = async () => {
@@ -80,7 +86,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const handleConfirmDeleteEmployee = async () => {
     if (deleteId) {
       await UserDeleteEmployeesService(deleteId);
-      fetchEmployees();
+      fetchEmployees(1, rowsEmployee);
     }
     setConfirmEmployeeVisible(false);
     setDeleteId(null);
@@ -102,6 +108,12 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
 
   const allowExpansion = (rowData: EmployeeListGet) => {
     return rowData.id!.length > 0;
+  };
+
+  const onPageChangeEmployees = (event: any) => {
+    setFirstEmployee(event.first);
+    setRowsEmployee(event.rows);
+    fetchEmployees(event.page + 1, event.rows);
   };
 
   const rowExpansionTemplate = (data) => {
@@ -160,17 +172,11 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         >
           <AddEmployee
             onClose={() => setVisible(false)}
-            onAddSuccess={fetchEmployees}
+            onAddSuccess={() => fetchEmployees(1, rowsEmployee)}
           />
         </Dialog>
       </div>
-      <DataTable
-        value={employees}
-        paginator
-        rows={10}
-        rowsPerPageOptions={[5, 10, 25, 50]}
-        tableStyle={{ minWidth: "50rem" }}
-      >
+      <DataTable value={employees} tableStyle={{ minWidth: "50rem" }}>
         <Column field="id" header="Id"></Column>
         <Column field="name" header="Name"></Column>
         <Column field="email" header="Email"></Column>
@@ -198,7 +204,14 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           )}
         ></Column>
       </DataTable>
-
+      <Paginator
+        first={firstEmployee}
+        rows={rowsEmployee}
+        totalRecords={totalEmployees}
+        onPageChange={onPageChangeEmployees}
+        rowsPerPageOptions={[5, 10, 20, 30]}
+        style={{ border: "none" }}
+      />
       <Dialog
         header="Create List Employees"
         visible={visibleListEmploeyee}
@@ -249,6 +262,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           )}
         ></Column>
       </DataTable>
+
       <ConfirmationDialog
         visible={confirmListEmployeeVisible}
         header="Confirm Deletion of List Employee"
@@ -272,7 +286,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           <UpdateEmployee
             employee={selectedEmployee}
             onClose={() => setUpdateVisible(false)}
-            onUpdateSuccess={fetchEmployees}
+            onUpdateSuccess={() => fetchEmployees(1, rowsEmployee)}
           />
         )}
       </Dialog>
