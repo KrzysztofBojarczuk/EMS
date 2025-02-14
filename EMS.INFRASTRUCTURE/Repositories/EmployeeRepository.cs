@@ -13,7 +13,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class EmployeeRepository(AppDbContext dbContext) : IEmployeeRepository
     {
-        public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, string searchTerm)
+        public async Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Employees.AsQueryable();
 
@@ -24,7 +24,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return await query.ToListAsync();
+            return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
         public async Task<int> GetUserNumberOfEmployeesAsync(string appUserId)
