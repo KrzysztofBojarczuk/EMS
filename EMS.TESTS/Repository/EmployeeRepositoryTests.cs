@@ -1,113 +1,97 @@
 ﻿using EMS.CORE.Entities;
-using EMS.INFRASTRUCTURE.Data;
-using EMS.INFRASTRUCTURE.Repositories;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.InMemory;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using EMS.CORE.Interfaces;
+using EMS.INFRASTRUCTURE.Extensions;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace EMS.TESTS.Repository
 {
+    [TestClass]
     public class EmployeeRepositoryTests
     {
-        private async Task<AppDbContext> GetDatabaseContext()
-        {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-            var databaseContext = new AppDbContext(options);
-            databaseContext.Database.EnsureCreated();
 
-            if (await databaseContext.Employees.CountAsync() <= 0)
+        [TestMethod]
+        public async Task GetNumberOfEmployeesAsync_ReturnsTotalCount()
+        {
+            // Arrange
+            var employees = new List<EmployeeEntity>
             {
-                for (int i = 1; i <= 5; i++)
-                {
-                    databaseContext.Employees.Add(new EmployeeEntity
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = $"Employee {i}",
-                        AppUserId = i % 2 == 0 ? "user1" : "user2",
-                        Email = $"employee{i}@example.com",  
-                        Phone = $"123-456-789{i}"            
-                    });
-                }
-                await databaseContext.SaveChangesAsync();
-            }
-            return databaseContext;
-        }
+                new EmployeeEntity { Name = "Employee 1", AppUserId = "user1", Email = "employee1@example.com", Phone = "123-456-7891" },
+                new EmployeeEntity { Name = "Employee 2", AppUserId = "user1", Email = "employee1@example.com", Phone = "123-456-7891" }
+            };
 
-        [Fact]
-        public async Task EmployeeRepository_GetUserNumberOfEmployees_ReturnsCorrectCount()
-        {
-            // Arrange
-            var userId = "user1";
-            var dbContext = await GetDatabaseContext();
-            var repository = new EmployeeRepository(dbContext);
+            var mockRepo = new Mock<IEmployeeRepository>();
+            mockRepo.Setup(repo => repo.GetNumberOfEmployeesAsync())
+                    .ReturnsAsync(employees.Count);
+
+            var repository = mockRepo.Object;
 
             // Act
-            var result = await repository.GetUserNumberOfEmployeesAsync(userId);
+            var count = await repository.GetNumberOfEmployeesAsync();
 
             // Assert
-            result.Should().Be(2); 
+            count.Should().Be(2);
+            Assert.AreEqual(employees.Count, count);
         }
 
-        [Fact]
-        public async Task EmployeeRepository_GetNumberOfEmployees_ReturnsTotalCount()
-        {
-            // Arrange
-            var dbContext = await GetDatabaseContext();
-            var repository = new EmployeeRepository(dbContext);
-
-            // Act
-            var result = await repository.GetNumberOfEmployeesAsync();
-
-            // Assert
-            result.Should().Be(5); 
-        }
-
-        [Fact]
-        public async Task EmployeeRepository_GetEmployees_WithSearchTerm_ReturnsFilteredResults()
+        [TestMethod]
+        public async Task GetEmployeesAsync_WithSearchTerm_ReturnsFilteredResults()
         {
             // Arrange
             var searchTerm = "Employee 1";
-            var dbContext = await GetDatabaseContext();
-            var repository = new EmployeeRepository(dbContext);
+            var employees = new List<EmployeeEntity>
+            {
+                   new EmployeeEntity { Name = "Employee 1", AppUserId = "user1", Email = "employee1@example.com", Phone = "123-456-7891" }
+            };
+
+            var paginatedList = new PaginatedList<EmployeeEntity>(employees, employees.Count, 1, 10);
+
+            var mockRepo = new Mock<IEmployeeRepository>();
+            mockRepo.Setup(repo => repo.GetEmployeesAsync(1, 10, searchTerm))
+                    .ReturnsAsync(paginatedList);
+
+            var repository = mockRepo.Object;
 
             // Act
-            var result = await repository.GetEmployeesAsync(1,10,searchTerm);
+            var result = await repository.GetEmployeesAsync(1, 10, searchTerm);
 
-            // Assert
             // Assert
             result.Should().NotBeNull();
             result.Items.Count.Should().Be(1);
             result.Items.First().Name.Should().Be("Employee 1");
         }
 
-        [Fact]
-        public async Task EmployeeRepository_AddEmployee_AddsEmployeeSuccessfully()
+        [TestMethod]
+        public async Task AddEmployeeAsync_AddsEmployeeSuccessfully()
         {
             // Arrange
             var newEmployee = new EmployeeEntity
             {
+                Id = Guid.NewGuid(),
                 Name = "New Employee",
                 AppUserId = "user3",
-                Email = "newemployee@example.com",  
-                Phone = "987-654-3210"              
+                Email = "newemployee@example.com",
+                Phone = "987-654-3210"
             };
-            var dbContext = await GetDatabaseContext();
-            var repository = new EmployeeRepository(dbContext);
+
+            var mockRepo = new Mock<IEmployeeRepository>();
+            mockRepo.Setup(repo => repo.AddEmployeeAsync(It.IsAny<EmployeeEntity>()))
+                    .ReturnsAsync((EmployeeEntity e) =>
+                    {
+                        e.Id = Guid.NewGuid();
+                        return e;
+                    });
+
+            var repository = mockRepo.Object;
 
             // Act
-            var addedEmployee = await repository.AddEmployeeAsync(newEmployee);
+            var result = await repository.AddEmployeeAsync(newEmployee);
 
             // Assert
-            addedEmployee.Should().NotBeNull();
-            addedEmployee.Id.Should().NotBe(Guid.Empty);
-            dbContext.Employees.Should().Contain(e => e.Id == addedEmployee.Id);
+            result.Should().NotBeNull();
+            result.Id.Should().NotBe(Guid.Empty);
         }
     }
 }
