@@ -1,5 +1,4 @@
 ﻿using EMS.CORE.Entities;
-using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using EMS.CORE.Interfaces;
@@ -32,7 +31,6 @@ namespace EMS.TESTS.Repository
             var count = await repository.GetNumberOfEmployeesAsync();
 
             // Assert
-            count.Should().Be(2);
             Assert.AreEqual(employees.Count, count);
         }
 
@@ -58,9 +56,9 @@ namespace EMS.TESTS.Repository
             var result = await repository.GetEmployeesAsync(1, 10, searchTerm);
 
             // Assert
-            result.Should().NotBeNull();
-            result.Items.Count.Should().Be(1);
-            result.Items.First().Name.Should().Be("Employee 1");
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Items.Count);
+            Assert.AreEqual("Employee 1", result.Items.First().Name);
         }
 
         [TestMethod]
@@ -90,8 +88,8 @@ namespace EMS.TESTS.Repository
             var result = await repository.AddEmployeeAsync(newEmployee);
 
             // Assert
-            result.Should().NotBeNull();
-            result.Id.Should().NotBe(Guid.Empty);
+            Assert.IsNotNull(result);
+            Assert.AreNotEqual(Guid.Empty, result.Id);
         }
     }
 }
