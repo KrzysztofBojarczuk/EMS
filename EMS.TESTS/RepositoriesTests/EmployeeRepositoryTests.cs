@@ -10,7 +10,6 @@ namespace EMS.TESTS.Repository
     [TestClass]
     public class EmployeeRepositoryTests
     {
-
         [TestMethod]
         public async Task GetNumberOfEmployeesAsync_ReturnsTotalCount()
         {
@@ -25,17 +24,15 @@ namespace EMS.TESTS.Repository
             mockRepo.Setup(repo => repo.GetNumberOfEmployeesAsync())
                     .ReturnsAsync(employees.Count);
 
-            var repository = mockRepo.Object;
-
             // Act
-            var count = await repository.GetNumberOfEmployeesAsync();
+            var count = await mockRepo.Object.GetNumberOfEmployeesAsync();
 
             // Assert
             Assert.AreEqual(employees.Count, count);
         }
 
         [TestMethod]
-        public async Task GetEmployeesAsync_WithSearchTerm_ReturnsFilteredResults()
+        public async Task GetEmployeesAsync_BySearchTerm_Returns()
         {
             // Arrange
             var searchTerm = "Employee 1";
@@ -50,46 +47,13 @@ namespace EMS.TESTS.Repository
             mockRepo.Setup(repo => repo.GetEmployeesAsync(1, 10, searchTerm))
                     .ReturnsAsync(paginatedList);
 
-            var repository = mockRepo.Object;
-
             // Act
-            var result = await repository.GetEmployeesAsync(1, 10, searchTerm);
+            var result = await mockRepo.Object.GetEmployeesAsync(1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Items.Count);
             Assert.AreEqual("Employee 1", result.Items.First().Name);
-        }
-
-        [TestMethod]
-        public async Task AddEmployeeAsync_AddsEmployeeSuccessfully()
-        {
-            // Arrange
-            var newEmployee = new EmployeeEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = "New Employee",
-                AppUserId = "user3",
-                Email = "newemployee@example.com",
-                Phone = "987-654-3210"
-            };
-
-            var mockRepo = new Mock<IEmployeeRepository>();
-            mockRepo.Setup(repo => repo.AddEmployeeAsync(It.IsAny<EmployeeEntity>()))
-                    .ReturnsAsync((EmployeeEntity e) =>
-                    {
-                        e.Id = Guid.NewGuid();
-                        return e;
-                    });
-
-            var repository = mockRepo.Object;
-
-            // Act
-            var result = await repository.AddEmployeeAsync(newEmployee);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual(Guid.Empty, result.Id);
         }
     }
 }

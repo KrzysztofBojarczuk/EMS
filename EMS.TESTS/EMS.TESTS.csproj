@@ -10,7 +10,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="coverlet.collector" Version="6.0.2" />
-		<PackageReference Include="FluentAssertions" Version="6.11.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.1" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
 		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
@@ -20,11 +19,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\EMS.API\EMS.API.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Features\Commands\" />
-	  <Folder Include="Features\Queries\" />
 	</ItemGroup>
 
 </Project>
