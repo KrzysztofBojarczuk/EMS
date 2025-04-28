@@ -1,18 +1,13 @@
 ﻿using EMS.APPLICATION.Dtos;
-using EMS.APPLICATION.Features.Account;
 using EMS.APPLICATION.Features.Account.Commands;
 using EMS.APPLICATION.Features.Account.Queries;
-using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
-using System.Reflection;
 
 namespace EMS.API.Controllers
 {

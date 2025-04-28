@@ -3,12 +3,9 @@ using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Address.Commands;
 using EMS.APPLICATION.Features.Address.Queries;
-using EMS.APPLICATION.Features.Employee.Commands;
-using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

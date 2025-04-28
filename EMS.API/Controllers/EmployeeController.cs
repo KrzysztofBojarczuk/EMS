@@ -6,7 +6,6 @@ using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -92,7 +91,7 @@ namespace EMS.API.Controllers
         {
             var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm));
 
-            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items); 
+            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
 
             return Ok(new
             {
