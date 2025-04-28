@@ -1,12 +1,9 @@
 ﻿using EMS.CORE.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Extensions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using EMS.INFRASTRUCTURE.Data;
-using EMS.INFRASTRUCTURE.Repositories;
-using Microsoft.EntityFrameworkCore;
 
 namespace EMS.TESTS.Repository
 {
@@ -43,6 +40,29 @@ namespace EMS.TESTS.Repository
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Items.Count);
             Assert.AreEqual(searchTerm, result.Items.First().Name);
+        }
+
+        [TestMethod]
+        public async Task GetUserNumberOfEmployeesAsync_ReturnsTotalCount()
+        {
+            // Arrange
+            var userId = "user1";
+            var employees = new List<EmployeeEntity>
+            {
+                  new EmployeeEntity { Name = "Grzegorz", AppUserId = "user1", Email = "employee1@example.com", Phone = "123-456-7891" },
+                  new EmployeeEntity { Name = "Janusz", AppUserId = "user1", Email = "employee1@example.com", Phone = "123-456-7891" },
+                  new EmployeeEntity { Name = "Tomasz", AppUserId = "user1", Email = "employee1@example.com", Phone = "123-456-7891" }
+            };
+
+            var mockRepo = new Mock<IEmployeeRepository>();
+            mockRepo.Setup(repo => repo.GetUserNumberOfEmployeesAsync(userId))
+                    .ReturnsAsync(employees.Count);
+
+            // Act
+            var count = await mockRepo.Object.GetUserNumberOfEmployeesAsync(userId);
+
+            // Assert
+            Assert.AreEqual(employees.Count, count);
         }
 
         [TestMethod]

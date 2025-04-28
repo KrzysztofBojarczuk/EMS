@@ -2,11 +2,6 @@
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Extensions;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EMS.APPLICATION.Features.Account.Queries
 {
@@ -16,7 +11,7 @@ namespace EMS.APPLICATION.Features.Account.Queries
     {
         public async Task<PaginatedList<AppUserEntity>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
         {
-            return await userRepository.GettAllUsersAsync(request.pageNumber, request.pageSize,request.searchTerm);
+            return await userRepository.GettAllUsersAsync(request.pageNumber, request.pageSize, request.searchTerm);
         }
     }
 }

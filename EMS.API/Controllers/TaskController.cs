@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
-using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.APPLICATION.Features.Task.Commands;
 using EMS.APPLICATION.Features.Task.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
