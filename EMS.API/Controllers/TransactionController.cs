@@ -50,6 +50,5 @@ namespace EMS.API.Controllers
 
             return Ok(result);
         }
-
     }
 }
