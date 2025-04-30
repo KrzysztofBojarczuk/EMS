@@ -105,7 +105,11 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
           </div>
         </div>
         <div className="inline-flex flex-column gap-2">
-          <Button label="Submit" type="submit" />
+          <Button
+            label="Submit"
+            type="submit"
+            disabled={selectedEmployees.length === 0}
+          />
         </div>
       </div>
     </form>
