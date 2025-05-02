@@ -1,11 +1,5 @@
 ﻿using EMS.APPLICATION.Dtos;
 using EMS.CORE.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EMS.CORE.Entities
 {
