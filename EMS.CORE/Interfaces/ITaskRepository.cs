@@ -1,11 +1,6 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.INFRASTRUCTURE.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EMS.CORE.Interfaces
 {

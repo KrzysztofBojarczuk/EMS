@@ -1,7 +1,6 @@
 ﻿using EMS.APPLICATION.Features.Employee.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
-using EMS.INFRASTRUCTURE.Extensions;
 using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
