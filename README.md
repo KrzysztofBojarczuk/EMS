@@ -29,6 +29,6 @@ Budget:
 ![15](https://github.com/user-attachments/assets/3d89259d-ee36-4dd2-9a18-4cb32fac42da)
 
 Admin dashboard:
-![16](https://github.com/user-attachments/assets/f7d617f8-9a8c-42c8-97bd-96324aa4f962)
+![16](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
 ![17](https://github.com/user-attachments/assets/4a37fb5e-5182-4719-ac55-b8667a8f1155)
 ![18](https://github.com/user-attachments/assets/f417641b-07b2-4695-9a4f-5dff0ac7d357)
