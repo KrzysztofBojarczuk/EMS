@@ -48,7 +48,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddAddressCommand(addressEntity));
 
-            return Ok(result);
+            var addressGet = mapper.Map<AddressGetDto>(result);
+
+            return Ok(addressGet);
         }
 
         [HttpPut("{addressId}")]
@@ -62,7 +64,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new UpdateAddressCommand(addressId, addressEntity));
 
-            return Ok(result);
+            var addressGet = mapper.Map<AddressGetDto>(result);
+
+            return Ok(addressGet);
         }
 
         [HttpDelete("{addressId}")]

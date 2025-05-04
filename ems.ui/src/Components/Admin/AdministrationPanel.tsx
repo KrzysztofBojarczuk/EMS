@@ -207,7 +207,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           onChange={(e) => setSearchUserTerm(e.target.value)}
           placeholder="Search Users"
         />
-        <DataTable value={users} paginator rows={5}>
+        <DataTable value={users}>
           <Column field="id" header="Id" />
           <Column field="userName" header="User name" />
           <Column field="email" header="Email" />
