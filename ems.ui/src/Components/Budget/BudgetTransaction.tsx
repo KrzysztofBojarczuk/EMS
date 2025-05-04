@@ -57,6 +57,7 @@ const BudgetTransaction = ({}: Props) => {
         category
       );
       setTransaction(data);
+      setConfirmVisible(false);
     }
   };
 
@@ -169,13 +170,6 @@ const BudgetTransaction = ({}: Props) => {
             </div>
           </div>
         </div>
-        <ConfirmationDialog
-          visible={confirmVisible}
-          header="Confirm Deletion of Transaction"
-          message="Are you sure you want to delete this Transaction?"
-          onConfirm={handleConfirmDeleteTransaction}
-          onCancel={() => setConfirmVisible(false)}
-        />
       </div>
     );
   };
@@ -268,6 +262,14 @@ const BudgetTransaction = ({}: Props) => {
           />
         </div>
       )}
+
+      <ConfirmationDialog
+        visible={confirmVisible}
+        header="Confirm Deletion of Transaction"
+        message="Are you sure you want to delete this Transaction?"
+        onConfirm={handleConfirmDeleteTransaction}
+        onCancel={() => setConfirmVisible(false)}
+      />
 
       <ConfirmationDialog
         visible={isDialogVisible}
