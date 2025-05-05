@@ -28,7 +28,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddTransactionCommand(transactionEntity));
 
-            return Ok(result);
+            var transactionGet = mapper.Map<TransactionGetDto>(result);
+
+            return Ok(transactionGet);
         }
 
         [HttpGet("{budgetId}")]
