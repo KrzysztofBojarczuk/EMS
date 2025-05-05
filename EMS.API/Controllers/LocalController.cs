@@ -55,7 +55,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddLocalCommand(localEntity));
 
-            return Ok(result);
+            var localGet = mapper.Map<LocalGetDto>(result);
+
+            return Ok(localGet);
         }
 
         [HttpDelete("{localId}")]

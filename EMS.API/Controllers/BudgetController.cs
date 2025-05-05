@@ -33,7 +33,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddBudgetCommand(budgetEntity));
 
-            return Ok(result);
+            var budgetGet = mapper.Map<BudgetGetDto>(result);
+
+            return Ok(budgetGet);
         }
 
         [HttpGet("User")]

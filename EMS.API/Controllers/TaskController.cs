@@ -55,7 +55,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddTaskCommand(taskEntity, taskDto.EmployeeListIds));
 
-            return Ok(result);
+            var taskGet = mapper.Map<TaskGetDto>(result);
+
+            return Ok(taskGet);
         }
 
         [HttpPut("{taskId}")]
@@ -69,7 +71,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new UpdateTaskCommand(taskId, taskEntity));
 
-            return Ok(result);
+            var taskGet = mapper.Map<TaskGetDto>(result);
+
+            return Ok(taskGet);
         }
 
         [HttpPatch("{taskId}/status")]

@@ -82,7 +82,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddEmployeeCommand(employeeEntity));
 
-            return Ok(result);
+            var employeeGet = mapper.Map<EmployeeGetDto>(result);
+
+            return Ok(employeeGet);
         }
 
         [HttpGet()]
@@ -133,7 +135,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new UpdateEmployeeCommand(employeeId, employeeEntity));
 
-            return Ok(result);
+            var employeeGet = mapper.Map<EmployeeGetDto>(result);
+
+            return Ok(employeeGet);
         }
 
         [HttpDelete("{employeeId}")]
@@ -193,7 +197,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity, employeeListsDto.EmployeeIds));
 
-            return Ok(result);
+            var employeeListsGet = mapper.Map<EmployeeListsGetDto>(result);
+
+            return Ok(employeeListsGet);
         }
 
         [HttpDelete("EmployeeList/{employeeListId}")]
