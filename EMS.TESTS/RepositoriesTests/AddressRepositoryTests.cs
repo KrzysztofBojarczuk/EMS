@@ -11,33 +11,34 @@ namespace EMS.TESTS.RepositoriesTests
     {
 
         [TestMethod]
-        public async Task AddEmployeeAsync_AddsEmployee_ReturnsEntity()
+        public async Task AddEmployeeAsync_Returns_Employee()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "AddEmployeeTestDb")
+                .UseInMemoryDatabase(databaseName: "AddAddressTestDb")
                 .Options;
 
-            var employee = new EmployeeEntity
+            var address = new AddressEntity
             {
-                Name = "Anna Nowak",
-                Email = "anna@example.com",
-                Phone = "123456789",
+                City = "Test City",
+                Street = "Test Street",
+                Number = "123",
+                ZipCode = "00-001",
                 AppUserId = "user123"
             };
 
             using (var context = new AppDbContext(options))
             {
-                var repository = new EmployeeRepository(context);
+                var repository = new AddressRepository(context);
 
                 // Act
-                var result = await repository.AddEmployeeAsync(employee);
+                var result = await repository.AddAddressAsync(address);
 
                 // Assert
                 Assert.IsNotNull(result);
-                Assert.AreEqual("Anna Nowak", result.Name);
+                Assert.AreEqual("Test City", result.City);
                 Assert.AreNotEqual(Guid.Empty, result.Id); 
-                Assert.AreEqual(1, context.Employees.Count());
+                Assert.AreEqual(1, context.Address.Count());
             }
         }
     }

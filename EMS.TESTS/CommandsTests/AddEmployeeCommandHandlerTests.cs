@@ -22,7 +22,7 @@ namespace EMS.TESTS.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_Should_AddEmployee_And_Return()
+        public async Task Handle_AddEmployee_And_Returns_Employee()
         {
             // Arrange
             var employeeToAdd = new EmployeeEntity
@@ -44,10 +44,7 @@ namespace EMS.TESTS.CommandsTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(employeeToAdd.Name, result.Name);
-            Assert.AreEqual(employeeToAdd.Email, result.Email);
-            Assert.AreEqual(employeeToAdd.Phone, result.Phone);
-            Assert.AreEqual(employeeToAdd.AppUserId, result.AppUserId);
+            Assert.AreEqual(employeeToAdd, result);
 
             _mockEmployeeRepository.Verify(repo => repo.AddEmployeeAsync(employeeToAdd), Times.Once);
         }
