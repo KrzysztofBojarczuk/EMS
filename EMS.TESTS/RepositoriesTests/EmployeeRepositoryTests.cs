@@ -12,7 +12,7 @@ namespace EMS.TESTS.Repository
     {
 
         [TestMethod]
-        public async Task GetUserEmployeesAsync_BySearchTerm_Returns()
+        public async Task GetUserEmployeesAsync_BySearchTerm_Returns_Employees()
         {
             // Arrange
             var userId = "user1";
@@ -43,7 +43,7 @@ namespace EMS.TESTS.Repository
         }
 
         [TestMethod]
-        public async Task GetUserNumberOfEmployeesAsync_ReturnsTotalCount()
+        public async Task GetUserNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
             var userId = "user1";
@@ -66,7 +66,7 @@ namespace EMS.TESTS.Repository
         }
 
         [TestMethod]
-        public async Task GetNumberOfEmployeesAsync_ReturnsTotalCount()
+        public async Task GetNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
             var employees = new List<EmployeeEntity>
@@ -88,7 +88,7 @@ namespace EMS.TESTS.Repository
         }
 
         [TestMethod]
-        public async Task GetEmployeesAsync_BySearchTerm_Returns()
+        public async Task GetEmployeesAsync_BySearchTerm_Returns_Employees()
         {
             // Arrange
             var searchTerm = "Tomasz";
