@@ -1,6 +1,9 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
+using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
+using EMS.INFRASTRUCTURE.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -113,6 +116,37 @@ namespace EMS.TESTS.Repository
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Items.Count);
             Assert.AreEqual(searchTerm, result.Items.First().Name);
+        }
+
+        [TestMethod]
+        public async Task AddEmployeeAsync_AddsEmployee_ReturnsEntity()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "AddEmployeeTestDb")
+                .Options;
+
+            var employee = new EmployeeEntity
+            {
+                Name = "Anna Nowak",
+                Email = "anna@example.com",
+                Phone = "123456789",
+                AppUserId = "user123"
+            };
+
+            using (var context = new AppDbContext(options))
+            {
+                var repository = new EmployeeRepository(context);
+
+                // Act
+                var result = await repository.AddEmployeeAsync(employee);
+
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual("Anna Nowak", result.Name);
+                Assert.AreNotEqual(Guid.Empty, result.Id); 
+                Assert.AreEqual(1, context.Employees.Count());
+            }
         }
     }
 }
