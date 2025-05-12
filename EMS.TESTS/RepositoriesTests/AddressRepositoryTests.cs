@@ -116,5 +116,25 @@ namespace EMS.TESTS.RepositoriesTests
                 Assert.IsNull(tasks.First().AddressId);
             }
         }
+
+        [TestMethod]
+        public async Task DeleteAddressAsync_WhenAddressDoesNotExist_ReturnsFalse()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            using (var context = new AppDbContext(options))
+            {
+                var repository = new AddressRepository(context);
+
+                // Act
+                var result = await repository.DeleteAddressAsync(Guid.NewGuid());
+
+                // Assert
+                Assert.IsFalse(result);
+            }
+        }
     }
 }
