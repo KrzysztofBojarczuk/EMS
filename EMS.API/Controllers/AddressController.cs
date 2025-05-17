@@ -17,17 +17,23 @@ namespace EMS.API.Controllers
     {
         [HttpGet("User")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserAddressAsync(string searchTerm = null)
+        public async Task<IActionResult> GetUserAddressAsync(int pageNumber, int pageSize, string searchTerm = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserAddressQuery(appUser.Id, searchTerm));
+            var paginatedAddresses = await sender.Send(new GetUserAddressQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
-            var addressDtos = mapper.Map<IEnumerable<AddressGetDto>>(result);
+            var addressDtos = mapper.Map<IEnumerable<AddressGetDto>>(paginatedAddresses.Items);
 
-            return Ok(addressDtos);
+            return Ok(new
+            {
+                AddressGet = addressDtos,
+                paginatedAddresses.TotalItems,
+                paginatedAddresses.TotalPages,
+                paginatedAddresses.PageIndex
+            });
         }
 
         [HttpPost()]

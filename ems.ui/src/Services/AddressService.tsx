@@ -1,12 +1,23 @@
 import axios from "axios";
-import { AddressGet, AddressPost } from "../Models/Address";
+import {
+  AddressGet,
+  AddressPost,
+  PaginatedAddressesponse,
+} from "../Models/Address";
 
 const api = "https://localhost:7256/api/";
 
-export const UserGetAddressService = async (searchTerm?: string) => {
-  const response = await axios.get<AddressGet[]>(api + "Address/User", {
-    params: { searchTerm },
-  });
+export const UserGetAddressService = async (
+  pageNumber: number,
+  pageSize: number,
+  searchTerm?: string
+) => {
+  const response = await axios.get<PaginatedAddressesponse>(
+    api + "Address/User",
+    {
+      params: { pageNumber, pageSize, searchTerm },
+    }
+  );
 
   return response.data;
 };

@@ -12,3 +12,10 @@ export interface AddressPost {
   number: string;
   zipCode: string;
 }
+
+export interface PaginatedAddressesponse {
+  addressGet: AddressGet[];
+  totalItems: number;
+  totalPages: number;
+  pageIndex: number;
+}
