@@ -1,6 +1,7 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
+using EMS.INFRASTRUCTURE.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMS.INFRASTRUCTURE.Repositories
@@ -46,7 +47,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Address.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<AddressEntity>> GetUserAddressesAsync(string appUserId, string searchTerm)
+        public async Task<PaginatedList<AddressEntity>> GetUserAddressesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Address.AsQueryable();
 
@@ -60,7 +61,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.Number.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return await query.ToListAsync();
+            return await PaginatedList<AddressEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
         public async Task<AddressEntity> UpdateAddressAsync(Guid addressId, AddressEntity entity)

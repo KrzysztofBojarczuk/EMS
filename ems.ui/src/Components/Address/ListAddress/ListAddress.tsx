@@ -15,6 +15,7 @@ import UpdateEmployee from "../../Employee/UpdateEmployee/UpdateEmployee.tsx";
 import UpdateAddress from "../UpdateAddress/UpdateAddress.tsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
+import { Paginator } from "primereact/paginator";
 
 type Props = {};
 
@@ -29,14 +30,26 @@ const ListAddress = (props: Props) => {
   );
   const [updateVisible, setUpdateVisible] = useState(false);
 
-  const fetchAddreses = async () => {
-    const data = await UserGetAddressService(searchTerm);
-    setAddresses(data);
+  const [firstAddress, setFirstAddress] = useState(0);
+  const [rowsAddress, setRowsAddress] = useState(10);
+  const [totalAddress, setTotalAdresses] = useState(0);
+
+  const fetchAddreses = async (page: number, size: number) => {
+    const data = await UserGetAddressService(page, size, searchTerm);
+    console.log(data);
+    setAddresses(data.addressGet);
+    setTotalAdresses(data.totalItems);
   };
 
   useEffect(() => {
-    fetchAddreses();
+    fetchAddreses(1, rowsAddress);
   }, [searchTerm]);
+
+  const onPageChangeAddreses = (event: any) => {
+    setFirstAddress(event.first);
+    setRowsAddress(event.rows);
+    fetchAddreses(event.page + 1, event.rows);
+  };
 
   const showDeleteConfirmation = (id: string) => {
     setDeleteId(id);
@@ -46,7 +59,7 @@ const ListAddress = (props: Props) => {
   const handleConfirmDelete = async () => {
     if (deleteId) {
       await UserDeleteAddressService(deleteId);
-      fetchAddreses();
+      fetchAddreses(1, rowsAddress);
     }
     setConfirmVisible(false);
     setDeleteId(null);
@@ -80,7 +93,7 @@ const ListAddress = (props: Props) => {
         >
           <AddAddress
             onClose={() => setVisible(false)}
-            onAddSuccess={fetchAddreses}
+            onAddSuccess={() => fetchAddreses(1, rowsAddress)}
           />
         </Dialog>
       </div>
@@ -113,6 +126,14 @@ const ListAddress = (props: Props) => {
           )}
         ></Column>
       </DataTable>
+      <Paginator
+        first={firstAddress}
+        rows={rowsAddress}
+        totalRecords={totalAddress}
+        onPageChange={onPageChangeAddreses}
+        rowsPerPageOptions={[5, 10, 20, 30]}
+        style={{ border: "none" }}
+      />
 
       <ConfirmationDialog
         visible={confirmVisible}
@@ -130,7 +151,7 @@ const ListAddress = (props: Props) => {
           <UpdateAddress
             address={selectedAddress}
             onClose={() => setUpdateVisible(false)}
-            onUpdateSuccess={fetchAddreses}
+            onUpdateSuccess={() => fetchAddreses(1, rowsAddress)}
           />
         )}
       </Dialog>
