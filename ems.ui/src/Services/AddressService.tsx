@@ -26,6 +26,17 @@ export const UserPostAddressService = async (addressPost: AddressPost) => {
   return await axios.post<AddressPost>(api + "Address", addressPost);
 };
 
+export const UserGetAddressForTaskService = async (searchTerm?: string) => {
+  const response = await axios.get<AddressGet[]>(
+    api + "Address/UserAddressesForTask",
+    {
+      params: { searchTerm },
+    }
+  );
+
+  return response.data;
+};
+
 export const UserDeleteAddressService = async (id: string) => {
   const response = await axios.delete(`${api}Address/${id}`);
   return response;
