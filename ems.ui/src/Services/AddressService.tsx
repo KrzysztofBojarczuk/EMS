@@ -22,6 +22,17 @@ export const UserGetAddressService = async (
   return response.data;
 };
 
+export const UserGetAddressForTaskService = async (searchTerm?: string) => {
+  const response = await axios.get<AddressGet[]>(
+    api + "Address/UserAddressesForTask",
+    {
+      params: { searchTerm },
+    }
+  );
+
+  return response.data;
+};
+
 export const UserPostAddressService = async (addressPost: AddressPost) => {
   return await axios.post<AddressPost>(api + "Address", addressPost);
 };
