@@ -36,6 +36,7 @@ const ListAddress = (props: Props) => {
 
   const fetchAddreses = async (page: number, size: number) => {
     const data = await UserGetAddressService(page, size, searchTerm);
+    console.log(data);
     setAddresses(data.addressGet);
     setTotalAdresses(data.totalItems);
   };

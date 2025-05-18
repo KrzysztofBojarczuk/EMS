@@ -64,25 +64,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<AddressEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<IEnumerable<AddressEntity>> GetUserAddressesForTaskAsync(string appUserId, string searchTerm)
-        {
-            var query = dbContext.Address.AsQueryable();
-
-            query = query.Where(x => x.AppUserId == appUserId);
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                query = query.Where(x => x.Street.ToLower().Contains(searchTerm.ToLower())
-                                      || x.City.ToLower().Contains(searchTerm.ToLower())
-                                      || x.ZipCode.ToLower().Contains(searchTerm.ToLower())
-                                      || x.Number.ToLower().Contains(searchTerm.ToLower()));
-
-
-            }
-
-            return await query.ToListAsync();
-        }
-
         public async Task<AddressEntity> UpdateAddressAsync(Guid addressId, AddressEntity entity)
         {
             var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId);

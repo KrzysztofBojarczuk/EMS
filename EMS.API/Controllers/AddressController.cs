@@ -36,21 +36,6 @@ namespace EMS.API.Controllers
             });
         }
 
-        [HttpGet("UserAddressesForTask")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserAddressForTaskAsync(string searchTerm = null)
-        {
-            var username = User.GetUsername();
-
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var result = await sender.Send(new GetUserAddressForTaskQuery(appUser.Id, searchTerm));
-
-            var addressDtos = mapper.Map<IEnumerable<AddressGetDto>>(result);
-
-            return Ok(addressDtos);
-        }
-
         [HttpPost()]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> AddAddressAsync([FromBody] AddressCreateDto addressDto)

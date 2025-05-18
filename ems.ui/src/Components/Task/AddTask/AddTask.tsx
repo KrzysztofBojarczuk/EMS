@@ -5,10 +5,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { AutoComplete } from "primereact/autocomplete";
-import {
-  UserGetAddressForTaskService,
-  UserGetAddressService,
-} from "../../../Services/AddressService.tsx";
+import { UserGetAddressService } from "../../../Services/AddressService.tsx";
 import { AddressGet } from "../../../Models/Address.ts";
 import { Calendar } from "primereact/calendar";
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
@@ -58,7 +55,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   }, [searchTermList]);
 
   const fetchAddresses = async () => {
-    const data = await UserGetAddressForTaskService();
+    const data = await UserGetAddressService();
     setAddresses(data);
   };
 
