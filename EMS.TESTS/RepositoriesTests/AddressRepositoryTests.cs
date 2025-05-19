@@ -1,23 +1,37 @@
 ﻿using EMS.CORE.Entities;
+using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace EMS.TESTS.RepositoriesTests
 {
     [TestClass]
     public class AddressRepositoryTests
     {
+        private AppDbContext _context;
+        private IAddressRepository _repository;
+        private Mock<IAddressRepository> _mockAdressRepository;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            _context = new AppDbContext(options);
+            _repository = new AddressRepository(_context);
+
+            _mockAdressRepository = new Mock<IAddressRepository>();
+        }
 
         [TestMethod]
         public async Task AddEmployeeAsync_Returns_Employee()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "AddAddressTestDb")
-                .Options;
-
             var address = new AddressEntity
             {
                 City = "Test City",
@@ -27,35 +41,25 @@ namespace EMS.TESTS.RepositoriesTests
                 AppUserId = "user123"
             };
 
-            using (var context = new AppDbContext(options))
-            {
-                var repository = new AddressRepository(context);
+            // Act
+            var result = await _repository.AddAddressAsync(address);
 
-                // Act
-                var result = await repository.AddAddressAsync(address);
-
-                // Assert
-                Assert.IsNotNull(result);
-                Assert.AreEqual("Test City", result.City);
-                Assert.AreNotEqual(Guid.Empty, result.Id); 
-                Assert.AreEqual(1, context.Address.Count());
-            }
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Test City", result.City);
+            Assert.AreNotEqual(Guid.Empty, result.Id);
+            Assert.AreEqual(1, _context.Address.Count());
         }
 
         [TestMethod]
         public async Task DeleteAddressAsync_WhenAddressExists_DeletesAddress_AndNullifies_TaskReferences()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-
             var addressId1 = Guid.NewGuid();
             var addressId2 = Guid.NewGuid();
 
-            using (var context = new AppDbContext(options))
-            {
-                context.Address.Add(new AddressEntity
+            _context.Address.AddRange(
+                new AddressEntity
                 {
                     Id = addressId1,
                     City = "Sample City 1",
@@ -63,9 +67,8 @@ namespace EMS.TESTS.RepositoriesTests
                     Number = "10",
                     ZipCode = "00-001",
                     AppUserId = "user1"
-                });
-
-                context.Address.Add(new AddressEntity
+                },
+                new AddressEntity
                 {
                     Id = addressId2,
                     City = "Sample City 2",
@@ -73,68 +76,54 @@ namespace EMS.TESTS.RepositoriesTests
                     Number = "10",
                     ZipCode = "00-001",
                     AppUserId = "user1"
-                });
+                }
+            );
 
-                context.Tasks.Add(new TaskEntity
+            _context.Tasks.AddRange(
+                new TaskEntity
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Test Task 2",
-                    Description = "Test Description 2", 
-                    AppUserId = "user1",              
+                    Name = "Test Task 1",
+                    Description = "Test Description",
+                    AppUserId = "user1",
                     AddressId = addressId1
-                });
-
-                context.Tasks.Add(new TaskEntity
+                },
+                new TaskEntity
                 {
                     Id = Guid.NewGuid(),
                     Name = "Test Task 2",
-                    Description = "Test Description 2",
+                    Description = "Test Description",
                     AppUserId = "user1",
                     AddressId = addressId2
-                });
+                }
+            );
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
-            using (var context = new AppDbContext(options))
-            {
-                var repository = new AddressRepository(context);
+            var addressCountBefore = _context.Address.Count();
 
-                var addressCountBefore = context.Address.Count();
+            // Act
+            var result = await _repository.DeleteAddressAsync(addressId1);
 
-                // Act
-                var result = await repository.DeleteAddressAsync(addressId1);
+            var addressCountAfter = _context.Address.Count();
 
-                var addressCountAfter = context.Address.Count() +1 ;
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(addressCountBefore - 1, addressCountAfter);
+            Assert.IsNull(_context.Address.FirstOrDefault(a => a.Id == addressId1));
 
-                // Assert
-                Assert.IsTrue(result);
-                Assert.AreEqual(addressCountBefore, addressCountAfter);
-                Assert.IsNull(context.Address.FirstOrDefault(a => a.Id == addressId1));
-
-                var tasks = context.Tasks.ToList();
-                Assert.IsNull(tasks.First().AddressId);
-            }
+            var tasks = _context.Tasks.ToList();
+            Assert.IsTrue(tasks.All(t => t.AddressId != addressId1));
         }
 
         [TestMethod]
         public async Task DeleteAddressAsync_WhenAddressDoesNotExist_ReturnsFalse()
         {
-            // Arrange
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
+            // Act
+            var result = await _repository.DeleteAddressAsync(Guid.NewGuid());
 
-            using (var context = new AppDbContext(options))
-            {
-                var repository = new AddressRepository(context);
-
-                // Act
-                var result = await repository.DeleteAddressAsync(Guid.NewGuid());
-
-                // Assert
-                Assert.IsFalse(result);
-            }
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }
