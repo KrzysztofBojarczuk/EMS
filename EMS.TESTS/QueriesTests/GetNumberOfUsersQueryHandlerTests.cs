@@ -33,5 +33,21 @@ namespace EMS.TESTS.QueriesTests
             // Assert
             Assert.AreEqual(expectedUserCount, result);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_Zero_When_NoUsers()
+        {
+            // Arrange
+            _mockUserRepository.Setup(repo => repo.GetNumberOfUsersAsync())
+                .ReturnsAsync(0);
+
+            var query = new GetNumberOfUsersQuery();
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.AreEqual(0, result);
+        }
     }
 }
