@@ -47,5 +47,24 @@ namespace EMS.TESTS.QueriesTests
             Assert.AreEqual(expectedUsers.Count, result.Items.Count);
             Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_EmptyList_When_NoUsersFound()
+        {
+            // Arrange
+            var query = new GetAllUserQuery(1, 10, "nonexistent");
+            var expectedResult = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, 1, 10);
+
+            _mockUserRepository.Setup(repo =>
+                    repo.GettAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm))
+                .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count);
+        }
     }
 }
