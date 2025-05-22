@@ -49,6 +49,36 @@ namespace EMS.TESTS.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_BySearchTerm_Returns_Users()
+        {
+            // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            var searchTerm = "Johb";
+
+            var expectedUsers = new List<AppUserEntity>
+            {
+               new AppUserEntity { UserName = "John", Email = "john@example.com" },
+               new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
+            };
+
+            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count, pageNumber, pageSize);
+
+            _mockUserRepository.Setup(repo => repo.GettAllUsersAsync(pageNumber, pageSize, searchTerm))
+                .ReturnsAsync(expectedResult);
+
+            var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedUsers.Count, result.Items.Count);
+            Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_EmptyList_When_NoUsersFound()
         {
             // Arrange
