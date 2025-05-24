@@ -34,5 +34,23 @@ namespace EMS.TESTS.CommandTests
             Assert.IsTrue(result);
             _mockUserRepository.Verify(repo => repo.DeleteUserAsync(userId), Times.Once);
         }
+
+
+        [TestMethod]
+        public async Task Handle_ShouldReturnFalse_WhenUserDeletionFails()
+        {
+            // Arrange
+            var userId = "user456";
+            _mockUserRepository.Setup(repo => repo.DeleteUserAsync(userId)).ReturnsAsync(false);
+
+            var command = new DeleteUserCommand(userId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
+            _mockUserRepository.Verify(repo => repo.DeleteUserAsync(userId), Times.Once);
+        }
     }
 }
