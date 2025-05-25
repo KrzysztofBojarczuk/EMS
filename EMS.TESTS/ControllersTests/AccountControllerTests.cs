@@ -18,7 +18,6 @@ namespace EMS.TESTS.ControllersTests
         {
             _mockSender = new Mock<ISender>();
 
-            // Inne zależności są tu niepotrzebne, bo testujemy tylko jedną metodę
             _controller = new AccountController(null, null, null, _mockSender.Object);
         }
 
