@@ -1,4 +1,5 @@
 ﻿using EMS.API.Controllers;
+using EMS.APPLICATION.Features.Account.Commands;
 using EMS.APPLICATION.Features.Account.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,31 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
+        public async Task DeleteEmployeeAsync_ReturnsOkResult_WhenDeletedSuccessfully()
+        {
+            // Arrange
+            var userId = "test-user-id";
+            var expectedResult = true;
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.DeleteEmployeeAsync(userId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(expectedResult, okResult.Value);
+        }
+
+        [TestMethod]
         public async Task GetNumberOfUsersAsync_ReturnsOkResult_WithNumber()
         {
             // Arrange
             var expectedNumberOfUsers = 42;
-            _mockSender.Setup(s => s.Send(It.IsAny<GetNumberOfUsersQuery>(), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.IsAny<GetNumberOfUsersQuery>(), It.IsAny<CancellationToken>()))
                        .ReturnsAsync(expectedNumberOfUsers);
 
             // Act

@@ -33,7 +33,7 @@ namespace EMS.TESTS.QueriesTests
              };
 
             _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeesForListAsync(appUserId, searchTerm))
-                .ReturnsAsync(employees.Where(e => e.Name.Contains(searchTerm)).ToList());
+                .ReturnsAsync(employees.Where(x => x.Name.Contains(searchTerm)).ToList());
 
             var query = new GetUserEmployeesForListQuery(appUserId, searchTerm);
 
@@ -60,7 +60,7 @@ namespace EMS.TESTS.QueriesTests
             };
 
             _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeesForListAsync(appUserId, searchTerm))
-                .ReturnsAsync(employees.Where(e => e.Name.Contains(searchTerm)).ToList());
+                .ReturnsAsync(employees.Where(x => x.Name.Contains(searchTerm)).ToList());
 
             var query = new GetUserEmployeesForListQuery(appUserId, searchTerm);
 
