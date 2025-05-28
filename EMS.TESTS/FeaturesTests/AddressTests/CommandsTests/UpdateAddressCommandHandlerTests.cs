@@ -1,0 +1,51 @@
+﻿using EMS.APPLICATION.Features.Address.Commands;
+using EMS.CORE.Entities;
+using EMS.CORE.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+
+namespace EMS.TESTS.Features.AddressTests.CommandsTests
+{
+    [TestClass]
+    public class UpdateAddressCommandHandlerTests
+    {
+        private Mock<IAddressRepository> _mockAddressRepository;
+        private UpdateAddressCommandHandler _handler;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _mockAddressRepository = new Mock<IAddressRepository>();
+            _handler = new UpdateAddressCommandHandler(_mockAddressRepository.Object);
+        }
+
+        [TestMethod]
+        public async Task Handle_UpdateAddress_ReturnsUpdatedAddress()
+        {
+            // Arrange
+            var addressId = Guid.NewGuid();
+            var updatedAddress = new AddressEntity
+            {
+                City = "Updated City",
+                Street = "Updated Street",
+                Number = "456",
+                ZipCode = "11-111",
+                AppUserId = "user456"
+            };
+
+            _mockAddressRepository
+                .Setup(repo => repo.UpdateAddressAsync(addressId, updatedAddress))
+                .ReturnsAsync(updatedAddress);
+
+            var command = new UpdateAddressCommand(addressId, updatedAddress);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(updatedAddress, result);
+            _mockAddressRepository.Verify(repo => repo.UpdateAddressAsync(addressId, updatedAddress), Times.Once);
+        }
+    }
+}
