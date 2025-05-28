@@ -5,7 +5,7 @@ using EMS.INFRASTRUCTURE.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace EMS.TESTS.QueriesTests
+namespace EMS.TESTS.Features.AccountTests.QueriesTests
 {
     [TestClass]
     public class GetAllUserQueryHandlerTests

@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace EMS.TESTS.CommandsTests
+namespace EMS.TESTS.Features.AddressTests.CommandsTests
 {
     [TestClass]
     public class AddAddressCommandHandlerTests

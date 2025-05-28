@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace EMS.TESTS.QueriesTests
+namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
 {
     [TestClass]
     public class GetUserEmployeesForListQueryHandlerTests

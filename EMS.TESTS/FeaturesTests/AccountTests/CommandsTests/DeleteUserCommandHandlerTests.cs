@@ -3,7 +3,7 @@ using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace EMS.TESTS.CommandTests
+namespace EMS.TESTS.Features.AccountTests.CommandsTests
 {
     [TestClass]
     public class DeleteUserCommandHandlerTests

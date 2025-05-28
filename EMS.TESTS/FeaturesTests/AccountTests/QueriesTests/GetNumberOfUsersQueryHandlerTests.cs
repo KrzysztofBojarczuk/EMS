@@ -3,7 +3,7 @@ using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace EMS.TESTS.QueriesTests
+namespace EMS.TESTS.Features.AccountTests.QueriesTests
 {
     [TestClass]
     public class GetNumberOfUsersQueryHandlerTests
