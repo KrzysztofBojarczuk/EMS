@@ -132,7 +132,7 @@ namespace EMS.TESTS.Repository
         }
 
         [TestMethod]
-        public async Task AddEmployeeAsync_AddsEmployee_ReturnsEntity()
+        public async Task AddEmployeeAsync_AddsEmployee_Returns_Employee()
         {
             // Arrange
             var employee = new EmployeeEntity

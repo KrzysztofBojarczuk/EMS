@@ -15,5 +15,4 @@ namespace EMS.APPLICATION.Features.Address.Commands
             return await addressRepository.UpdateAddressAsync(request.AddressId, request.Address);
         }
     }
-
 }
