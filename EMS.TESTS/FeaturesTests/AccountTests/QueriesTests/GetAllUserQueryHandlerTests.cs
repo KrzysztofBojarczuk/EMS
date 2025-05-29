@@ -79,7 +79,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_Returns_EmptyList_When_NoUsersFound()
+        public async Task Handle_Returns_EmptyList_When_UsersNotFound()
         {
             // Arrange
             var query = new GetAllUserQuery(1, 10, "nonexistent");
