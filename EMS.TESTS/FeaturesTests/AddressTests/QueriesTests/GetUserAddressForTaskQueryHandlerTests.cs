@@ -25,7 +25,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             // Arrange
             var appUserId = "user123";
             var searchTerm = "Street";
-            var expectedAddresses = new List<AddressEntity>
+            var addresses = new List<AddressEntity>
             {
                 new AddressEntity { City = "City A", Street = "Test Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
                 new AddressEntity { City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
@@ -33,7 +33,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
 
             _mockAddressRepository
                 .Setup(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm))
-                .ReturnsAsync(expectedAddresses);
+                .ReturnsAsync(addresses);
 
             var query = new GetUserAddressForTaskQuery(appUserId, searchTerm);
 
@@ -43,7 +43,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
-            CollectionAssert.AreEqual(expectedAddresses, new List<AddressEntity>(result));
+            CollectionAssert.AreEqual(addresses, new List<AddressEntity>(result));
             _mockAddressRepository.Verify(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
         }
     }
