@@ -25,6 +25,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             // Arrange
             var appUserId = "user123";
             var searchTerm = "Street";
+
             var addresses = new List<AddressEntity>
             {
                 new AddressEntity { City = "City A", Street = "Test Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
@@ -44,6 +45,35 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
             CollectionAssert.AreEqual(addresses, new List<AddressEntity>(result));
+            _mockAddressRepository.Verify(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
+        }
+
+
+        [TestMethod]
+        public async Task Handle_Returns_EmptyLists_When_Addresses_NotFound()
+        {
+            // Arrange
+            var appUserId = "user123";
+            var searchTerm = "NonExistentName";
+
+            var addresses = new List<AddressEntity>
+            {
+                new AddressEntity { City = "City A", Street = "Test Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
+            };
+
+            _mockAddressRepository
+                .Setup(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm))
+                .ReturnsAsync(addresses.Where(x => x.Street.Contains(searchTerm)).ToList());
+
+            var query = new GetUserAddressForTaskQuery(appUserId, searchTerm);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
             _mockAddressRepository.Verify(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
         }
     }
