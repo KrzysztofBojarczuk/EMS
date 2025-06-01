@@ -268,14 +268,14 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         header="Confirm Deletion of List Employee"
         message="Are you sure you want to delete this List employee?"
         onConfirm={handleConfirmDeleteListEmployee}
-        onCancel={() => setConfirmEmployeeVisible(false)}
+        onCancel={() => setConfirmListEmployeeVisible(false)}
       />
       <ConfirmationDialog
         visible={confirmEmployeeVisible}
         header="Confirm Deletion of Employee"
         message="Are you sure you want to delete this employee?"
         onConfirm={handleConfirmDeleteEmployee}
-        onCancel={() => setConfirmListEmployeeVisible(false)}
+        onCancel={() => setConfirmEmployeeVisible(false)}
       />
       <Dialog
         header="Update Employee"

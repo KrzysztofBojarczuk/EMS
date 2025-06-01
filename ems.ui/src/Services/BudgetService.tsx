@@ -9,10 +9,11 @@ export const UserGetBudgetService = async () => {
 };
 
 export const UserPostBudgetService = async (budgetPost: BudgetPost) => {
-  return await axios.post<BudgetPost>(api + "Budget", budgetPost);
+  const response = await axios.post<BudgetPost>(api + "Budget", budgetPost);
+  return response.data;
 };
 
 export const UserDeleteBudgetService = async (id: string) => {
   const response = await axios.delete(`${api}Budget/${id}`);
-  return response;
+  return response.data;
 };

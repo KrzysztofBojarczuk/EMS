@@ -28,25 +28,28 @@ export const UserGetTaskService = async (
 };
 
 export const UserPostTaskService = async (taskPost: TaskPost) => {
-  return await axios.post<TaskPost>(api + "Task", taskPost);
+  const response = await axios.post<TaskPost>(api + "Task", taskPost);
+  return response.data;
 };
 
 export const DeleteTaskService = async (id: string) => {
   const response = await axios.delete(`${api}Task/${id}`);
-  return response;
+  return response.data;
 };
 
 export const UserUpdateTaskService = async (taskPost: TaskPost, id: string) => {
-  return await axios.put<TaskPost>(`${api}Task/${id}`, taskPost);
+  const response = await axios.put<TaskPost>(`${api}Task/${id}`, taskPost);
+  return response.data;
 };
 
 export const UserUpdateTaskStatusService = async (
   id: string,
   status: number
 ) => {
-  return await axios.patch(`${api}Task/${id}/status`, status, {
+  const response = await axios.patch(`${api}Task/${id}/status`, status, {
     headers: {
       "Content-Type": "application/json",
     },
   });
+  return response.data;
 };

@@ -18,6 +18,8 @@ const MakeReservation: React.FC<Props> = ({
   onClose,
   onReservationSuccess,
 }) => {
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+
   const {
     control,
     handleSubmit,
@@ -32,10 +34,16 @@ const MakeReservation: React.FC<Props> = ({
   });
 
   const onSubmit = async (data: ReservationPost) => {
-    await UserPostReservationService(data);
-    onReservationSuccess();
-    onClose();
-    reset();
+    try {
+      await UserPostReservationService(data);
+      onReservationSuccess();
+      onClose();
+      reset();
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data);
+      }
+    }
   };
 
   return (
@@ -84,7 +92,7 @@ const MakeReservation: React.FC<Props> = ({
             </div>
           )}
         />
-
+        {errorMessage && <p className="text-red mt-2">{errorMessage}</p>}
         <div className="inline-flex flex-column gap-2">
           <Button label="Submit" type="submit" />
         </div>

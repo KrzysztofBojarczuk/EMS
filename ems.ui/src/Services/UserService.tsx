@@ -14,13 +14,12 @@ export const UserGetService = async (
       params: { pageNumber, pageSize, searchTerm },
     }
   );
-
   return response.data;
 };
 
 export const UserDeleteService = async (id: string) => {
   const response = await axios.delete(`${api}account/${id}`);
-  return response;
+  return response.data;
 };
 
 export const GetNumberOfUsersService = async () => {

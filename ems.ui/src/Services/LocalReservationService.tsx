@@ -20,16 +20,18 @@ export const UserGetLocalService = async (
 };
 
 export const UserPostLocalService = async (localPost: LocalPost) => {
-  return await axios.post<LocalPost>(api + "Local", localPost);
+  const response = await axios.post<LocalPost>(api + "Local", localPost);
+  return response.data;
 };
 
 export const UserPostReservationService = async (
   reservationPost: ReservationPost
 ) => {
-  return await axios.post<ReservationPost>(
+  const response = await axios.post<ReservationPost>(
     api + "Reservation",
     reservationPost
   );
+  return response.data;
 };
 
 export const UserGetReservationService = async (
@@ -49,10 +51,10 @@ export const UserGetReservationService = async (
 
 export const DeleteReservationService = async (id: string) => {
   const response = await axios.delete(`${api}Reservation/${id}`);
-  return response;
+  return response.data;
 };
 
 export const DeleteLocalService = async (id: string) => {
   const response = await axios.delete(`${api}Local/${id}`);
-  return response;
+  return response.data;
 };

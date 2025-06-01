@@ -33,7 +33,10 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new MakeReservationCommand(reservationEntity));
 
-            var reservationGet = mapper.Map<ReservationGetDto>(result);
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            var reservationGet = mapper.Map<ReservationGetDto>(result.Value);
 
             return Ok(reservationGet);
         }

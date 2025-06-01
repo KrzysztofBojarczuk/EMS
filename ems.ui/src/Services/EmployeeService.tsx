@@ -52,14 +52,18 @@ export const UserPostEmployeesService = async (employeePost: EmployeePost) => {
 
 export const UserDeleteEmployeesService = async (id: string) => {
   const response = await axios.delete(`${api}Employee/${id}`);
-  return response;
+  return response.data;
 };
 
 export const UserUpdateEmployeesService = async (
   employeePost: EmployeePost,
   id: string
 ) => {
-  return await axios.put<EmployeePost>(`${api}Employee/${id}`, employeePost);
+  const response = await axios.put<EmployeePost>(
+    `${api}Employee/${id}`,
+    employeePost
+  );
+  return response.data;
 };
 
 export const UserGetListEmployeesService = async (searchTerm: string) => {
@@ -97,5 +101,5 @@ export const UserPostListEmployeesService = async (
 
 export const UserDeleteEmployeesListService = async (id: string) => {
   const response = await axios.delete(`${api}Employee/EmployeeList/${id}`);
-  return response;
+  return response.data;
 };
