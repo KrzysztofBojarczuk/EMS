@@ -1,4 +1,5 @@
-﻿using EMS.CORE.Entities;
+﻿using EMS.CORE.Common;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -8,7 +9,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class ReservationRepository(AppDbContext dbContext) : IReservationRepository
     {
-        public async Task<ReservationEntity> MakeReservationAsync(ReservationEntity reservation)
+        public async Task<Result<ReservationEntity>> MakeReservationAsync(ReservationEntity reservation)
         {
             reservation.Id = Guid.NewGuid();
 
@@ -17,9 +18,14 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             var local = await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == reservation.LocalId);
 
-            if (local is null || local.NeedsRepair)
+            if (local is null)
             {
-                return null; // Nie można zarezerwować niedostępnego lokalu
+                return Result<ReservationEntity>.Failure("Local has not found"); // Nie można zarezerwować niedostępnego lokalu
+            }
+
+            if (local.NeedsRepair)
+            {
+                return Result<ReservationEntity>.Failure("Lokcal is in reapir"); // Nie można zarezerwować niedostępnego lokalu
             }
 
             var isBusy = await dbContext.Reservations.Where(x => x.LocalId == reservation.LocalId)
@@ -28,14 +34,14 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                                                  || (reservation.CheckInDate <= x.CheckInDate && reservation.CheckOutDate >= x.CheckOutDate)); // obejmuje całą istniejącą rezerwacj
             if (isBusy)
             {
-                return null; // Lokal jest zajęty
+                return Result<ReservationEntity>.Failure("Local has reservation");
             }
 
             //dbContext.Locals.Update(local);
             dbContext.Reservations.Add(reservation);
             await dbContext.SaveChangesAsync();
 
-            return reservation;
+            return Result<ReservationEntity>.Success(reservation);
         }
 
         public async Task<bool> DeleteReservationAsync(Guid reservationId)

@@ -25,13 +25,14 @@ export const UserPostTransactionService = async (
   transactionPost: TransactionPost
 ) => {
   await UserGetBudgetService();
-  return await axios.post<TransactionPost>(
+  const response = await axios.post<TransactionPost>(
     `${api}Transaction/${budgetId}`,
     transactionPost
   );
+  return response.data;
 };
 
 export const UserDeleteTransactionService = async (id: string) => {
   const response = await axios.delete(`${api}Transaction/${id}`);
-  return response;
+  return response.data;
 };
