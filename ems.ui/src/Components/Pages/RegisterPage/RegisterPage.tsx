@@ -92,7 +92,18 @@ const RegisterPage = () => {
           <Controller
             name="password"
             control={control}
-            rules={{ required: "Password is required" }}
+            rules={{
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters long",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/,
+                message:
+                  "Password must contain upper and lowercase letters, a digit, and a special character",
+              },
+            }}
             render={({ field }) => (
               <div className="inline-flex flex-column gap-2">
                 <label className="text-primary-50 font-semibold">
@@ -108,7 +119,18 @@ const RegisterPage = () => {
           <Controller
             name="confirmPassword"
             control={control}
-            rules={{ required: "Confirm password is required" }}
+            rules={{
+              required: "Confirm password is required",
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters long",
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/,
+                message:
+                  "Password must contain upper and lowercase letters, a digit, and a special character",
+              },
+            }}
             render={({ field }) => (
               <div className="inline-flex flex-column gap-2">
                 <label className="text-primary-50 font-semibold">
