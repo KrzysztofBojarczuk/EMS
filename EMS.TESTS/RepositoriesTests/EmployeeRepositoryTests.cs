@@ -132,6 +132,31 @@ namespace EMS.TESTS.Repository
         }
 
         [TestMethod]
+        public async Task GetEmployeeByIdAsync_Returns_Employee()
+        {
+            // Arrange
+            var employee = new EmployeeEntity
+            {
+                Name = "Anna Nowak",
+                Email = "anna@example.com",
+                Phone = "123456789",
+                AppUserId = "user123"
+            };
+
+            // Act    await _context.Employees.AddAsync(employee);
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetEmployeeByIdAsync(employee.Id);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(employee.Id, result.Id);
+            Assert.AreEqual("Anna Nowak", result.Name);
+        }
+
+        [TestMethod]
         public async Task AddEmployeeAsync_AddsEmployee_Returns_Employee()
         {
             // Arrange
