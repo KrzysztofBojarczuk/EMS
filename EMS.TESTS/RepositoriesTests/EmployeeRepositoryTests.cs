@@ -157,6 +157,55 @@ namespace EMS.TESTS.Repository
         }
 
         [TestMethod]
+        public async Task UpdateEmployeeAsync_WhenEntityIsNull_ReturnsNull()
+        {
+            // Arrange
+            var employeeId = Guid.NewGuid();
+
+            // Act
+            var result = await _repository.UpdateEmployeeAsync(employeeId, null);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task UpdateEmployeeAsync_WhenEntityIsNotNullAndExists_UpdatesAndReturnsEmployee()
+        {
+            // Arrange
+            var originalEmployee = new EmployeeEntity
+            {
+                Name = "Tomasz Wójcik",
+                Email = "tomasz@example.com",
+                Phone = "111222333",
+                Salary = 4000,
+                AppUserId = "user1"
+            };
+
+            await _context.Employees.AddAsync(originalEmployee);
+            await _context.SaveChangesAsync();
+
+            var updatedEmployee = new EmployeeEntity
+            {
+                Name = "Tomasz Nowy",
+                Email = "nowy@example.com",
+                Phone = "444555666",
+                Salary = 6500
+            };
+
+            // Act
+            var result = await _repository.UpdateEmployeeAsync(originalEmployee.Id, updatedEmployee);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(originalEmployee.Id, result.Id);
+            Assert.AreEqual("Tomasz Nowy", result.Name);
+            Assert.AreEqual("nowy@example.com", result.Email);
+            Assert.AreEqual("444555666", result.Phone);
+            Assert.AreEqual(6500, result.Salary);
+        }
+
+        [TestMethod]
         public async Task AddEmployeeAsync_AddsEmployee_Returns_Employee()
         {
             // Arrange
