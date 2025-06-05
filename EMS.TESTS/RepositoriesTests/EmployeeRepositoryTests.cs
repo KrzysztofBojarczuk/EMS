@@ -206,6 +206,16 @@ namespace EMS.TESTS.Repository
         }
 
         [TestMethod]
+        public async Task DeleteEmployeeAsync_WhenEmployeeDoesNotExist_ReturnsFalse()
+        {
+            // Act
+            var result = await _repository.DeleteEmployeeAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
         public async Task AddEmployeeAsync_AddsEmployee_Returns_Employee()
         {
             // Arrange
