@@ -10,7 +10,7 @@ Tasks:
 ![3](https://github.com/user-attachments/assets/789ff925-cd37-40ef-87c9-ca7297308d84)
 ![4](https://github.com/user-attachments/assets/b39781d5-d7c5-4e59-b237-2f5b8d553700)
 
-LocalsAndReservations:
+Locals and Reservations:
 ![15](https://github.com/user-attachments/assets/9baafa4e-8ee7-4b4e-bef7-b0a1ca647317)
 ![16](https://github.com/user-attachments/assets/abaed69e-c142-4e05-90be-22e546d4412b)
 ![17](https://github.com/user-attachments/assets/acb10068-8431-4f45-9b0b-75cf12280122)
