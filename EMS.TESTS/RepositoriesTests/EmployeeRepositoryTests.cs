@@ -57,7 +57,7 @@ namespace EMS.TESTS.Repository
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Items.Count);
-            Assert.AreEqual("Tomasz", result.Items.First().Name);
+            Assert.AreEqual(employees[2].Name, result.Items.First().Name);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace EMS.TESTS.Repository
             var count = await _mockEmployeeRepository.Object.GetUserNumberOfEmployeesAsync(userId);
 
             // Assert
-            Assert.AreEqual(3, count);
+            Assert.AreEqual(employees.Count(), count);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace EMS.TESTS.Repository
             var count = await _mockEmployeeRepository.Object.GetNumberOfEmployeesAsync();
 
             // Assert
-            Assert.AreEqual(3, count);
+            Assert.AreEqual(employees.Count(), count);
         }
 
         [TestMethod]
@@ -128,7 +128,7 @@ namespace EMS.TESTS.Repository
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Items.Count);
-            Assert.AreEqual("Tomasz", result.Items.First().Name);
+            Assert.AreEqual(employees[2].Name, result.Items.First().Name);
         }
 
         [TestMethod]
@@ -153,7 +153,7 @@ namespace EMS.TESTS.Repository
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(employee.Id, result.Id);
-            Assert.AreEqual("Anna Nowak", result.Name);
+            Assert.AreEqual(employee.Name, result.Name);
         }
 
         [TestMethod]
@@ -199,10 +199,38 @@ namespace EMS.TESTS.Repository
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(originalEmployee.Id, result.Id);
-            Assert.AreEqual("Tomasz Nowy", result.Name);
-            Assert.AreEqual("nowy@example.com", result.Email);
-            Assert.AreEqual("444555666", result.Phone);
+            Assert.AreEqual(updatedEmployee.Name, result.Name);
+            Assert.AreEqual(updatedEmployee.Email, result.Email);
+            Assert.AreEqual(updatedEmployee.Phone, result.Phone);
             Assert.AreEqual(6500, result.Salary);
+        }
+
+        [TestMethod]
+        public async Task DeleteEmployeeAsync_WhenEmployeeExists_ReturnsTrue()
+        {
+            // Arrange
+            var employee = new EmployeeEntity
+            {
+                Name = "Anna Kowalska",
+                Email = "anna.k@example.com",
+                Phone = "987654321",
+                AppUserId = "user999"
+            };
+
+            await _context.Employees.AddAsync(employee);
+            await _context.SaveChangesAsync();
+
+            var emplyeeCountBefore = _context.Employees.Count();
+
+            // Act
+            var result = await _repository.DeleteEmployeeAsync(employee.Id);
+
+            var emplyeeCountAfter = _context.Employees.Count();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(emplyeeCountBefore - 1, emplyeeCountAfter);
+            Assert.AreEqual(0, _context.Employees.Count());
         }
 
         [TestMethod]
@@ -232,7 +260,7 @@ namespace EMS.TESTS.Repository
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Anna Nowak", result.Name);
+            Assert.AreEqual(employee.Name, result.Name);
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, _context.Employees.Count());
         }
