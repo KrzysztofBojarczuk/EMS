@@ -46,7 +46,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Test City", result.City);
+            Assert.AreEqual(address.City, result.City);
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, _context.Address.Count());
         }
