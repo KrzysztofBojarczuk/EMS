@@ -20,7 +20,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_Returns_Users()
+        public async Task Handle_ByNull_Returns_Users()
         {
             // Arrange
             int pageNumber = 1;
@@ -32,7 +32,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
                new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
             };
 
-            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count, pageNumber, pageSize);
+            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
             _mockUserRepository.Setup(repo => repo.GettAllUsersAsync(pageNumber, pageSize, null))
                 .ReturnsAsync(expectedResult);
@@ -44,7 +44,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedUsers.Count, result.Items.Count);
+            Assert.AreEqual(expectedUsers.Count(), result.Items.Count);
             Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
         }
 
@@ -54,7 +54,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             // Arrange
             int pageNumber = 1;
             int pageSize = 10;
-            var searchTerm = "Johb";
+            var searchTerm = "John";
 
             var expectedUsers = new List<AppUserEntity>
             {
@@ -62,7 +62,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
                new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
             };
 
-            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count, pageNumber, pageSize);
+            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
             _mockUserRepository.Setup(repo => repo.GettAllUsersAsync(pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(expectedResult);
@@ -74,12 +74,12 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(expectedUsers.Count, result.Items.Count);
+            Assert.AreEqual(expectedUsers.Count(), result.Items.Count());
             Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
         }
 
         [TestMethod]
-        public async Task Handle_Returns_EmptyList_When_UsersNotFound()
+        public async Task Handle_Returns_EmptyList_When_Users_NotFound()
         {
             // Arrange
             var query = new GetAllUserQuery(1, 10, "nonexistent");
