@@ -29,8 +29,9 @@ Employees and Employee Lists:
 Budget:
 ![15](https://github.com/user-attachments/assets/e794e3cf-d9d2-4edd-9d62-4c698a685a65)
 ![16](https://github.com/user-attachments/assets/3d89259d-ee36-4dd2-9a18-4cb32fac42da)
+![17](https://github.com/user-attachments/assets/c28f05e3-3d18-49c6-980d-61093bd466a6)
 
 Admin dashboard:
-![17](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
-![18](https://github.com/user-attachments/assets/4a37fb5e-5182-4719-ac55-b8667a8f1155)
-![19](https://github.com/user-attachments/assets/f417641b-07b2-4695-9a4f-5dff0ac7d357)
+![18](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
+![19](https://github.com/user-attachments/assets/4a37fb5e-5182-4719-ac55-b8667a8f1155)
+![20](https://github.com/user-attachments/assets/f417641b-07b2-4695-9a4f-5dff0ac7d357)
