@@ -56,7 +56,7 @@ namespace EMS.TESTS.Repository
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Items.Count);
+            Assert.AreEqual(1, result.Items.Count());
             Assert.AreEqual(employees[2].Name, result.Items.First().Name);
         }
 
@@ -127,7 +127,7 @@ namespace EMS.TESTS.Repository
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Items.Count);
+            Assert.AreEqual(1, result.Items.Count());
             Assert.AreEqual(employees[2].Name, result.Items.First().Name);
         }
 

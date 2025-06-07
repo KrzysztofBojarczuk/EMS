@@ -19,7 +19,7 @@ namespace EMS.TESTS.Features.AccountTests.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_ShouldReturnTrue_WhenUserIsDeletedSuccessfully()
+        public async Task Handle_ShouldReturnTrue_When_UserIsDeletedSuccessfully()
         {
             // Arrange
             var userId = "user123";
@@ -37,7 +37,7 @@ namespace EMS.TESTS.Features.AccountTests.CommandsTests
 
 
         [TestMethod]
-        public async Task Handle_ShouldReturnFalse_WhenUserDeletionFails()
+        public async Task Handle_ShouldReturnFalse_When_UserDeletionFails()
         {
             // Arrange
             var userId = "user456";

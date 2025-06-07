@@ -19,7 +19,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_ShouldReturnTrue_WhenAddressDeleted()
+        public async Task Handle_ReturnTrue_WhenAddressDeleted()
         {
             // Arrange
             var addressId = Guid.NewGuid();

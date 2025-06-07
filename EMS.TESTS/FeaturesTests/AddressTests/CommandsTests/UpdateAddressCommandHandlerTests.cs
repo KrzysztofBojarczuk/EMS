@@ -20,7 +20,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_UpdateAddress_ReturnsUpdatedAddress()
+        public async Task Handle_UpdateAddress_Returns_UpdatedAddress()
         {
             // Arrange
             var addressId = Guid.NewGuid();

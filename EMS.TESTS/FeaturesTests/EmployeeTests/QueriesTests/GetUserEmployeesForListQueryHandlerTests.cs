@@ -20,7 +20,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_Returns_BySearchTerm_Employees()
+        public async Task Handle_Returns_BySearchTerm_Returns_Employees()
         {
             // Arrange
             var appUserId = "user1";
@@ -48,7 +48,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_Returns_EmptyLists_When_EmployeesNotFound()
+        public async Task Handle_Returns_EmptyLists_When_Employees_NotFound()
         {
             // Arrange
             var appUserId = "user1";
