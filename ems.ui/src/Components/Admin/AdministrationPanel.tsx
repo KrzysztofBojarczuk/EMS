@@ -74,8 +74,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setTotalUsers(data.totalItems);
   };
 
+  const goToPageUser = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstUser(newFirst);
+    fetchUsers(page, rows);
+  };
+
   useEffect(() => {
-    fetchUsers(1, rowsUser);
+    goToPageUser(1, rowsUser);
   }, [searchUserTerm]);
 
   const fetchEmployees = async (page: number, size: number) => {
@@ -84,8 +90,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setTotalEmployees(data.totalItems);
   };
 
+  const goToPageEmployees = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstEmployee(newFirst);
+    fetchEmployees(page, rows);
+  };
+
   useEffect(() => {
-    fetchEmployees(1, rowsEmployee);
+    goToPageEmployees(1, rowsEmployee);
   }, [searchEmployeeTerm]);
 
   const fetchTasks = async (page: number, size: number) => {
@@ -94,8 +106,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setTotalTasks(data.totalItems);
   };
 
+  const goToPageTasks = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstTask(newFirst);
+    fetchTasks(page, rows);
+  };
+
   useEffect(() => {
-    fetchTasks(1, rowsTask);
+    goToPageTasks(1, rowsTask);
   }, [searchTaskTerm]);
 
   const showUserDeleteConfirmation = (id: string) => {
@@ -113,29 +131,56 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setConfirmTaskVisible(true);
   };
 
-  const handleDeleteUser = async () => {
+  const handleConfirmDeleteUser = async () => {
     if (deleteUserId) {
       await UserDeleteService(deleteUserId);
-      fetchUsers(1, rowsEmployee);
+
+      const totalAfterDelete = totalUsers - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsUser);
+      let currentPage = Math.floor(firstUser / rowsUser) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPageUser(currentPage, rowsUser);
       fetchNumberUsers();
     }
     setConfirmUserVisible(false);
     setDeleteUserId(null);
   };
 
-  const handleDeleteEmployee = async () => {
+  const handleConfirmDeleteEmployee = async () => {
     if (deleteEmployeeId) {
       await UserDeleteEmployeesService(deleteEmployeeId);
-      fetchEmployees(1, rowsEmployee);
+
+      const totalAfterDelete = totalEmployees - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsEmployee);
+      let currentPage = Math.floor(firstEmployee / rowsEmployee) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPageEmployees(currentPage, rowsEmployee);
     }
     setConfirmEmployeeVisible(false);
     setDeleteEmployeeId(null);
   };
 
-  const handleDeleteTask = async () => {
+  const handleConfirmDeleteTask = async () => {
     if (deleteTaskId) {
       await DeleteTaskService(deleteTaskId);
-      fetchTasks(1, rowsTask);
+
+      const totalAfterDelete = totalTasks - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsTask);
+      let currentPage = Math.floor(firstTask / rowsTask) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPageTasks(currentPage, rowsTask);
     }
     setConfirmTaskVisible(false);
     setDeleteTaskId(null);
@@ -315,7 +360,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
         visible={confirmUserVisible}
         header="Confirm User Deletion"
         message="Are you sure you want to delete this user?"
-        onConfirm={handleDeleteUser}
+        onConfirm={handleConfirmDeleteUser}
         onCancel={() => setConfirmUserVisible(false)}
       />
 
@@ -323,7 +368,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
         visible={confirmEmployeeVisible}
         header="Confirm Employee Deletion"
         message="Are you sure you want to delete this employee?"
-        onConfirm={handleDeleteEmployee}
+        onConfirm={handleConfirmDeleteEmployee}
         onCancel={() => setConfirmEmployeeVisible(false)}
       />
 
@@ -331,7 +376,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
         visible={confirmTaskVisible}
         header="Confirm Task Deletion"
         message="Are you sure you want to delete this task?"
-        onConfirm={handleDeleteTask}
+        onConfirm={handleConfirmDeleteTask}
         onCancel={() => setConfirmTaskVisible(false)}
       />
     </div>

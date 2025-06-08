@@ -59,8 +59,14 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     setTotalEmployees(data.totalItems);
   };
 
+  const goToPage = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstEmployee(newFirst);
+    fetchEmployees(page, rows);
+  };
+
   useEffect(() => {
-    fetchEmployees(1, rowsEmployee);
+    goToPage(1, rowsEmployee);
   }, [searchTerm]);
 
   const fetchEmployeesList = async () => {
@@ -86,10 +92,32 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   const handleConfirmDeleteEmployee = async () => {
     if (deleteId) {
       await UserDeleteEmployeesService(deleteId);
-      fetchEmployees(1, rowsEmployee);
+
+      const totalAfterDelete = totalEmployees - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsEmployee);
+      let currentPage = Math.floor(firstEmployee / rowsEmployee) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPage(currentPage, rowsEmployee);
     }
     setConfirmEmployeeVisible(false);
     setDeleteId(null);
+  };
+
+  const handleAddSuccess = () => {
+    const totalAfterAdd = totalEmployees + 1;
+    const maxPage = Math.ceil(totalAfterAdd / rowsEmployee);
+    goToPage(maxPage, rowsEmployee);
+    setVisible(false);
+  };
+
+  const handleUpdateSuccess = () => {
+    const currentPage = Math.floor(firstEmployee / rowsEmployee) + 1;
+    goToPage(currentPage, rowsEmployee);
+    setUpdateVisible(false);
   };
 
   const handleConfirmDeleteListEmployee = async () => {
@@ -172,7 +200,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         >
           <AddEmployee
             onClose={() => setVisible(false)}
-            onAddSuccess={() => fetchEmployees(1, rowsEmployee)}
+            onAddSuccess={handleAddSuccess}
           />
         </Dialog>
       </div>
@@ -286,7 +314,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           <UpdateEmployee
             employee={selectedEmployee}
             onClose={() => setUpdateVisible(false)}
-            onUpdateSuccess={() => fetchEmployees(1, rowsEmployee)}
+            onUpdateSuccess={handleUpdateSuccess}
           />
         )}
       </Dialog>
