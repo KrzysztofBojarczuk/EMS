@@ -32,6 +32,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             // Assert
             Assert.AreEqual(expectedUserCount, result);
+            _mockUserRepository.Verify(repo => repo.GetNumberOfUsersAsync(), Times.Once);
         }
 
         [TestMethod]
@@ -48,6 +49,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             // Assert
             Assert.AreEqual(0, result);
+            _mockUserRepository.Verify(repo => repo.GetNumberOfUsersAsync(), Times.Once);
         }
     }
 }

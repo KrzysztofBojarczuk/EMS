@@ -46,6 +46,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedUsers.Count(), result.Items.Count);
             Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
+            _mockUserRepository.Verify(repo => repo.GettAllUsersAsync(pageNumber, pageSize, null), Times.Once);
         }
 
         [TestMethod]
@@ -76,6 +77,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedUsers.Count(), result.Items.Count());
             Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
+            _mockUserRepository.Verify(repo => repo.GettAllUsersAsync(pageNumber, pageSize, searchTerm), Times.Once);
         }
 
         [TestMethod]
@@ -95,6 +97,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
+            _mockUserRepository.Verify(repo => repo.GettAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }
 }

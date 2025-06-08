@@ -50,8 +50,14 @@ const ListTask = (props: Props) => {
     setTotalTasks(data.totalItems);
   };
 
+  const goToPage = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstTask(newFirst);
+    fetchTasks(page, rows);
+  };
+
   useEffect(() => {
-    fetchTasks(1, rowsTask);
+    goToPage(1, rowsTask);
   }, [searchTerm]);
 
   const allowExpansion = (rowData: TaskGet) => {
@@ -66,10 +72,26 @@ const ListTask = (props: Props) => {
   const handleConfirmDelete = async () => {
     if (deleteId) {
       await DeleteTaskService(deleteId);
-      fetchTasks(1, rowsTask);
+
+      const totalAfterDelete = totalTasks - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsTask);
+      let currentPage = Math.floor(firstTask / rowsTask) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPage(currentPage, rowsTask);
     }
     setConfirmVisible(false);
     setDeleteId(null);
+  };
+
+  const handleAddSuccess = () => {
+    const totalAfterAdd = totalTasks + 1;
+    const maxPage = Math.ceil(totalAfterAdd / rowsTask);
+    goToPage(maxPage, rowsTask);
+    setVisible(false);
   };
 
   const onPageChangeTasks = (event: any) => {
@@ -220,7 +242,7 @@ const ListTask = (props: Props) => {
         >
           <AddTask
             onClose={() => setVisible(false)}
-            onAddSuccess={() => fetchTasks(1, rowsTask)}
+            onAddSuccess={handleAddSuccess}
           />
         </Dialog>
       </div>

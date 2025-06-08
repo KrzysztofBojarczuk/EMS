@@ -1,4 +1,4 @@
-import React, { useState, useEffect, JSX } from "react";
+import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
@@ -11,7 +11,6 @@ import {
 } from "../../../Services/AddressService.tsx";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import AddAddress from "../AddAddress/AddAddress.tsx";
-import UpdateEmployee from "../../Employee/UpdateEmployee/UpdateEmployee.tsx";
 import UpdateAddress from "../UpdateAddress/UpdateAddress.tsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
@@ -32,22 +31,27 @@ const ListAddress = (props: Props) => {
 
   const [firstAddress, setFirstAddress] = useState(0);
   const [rowsAddress, setRowsAddress] = useState(10);
-  const [totalAddress, setTotalAdresses] = useState(0);
+  const [totalAddress, setTotalAddresses] = useState(0);
 
-  const fetchAddreses = async (page: number, size: number) => {
+  const fetchAddresses = async (page: number, size: number) => {
     const data = await UserGetAddressService(page, size, searchTerm);
     setAddresses(data.addressGet);
-    setTotalAdresses(data.totalItems);
+    setTotalAddresses(data.totalItems);
+  };
+
+  const goToPage = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstAddress(newFirst);
+    fetchAddresses(page, rows);
   };
 
   useEffect(() => {
-    fetchAddreses(1, rowsAddress);
-  }, [searchTerm]);
+    goToPage(1, rowsAddress);
+  }, [searchTerm, rowsAddress]);
 
-  const onPageChangeAddreses = (event: any) => {
-    setFirstAddress(event.first);
+  const onPageChangeAddresses = (event: any) => {
     setRowsAddress(event.rows);
-    fetchAddreses(event.page + 1, event.rows);
+    goToPage(event.page + 1, event.rows);
   };
 
   const showDeleteConfirmation = (id: string) => {
@@ -58,10 +62,19 @@ const ListAddress = (props: Props) => {
   const handleConfirmDelete = async () => {
     if (deleteId) {
       await UserDeleteAddressService(deleteId);
-      fetchAddreses(1, rowsAddress);
+
+      const totalAfterDelete = totalAddress - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsAddress);
+      let currentPage = Math.floor(firstAddress / rowsAddress) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPage(currentPage, rowsAddress);
     }
-    setConfirmVisible(false);
     setDeleteId(null);
+    setConfirmVisible(false);
   };
 
   const showUpdateDialog = (address: AddressGet) => {
@@ -69,11 +82,24 @@ const ListAddress = (props: Props) => {
     setUpdateVisible(true);
   };
 
+  const handleAddSuccess = () => {
+    const totalAfterAdd = totalAddress + 1;
+    const maxPage = Math.ceil(totalAfterAdd / rowsAddress);
+    goToPage(maxPage, rowsAddress);
+    setVisible(false);
+  };
+
+  const handleUpdateSuccess = () => {
+    const currentPage = Math.floor(firstAddress / rowsAddress) + 1;
+    goToPage(currentPage, rowsAddress);
+    setUpdateVisible(false);
+  };
+
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
         <IconField iconPosition="left">
-          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputIcon className="pi pi-search" />
           <InputText
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -85,14 +111,11 @@ const ListAddress = (props: Props) => {
         <Dialog
           header="Add Address"
           visible={visible}
-          onHide={() => {
-            if (!visible) return;
-            setVisible(false);
-          }}
+          onHide={() => setVisible(false)}
         >
           <AddAddress
             onClose={() => setVisible(false)}
-            onAddSuccess={() => fetchAddreses(1, rowsAddress)}
+            onAddSuccess={handleAddSuccess}
           />
         </Dialog>
       </div>
@@ -125,22 +148,24 @@ const ListAddress = (props: Props) => {
           )}
         ></Column>
       </DataTable>
+
       <Paginator
         first={firstAddress}
         rows={rowsAddress}
         totalRecords={totalAddress}
-        onPageChange={onPageChangeAddreses}
+        onPageChange={onPageChangeAddresses}
         rowsPerPageOptions={[5, 10, 20, 30]}
         style={{ border: "none" }}
       />
 
       <ConfirmationDialog
         visible={confirmVisible}
-        header="Confirm Deletion of Employee"
-        message="Are you sure you want to delete this employee?"
+        header="Confirm Deletion of Address"
+        message="Are you sure you want to delete this address?"
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmVisible(false)}
       />
+
       <Dialog
         header="Update Address"
         visible={updateVisible}
@@ -150,7 +175,7 @@ const ListAddress = (props: Props) => {
           <UpdateAddress
             address={selectedAddress}
             onClose={() => setUpdateVisible(false)}
-            onUpdateSuccess={() => fetchAddreses(1, rowsAddress)}
+            onUpdateSuccess={handleUpdateSuccess}
           />
         )}
       </Dialog>

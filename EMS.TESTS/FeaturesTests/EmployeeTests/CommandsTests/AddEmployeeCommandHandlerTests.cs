@@ -45,7 +45,6 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(employeeToAdd, result);
-
             _mockEmployeeRepository.Verify(repo => repo.AddEmployeeAsync(employeeToAdd), Times.Once);
         }
     }
