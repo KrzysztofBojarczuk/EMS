@@ -19,7 +19,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_ReturnTrue_WhenAddressDeleted()
+        public async Task Handle_ReturnTrue_WhenAddressIsDeletedSuccessfully()
         {
             // Arrange
             var addressId = Guid.NewGuid();
@@ -33,6 +33,24 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
 
             // Assert
             Assert.IsTrue(result);
+            _mockRepository.Verify(repo => repo.DeleteAddressAsync(addressId), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task Handle_ReturnFalse_WhenAddressDeletionFails()
+        {
+            // Arrange
+            var addressId = Guid.NewGuid();
+            _mockRepository.Setup(repo => repo.DeleteAddressAsync(addressId))
+                           .ReturnsAsync(false);
+
+            var command = new DeleteAddressCommand(addressId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
             _mockRepository.Verify(repo => repo.DeleteAddressAsync(addressId), Times.Once);
         }
     }
