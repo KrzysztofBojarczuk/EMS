@@ -45,7 +45,7 @@ const LocalReservation = (props: Props) => {
 
   const [firstReservation, setFirstReservation] = useState(0);
   const [rowsReservation, setRowsReservation] = useState(10);
-  const [totalRecords, setTotalRecords] = useState(0);
+  const [totalReservation, setTotalReservations] = useState(0);
 
   const [selectedLocalId, setSelectedLocalId] = useState<string | null>(null);
 
@@ -73,8 +73,20 @@ const LocalReservation = (props: Props) => {
     setTotalLocals(data.totalItems);
   };
 
+  const goToPageLocal = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstLocal(newFirst);
+    fetchLocal(page, rows);
+  };
+
+  const goToPageReservation = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstReservation(newFirst);
+    fetchReservations(page, rows);
+  };
+
   useEffect(() => {
-    fetchLocal(1, rowsLocal);
+    goToPageLocal(1, rowsLocal);
   }, [searchLocalTerm]);
 
   const fetchReservations = async (page, size) => {
@@ -84,17 +96,22 @@ const LocalReservation = (props: Props) => {
       searchReservationTerm
     );
     setReservations(data.reservationGet);
-    setTotalRecords(data.totalItems);
+    setTotalReservations(data.totalItems);
   };
 
   useEffect(() => {
-    fetchReservations(1, rowsReservation);
+    goToPageReservation(1, rowsReservation);
   }, [searchReservationTerm]);
 
   const onPageChangeLocals = (event: any) => {
     setFirstLocal(event.first);
     setRowsLocal(event.rows);
-    fetchLocal(event.page + 1, event.rows);
+    goToPageLocal(event.page + 1, event.rows);
+  };
+
+  const handleAddSuccess = () => {
+    const currentPage = Math.floor(firstLocal / rowsLocal) + 1;
+    goToPageLocal(currentPage, rowsLocal);
   };
 
   const onPageChangeReservations = (event) => {
@@ -116,9 +133,18 @@ const LocalReservation = (props: Props) => {
   const handleDeleteReservation = async () => {
     if (deleteReservationId) {
       await DeleteReservationService(deleteReservationId);
-      fetchReservations(1, rowsReservation);
-      fetchLocal(1, rowsLocal);
+
+      const totalAfterDelete = totalReservation - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsReservation);
+      let currentPage = Math.floor(firstReservation / rowsReservation) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPageReservation(currentPage, rowsReservation);
     }
+
     setConfirmReservationVisible(false);
     setDeleteReservationId(null);
   };
@@ -131,9 +157,18 @@ const LocalReservation = (props: Props) => {
   const handleDeleteLocal = async () => {
     if (deleteLocalId) {
       await DeleteLocalService(deleteLocalId);
-      fetchLocal(1, rowsLocal);
-      fetchReservations(1, rowsReservation);
+
+      const totalAfterDelete = totalLocals - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsLocal);
+      let currentPage = Math.floor(firstLocal / rowsLocal) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPageLocal(currentPage, rowsLocal);
     }
+
     setConfirmLocalVisible(false);
     setDeleteLocalId(null);
   };
@@ -202,7 +237,7 @@ const LocalReservation = (props: Props) => {
           >
             <AddLocal
               onClose={() => setVisibleLocal(false)}
-              onAddSuccess={() => fetchLocal(1, rowsLocal)}
+              onAddSuccess={handleAddSuccess}
             />
           </Dialog>
         </div>
@@ -307,7 +342,7 @@ const LocalReservation = (props: Props) => {
         <Paginator
           first={firstReservation}
           rows={rowsReservation}
-          totalRecords={totalRecords}
+          totalRecords={totalReservation}
           onPageChange={onPageChangeReservations}
           rowsPerPageOptions={[5, 10, 20, 30]}
           style={{ border: "none" }}
@@ -323,7 +358,7 @@ const LocalReservation = (props: Props) => {
       <ConfirmationDialog
         visible={confirmReservationVisible}
         header="Confirm Task Deletion"
-        message="Are you sure you want to delete this task?"
+        message="Are you sure you want to delete this reservation?"
         onConfirm={handleDeleteReservation}
         onCancel={() => setConfirmReservationVisible(false)}
       />
