@@ -83,10 +83,8 @@ const ListAddress = (props: Props) => {
   };
 
   const handleAddSuccess = () => {
-    const totalAfterAdd = totalAddress + 1;
-    const maxPage = Math.ceil(totalAfterAdd / rowsAddress);
-    goToPage(maxPage, rowsAddress);
-    setVisible(false);
+    const currentPage = Math.floor(firstAddress / rowsAddress) + 1;
+    goToPage(currentPage, rowsAddress);
   };
 
   const handleUpdateSuccess = () => {

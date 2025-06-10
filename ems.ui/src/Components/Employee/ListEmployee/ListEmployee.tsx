@@ -108,10 +108,8 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   };
 
   const handleAddSuccess = () => {
-    const totalAfterAdd = totalEmployees + 1;
-    const maxPage = Math.ceil(totalAfterAdd / rowsEmployee);
-    goToPage(maxPage, rowsEmployee);
-    setVisible(false);
+    const currentPage = Math.floor(firstEmployee / rowsEmployee) + 1;
+    goToPage(currentPage, rowsEmployee);
   };
 
   const handleUpdateSuccess = () => {

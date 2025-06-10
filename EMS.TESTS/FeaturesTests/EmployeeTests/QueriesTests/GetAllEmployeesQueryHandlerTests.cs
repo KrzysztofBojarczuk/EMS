@@ -56,7 +56,6 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         public async Task Handle_Returns_EmptyPaginatedList_When_NoEmployeesFound()
         {
             // Arrange
-
             var query = new GetAllEmployeesQuery(1, 10, "nonexistent");
 
             var emptyList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, 1, 10);

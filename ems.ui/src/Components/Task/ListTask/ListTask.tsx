@@ -88,10 +88,8 @@ const ListTask = (props: Props) => {
   };
 
   const handleAddSuccess = () => {
-    const totalAfterAdd = totalTasks + 1;
-    const maxPage = Math.ceil(totalAfterAdd / rowsTask);
-    goToPage(maxPage, rowsTask);
-    setVisible(false);
+    const currentPage = Math.floor(firstTask / rowsTask) + 1;
+    goToPage(currentPage, rowsTask);
   };
 
   const onPageChangeTasks = (event: any) => {
