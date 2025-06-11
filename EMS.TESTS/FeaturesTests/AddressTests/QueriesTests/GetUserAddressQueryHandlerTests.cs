@@ -52,5 +52,26 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             CollectionAssert.AreEqual(expectedAddreses, result.Items.ToList());
             _mockAddressRepository.Verify(repo => repo.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_EmptyList_When_Addresses_NotFound()
+        {
+            // Arrange
+            var query = new GetUserAddressQuery("user123", 1, 10 , "NonExistent");
+
+            var paginatedList = new PaginatedList<AddressEntity>(new List<AddressEntity>(), 0, 1, 10);
+
+            _mockAddressRepository
+                .Setup(repo => repo.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm))
+                .ReturnsAsync(paginatedList);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count);
+            _mockAddressRepository.Verify(repo => repo.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
 
 
         [TestMethod]
-        public async Task Handle_Returns_EmptyLists_When_Addresses_NotFound()
+        public async Task Handle_Returns_EmptyList_When_Addresses_NotFound()
         {
             // Arrange
             var appUserId = "user123";
