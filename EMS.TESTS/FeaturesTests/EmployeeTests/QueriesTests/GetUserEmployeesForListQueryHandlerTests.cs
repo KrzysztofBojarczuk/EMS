@@ -48,7 +48,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_Returns_EmptyLists_When_Employees_NotFound()
+        public async Task Handle_Returns_EmptyList_When_Employees_NotFound()
         {
             // Arrange
             var appUserId = "user1";

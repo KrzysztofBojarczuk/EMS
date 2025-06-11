@@ -76,8 +76,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.City.ToLower().Contains(searchTerm.ToLower())
                                       || x.ZipCode.ToLower().Contains(searchTerm.ToLower())
                                       || x.Number.ToLower().Contains(searchTerm.ToLower()));
-
-
             }
 
             return await query.ToListAsync();
