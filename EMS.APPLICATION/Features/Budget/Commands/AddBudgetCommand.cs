@@ -15,5 +15,4 @@ namespace EMS.APPLICATION.Features.Budget.Commands
             return budget;
         }
     }
-
 }
