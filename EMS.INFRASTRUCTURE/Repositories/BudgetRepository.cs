@@ -33,9 +33,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<BudgetEntity> GetUserBudgetAsync(string appUserId)
         {
-            var budget = await dbContext.Budgets.FirstOrDefaultAsync(b => b.AppUserId == appUserId);
-
-            return budget;
+            return await dbContext.Budgets.FirstOrDefaultAsync(b => b.AppUserId == appUserId);
         }
     }
 }
