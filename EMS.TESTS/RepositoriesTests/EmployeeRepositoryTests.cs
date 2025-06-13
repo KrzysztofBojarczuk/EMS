@@ -6,9 +6,8 @@ using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
-namespace EMS.TESTS.Repository
+namespace EMS.TESTS.RepositoriesTests
 {
     [TestClass]
     public class EmployeeRepositoryTests
