@@ -34,7 +34,7 @@ namespace EMS.TESTS.ControllersTests
 
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
-            new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname", "testuser")
+                new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname", "testuser")
             }, "mock"));
 
             _controller.ControllerContext = new ControllerContext
