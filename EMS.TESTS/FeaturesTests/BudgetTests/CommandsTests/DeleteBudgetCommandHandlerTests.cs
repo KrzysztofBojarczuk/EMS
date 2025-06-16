@@ -34,5 +34,22 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
             Assert.IsTrue(result);
             _mockBudgetRepository.Verify(repo => repo.DeleteBudgetAsync(budgetId), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_ShouldReturnFalse_When_BudgetDeletionFails()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+            _mockBudgetRepository.Setup(repo => repo.DeleteBudgetAsync(budgetId)).ReturnsAsync(false);
+
+            var command = new DeleteBudgetCommand(budgetId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
+            _mockBudgetRepository.Verify(repo => repo.DeleteBudgetAsync(budgetId), Times.Once);
+        }
     }
 }
