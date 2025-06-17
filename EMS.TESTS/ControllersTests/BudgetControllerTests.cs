@@ -2,6 +2,7 @@
 using EMS.API.Controllers;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Budget.Commands;
+using EMS.APPLICATION.Features.Budget.Queries;
 using EMS.CORE.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -105,6 +106,57 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(returnedDto);
             Assert.AreEqual(expectedDto.Id, returnedDto.Id);
             Assert.AreEqual(expectedDto.Budget, returnedDto.Budget);
+        }
+
+        [TestMethod]
+        public async Task GetUserBudgetAsync_ReturnsOkResult_WithBudgetGetDto()
+        {
+            // Arrange
+            var userId = "user-123";
+            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+
+            var budgetEntity = new BudgetEntity
+            {
+                Id = Guid.NewGuid(),
+                Budget = 4200.00m,
+                AppUserId = userId,
+                AppUserEntity = appUser
+            };
+
+            var expectedDto = new BudgetGetDto
+            {
+                Id = budgetEntity.Id,
+                Budget = budgetEntity.Budget
+            };
+
+            _mockUserManager
+                .Setup(x => x.FindByNameAsync("testuser"))
+                .ReturnsAsync(appUser);
+
+            _mockSender
+                .Setup(s => s.Send(It.Is<GetUserBudgetQuery>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(budgetEntity);
+
+            _mockMapper
+                .Setup(m => m.Map<BudgetGetDto>(budgetEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.GetUserBudgetAsync();
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as BudgetGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.Budget, returnedDto.Budget);
+
+            _mockUserManager.Verify(x => x.FindByNameAsync("testuser"), Times.Once);
+            _mockSender.Verify(s => s.Send(It.IsAny<GetUserBudgetQuery>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockMapper.Verify(m => m.Map<BudgetGetDto>(budgetEntity), Times.Once);
         }
     }
 }
