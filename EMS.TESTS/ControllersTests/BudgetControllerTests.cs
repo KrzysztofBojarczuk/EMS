@@ -158,5 +158,25 @@ namespace EMS.TESTS.ControllersTests
             _mockSender.Verify(s => s.Send(It.IsAny<GetUserBudgetQuery>(), It.IsAny<CancellationToken>()), Times.Once);
             _mockMapper.Verify(m => m.Map<BudgetGetDto>(budgetEntity), Times.Once);
         }
+
+        [TestMethod]
+        public async Task DeleteBudgetAsync_ReturnsOkResult_WithTrue_WhenDeletionSucceeds()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+
+            _mockSender
+                .Setup(s => s.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
+
+            // Act
+            var result = await _controller.DeleteBudgetAsync(budgetId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(true, okResult.Value);
+        }
     }
 }
