@@ -178,5 +178,25 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(200, okResult.StatusCode);
             Assert.AreEqual(true, okResult.Value);
         }
+
+        [TestMethod]
+        public async Task DeleteBudgetAsync_ReturnsOkResult_WithFalse_WhenDeletionFails()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+
+            _mockSender
+                .Setup(s => s.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.DeleteBudgetAsync(budgetId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(false, okResult.Value);
+        }
     }
 }
