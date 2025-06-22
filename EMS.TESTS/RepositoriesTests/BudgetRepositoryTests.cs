@@ -68,5 +68,15 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNull(deleted);
             Assert.AreEqual(0, _context.Budgets.Count());
         }
+
+        [TestMethod]
+        public async Task DeleteBudgetAsync_WhenBudgetDoesNotExist_ReturnsFalse()
+        {
+            // Act
+            var result = await _repository.DeleteBudgetAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }
