@@ -160,7 +160,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteBudgetAsync_ReturnsOkResult_WithTrue_WhenDeletionSucceeds()
+        public async Task DeleteBudgetAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
         {
             // Arrange
             var budgetId = Guid.NewGuid();
@@ -180,7 +180,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteBudgetAsync_ReturnsOkResult_WithFalse_WhenDeletionFails()
+        public async Task DeleteBudgetAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
         {
             // Arrange
             var budgetId = Guid.NewGuid();

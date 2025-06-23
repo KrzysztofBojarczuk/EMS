@@ -23,7 +23,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_ReturnsOkResult_WhenDeletedSuccessfully()
+        public async Task DeleteEmployeeAsync_ReturnsOkResult_When_DeletedSuccessfully()
         {
             // Arrange
             var userId = "test-user-id";

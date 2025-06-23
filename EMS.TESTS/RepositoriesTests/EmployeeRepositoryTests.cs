@@ -156,7 +156,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task UpdateEmployeeAsync_WhenEntityIsNull_ReturnsNull()
+        public async Task UpdateEmployeeAsync_When_EntityIsNull_ReturnsNull()
         {
             // Arrange
             var employeeId = Guid.NewGuid();
@@ -169,7 +169,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task UpdateEmployeeAsync_WhenEntityIsNotNullAndExists_UpdatesAndReturnsEmployee()
+        public async Task UpdateEmployeeAsync_When_EntityIsNotNullAndExists_UpdatesAndReturnsEmployee()
         {
             // Arrange
             var originalEmployee = new EmployeeEntity
@@ -205,7 +205,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_WhenEmployeeExists_ReturnsTrue()
+        public async Task DeleteEmployeeAsync_When_EmployeeExists_ReturnsTrue()
         {
             // Arrange
             var employee = new EmployeeEntity
@@ -233,7 +233,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_WhenEmployeeDoesNotExist_ReturnsFalse()
+        public async Task DeleteEmployeeAsync_When_EmployeeDoesNotExist_ReturnsFalse()
         {
             // Act
             var result = await _repository.DeleteEmployeeAsync(Guid.NewGuid());
