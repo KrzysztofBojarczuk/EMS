@@ -19,7 +19,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_ShouldReturnTrue_WhenAddressIsDeletedSuccessfully()
+        public async Task Handle_ShouldReturnTrue_When_AddressIsDeletedSuccessfully()
         {
             // Arrange
             var addressId = Guid.NewGuid();
@@ -37,7 +37,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_ShouldReturnFalse_WhenAddressDeletionFails()
+        public async Task Handle_ShouldReturnFalse_When_AddressDeletionFails()
         {
             // Arrange
             var addressId = Guid.NewGuid();

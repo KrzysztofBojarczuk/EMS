@@ -45,7 +45,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteBudgetAsync_WhenBudgetExists_ReturnsTrue()
+        public async Task DeleteBudgetAsync_When_BudgetExists_ReturnsTrue()
         {
             // Arrange
             var budgetId = Guid.NewGuid();
@@ -70,13 +70,38 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteBudgetAsync_WhenBudgetDoesNotExist_ReturnsFalse()
+        public async Task DeleteBudgetAsync_When_BudgetDoesNotExist_ReturnsFalse()
         {
             // Act
             var result = await _repository.DeleteBudgetAsync(Guid.NewGuid());
 
             // Assert
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public async Task GetUserBudgetAsync_When_BudgetExists_ReturnsBudget()
+        {
+            // Arrange
+            var userId = "user123";
+            var budget = new BudgetEntity
+            {
+                Id = Guid.NewGuid(),
+                Budget = 3000.00m,
+                AppUserId = userId
+            };
+
+            _context.Budgets.Add(budget);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserBudgetAsync(userId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(budget.Id, result.Id);
+            Assert.AreEqual(budget.Budget, result.Budget);
+            Assert.AreEqual(budget.AppUserId, result.AppUserId);
         }
     }
 }

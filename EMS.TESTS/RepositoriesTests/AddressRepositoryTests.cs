@@ -52,7 +52,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteAddressAsync_WhenAddressExists_DeletesAddress_AndNullifies_TaskReferences()
+        public async Task DeleteAddressAsync_When_AddressExists_DeletesAddress_AndNullifies_TaskReferences()
         {
             // Arrange
             var addressId1 = Guid.NewGuid();
@@ -117,7 +117,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteAddressAsync_WhenAddressDoesNotExist_ReturnsFalse()
+        public async Task DeleteAddressAsync_When_AddressDoesNotExist_ReturnsFalse()
         {
             // Act
             var result = await _repository.DeleteAddressAsync(Guid.NewGuid());
