@@ -16,6 +16,8 @@ type Props = {
 };
 
 const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+
   const {
     control,
     handleSubmit,
@@ -57,10 +59,16 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
       employeeIds: selectedEmployees,
     };
 
-    await UserPostListEmployeesService(postData);
-    onAddSuccess();
-    onClose();
-    reset();
+    try {
+      await UserPostListEmployeesService(postData);
+      onAddSuccess();
+      onClose();
+      reset();
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        setErrorMessage(error.response.data);
+      }
+    }
   };
 
   return (
@@ -104,6 +112,7 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
             })}
           </div>
         </div>
+        {errorMessage && <p className="text-red mt-2">{errorMessage}</p>}
         <div className="inline-flex flex-column gap-2">
           <Button
             label="Submit"

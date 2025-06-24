@@ -197,7 +197,10 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity, employeeListsDto.EmployeeIds));
 
-            var employeeListsGet = mapper.Map<EmployeeListsGetDto>(result);
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            var employeeListsGet = mapper.Map<EmployeeListsGetDto>(result.Value);
 
             return Ok(employeeListsGet);
         }
