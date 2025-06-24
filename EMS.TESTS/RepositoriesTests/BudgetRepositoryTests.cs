@@ -103,5 +103,15 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(budget.Budget, result.Budget);
             Assert.AreEqual(budget.AppUserId, result.AppUserId);
         }
+
+        [TestMethod]
+        public async Task GetUserBudgetAsync_When_BudgetDoesNotExist_ReturnsNull()
+        {
+            // Act
+            var result = await _repository.GetUserBudgetAsync("nonexistent_user");
+
+            // Assert
+            Assert.IsNull(result);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EMS.CORE.Entities;
+﻿using EMS.CORE.Common;
+using EMS.CORE.Entities;
 using EMS.INFRASTRUCTURE.Extensions;
 
 namespace EMS.CORE.Interfaces
@@ -16,7 +17,7 @@ namespace EMS.CORE.Interfaces
         Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm);
         Task<IEnumerable<EmployeeListsEntity>>  GetUserEmployeeListsForTaskAsync(string appUserId, string searchTerm);
         Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm);
-        Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds);
+        Task<Result<EmployeeListsEntity>> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds);
         Task<bool> DeleteEmployeeListsAsync(Guid employeeListId);
     }
 }
