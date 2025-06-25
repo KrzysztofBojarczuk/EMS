@@ -47,5 +47,25 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTestsss
             Assert.AreEqual(expectedBudget.Budget, result.Budget);
             _mockBudgetRepository.Verify(repo => repo.GetUserBudgetAsync(appUserId), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_Null_When_BudgetDoesNotExist()
+        {
+            // Arrange
+            var appUserId = "nonexistent_user";
+
+            _mockBudgetRepository
+                .Setup(repo => repo.GetUserBudgetAsync(appUserId))
+                .ReturnsAsync((BudgetEntity)null);
+
+            var query = new GetUserBudgetQuery(appUserId);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(result);
+            _mockBudgetRepository.Verify(repo => repo.GetUserBudgetAsync(appUserId), Times.Once);
+        }
     }
 }
