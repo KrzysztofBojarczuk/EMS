@@ -23,7 +23,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
+        public async Task DeleteUserAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
         {
             // Arrange
             var userId = "test-user-id";
@@ -43,7 +43,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
+        public async Task DeleteUserAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
         {
             // Arrange
             var userId = "test-user-id";
