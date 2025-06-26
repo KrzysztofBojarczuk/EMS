@@ -164,10 +164,11 @@ namespace EMS.TESTS.ControllersTests
         {
             // Arrange
             var budgetId = Guid.NewGuid();
+            var expectedResult = false;
 
             _mockSender
                 .Setup(s => s.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(true);
+                .ReturnsAsync(expectedResult);
 
             // Act
             var result = await _controller.DeleteBudgetAsync(budgetId);
@@ -176,7 +177,7 @@ namespace EMS.TESTS.ControllersTests
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(true, okResult.Value);
+            Assert.AreEqual(expectedResult, okResult.Value);
         }
 
         [TestMethod]
@@ -184,10 +185,11 @@ namespace EMS.TESTS.ControllersTests
         {
             // Arrange
             var budgetId = Guid.NewGuid();
+            var expectedResult = false;
 
             _mockSender
                 .Setup(s => s.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(false);
+                .ReturnsAsync(expectedResult);
 
             // Act
             var result = await _controller.DeleteBudgetAsync(budgetId);
@@ -196,7 +198,7 @@ namespace EMS.TESTS.ControllersTests
             var okResult = result as OkObjectResult;
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(false, okResult.Value);
+            Assert.AreEqual(expectedResult, okResult.Value);
         }
     }
 }

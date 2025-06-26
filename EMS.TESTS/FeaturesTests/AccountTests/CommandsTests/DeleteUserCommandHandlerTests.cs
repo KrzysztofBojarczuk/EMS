@@ -23,7 +23,9 @@ namespace EMS.TESTS.Features.AccountTests.CommandsTests
         {
             // Arrange
             var userId = "user123";
-            _mockUserRepository.Setup(repo => repo.DeleteUserAsync(userId)).ReturnsAsync(true);
+            var expectedResult = true;
+
+            _mockUserRepository.Setup(repo => repo.DeleteUserAsync(userId)).ReturnsAsync(expectedResult);
 
             var command = new DeleteUserCommand(userId);
 
@@ -41,7 +43,9 @@ namespace EMS.TESTS.Features.AccountTests.CommandsTests
         {
             // Arrange
             var userId = "user456";
-            _mockUserRepository.Setup(repo => repo.DeleteUserAsync(userId)).ReturnsAsync(false);
+            var expectedResult = false;
+
+            _mockUserRepository.Setup(repo => repo.DeleteUserAsync(userId)).ReturnsAsync(expectedResult);
 
             var command = new DeleteUserCommand(userId);
 
