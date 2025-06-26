@@ -23,7 +23,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_ReturnsOkResult_When_DeletedSuccessfully()
+        public async Task DeleteEmployeeAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
         {
             // Arrange
             var userId = "test-user-id";
@@ -33,7 +33,27 @@ namespace EMS.TESTS.ControllersTests
                        .ReturnsAsync(expectedResult);
 
             // Act
-            var result = await _controller.DeleteEmployeeAsync(userId);
+            var result = await _controller.DeleteUserAsync(userId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(expectedResult, okResult.Value);
+        }
+
+        [TestMethod]
+        public async Task DeleteEmployeeAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
+        {
+            // Arrange
+            var userId = "test-user-id";
+            var expectedResult = false;
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.DeleteUserAsync(userId);
 
             // Assert
             var okResult = result as OkObjectResult;

@@ -23,8 +23,10 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
+            var expectedResult = true;
+
             _mockRepository.Setup(repo => repo.DeleteAddressAsync(addressId))
-                           .ReturnsAsync(true);
+                           .ReturnsAsync(expectedResult);
 
             var command = new DeleteAddressCommand(addressId);
 
@@ -41,8 +43,10 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
+            var expectedResult = false;
+
             _mockRepository.Setup(repo => repo.DeleteAddressAsync(addressId))
-                           .ReturnsAsync(false);
+                           .ReturnsAsync(expectedResult);
 
             var command = new DeleteAddressCommand(addressId);
 

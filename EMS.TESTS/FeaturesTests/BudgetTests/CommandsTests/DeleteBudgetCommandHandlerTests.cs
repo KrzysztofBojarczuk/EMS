@@ -23,7 +23,9 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
         {
             // Arrange
             var budgetId = Guid.NewGuid();
-            _mockBudgetRepository.Setup(repo => repo.DeleteBudgetAsync(budgetId)).ReturnsAsync(true);
+            var expectedResult = true;
+
+            _mockBudgetRepository.Setup(repo => repo.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
 
             var command = new DeleteBudgetCommand(budgetId);
 
@@ -40,7 +42,9 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
         {
             // Arrange
             var budgetId = Guid.NewGuid();
-            _mockBudgetRepository.Setup(repo => repo.DeleteBudgetAsync(budgetId)).ReturnsAsync(false);
+            var expectedResult = false;
+
+            _mockBudgetRepository.Setup(repo => repo.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
 
             var command = new DeleteBudgetCommand(budgetId);
 
