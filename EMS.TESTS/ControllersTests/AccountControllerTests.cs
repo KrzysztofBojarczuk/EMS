@@ -1,6 +1,8 @@
 ﻿using EMS.API.Controllers;
 using EMS.APPLICATION.Features.Account.Commands;
 using EMS.APPLICATION.Features.Account.Queries;
+using EMS.CORE.Entities;
+using EMS.INFRASTRUCTURE.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +20,6 @@ namespace EMS.TESTS.ControllersTests
         public void Setup()
         {
             _mockSender = new Mock<ISender>();
-
             _controller = new AccountController(null, null, null, _mockSender.Object);
         }
 
@@ -78,6 +79,54 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
             Assert.AreEqual(expectedNumberOfUsers, okResult.Value);
+        }
+
+        [TestMethod]
+        public async Task GetAllUserAsync_ReturnsOkResult_BySearchTerm_WithUsers()
+        {
+            // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            string searchTerm = "John";
+
+            var expectedUsers = new List<AppUserEntity>
+            {
+                new AppUserEntity { UserName = "John", Email = "john@example.com" },
+                new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
+            };
+
+            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count, pageNumber, pageSize);
+
+            _mockSender.Setup(x => x.Send(
+                It.Is<GetAllUserQuery>(q =>
+                    q.pageNumber == pageNumber &&
+                    q.pageSize == pageSize &&
+                    q.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.GetAllUserAsync(pageNumber, pageSize, searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var value = okResult.Value;
+            var userGetProperty = value.GetType().GetProperty("userGet");
+            var totalItemsProperty = value.GetType().GetProperty("TotalItems");
+            var totalPagesProperty = value.GetType().GetProperty("TotalPages");
+            var pageIndexProperty = value.GetType().GetProperty("PageIndex");
+
+            Assert.IsNotNull(userGetProperty);
+            var users = userGetProperty.GetValue(value) as IEnumerable<AppUserEntity>;
+            Assert.IsNotNull(users);
+            Assert.AreEqual(expectedUsers.Count, users.Count());
+
+            Assert.AreEqual(expectedResult.TotalItems, totalItemsProperty.GetValue(value));
+            Assert.AreEqual(expectedResult.TotalPages, totalPagesProperty.GetValue(value));
+            Assert.AreEqual(expectedResult.PageIndex, pageIndexProperty.GetValue(value));
         }
     }
 }
