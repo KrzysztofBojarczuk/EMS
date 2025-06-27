@@ -44,11 +44,11 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task GetUserAddressForTaskAsync_ReturnsOkResult_WithAddressDtos()
+        public async Task GetUserAddressForTaskAsync_ReturnsOkResult_BySearchTerm_WithAddressDtos()
         {
             // Arrange
             var userId = "user-id-123";
-            var searchTerm = "Main";
+            var searchTerm = "City";
 
             var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
 
