@@ -128,5 +128,48 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedResult.TotalPages, totalPagesProperty.GetValue(value));
             Assert.AreEqual(expectedResult.PageIndex, pageIndexProperty.GetValue(value));
         }
+
+        [TestMethod]
+        public async Task GetAllUserAsync_ReturnsOkResult_NotFound_WithEmptyList()
+        {
+            // Arrange
+            int pageNumber = 1;
+            int pageSize = 10;
+            string searchTerm = "nonexistent";
+
+            var expectedUsers = new List<AppUserEntity>(); 
+            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, 0, pageNumber, pageSize);
+
+            _mockSender.Setup(x => x.Send(
+                It.Is<GetAllUserQuery>(q =>
+                    q.pageNumber == pageNumber &&
+                    q.pageSize == pageSize &&
+                    q.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.GetAllUserAsync(pageNumber, pageSize, searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var value = okResult.Value;
+            var userGetProperty = value.GetType().GetProperty("userGet");
+            var totalItemsProperty = value.GetType().GetProperty("TotalItems");
+            var totalPagesProperty = value.GetType().GetProperty("TotalPages");
+            var pageIndexProperty = value.GetType().GetProperty("PageIndex");
+
+            Assert.IsNotNull(userGetProperty);
+            var users = userGetProperty.GetValue(value) as IEnumerable<AppUserEntity>;
+            Assert.IsNotNull(users);
+            Assert.AreEqual(expectedUsers.Count, users.Count());
+
+            Assert.AreEqual(expectedResult.TotalItems, totalItemsProperty.GetValue(value));
+            Assert.AreEqual(expectedResult.TotalPages, totalPagesProperty.GetValue(value));
+            Assert.AreEqual(expectedResult.PageIndex, pageIndexProperty.GetValue(value));
+        }
     }
 }
