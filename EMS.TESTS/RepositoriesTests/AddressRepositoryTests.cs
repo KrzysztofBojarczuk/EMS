@@ -29,7 +29,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task AddEmployeeAsync_Returns_Employee()
+        public async Task AddAdressAsync_Returns_Address()
         {
             // Arrange
             var address = new AddressEntity
