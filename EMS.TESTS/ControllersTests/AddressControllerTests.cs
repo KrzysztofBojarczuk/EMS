@@ -10,6 +10,7 @@ using EMS.APPLICATION.Features.Address.Queries;
 using EMS.CORE.Entities;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using EMS.INFRASTRUCTURE.Extensions;
 
 namespace EMS.TESTS.ControllersTests
 {
@@ -44,6 +45,71 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
+        public async Task GetUserAddressAsync_ReturnsOkResult_BySearchTerm_WithAddressDtos()
+        {
+            // Arrange
+            var userId = "user-id-123";
+            var username = "testuser";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "Main";
+
+            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+
+            var addressEntities = new List<AddressEntity>
+            {
+                new AddressEntity { Id = Guid.NewGuid(), City = "MainCity1", Street = "Street1", Number = "1", ZipCode = "00-000" },
+                new AddressEntity { Id = Guid.NewGuid(), City = "MainCity2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+             };
+
+            var paginatedResult = new PaginatedList<AddressEntity>(addressEntities, addressEntities.Count, pageNumber, pageSize);
+
+            var expectedDtos = new List<AddressGetDto>
+            {
+                new AddressGetDto { Id = addressEntities[0].Id, City = "MainCity1", Street = "Street1", Number = "1", ZipCode = "00-000" },
+                new AddressGetDto { Id = addressEntities[1].Id, City = "MainCity2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(
+                It.Is<GetUserAddressQuery>(x =>
+                    x.appUserId == userId &&
+                    x.pageNumber == pageNumber &&
+                    x.pageSize == pageSize &&
+                    x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(paginatedResult);
+
+            _mockMapper.Setup(x => x.Map<IEnumerable<AddressGetDto>>(addressEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserAddressAsync(pageNumber, pageSize, searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var value = okResult.Value;
+            var addressGetProp = value.GetType().GetProperty("AddressGet");
+            var totalItemsProp = value.GetType().GetProperty("TotalItems");
+            var totalPagesProp = value.GetType().GetProperty("TotalPages");
+            var pageIndexProp = value.GetType().GetProperty("PageIndex");
+
+            Assert.IsNotNull(addressGetProp);
+            var returnedDtos = addressGetProp.GetValue(value) as IEnumerable<AddressGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count, returnedDtos.Count());
+
+            Assert.AreEqual(paginatedResult.TotalItems, totalItemsProp.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalPages, totalPagesProp.GetValue(value));
+            Assert.AreEqual(paginatedResult.PageIndex, pageIndexProp.GetValue(value));
+        }
+
+        [TestMethod]
         public async Task GetUserAddressForTaskAsync_ReturnsOkResult_BySearchTerm_WithAddressDtos()
         {
             // Arrange
@@ -70,8 +136,8 @@ namespace EMS.TESTS.ControllersTests
                 .Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
                 .Returns(new List<AddressGetDto>
                 {
-                new AddressGetDto { Id = addressEntities[0].Id, City = "City1", Street = "Street1", Number = "1", ZipCode = "00-000" },
-                new AddressGetDto { Id = addressEntities[1].Id, City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+                   new AddressGetDto { Id = addressEntities[0].Id, City = "City1", Street = "Street1", Number = "1", ZipCode = "00-000" },
+                   new AddressGetDto { Id = addressEntities[1].Id, City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
                 });
 
             // Act
