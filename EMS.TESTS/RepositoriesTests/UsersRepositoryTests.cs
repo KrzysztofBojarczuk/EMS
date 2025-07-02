@@ -53,5 +53,21 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsFalse(remainingUsers.Any(u => u.Id == userId));
             Assert.AreEqual(0, remainingUsers.Count);
         }
+
+        [TestMethod]
+        public async Task DeleteUserAsync_When_UserDoesNotExist_ReturnsFalse()
+        {
+            // Arrange
+            var userId = "nonexistent";
+            _userManagerMock.Setup(x => x.FindByIdAsync(userId))
+                .ReturnsAsync((AppUserEntity)null);
+
+            // Act
+            var result = await _repository.DeleteUserAsync(userId);
+
+            // Assert
+            Assert.IsFalse(result);
+            _userManagerMock.Verify(x => x.DeleteAsync(It.IsAny<AppUserEntity>()), Times.Never);
+        }
     }
 }
