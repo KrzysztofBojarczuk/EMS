@@ -1,5 +1,7 @@
 ﻿using EMS.CORE.Entities;
+using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
+using EMS.INFRASTRUCTURE.Extensions;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +13,9 @@ namespace EMS.TESTS.RepositoriesTests
     [TestClass]
     public class UsersRepositoryTests
     {
-        private UsersRepository _repository;
         private Mock<UserManager<AppUserEntity>> _userManagerMock;
+        private IUserRepository _repository;
+        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void Setup()
@@ -26,8 +29,9 @@ namespace EMS.TESTS.RepositoriesTests
                 .Options;
 
             var context = new AppDbContext(options);
-
             _repository = new UsersRepository(context, _userManagerMock.Object);
+
+            _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
@@ -68,6 +72,35 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsFalse(result);
             _userManagerMock.Verify(x => x.DeleteAsync(It.IsAny<AppUserEntity>()), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GetAllUsersAsync_BySearchTerm_Returns_Users()
+        {
+            // Arrange
+            var searchTerm = "john";
+
+            var users = new List<AppUserEntity>
+            {
+               new AppUserEntity { UserName = "john", Email = "john@example.com" },
+               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
+               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
+            };
+
+            var paginatedList = new PaginatedList<AppUserEntity>(
+                users.Where(x => x.UserName.ToLower().Contains(searchTerm.ToLower())).ToList(),
+                1, 1, 10);
+
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(1, 10, searchTerm))
+                .ReturnsAsync(paginatedList);
+
+            // Act
+            var result = await _mockUserRepository.Object.GetAllUsersAsync(1, 10, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Items.Count());
+            Assert.AreEqual(users[0].UserName, result.Items.First().UserName);
         }
     }
 }

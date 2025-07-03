@@ -53,7 +53,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_Returns_EmptyList_When_NoEmployeesFound()
+        public async Task Handle_Returns_EmptyList_When_Employees_NotFound()
         {
             // Arrange
             var query = new GetAllEmployeesQuery(1, 10, "nonexistent");

@@ -28,7 +28,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await userManager.Users.CountAsync();
         }
 
-        public async Task<PaginatedList<AppUserEntity>> GettAllUsersAsync(int pageNumber, int pageSize, string searchTerm)
+        public async Task<PaginatedList<AppUserEntity>> GetAllUsersAsync(int pageNumber, int pageSize, string searchTerm)
         {
             var query = userManager.Users.AsQueryable();
 

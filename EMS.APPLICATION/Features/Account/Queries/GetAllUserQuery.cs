@@ -11,7 +11,7 @@ namespace EMS.APPLICATION.Features.Account.Queries
     {
         public async Task<PaginatedList<AppUserEntity>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
         {
-            return await userRepository.GettAllUsersAsync(request.pageNumber, request.pageSize, request.searchTerm);
+            return await userRepository.GetAllUsersAsync(request.pageNumber, request.pageSize, request.searchTerm);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace EMS.CORE.Interfaces
 {
     public interface IUserRepository
     {
-        Task<PaginatedList<AppUserEntity>> GettAllUsersAsync(int pageNumber, int pageSize, string searchTerm);
+        Task<PaginatedList<AppUserEntity>> GetAllUsersAsync(int pageNumber, int pageSize, string searchTerm);
         Task<bool> DeleteUserAsync(string appUserId);
         Task<int> GetNumberOfUsersAsync();
     }
