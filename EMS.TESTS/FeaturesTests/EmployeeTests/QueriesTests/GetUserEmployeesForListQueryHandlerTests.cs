@@ -20,7 +20,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_Returns_BySearchTerm_Returns_Employees()
+        public async Task Handle_Returns_BySearchTerm_Employees()
         {
             // Arrange
             var appUserId = "user1";

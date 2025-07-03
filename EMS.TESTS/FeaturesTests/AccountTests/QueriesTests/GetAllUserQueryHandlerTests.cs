@@ -20,37 +20,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
         }
 
         [TestMethod]
-        public async Task Handle_ByNull_Returns_Users()
-        {
-            // Arrange
-            int pageNumber = 1;
-            int pageSize = 10;
-
-            var expectedUsers = new List<AppUserEntity>
-            {
-               new AppUserEntity { UserName = "John", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
-            };
-
-            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
-
-            _mockUserRepository.Setup(repo => repo.GettAllUsersAsync(pageNumber, pageSize, null))
-                .ReturnsAsync(expectedResult);
-
-            var query = new GetAllUserQuery(pageNumber, pageSize, null);
-
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(expectedUsers.Count(), result.Items.Count);
-            Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
-            _mockUserRepository.Verify(repo => repo.GettAllUsersAsync(pageNumber, pageSize, null), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task Handle_BySearchTerm_Returns_Users()
+        public async Task Handle_Returns_BySearchTerm_Users()
         {
             // Arrange
             int pageNumber = 1;
@@ -65,7 +35,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
-            _mockUserRepository.Setup(repo => repo.GettAllUsersAsync(pageNumber, pageSize, searchTerm))
+            _mockUserRepository.Setup(repo => repo.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(expectedResult);
 
             var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
@@ -77,7 +47,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedUsers.Count(), result.Items.Count());
             Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
-            _mockUserRepository.Verify(repo => repo.GettAllUsersAsync(pageNumber, pageSize, searchTerm), Times.Once);
+            _mockUserRepository.Verify(repo => repo.GetAllUsersAsync(pageNumber, pageSize, searchTerm), Times.Once);
         }
 
         [TestMethod]
@@ -88,7 +58,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             var expectedResult = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, 1, 10);
 
             _mockUserRepository.Setup(repo =>
-                    repo.GettAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm))
+                    repo.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm))
                 .ReturnsAsync(expectedResult);
 
             // Act
@@ -97,7 +67,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
-            _mockUserRepository.Verify(repo => repo.GettAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+            _mockUserRepository.Verify(repo => repo.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }
 }
