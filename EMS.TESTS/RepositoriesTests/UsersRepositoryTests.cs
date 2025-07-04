@@ -102,5 +102,24 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(1, result.Items.Count());
             Assert.AreEqual(users[0].UserName, result.Items.First().UserName);
         }
+
+        [TestMethod]
+        public async Task GetAllUsersAsync_NotFound_Returns_EmptyList()
+        {
+            // Arrange
+            var searchTerm = "nonexistent";
+            var emptyList = new List<AppUserEntity>();
+            var paginatedList = new PaginatedList<AppUserEntity>(emptyList, 0, 1, 10);
+
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(1, 10, searchTerm))
+                .ReturnsAsync(paginatedList);
+
+            // Act
+            var result = await _mockUserRepository.Object.GetAllUsersAsync(1, 10, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count);
+        }
     }
 }
