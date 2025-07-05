@@ -4,6 +4,7 @@ using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -120,6 +121,38 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
+        }
+
+        [TestMethod]
+        public async Task GetNumberOfUsersAsync_Returns_NumberOfUsers()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+
+            var context = new AppDbContext(options);
+
+            await context.Users.AddRangeAsync(new List<AppUserEntity>
+            {
+               new AppUserEntity { Id = "1", UserName = "Alice" },
+               new AppUserEntity { Id = "2", UserName = "Bob" }
+            });
+
+            await context.SaveChangesAsync();
+
+            var store = new UserStore<AppUserEntity>(context);
+            var userManager = new UserManager<AppUserEntity>(
+                store, null, null, null, null, null, null, null, null);
+
+            var repository = new UsersRepository(context, userManager);
+
+            // Act
+            var count = await repository.GetNumberOfUsersAsync();
+
+            // Assert
+            Assert.IsNotNull(count);
+            Assert.AreEqual(2, count);
         }
     }
 }
