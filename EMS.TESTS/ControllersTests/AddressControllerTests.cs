@@ -208,5 +208,43 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(addressDtos);
             Assert.AreEqual(2, addressDtos.Count());
         }
+
+        [TestMethod]
+        public async Task GetUserAddressForTaskAsync_ReturnsOkResult_NotFound_WithEmptyList()
+        {
+            // Arrange
+            var userId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+
+            var addressEntities = new List<AddressEntity>();
+
+            var expectedDtos = new List<AddressGetDto>();
+
+            _mockUserManager
+                .Setup(x => x.FindByNameAsync("testuser"))
+                .ReturnsAsync(appUser);
+
+            _mockSender
+                .Setup(x => x.Send(It.IsAny<GetUserAddressForTaskQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(addressEntities);
+
+            _mockMapper
+                .Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserAddressForTaskAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var addressDtos = okResult.Value as IEnumerable<AddressGetDto>;
+            Assert.IsNotNull(addressDtos);
+            Assert.AreEqual(0, addressDtos.Count());
+        }
     }
 }
