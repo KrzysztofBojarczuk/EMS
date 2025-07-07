@@ -35,8 +35,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
-            _mockEmployeeRepository
-                .Setup(repo => repo.GetEmployeesAsync(pageNumber, pageSize, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
             var query = new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm);
@@ -49,7 +48,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count);
             Assert.AreEqual(expectedEmployees[0].Name, result.Items[0].Name);
             Assert.AreEqual(expectedEmployees[1].Name, result.Items[1].Name);
-            _mockEmployeeRepository.Verify(repo => repo.GetEmployeesAsync(pageNumber, pageSize, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm), Times.Once);
         }
 
         [TestMethod]
@@ -60,8 +59,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var emptyList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, 1, 10);
 
-            _mockEmployeeRepository
-                .Setup(repo => repo.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm))
                 .ReturnsAsync(emptyList);
 
             // Act
@@ -70,7 +68,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
-            _mockEmployeeRepository.Verify(repo => repo.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }
 }

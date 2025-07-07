@@ -25,15 +25,14 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTestsss
         public async Task Handle_Returns_UserBudget()
         {
             // Arrange
-            var appUserId = "user123";
+            var appUserId = "user-id-123";
             var expectedBudget = new BudgetEntity
             {
                 AppUserId = appUserId,
                 Budget = 5000.00m,
             };
 
-            _mockBudgetRepository
-                .Setup(repo => repo.GetUserBudgetAsync(appUserId))
+            _mockBudgetRepository.Setup(x => x.GetUserBudgetAsync(appUserId))
                 .ReturnsAsync(expectedBudget);
 
             var query = new GetUserBudgetQuery(appUserId);
@@ -45,7 +44,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTestsss
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedBudget.AppUserId, result.AppUserId);
             Assert.AreEqual(expectedBudget.Budget, result.Budget);
-            _mockBudgetRepository.Verify(repo => repo.GetUserBudgetAsync(appUserId), Times.Once);
+            _mockBudgetRepository.Verify(x => x.GetUserBudgetAsync(appUserId), Times.Once);
         }
 
         [TestMethod]
@@ -54,8 +53,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTestsss
             // Arrange
             var appUserId = "nonexistent_user";
 
-            _mockBudgetRepository
-                .Setup(repo => repo.GetUserBudgetAsync(appUserId))
+            _mockBudgetRepository.Setup(x => x.GetUserBudgetAsync(appUserId))
                 .ReturnsAsync((BudgetEntity)null);
 
             var query = new GetUserBudgetQuery(appUserId);
@@ -65,7 +63,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTestsss
 
             // Assert
             Assert.IsNull(result);
-            _mockBudgetRepository.Verify(repo => repo.GetUserBudgetAsync(appUserId), Times.Once);
+            _mockBudgetRepository.Verify(x => x.GetUserBudgetAsync(appUserId), Times.Once);
         }
     }
 }

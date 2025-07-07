@@ -29,7 +29,6 @@ namespace EMS.API.Controllers
             var reservationEntity = mapper.Map<ReservationEntity>(reservationDto);
 
             reservationEntity.AppUserId = appUser.Id;
-            reservationEntity.AppUserEntity = appUser;
 
             var result = await sender.Send(new MakeReservationCommand(reservationEntity));
 

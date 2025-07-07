@@ -24,7 +24,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         public async Task Handle_Returns_BySearchTerm_Addresses()
         {
             // Arrange
-            var appUserId = "user123";
+            var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
             var searchTerm = "Street";
@@ -37,8 +37,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
 
             var paginatedList = new PaginatedList<AddressEntity>(expectedAddreses , expectedAddreses.Count(), pageNumber, pageSize);
 
-            _mockAddressRepository
-                .Setup(repo => repo.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm))
+            _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
             var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize, searchTerm);
@@ -50,19 +49,18 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedAddreses.Count(), result.Items.Count);
             CollectionAssert.AreEqual(expectedAddreses, result.Items.ToList());
-            _mockAddressRepository.Verify(repo => repo.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
+            _mockAddressRepository.Verify(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
         }
 
         [TestMethod]
         public async Task Handle_Returns_EmptyList_When_Addresses_NotFound()
         {
             // Arrange
-            var query = new GetUserAddressQuery("user123", 1, 10 , "NonExistent");
+            var query = new GetUserAddressQuery("user-id-123", 1, 10 , "NonExistent");
 
             var paginatedList = new PaginatedList<AddressEntity>(new List<AddressEntity>(), 0, 1, 10);
 
-            _mockAddressRepository
-                .Setup(repo => repo.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm))
+            _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm))
                 .ReturnsAsync(paginatedList);
 
             // Act
@@ -71,7 +69,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
-            _mockAddressRepository.Verify(repo => repo.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+            _mockAddressRepository.Verify(x => x.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }
 }

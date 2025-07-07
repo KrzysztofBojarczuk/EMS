@@ -31,8 +31,7 @@ namespace EMS.TESTS.Features.BudgetTests.CommandsTests
                 Budget = 5000.00m,
             };
 
-            _mockBudgetRepository
-                .Setup(repo => repo.AddBudgetAsync(budgetToAdd))
+            _mockBudgetRepository.Setup(x => x.AddBudgetAsync(budgetToAdd))
                 .ReturnsAsync(budgetToAdd);
 
             var command = new AddBudgetCommand(budgetToAdd);
@@ -43,7 +42,7 @@ namespace EMS.TESTS.Features.BudgetTests.CommandsTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(budgetToAdd, result);
-            _mockBudgetRepository.Verify(repo => repo.AddBudgetAsync(budgetToAdd), Times.Once);
+            _mockBudgetRepository.Verify(x => x.AddBudgetAsync(budgetToAdd), Times.Once);
         }
     }
 }

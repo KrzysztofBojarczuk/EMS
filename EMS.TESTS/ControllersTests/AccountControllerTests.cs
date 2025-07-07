@@ -27,7 +27,7 @@ namespace EMS.TESTS.ControllersTests
         public async Task DeleteUserAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
         {
             // Arrange
-            var userId = "test-user-id";
+            var userId = "user-id-123";
             var expectedResult = true;
 
             _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))
@@ -47,7 +47,7 @@ namespace EMS.TESTS.ControllersTests
         public async Task DeleteUserAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
         {
             // Arrange
-            var userId = "test-user-id";
+            var userId = "user-id-123";
             var expectedResult = false;
 
             _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))

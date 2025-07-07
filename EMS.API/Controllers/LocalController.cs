@@ -51,7 +51,6 @@ namespace EMS.API.Controllers
             var localEntity = mapper.Map<LocalEntity>(localDto);
 
             localEntity.AppUserId = appUser.Id;
-            localEntity.AppUserEntity = appUser;
 
             var result = await sender.Send(new AddLocalCommand(localEntity));
 

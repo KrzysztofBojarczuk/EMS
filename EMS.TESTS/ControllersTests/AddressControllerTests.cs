@@ -11,6 +11,7 @@ using EMS.CORE.Entities;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using EMS.INFRASTRUCTURE.Extensions;
+using EMS.APPLICATION.Features.Address.Commands;
 
 namespace EMS.TESTS.ControllersTests
 {
@@ -54,7 +55,7 @@ namespace EMS.TESTS.ControllersTests
             var pageSize = 10;
             var searchTerm = "Main";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+            var appUser = new AppUserEntity { Id = userId, UserName = username };
 
             var addressEntities = new List<AddressEntity>
             {
@@ -170,9 +171,10 @@ namespace EMS.TESTS.ControllersTests
         {
             // Arrange
             var userId = "user-id-123";
+            var username = "testuser";
             var searchTerm = "City";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+            var appUser = new AppUserEntity { Id = userId, UserName = username };
 
             var addressEntities = new List<AddressEntity>
             {
@@ -180,16 +182,13 @@ namespace EMS.TESTS.ControllersTests
                 new AddressEntity { Id = Guid.NewGuid(), City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
             };
 
-            _mockUserManager
-                .Setup(x => x.FindByNameAsync("testuser"))
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender
-                .Setup(x => x.Send(It.IsAny<GetUserAddressForTaskQuery>(), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.IsAny<GetUserAddressForTaskQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(addressEntities);
 
-            _mockMapper
-                .Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
+            _mockMapper.Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
                 .Returns(new List<AddressGetDto>
                 {
                    new AddressGetDto { Id = addressEntities[0].Id, City = "City1", Street = "Street1", Number = "1", ZipCode = "00-000" },
@@ -215,23 +214,21 @@ namespace EMS.TESTS.ControllersTests
             // Arrange
             var userId = "user-id-123";
             var searchTerm = "nonexistent";
+            var username = "testuser";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+            var appUser = new AppUserEntity { Id = userId, UserName = username };
 
             var addressEntities = new List<AddressEntity>();
 
             var expectedDtos = new List<AddressGetDto>();
 
-            _mockUserManager
-                .Setup(x => x.FindByNameAsync("testuser"))
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender
-                .Setup(x => x.Send(It.IsAny<GetUserAddressForTaskQuery>(), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.IsAny<GetUserAddressForTaskQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(addressEntities);
 
-            _mockMapper
-                .Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
+            _mockMapper.Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
                 .Returns(expectedDtos);
 
             // Act
@@ -245,6 +242,83 @@ namespace EMS.TESTS.ControllersTests
             var addressDtos = okResult.Value as IEnumerable<AddressGetDto>;
             Assert.IsNotNull(addressDtos);
             Assert.AreEqual(0, addressDtos.Count());
+        }
+
+        [TestMethod]
+        public async Task AddAddressAsync_ReturnsOkResult_WithAddressGetDto()
+        {
+            // Arrange
+            var userId = "user-id-123";
+            var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = userId, UserName = username };
+
+            var createDto = new AddressCreateDto
+            {
+                City = "CityX",
+                Street = "StreetX",
+                Number = "1A",
+                ZipCode = "00-001"
+            };
+
+            var addressEntity = new AddressEntity
+            {
+                Id = Guid.NewGuid(),
+                City = createDto.City,
+                Street = createDto.Street,
+                Number = createDto.Number,
+                ZipCode = createDto.ZipCode,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var resultEntity = new AddressEntity
+            {
+                Id = addressEntity.Id,
+                City = addressEntity.City,
+                Street = addressEntity.Street,
+                Number = addressEntity.Number,
+                ZipCode = addressEntity.ZipCode,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var expectedDto = new AddressGetDto
+            {
+                Id = resultEntity.Id,
+                City = resultEntity.City,
+                Street = resultEntity.Street,
+                Number = resultEntity.Number,
+                ZipCode = resultEntity.ZipCode
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockMapper.Setup(x => x.Map<AddressEntity>(createDto))
+                .Returns(addressEntity);
+
+            _mockSender.Setup(x => x.Send(It.IsAny<AddAddressCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(resultEntity);
+
+            _mockMapper.Setup(x => x.Map<AddressGetDto>(resultEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.AddAddressAsync(createDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as AddressGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.City, returnedDto.City);
+            Assert.AreEqual(expectedDto.Street, returnedDto.Street);
+            Assert.AreEqual(expectedDto.Number, returnedDto.Number);
+            Assert.AreEqual(expectedDto.ZipCode, returnedDto.ZipCode);
         }
     }
 }

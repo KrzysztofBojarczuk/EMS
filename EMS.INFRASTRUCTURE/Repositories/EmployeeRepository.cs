@@ -164,7 +164,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (employeeList is not null)
             {
-                var employees = await dbContext.Employees.Where(e => e.EmployeeListId == employeeListId).ToListAsync();
+                var employees = await dbContext.Employees.Where(x => x.EmployeeListId == employeeListId).ToListAsync();
 
                 foreach (var employee in employees)
                 {

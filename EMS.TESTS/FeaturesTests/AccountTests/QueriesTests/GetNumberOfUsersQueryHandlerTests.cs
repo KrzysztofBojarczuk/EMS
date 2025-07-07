@@ -22,7 +22,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
         {
             // Arrange
             var expectedUserCount = 5;
-            _mockUserRepository.Setup(repo => repo.GetNumberOfUsersAsync())
+            _mockUserRepository.Setup(x => x.GetNumberOfUsersAsync())
                 .ReturnsAsync(expectedUserCount);
 
             var query = new GetNumberOfUsersQuery();
@@ -32,14 +32,14 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             // Assert
             Assert.AreEqual(expectedUserCount, result);
-            _mockUserRepository.Verify(repo => repo.GetNumberOfUsersAsync(), Times.Once);
+            _mockUserRepository.Verify(x => x.GetNumberOfUsersAsync(), Times.Once);
         }
 
         [TestMethod]
         public async Task Handle_Returns_Zero_When_NoUsers()
         {
             // Arrange
-            _mockUserRepository.Setup(repo => repo.GetNumberOfUsersAsync())
+            _mockUserRepository.Setup(x => x.GetNumberOfUsersAsync())
                 .ReturnsAsync(0);
 
             var query = new GetNumberOfUsersQuery();
@@ -49,7 +49,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             // Assert
             Assert.AreEqual(0, result);
-            _mockUserRepository.Verify(repo => repo.GetNumberOfUsersAsync(), Times.Once);
+            _mockUserRepository.Verify(x => x.GetNumberOfUsersAsync(), Times.Once);
         }
     }
 }

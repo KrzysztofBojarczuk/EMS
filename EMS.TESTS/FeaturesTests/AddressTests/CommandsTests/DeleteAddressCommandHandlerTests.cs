@@ -25,8 +25,8 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             var addressId = Guid.NewGuid();
             var expectedResult = true;
 
-            _mockRepository.Setup(repo => repo.DeleteAddressAsync(addressId))
-                           .ReturnsAsync(expectedResult);
+            _mockRepository.Setup(x => x.DeleteAddressAsync(addressId))
+                .ReturnsAsync(expectedResult);
 
             var command = new DeleteAddressCommand(addressId);
 
@@ -35,7 +35,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
 
             // Assert
             Assert.IsTrue(result);
-            _mockRepository.Verify(repo => repo.DeleteAddressAsync(addressId), Times.Once);
+            _mockRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
         }
 
         [TestMethod]
@@ -45,8 +45,8 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             var addressId = Guid.NewGuid();
             var expectedResult = false;
 
-            _mockRepository.Setup(repo => repo.DeleteAddressAsync(addressId))
-                           .ReturnsAsync(expectedResult);
+            _mockRepository.Setup(x => x.DeleteAddressAsync(addressId))
+                .ReturnsAsync(expectedResult);
 
             var command = new DeleteAddressCommand(addressId);
 
@@ -55,7 +55,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
 
             // Assert
             Assert.IsFalse(result);
-            _mockRepository.Verify(repo => repo.DeleteAddressAsync(addressId), Times.Once);
+            _mockRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
         }
     }
 }

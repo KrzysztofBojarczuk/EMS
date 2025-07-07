@@ -48,8 +48,10 @@ namespace EMS.TESTS.ControllersTests
         public async Task AddUserBudgetAsync_ReturnOkResult_WithBudgetGetDto()
         {
             // Arrange
-            var userId = "user-123";
-            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+            var userId = "user-id-123";
+            var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = userId, UserName = username };
 
             var createDto = new BudgetCreateDto
             {
@@ -78,20 +80,16 @@ namespace EMS.TESTS.ControllersTests
                 Budget = resultEntity.Budget
             };
 
-            _mockUserManager
-                .Setup(x => x.FindByNameAsync("testuser"))
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockMapper
-                .Setup(m => m.Map<BudgetEntity>(createDto))
+            _mockMapper.Setup(x => x.Map<BudgetEntity>(createDto))
                 .Returns(budgetEntity);
 
-            _mockSender
-                .Setup(s => s.Send(It.IsAny<AddBudgetCommand>(), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.IsAny<AddBudgetCommand>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(resultEntity);
 
-            _mockMapper
-                .Setup(m => m.Map<BudgetGetDto>(resultEntity))
+            _mockMapper.Setup(x => x.Map<BudgetGetDto>(resultEntity))
                 .Returns(expectedDto);
 
             // Act
@@ -112,8 +110,10 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetUserBudgetAsync_ReturnsOkResult_WithBudgetGetDto()
         {
             // Arrange
-            var userId = "user-123";
-            var appUser = new AppUserEntity { Id = userId, UserName = "testuser" };
+            var userId = "user-id-123";
+            var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = userId, UserName = username };
 
             var budgetEntity = new BudgetEntity
             {
@@ -129,16 +129,13 @@ namespace EMS.TESTS.ControllersTests
                 Budget = budgetEntity.Budget
             };
 
-            _mockUserManager
-                .Setup(x => x.FindByNameAsync("testuser"))
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender
-                .Setup(s => s.Send(It.Is<GetUserBudgetQuery>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.Is<GetUserBudgetQuery>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(budgetEntity);
 
-            _mockMapper
-                .Setup(m => m.Map<BudgetGetDto>(budgetEntity))
+            _mockMapper.Setup(x => x.Map<BudgetGetDto>(budgetEntity))
                 .Returns(expectedDto);
 
             // Act
@@ -166,8 +163,7 @@ namespace EMS.TESTS.ControllersTests
             var budgetId = Guid.NewGuid();
             var expectedResult = false;
 
-            _mockSender
-                .Setup(s => s.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
             // Act
@@ -187,8 +183,7 @@ namespace EMS.TESTS.ControllersTests
             var budgetId = Guid.NewGuid();
             var expectedResult = false;
 
-            _mockSender
-                .Setup(s => s.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
             // Act
