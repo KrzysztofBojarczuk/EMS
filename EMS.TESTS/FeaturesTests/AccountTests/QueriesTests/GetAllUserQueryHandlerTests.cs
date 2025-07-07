@@ -35,7 +35,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
-            _mockUserRepository.Setup(repo => repo.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(expectedResult);
 
             var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
@@ -47,7 +47,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedUsers.Count(), result.Items.Count());
             Assert.AreEqual(expectedUsers[0].Email, result.Items[0].Email);
-            _mockUserRepository.Verify(repo => repo.GetAllUsersAsync(pageNumber, pageSize, searchTerm), Times.Once);
+            _mockUserRepository.Verify(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm), Times.Once);
         }
 
         [TestMethod]
@@ -57,8 +57,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             var query = new GetAllUserQuery(1, 10, "nonexistent");
             var expectedResult = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, 1, 10);
 
-            _mockUserRepository.Setup(repo =>
-                    repo.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm))
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm))
                 .ReturnsAsync(expectedResult);
 
             // Act
@@ -67,7 +66,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
-            _mockUserRepository.Verify(repo => repo.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+            _mockUserRepository.Verify(x => x.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }
 }

@@ -51,7 +51,6 @@ namespace EMS.API.Controllers
             var taskEntity = mapper.Map<TaskEntity>(taskDto);
 
             taskEntity.AppUserId = appUser.Id;
-            taskEntity.AppUserEntity = appUser;
 
             var result = await sender.Send(new AddTaskCommand(taskEntity, taskDto.EmployeeListIds));
 

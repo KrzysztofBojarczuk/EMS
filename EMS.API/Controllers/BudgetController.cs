@@ -29,7 +29,6 @@ namespace EMS.API.Controllers
             var budgetEntity = mapper.Map<BudgetEntity>(createDto);
 
             budgetEntity.AppUserId = appUser.Id;
-            budgetEntity.AppUserEntity = appUser;
 
             var result = await sender.Send(new AddBudgetCommand(budgetEntity));
 

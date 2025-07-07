@@ -30,11 +30,10 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
                 Name = "Test User",
                 Email = "test@example.com",
                 Phone = "123456789",
-                AppUserId = "user123"
+                AppUserId = "user-id-123"
             };
 
-            _mockEmployeeRepository
-                .Setup(repo => repo.AddEmployeeAsync(employeeToAdd))
+            _mockEmployeeRepository.Setup(x => x.AddEmployeeAsync(employeeToAdd))
                 .ReturnsAsync(employeeToAdd);
 
             var command = new AddEmployeeCommand(employeeToAdd);
@@ -45,7 +44,7 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(employeeToAdd, result);
-            _mockEmployeeRepository.Verify(repo => repo.AddEmployeeAsync(employeeToAdd), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.AddEmployeeAsync(employeeToAdd), Times.Once);
         }
     }
 }

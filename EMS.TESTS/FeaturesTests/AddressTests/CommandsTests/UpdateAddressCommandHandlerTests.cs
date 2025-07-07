@@ -30,11 +30,10 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
                 Street = "Updated Street",
                 Number = "456",
                 ZipCode = "11-111",
-                AppUserId = "user456"
+                AppUserId = "user-id-123"
             };
 
-            _mockAddressRepository
-                .Setup(repo => repo.UpdateAddressAsync(addressId, updatedAddress))
+            _mockAddressRepository.Setup(x => x.UpdateAddressAsync(addressId, updatedAddress))
                 .ReturnsAsync(updatedAddress);
 
             var command = new UpdateAddressCommand(addressId, updatedAddress);
@@ -45,7 +44,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(updatedAddress, result);
-            _mockAddressRepository.Verify(repo => repo.UpdateAddressAsync(addressId, updatedAddress), Times.Once);
+            _mockAddressRepository.Verify(x => x.UpdateAddressAsync(addressId, updatedAddress), Times.Once);
         }
     }
 }

@@ -65,7 +65,6 @@ namespace EMS.API.Controllers
             var addressEntity = mapper.Map<AddressEntity>(addressDto);
 
             addressEntity.AppUserId = appUser.Id;
-            addressEntity.AppUserEntity = appUser;
 
             var result = await sender.Send(new AddAddressCommand(addressEntity));
 

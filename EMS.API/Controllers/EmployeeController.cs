@@ -78,7 +78,6 @@ namespace EMS.API.Controllers
             var employeeEntity = mapper.Map<EmployeeEntity>(employeeDto);
 
             employeeEntity.AppUserId = appUser.Id;
-            employeeEntity.AppUserEntity = appUser;
 
             var result = await sender.Send(new AddEmployeeCommand(employeeEntity));
 
@@ -193,7 +192,6 @@ namespace EMS.API.Controllers
             var employeeListsEntity = mapper.Map<EmployeeListsEntity>(employeeListsDto);
 
             employeeListsEntity.AppUserId = appUser.Id;
-            employeeListsEntity.AppUserEntity = appUser;
 
             var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity, employeeListsDto.EmployeeIds));
 

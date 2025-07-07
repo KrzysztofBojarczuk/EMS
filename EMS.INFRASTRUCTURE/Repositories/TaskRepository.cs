@@ -26,7 +26,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<TaskEntity> GetTaskByIdAsync(Guid id)
         {
-            return await dbContext.Tasks.FirstOrDefaultAsync(t => t.Id == id);
+            return await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> EmployeeListIds)

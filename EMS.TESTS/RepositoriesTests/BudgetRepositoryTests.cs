@@ -64,7 +64,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsTrue(result);
-            var deleted = await _context.Budgets.FirstOrDefaultAsync(b => b.Id == budgetId);
+            var deleted = await _context.Budgets.FirstOrDefaultAsync(x => x.Id == budgetId);
             Assert.IsNull(deleted);
             Assert.AreEqual(0, _context.Budgets.Count());
         }
@@ -83,7 +83,7 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserBudgetAsync_When_BudgetExists_ReturnsBudget()
         {
             // Arrange
-            var userId = "user123";
+            var userId = "user-id-123";
             var budget = new BudgetEntity
             {
                 Id = Guid.NewGuid(),

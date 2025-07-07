@@ -25,7 +25,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
             var budgetId = Guid.NewGuid();
             var expectedResult = true;
 
-            _mockBudgetRepository.Setup(repo => repo.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
+            _mockBudgetRepository.Setup(x => x.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
 
             var command = new DeleteBudgetCommand(budgetId);
 
@@ -34,7 +34,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
 
             // Assert
             Assert.IsTrue(result);
-            _mockBudgetRepository.Verify(repo => repo.DeleteBudgetAsync(budgetId), Times.Once);
+            _mockBudgetRepository.Verify(x => x.DeleteBudgetAsync(budgetId), Times.Once);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
             var budgetId = Guid.NewGuid();
             var expectedResult = false;
 
-            _mockBudgetRepository.Setup(repo => repo.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
+            _mockBudgetRepository.Setup(x => x.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
 
             var command = new DeleteBudgetCommand(budgetId);
 
@@ -53,7 +53,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
 
             // Assert
             Assert.IsFalse(result);
-            _mockBudgetRepository.Verify(repo => repo.DeleteBudgetAsync(budgetId), Times.Once);
+            _mockBudgetRepository.Verify(x => x.DeleteBudgetAsync(budgetId), Times.Once);
         }
     }
 }

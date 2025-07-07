@@ -23,7 +23,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         public async Task Handle_Returns_BySearchTerm_Addresses()
         {
             // Arrange
-            var appUserId = "user123";
+            var appUserId = "user-id-123";
             var searchTerm = "Street";
 
             var addresses = new List<AddressEntity>
@@ -32,8 +32,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
                 new AddressEntity { City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
             };
 
-            _mockAddressRepository
-                .Setup(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm))
+            _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm))
                 .ReturnsAsync(addresses);
 
             var query = new GetUserAddressForTaskQuery(appUserId, searchTerm);
@@ -45,7 +44,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
             CollectionAssert.AreEqual(addresses, new List<AddressEntity>(result));
-            _mockAddressRepository.Verify(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
+            _mockAddressRepository.Verify(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
         }
 
 
@@ -53,7 +52,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         public async Task Handle_Returns_EmptyList_When_Addresses_NotFound()
         {
             // Arrange
-            var appUserId = "user123";
+            var appUserId = "user-id-123";
             var searchTerm = "NonExistentName";
 
             var addresses = new List<AddressEntity>
@@ -62,8 +61,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
                 new AddressEntity { City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
             };
 
-            _mockAddressRepository
-                .Setup(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm))
+            _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm))
                 .ReturnsAsync(addresses.Where(x => x.Street.Contains(searchTerm)).ToList());
 
             var query = new GetUserAddressForTaskQuery(appUserId, searchTerm);
@@ -74,7 +72,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
-            _mockAddressRepository.Verify(repo => repo.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
+            _mockAddressRepository.Verify(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
         }
     }
 }

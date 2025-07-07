@@ -33,7 +33,7 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserEmployeesAsync_BySearchTerm_Returns_Employees()
         {
             // Arrange
-            var userId = "user1";
+            var userId = "user-id-123";
             var searchTerm = "Tomasz";
 
             var employees = new List<EmployeeEntity>
@@ -63,7 +63,7 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
-            var userId = "user1";
+            var userId = "user-id-123";
             var employees = new List<EmployeeEntity>
             {
                 new EmployeeEntity { Name = "Grzegorz", AppUserId = "user1" },
@@ -71,7 +71,7 @@ namespace EMS.TESTS.RepositoriesTests
                 new EmployeeEntity { Name = "Tomasz", AppUserId = "user1" }
             };
 
-            _mockEmployeeRepository.Setup(r => r.GetUserNumberOfEmployeesAsync(userId))
+            _mockEmployeeRepository.Setup(x => x.GetUserNumberOfEmployeesAsync(userId))
                 .ReturnsAsync(employees.Count);
 
             // Act

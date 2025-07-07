@@ -22,9 +22,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<bool> DeleteTransactionsAsync(Guid transactionId)
         {
-            var transaction = await dbContext.Transactions.FirstOrDefaultAsync(t => t.Id == transactionId);
+            var transaction = await dbContext.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId);
 
-            var budget = await dbContext.Budgets.FirstOrDefaultAsync(b => b.Id == transaction.BudgetId);
+            var budget = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == transaction.BudgetId);
 
             if (transaction is not null)
             {
@@ -70,12 +70,12 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 .Where(t => t.BudgetId == budgetId)
                 .ToListAsync();
 
-            var income = transactions.Where(t => t.Category == CategoryType.Income).Sum(t => t.Amount);
-            var expenses = transactions.Where(t => t.Category == CategoryType.Expense).Sum(t => t.Amount);
+            var income = transactions.Where(x => x.Category == CategoryType.Income).Sum(t => t.Amount);
+            var expenses = transactions.Where(x => x.Category == CategoryType.Expense).Sum(t => t.Amount);
 
             var newBudget = income - expenses;
 
-            var budgetEntity = await dbContext.Budgets.FirstOrDefaultAsync(b => b.Id == budgetId);
+            var budgetEntity = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == budgetId);
 
             if (budgetEntity is not null)
             {

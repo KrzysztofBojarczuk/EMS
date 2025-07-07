@@ -39,7 +39,7 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteUserAsync_When_UserExists_ReturnsTrue()
         {
             // Arrange
-            var userId = "user123";
+            var userId = "user-id-123";
             var user = new AppUserEntity { Id = userId, UserName = "testuser" };
 
             _userManagerMock.Setup(x => x.FindByIdAsync(userId))
