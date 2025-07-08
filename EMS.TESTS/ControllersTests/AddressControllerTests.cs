@@ -320,5 +320,77 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDto.Number, returnedDto.Number);
             Assert.AreEqual(expectedDto.ZipCode, returnedDto.ZipCode);
         }
+
+        [TestMethod]
+        public async Task UpdateAddressAsync_ReturnsOkResult_WithUpdatedAddressDto()
+        {
+            // Arrange
+            var addressId = Guid.NewGuid();
+            var username = "testuser";
+
+            var updateDto = new AddressCreateDto
+            {
+                City = "UpdatedCity",
+                Street = "UpdatedStreet",
+                Number = "99A",
+                ZipCode = "99-999"
+            };
+
+            var addressEntity = new AddressEntity
+            {
+                Id = addressId,
+                City = updateDto.City,
+                Street = updateDto.Street,
+                Number = updateDto.Number,
+                ZipCode = updateDto.ZipCode
+            };
+
+            var updatedEntity = new AddressEntity
+            {
+                Id = addressId,
+                City = updateDto.City,
+                Street = updateDto.Street,
+                Number = updateDto.Number,
+                ZipCode = updateDto.ZipCode
+            };
+
+            var expectedDto = new AddressGetDto
+            {
+                Id = addressId,
+                City = updateDto.City,
+                Street = updateDto.Street,
+                Number = updateDto.Number,
+                ZipCode = updateDto.ZipCode
+            };
+
+            _mockMapper.Setup(m => m.Map<AddressEntity>(updateDto))
+                .Returns(addressEntity);
+
+            _mockSender.Setup(s => s.Send(
+                It.Is<UpdateAddressCommand>(x =>
+                    x.AddressId == addressId &&
+                    x.Address == addressEntity),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updatedEntity);
+
+            _mockMapper.Setup(m => m.Map<AddressGetDto>(updatedEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.UpdateAddressAsync(addressId, updateDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as AddressGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.City, returnedDto.City);
+            Assert.AreEqual(expectedDto.Street, returnedDto.Street);
+            Assert.AreEqual(expectedDto.Number, returnedDto.Number);
+            Assert.AreEqual(expectedDto.ZipCode, returnedDto.ZipCode);
+        }
     }
 }
