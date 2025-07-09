@@ -392,5 +392,25 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDto.Number, returnedDto.Number);
             Assert.AreEqual(expectedDto.ZipCode, returnedDto.ZipCode);
         }
+
+        [TestMethod]
+        public async Task DeleteAddressAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
+        {
+            // Arrange
+            var addressId = Guid.NewGuid();
+            var expectedResult = true;
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteAddressCommand>(x => x.addressId == addressId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.DeleteAddressAsync(addressId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(expectedResult, okResult.Value);
+        }
     }
 }
