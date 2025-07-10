@@ -113,7 +113,7 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNull(_context.Address.FirstOrDefault(a => a.Id == addressId1));
 
             var tasks = _context.Tasks.ToList();
-            Assert.IsTrue(tasks.All(t => t.AddressId != addressId1));
+            Assert.IsTrue(tasks.All(x => x.AddressId != addressId1));
         }
 
         [TestMethod]
