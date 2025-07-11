@@ -125,5 +125,32 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public async Task GetAddressByIdAsync_When_AddressExists_ReturnsAddress()
+        {
+            // Arrange
+            var addressId = Guid.NewGuid();
+            var address = new AddressEntity
+            {
+                Id = addressId,
+                City = "Test City",
+                Street = "Test Street",
+                Number = "123",
+                ZipCode = "00-001",
+                AppUserId = "user123"
+            };
+
+            _context.Address.Add(address);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetAddressByIdAsync(addressId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(addressId, result.Id);
+            Assert.AreEqual(address.City, result.City);
+        }
     }
 }
