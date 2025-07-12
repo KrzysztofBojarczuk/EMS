@@ -138,7 +138,7 @@ namespace EMS.TESTS.RepositoriesTests
                 Street = "Test Street",
                 Number = "123",
                 ZipCode = "00-001",
-                AppUserId = "user123"
+                AppUserId = "user-id-123"
             };
 
             _context.Address.Add(address);
@@ -151,6 +151,17 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(addressId, result.Id);
             Assert.AreEqual(address.City, result.City);
+            Assert.AreEqual(address.Street, result.Street);
+        }
+
+        [TestMethod]
+        public async Task GetAddressByIdAsync_When_AddressDoesNotExist_ReturnsNull()
+        {
+            // Act
+            var result = await _repository.GetAddressByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
         }
     }
 }
