@@ -56,9 +56,12 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         public async Task Handle_Returns_EmptyList_When_Addresses_NotFound()
         {
             // Arrange
-            var query = new GetUserAddressQuery("user-id-123", 1, 10 , "NonExistent");
+            var pageNumber = 1;
+            var pageSize = 10;
 
-            var paginatedList = new PaginatedList<AddressEntity>(new List<AddressEntity>(), 0, 1, 10);
+            var query = new GetUserAddressQuery("user-id-123", pageNumber, pageSize , "nonExistent");
+
+            var paginatedList = new PaginatedList<AddressEntity>(new List<AddressEntity>(), 0, pageNumber, pageSize);
 
             _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm))
                 .ReturnsAsync(paginatedList);

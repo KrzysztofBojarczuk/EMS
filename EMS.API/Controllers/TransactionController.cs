@@ -41,7 +41,7 @@ namespace EMS.API.Controllers
 
             var budgetDtos = mapper.Map<IEnumerable<TransactionGetDto>>(result);
 
-            return Ok(result);
+            return Ok(budgetDtos);
         }
 
         [HttpDelete("{transactionId}")]

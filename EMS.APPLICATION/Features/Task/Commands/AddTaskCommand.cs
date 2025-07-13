@@ -11,8 +11,7 @@ namespace EMS.APPLICATION.Features.Task.Commands
     {
         public async Task<TaskEntity> Handle(AddTaskCommand request, CancellationToken cancellationToken)
         {
-            var task = await taskRepository.AddTaskAsync(request.Task, request.EmployeeListIds);
-            return task;
+            return await taskRepository.AddTaskAsync(request.Task, request.EmployeeListIds);
         }
     }
 }

@@ -11,8 +11,7 @@ namespace EMS.APPLICATION.Features.Budget.Commands
     {
         public async Task<BudgetEntity> Handle(AddBudgetCommand request, CancellationToken cancellationToken)
         {
-            var budget = await budgetRepository.AddBudgetAsync(request.Budget);
-            return budget;
+            return await budgetRepository.AddBudgetAsync(request.Budget);
         }
     }
 }

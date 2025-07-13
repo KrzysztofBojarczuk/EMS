@@ -4,7 +4,6 @@ using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace EMS.TESTS.RepositoriesTests
 {
@@ -13,7 +12,6 @@ namespace EMS.TESTS.RepositoriesTests
     {
         private AppDbContext _context;
         private IAddressRepository _repository;
-        private Mock<IAddressRepository> _mockAdressRepository;
 
         [TestInitialize]
         public void Setup()
@@ -24,8 +22,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             _context = new AppDbContext(options);
             _repository = new AddressRepository(_context);
-
-            _mockAdressRepository = new Mock<IAddressRepository>();
         }
 
         [TestMethod]
@@ -58,46 +54,22 @@ namespace EMS.TESTS.RepositoriesTests
             var addressId1 = Guid.NewGuid();
             var addressId2 = Guid.NewGuid();
 
-            _context.Address.AddRange(
-                new AddressEntity
-                {
-                    Id = addressId1,
-                    City = "Sample City 1",
-                    Street = "Sample Street 1",
-                    Number = "10",
-                    ZipCode = "00-001",
-                    AppUserId = "user1"
-                },
-                new AddressEntity
-                {
-                    Id = addressId2,
-                    City = "Sample City 2",
-                    Street = "Sample Street 2",
-                    Number = "10",
-                    ZipCode = "00-001",
-                    AppUserId = "user1"
-                }
-            );
+            var userId = "user-id-123";
 
-            _context.Tasks.AddRange(
-                new TaskEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Test Task 1",
-                    Description = "Test Description",
-                    AppUserId = "user1",
-                    AddressId = addressId1
-                },
-                new TaskEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Test Task 2",
-                    Description = "Test Description",
-                    AppUserId = "user1",
-                    AddressId = addressId2
-                }
-            );
+            var addresses = new List<AddressEntity>
+            {
+                new AddressEntity { Id = addressId1, AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = addressId2, AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+            };
 
+            var tasks = new List<TaskEntity>
+            {
+                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 1", Description = "Test Description", AppUserId = "user1", AddressId = addressId1 },
+                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addressId2 },
+            };
+
+            _context.Tasks.AddRange(tasks);
+            _context.Address.AddRange(addresses);
             await _context.SaveChangesAsync();
 
             var addressCountBefore = _context.Address.Count();
@@ -111,13 +83,11 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsTrue(result);
             Assert.AreEqual(addressCountBefore - 1, addressCountAfter);
             Assert.IsNull(_context.Address.FirstOrDefault(a => a.Id == addressId1));
-
-            var tasks = _context.Tasks.ToList();
             Assert.IsTrue(tasks.All(x => x.AddressId != addressId1));
         }
 
         [TestMethod]
-        public async Task DeleteAddressAsync_When_AddressDoesNotExist_ReturnsFalse()
+        public async Task DeleteAddressAsync_When_AddressDoesNotExist_Returns_False()
         {
             // Act
             var result = await _repository.DeleteAddressAsync(Guid.NewGuid());
@@ -127,7 +97,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetAddressByIdAsync_When_AddressExists_ReturnsAddress()
+        public async Task GetAddressByIdAsync_When_AddressExists_Returns_Address()
         {
             // Arrange
             var addressId = Guid.NewGuid();
@@ -155,13 +125,39 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetAddressByIdAsync_When_AddressDoesNotExist_ReturnsNull()
+        public async Task GetAddressByIdAsync_When_AddressDoesNotExist_Returns_Null()
         {
             // Act
             var result = await _repository.GetAddressByIdAsync(Guid.NewGuid());
 
             // Assert
             Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task GetUserAddressesAsync_BySearchTerm_Returns_Addresses()
+        {
+            // Arrange
+            var userId = "user-id-123";
+            var searchTerm = "main";
+
+            var addresses = new List<AddressEntity>
+            {
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+            };
+
+            _context.Address.AddRange(addresses);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserAddressesAsync(userId, 1, 10, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Items.Count);
+            Assert.AreEqual(addresses[0].Street, result.Items.First().Street);
         }
     }
 }

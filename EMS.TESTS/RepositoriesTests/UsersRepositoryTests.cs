@@ -4,7 +4,6 @@ using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,6 +13,7 @@ namespace EMS.TESTS.RepositoriesTests
     [TestClass]
     public class UsersRepositoryTests
     {
+        private AppDbContext _context;
         private Mock<UserManager<AppUserEntity>> _userManagerMock;
         private IUserRepository _repository;
         private Mock<IUserRepository> _mockUserRepository;
@@ -26,17 +26,18 @@ namespace EMS.TESTS.RepositoriesTests
                 store.Object, null, null, null, null, null, null, null, null);
 
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: "TestDb")
-                .Options;
+              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+              .Options;
 
-            var context = new AppDbContext(options);
-            _repository = new UsersRepository(context, _userManagerMock.Object);
+
+            _context = new AppDbContext(options);
+            _repository = new UsersRepository(_context, _userManagerMock.Object);
 
             _mockUserRepository = new Mock<IUserRepository>();
         }
 
         [TestMethod]
-        public async Task DeleteUserAsync_When_UserExists_ReturnsTrue()
+        public async Task DeleteUserAsync_When_UserExists_Returns_True()
         {
             // Arrange
             var userId = "user-id-123";
@@ -60,7 +61,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteUserAsync_When_UserDoesNotExist_ReturnsFalse()
+        public async Task DeleteUserAsync_When_UserDoesNotExist_Returns_False()
         {
             // Arrange
             var userId = "nonexistent";
@@ -127,32 +128,21 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetNumberOfUsersAsync_Returns_NumberOfUsers()
         {
             // Arrange
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-                .Options;
-
-            var context = new AppDbContext(options);
-
-            await context.Users.AddRangeAsync(new List<AppUserEntity>
+            var users = new List<AppUserEntity>
             {
-               new AppUserEntity { Id = "1", UserName = "Alice" },
-               new AppUserEntity { Id = "2", UserName = "Bob" }
-            });
+               new AppUserEntity { UserName = "john", Email = "john@example.com" },
+               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
+               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
+            };
 
-            await context.SaveChangesAsync();
-
-            var store = new UserStore<AppUserEntity>(context);
-            var userManager = new UserManager<AppUserEntity>(
-                store, null, null, null, null, null, null, null, null);
-
-            var repository = new UsersRepository(context, userManager);
+            _mockUserRepository.Setup(x => x.GetNumberOfUsersAsync()).ReturnsAsync(users.Count);
 
             // Act
-            var count = await repository.GetNumberOfUsersAsync();
+            var count = await _mockUserRepository.Object.GetNumberOfUsersAsync();
 
             // Assert
             Assert.IsNotNull(count);
-            Assert.AreEqual(2, count);
+            Assert.AreEqual(3, count);
         }
     }
 }

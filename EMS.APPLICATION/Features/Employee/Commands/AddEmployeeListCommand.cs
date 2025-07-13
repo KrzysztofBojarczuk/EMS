@@ -12,8 +12,7 @@ namespace EMS.APPLICATION.Features.Employee.Commands
     {
         public async Task<Result<EmployeeListsEntity>> Handle(AddEmployeeListCommand request, CancellationToken cancellationToken)
         {
-            var employeeList = await employeeRepository.AddEmployeeListsAsync(request.employeeList, request.employeeIds);
-            return employeeList;
+            return await employeeRepository.AddEmployeeListsAsync(request.employeeList, request.employeeIds);
         }
     }
 }

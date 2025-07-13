@@ -55,9 +55,12 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         public async Task Handle_Returns_EmptyList_When_Employees_NotFound()
         {
             // Arrange
-            var query = new GetAllEmployeesQuery(1, 10, "nonexistent");
+            int pageNumber = 1;
+            int pageSize = 10;
 
-            var emptyList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, 1, 10);
+            var query = new GetAllEmployeesQuery(pageNumber, pageSize, "nonexistent");
+
+            var emptyList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, pageNumber, pageSize);
 
             _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm))
                 .ReturnsAsync(emptyList);
