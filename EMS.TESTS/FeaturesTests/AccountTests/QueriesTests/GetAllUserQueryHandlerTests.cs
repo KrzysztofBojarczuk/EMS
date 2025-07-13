@@ -54,8 +54,11 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
         public async Task Handle_Returns_EmptyList_When_Users_NotFound()
         {
             // Arrange
-            var query = new GetAllUserQuery(1, 10, "nonexistent");
-            var expectedResult = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, 1, 10);
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var query = new GetAllUserQuery(pageNumber, pageSize, "nonexistent");
+            var expectedResult = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, pageNumber, pageSize);
 
             _mockUserRepository.Setup(x => x.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm))
                 .ReturnsAsync(expectedResult);

@@ -11,8 +11,7 @@ namespace EMS.APPLICATION.Features.Local.Commands
     {
         public async Task<LocalEntity> Handle(AddLocalCommand request, CancellationToken cancellationToken)
         {
-            var local = await localRepository.AddLocalAsync(request.local);
-            return local;
+            return await localRepository.AddLocalAsync(request.local);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteBudgetAsync_When_BudgetExists_ReturnsTrue()
+        public async Task DeleteBudgetAsync_When_BudgetExists_Returns_True()
         {
             // Arrange
             var budgetId = Guid.NewGuid();
@@ -70,7 +70,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteBudgetAsync_When_BudgetDoesNotExist_ReturnsFalse()
+        public async Task DeleteBudgetAsync_When_BudgetDoesNotExist_Returns_False()
         {
             // Act
             var result = await _repository.DeleteBudgetAsync(Guid.NewGuid());
@@ -80,7 +80,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserBudgetAsync_When_BudgetExists_ReturnsBudget()
+        public async Task GetUserBudgetAsync_When_BudgetExists_Returns_Budget()
         {
             // Arrange
             var userId = "user-id-123";
@@ -105,7 +105,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserBudgetAsync_When_BudgetDoesNotExist_ReturnsNull()
+        public async Task GetUserBudgetAsync_When_BudgetDoesNotExist_Returns_Null()
         {
             // Act
             var result = await _repository.GetUserBudgetAsync("nonexistent_user");

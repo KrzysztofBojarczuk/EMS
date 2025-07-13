@@ -11,8 +11,7 @@ namespace EMS.APPLICATION.Features.Transaction.Commands
     {
         public async Task<TransactionEntity> Handle(AddTransactionCommand request, CancellationToken cancellationToken)
         {
-            var transaction = await transactionRepository.AddTransactionAsync(request.transaction);
-            return transaction;   
+            return await transactionRepository.AddTransactionAsync(request.transaction);
         }
     }
 }

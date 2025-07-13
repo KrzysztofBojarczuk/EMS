@@ -12,8 +12,7 @@ namespace EMS.APPLICATION.Features.Reservation.Commands
     {
         public async Task<Result<ReservationEntity>> Handle(MakeReservationCommand request, CancellationToken cancellationToken)
         {
-            var reservation = await reservationRepository.MakeReservationAsync(request.Reservation);
-            return reservation;
+            return await reservationRepository.MakeReservationAsync(request.Reservation);
         }
     }
 }

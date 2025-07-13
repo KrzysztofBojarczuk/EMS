@@ -1,11 +1,9 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
-using EMS.INFRASTRUCTURE.Extensions;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace EMS.TESTS.RepositoriesTests
 {
@@ -14,7 +12,6 @@ namespace EMS.TESTS.RepositoriesTests
     {
         private AppDbContext _context;
         private IEmployeeRepository _repository;
-        private Mock<IEmployeeRepository> _mockEmployeeRepository;
 
         [TestInitialize]
         public void Setup()
@@ -25,8 +22,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             _context = new AppDbContext(options);
             _repository = new EmployeeRepository(_context);
-
-            _mockEmployeeRepository = new Mock<IEmployeeRepository>();
         }
 
         [TestMethod]
@@ -38,20 +33,16 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = "user1" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = "user1" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = "user1" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
-            var paginatedList = new PaginatedList<EmployeeEntity>(
-                employees.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())).ToList(),
-                1, 1, 10);
-
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(userId, 1, 10, searchTerm))
-                .ReturnsAsync(paginatedList);
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
 
             // Act
-            var result = await _mockEmployeeRepository.Object.GetUserEmployeesAsync(userId, 1, 10, searchTerm);
+            var result = await _repository.GetUserEmployeesAsync(userId, 1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -63,40 +54,44 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
-            var userId = "user-id-123";
+            var userId1 = "user-id-123";
+            var userId2 = "user-id-1234";
+
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = "user1" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = "user1" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = "user1" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId1, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = userId1, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = userId2, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
-            _mockEmployeeRepository.Setup(x => x.GetUserNumberOfEmployeesAsync(userId))
-                .ReturnsAsync(employees.Count);
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
 
             // Act
-            var count = await _mockEmployeeRepository.Object.GetUserNumberOfEmployeesAsync(userId);
+            var count = await _repository.GetUserNumberOfEmployeesAsync(userId1);
 
             // Assert
-            Assert.AreEqual(employees.Count(), count);
+            Assert.AreEqual(employees.Where(x => x.AppUserId == userId1).Count(), count);
         }
 
         [TestMethod]
         public async Task GetNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
+            var userId = "user-id-123";
+
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz" },
-                new EmployeeEntity { Name = "Janusz" },
-                new EmployeeEntity { Name = "Tomasz" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
-            _mockEmployeeRepository.Setup(r => r.GetNumberOfEmployeesAsync())
-                .ReturnsAsync(employees.Count);
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
 
             // Act
-            var count = await _mockEmployeeRepository.Object.GetNumberOfEmployeesAsync();
+            var count = await _repository.GetNumberOfEmployeesAsync();
 
             // Assert
             Assert.AreEqual(employees.Count(), count);
@@ -107,22 +102,20 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var searchTerm = "Tomasz";
+            var userId = "user-id-123";
+
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz" },
-                new EmployeeEntity { Name = "Janusz" },
-                new EmployeeEntity { Name = "Tomasz" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
-            var paginatedList = new PaginatedList<EmployeeEntity>(
-                employees.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())).ToList(),
-                1, 1, 10);
-
-            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(1, 10, searchTerm))
-                .ReturnsAsync(paginatedList);
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
 
             // Act
-            var result = await _mockEmployeeRepository.Object.GetEmployeesAsync(1, 10, searchTerm);
+            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -142,8 +135,7 @@ namespace EMS.TESTS.RepositoriesTests
                 AppUserId = "user123"
             };
 
-            // Act    await _context.Employees.AddAsync(employee);
-            await _context.Employees.AddAsync(employee);
+            _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
             // Act
@@ -156,7 +148,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task UpdateEmployeeAsync_When_EntityIsNull_ReturnsNull()
+        public async Task UpdateEmployeeAsync_When_EntityIsNull_Returns_Null()
         {
             // Arrange
             var employeeId = Guid.NewGuid();
@@ -169,10 +161,10 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task UpdateEmployeeAsync_When_EntityIsNotNullAndExists_UpdatesAndReturnsEmployee()
+        public async Task UpdateEmployeeAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Employee()
         {
             // Arrange
-            var originalEmployee = new EmployeeEntity
+            var employee = new EmployeeEntity
             {
                 Name = "Tomasz Wójcik",
                 Email = "tomasz@example.com",
@@ -181,7 +173,7 @@ namespace EMS.TESTS.RepositoriesTests
                 AppUserId = "user1"
             };
 
-            await _context.Employees.AddAsync(originalEmployee);
+            _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
             var updatedEmployee = new EmployeeEntity
@@ -193,11 +185,11 @@ namespace EMS.TESTS.RepositoriesTests
             };
 
             // Act
-            var result = await _repository.UpdateEmployeeAsync(originalEmployee.Id, updatedEmployee);
+            var result = await _repository.UpdateEmployeeAsync(employee.Id, updatedEmployee);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(originalEmployee.Id, result.Id);
+            Assert.AreEqual(employee.Id, result.Id);
             Assert.AreEqual(updatedEmployee.Name, result.Name);
             Assert.AreEqual(updatedEmployee.Email, result.Email);
             Assert.AreEqual(updatedEmployee.Phone, result.Phone);
@@ -205,7 +197,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_When_EmployeeExists_ReturnsTrue()
+        public async Task DeleteEmployeeAsync_When_EmployeeExists_Returns_True()
         {
             // Arrange
             var employee = new EmployeeEntity
@@ -216,7 +208,7 @@ namespace EMS.TESTS.RepositoriesTests
                 AppUserId = "user999"
             };
 
-            await _context.Employees.AddAsync(employee);
+            _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
             var emplyeeCountBefore = _context.Employees.Count();
@@ -233,7 +225,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_When_EmployeeDoesNotExist_ReturnsFalse()
+        public async Task DeleteEmployeeAsync_When_EmployeeDoesNotExist_Returns_False()
         {
             // Act
             var result = await _repository.DeleteEmployeeAsync(Guid.NewGuid());

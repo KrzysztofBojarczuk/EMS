@@ -11,8 +11,7 @@ namespace EMS.APPLICATION.Features.Address.Commands
     {
         public async Task<AddressEntity> Handle(AddAddressCommand request, CancellationToken cancellationToken)
         {
-            var address = await addressRepository.AddAddressAsync(request.address);
-            return address;
+            return await addressRepository.AddAddressAsync(request.address);
         }
     }
 }
