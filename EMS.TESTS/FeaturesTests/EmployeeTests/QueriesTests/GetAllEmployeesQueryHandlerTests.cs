@@ -70,7 +70,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count);
+            Assert.AreEqual(0, result.Items.Count());
             _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }

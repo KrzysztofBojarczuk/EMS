@@ -71,7 +71,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count);
+            Assert.AreEqual(0, result.Items.Count());
             _mockAddressRepository.Verify(x => x.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }

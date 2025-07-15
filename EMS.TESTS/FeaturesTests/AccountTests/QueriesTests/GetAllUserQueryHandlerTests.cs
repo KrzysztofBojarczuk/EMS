@@ -68,7 +68,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count);
+            Assert.AreEqual(0, result.Items.Count());
             _mockUserRepository.Verify(x => x.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
         }
     }
