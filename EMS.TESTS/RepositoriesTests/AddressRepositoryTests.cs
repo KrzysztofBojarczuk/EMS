@@ -211,5 +211,30 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(2, result.Count());
             Assert.AreEqual(addresses[0].Street, result.First().Street);
         }
+
+        [TestMethod]
+        public async Task GetUserAddressesForTaskAsync_When_AddressDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var userId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            var addresses = new List<AddressEntity>
+            {
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+            };
+
+            _context.Address.AddRange(addresses);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserAddressesForTaskAsync(userId, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
     }
 }
