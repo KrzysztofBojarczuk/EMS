@@ -51,6 +51,31 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeesAsync_When_EmployeeesDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var userId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(userId, 1, 10, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
