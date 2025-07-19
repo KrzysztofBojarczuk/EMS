@@ -236,5 +236,44 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
         }
+
+        [TestMethod]
+        public async Task UpdateAddressAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Address()
+        {
+            // Arrange
+            var userId = "user-id-123";
+
+            var address = new AddressEntity
+            {
+                City = "Test City",
+                Street = "Test Street",
+                Number = "123",
+                ZipCode = "00-001",
+                AppUserId = userId
+            };
+
+            _context.Address.Add(address);
+            await _context.SaveChangesAsync();
+
+            var updatedAddress = new AddressEntity
+            {
+                City = "Test New City",
+                Street = "Test New Street",
+                Number = "321",
+                ZipCode = "00-123",
+                AppUserId = userId
+            };
+
+            // Act
+            var result = await _repository.UpdateAddressAsync(address.Id, updatedAddress);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(address.Id, result.Id);
+            Assert.AreEqual(updatedAddress.City, result.City);
+            Assert.AreEqual(updatedAddress.Street, result.Street);
+            Assert.AreEqual(updatedAddress.Number, result.Number);
+            Assert.AreEqual(updatedAddress.ZipCode, result.ZipCode);
+        }
     }
 }

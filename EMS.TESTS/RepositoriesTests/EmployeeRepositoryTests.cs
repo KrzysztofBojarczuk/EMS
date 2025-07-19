@@ -223,13 +223,15 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task UpdateEmployeeAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Employee()
         {
             // Arrange
+            var userId = "user-id-123";
+
             var employee = new EmployeeEntity
             {
                 Name = "Tomasz Wójcik",
                 Email = "tomasz@example.com",
                 Phone = "111222333",
                 Salary = 4000,
-                AppUserId = "user1"
+                AppUserId = userId
             };
 
             _context.Employees.Add(employee);
@@ -240,7 +242,8 @@ namespace EMS.TESTS.RepositoriesTests
                 Name = "Tomasz Nowy",
                 Email = "nowy@example.com",
                 Phone = "444555666",
-                Salary = 6500
+                Salary = 6500,
+                AppUserId = userId
             };
 
             // Act
@@ -252,7 +255,7 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(updatedEmployee.Name, result.Name);
             Assert.AreEqual(updatedEmployee.Email, result.Email);
             Assert.AreEqual(updatedEmployee.Phone, result.Phone);
-            Assert.AreEqual(6500, result.Salary);
+            Assert.AreEqual(updatedEmployee.Salary, result.Salary);
         }
 
         [TestMethod]
