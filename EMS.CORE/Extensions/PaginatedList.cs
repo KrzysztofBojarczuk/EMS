@@ -23,7 +23,9 @@ namespace EMS.INFRASTRUCTURE.Extensions
         public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
         {
             if (pageIndex < 1)
+            {
                 pageIndex = 1;
+            }
 
             var count = await source.CountAsync();
 
