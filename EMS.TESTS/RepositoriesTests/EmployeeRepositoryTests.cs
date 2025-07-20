@@ -104,7 +104,6 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var userId = "user-id-123";
-
             var employees = new List<EmployeeEntity>
             {
                 new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
@@ -224,7 +223,6 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var userId = "user-id-123";
-
             var employee = new EmployeeEntity
             {
                 Name = "Tomasz Wójcik",
