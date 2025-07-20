@@ -53,7 +53,6 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var addressId1 = Guid.NewGuid();
             var addressId2 = Guid.NewGuid();
-
             var userId = "user-id-123";
 
             var addresses = new List<AddressEntity>
@@ -182,7 +181,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count());          
+            Assert.AreEqual(0, result.Items.Count());
         }
 
         [TestMethod]
@@ -242,7 +241,6 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var userId = "user-id-123";
-
             var address = new AddressEntity
             {
                 City = "Test City",
@@ -274,6 +272,19 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(updatedAddress.Street, result.Street);
             Assert.AreEqual(updatedAddress.Number, result.Number);
             Assert.AreEqual(updatedAddress.ZipCode, result.ZipCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAddressAsync_When_EntityIsNull_Returns_Null()
+        {
+            // Arrange
+            var addressId = Guid.NewGuid();
+
+            // Act
+            var result = await _repository.UpdateAddressAsync(addressId, null);
+
+            // Assert
+            Assert.IsNull(result);
         }
     }
 }
