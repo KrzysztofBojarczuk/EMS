@@ -275,16 +275,28 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task UpdateAddressAsync_When_EntityIsNull_Returns_Null()
+        public async Task UpdateAddressAsync_When_AddressDoesNotExist_Returns_Entity()
         {
             // Arrange
-            var addressId = Guid.NewGuid();
+            var nonExistentId = Guid.NewGuid();
+            var updatedAddress = new AddressEntity
+            {
+                City = "Test New City",
+                Street = "Test New Street",
+                Number = "321",
+                ZipCode = "00-123",
+                AppUserId = "user-id-123"
+            };
 
             // Act
-            var result = await _repository.UpdateAddressAsync(addressId, null);
+            var result = await _repository.UpdateAddressAsync(nonExistentId, updatedAddress);
 
             // Assert
-            Assert.IsNull(result);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(updatedAddress.City, result.City);
+            Assert.AreEqual(updatedAddress.Street, result.Street);
+            Assert.AreEqual(updatedAddress.Number, result.Number);
+            Assert.AreEqual(updatedAddress.ZipCode, result.ZipCode);
         }
     }
 }
