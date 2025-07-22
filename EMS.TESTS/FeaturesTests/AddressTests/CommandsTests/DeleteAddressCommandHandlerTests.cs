@@ -8,14 +8,14 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
     [TestClass]
     public class DeleteAddressCommandHandlerTests
     {
-        private Mock<IAddressRepository> _mockRepository;
+        private Mock<IAddressRepository> _mockAddressRepository;
         private DeleteAddressCommandHandler _handler;
 
         [TestInitialize]
         public void Setup()
         {
-            _mockRepository = new Mock<IAddressRepository>();
-            _handler = new DeleteAddressCommandHandler(_mockRepository.Object);
+            _mockAddressRepository = new Mock<IAddressRepository>();
+            _handler = new DeleteAddressCommandHandler(_mockAddressRepository.Object);
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             var addressId = Guid.NewGuid();
             var expectedResult = true;
 
-            _mockRepository.Setup(x => x.DeleteAddressAsync(addressId))
+            _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId))
                 .ReturnsAsync(expectedResult);
 
             var command = new DeleteAddressCommand(addressId);
@@ -35,7 +35,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
 
             // Assert
             Assert.IsTrue(result);
-            _mockRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
+            _mockAddressRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             var addressId = Guid.NewGuid();
             var expectedResult = false;
 
-            _mockRepository.Setup(x => x.DeleteAddressAsync(addressId))
+            _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId))
                 .ReturnsAsync(expectedResult);
 
             var command = new DeleteAddressCommand(addressId);
@@ -55,7 +55,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
 
             // Assert
             Assert.IsFalse(result);
-            _mockRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
+            _mockAddressRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
         }
     }
 }
