@@ -37,5 +37,25 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             Assert.IsTrue(result);
             _mockEmployeeRepository.Verify(x => x.DeleteEmployeeAsync(emplyeeId), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_ShouldReturnFalse_When_EmployeeDeletionFails()
+        {
+            // Arrange
+            var emplyeeId = Guid.NewGuid();
+            var expectedResult = false;
+
+            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeAsync(emplyeeId))
+                .ReturnsAsync(expectedResult);
+
+            var command = new DeleteEmployeeCommand(emplyeeId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
+            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeAsync(emplyeeId), Times.Once);
+        }
     }
 }
