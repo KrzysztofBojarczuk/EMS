@@ -47,5 +47,23 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             _mockEmployeeRepository.Verify(x => x.GetEmployeeByIdAsync(employeeId), Times.Once);
         }
 
+        [TestMethod]
+        public async Task Handle_Returns_Null_When_EmployeeDoesNotExist()
+        {
+            // Arrange
+            var employeeId = Guid.NewGuid();
+
+           _mockEmployeeRepository.Setup(x => x.GetEmployeeByIdAsync(employeeId))
+                .ReturnsAsync((EmployeeEntity)null);
+
+            var query = new GetEmployeeByIdQuery(employeeId);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(result);
+            _mockEmployeeRepository.Verify(x => x.GetEmployeeByIdAsync(employeeId), Times.Once);
+        }
     }
 }
