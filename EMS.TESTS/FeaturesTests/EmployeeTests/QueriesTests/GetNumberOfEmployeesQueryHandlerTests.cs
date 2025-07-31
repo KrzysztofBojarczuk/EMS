@@ -35,5 +35,22 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.AreEqual(expectedCount, result);
             _mockEmployeeRepository.Verify(x => x.GetNumberOfEmployeesAsync(), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_Zero_When_NoEmployees()
+        {
+            // Arrange
+            _mockEmployeeRepository.Setup(x => x.GetNumberOfEmployeesAsync())
+                .ReturnsAsync(0);
+
+            var query = new GetNumberOfEmployeesQuery();
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.AreEqual(0, result);
+            _mockEmployeeRepository.Verify(x => x.GetNumberOfEmployeesAsync(), Times.Once);
+        }
     }
 }
