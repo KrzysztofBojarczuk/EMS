@@ -48,10 +48,10 @@ namespace EMS.TESTS.ControllersTests
         public async Task AddUserBudgetAsync_ReturnOkResult_WithBudgetGetDto()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var username = "testuser";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = username };
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var createDto = new BudgetCreateDto
             {
@@ -62,7 +62,7 @@ namespace EMS.TESTS.ControllersTests
             {
                 Id = Guid.NewGuid(),
                 Budget = createDto.Budget,
-                AppUserId = userId,
+                AppUserId = appUserId,
                 AppUserEntity = appUser
             };
 
@@ -110,16 +110,16 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetUserBudgetAsync_ReturnsOkResult_WithBudgetGetDto()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var username = "testuser";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = username };
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var budgetEntity = new BudgetEntity
             {
                 Id = Guid.NewGuid(),
                 Budget = 4200.00m,
-                AppUserId = userId,
+                AppUserId = appUserId,
                 AppUserEntity = appUser
             };
 
@@ -132,7 +132,7 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetUserBudgetQuery>(x => x.appUserId == userId), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.Is<GetUserBudgetQuery>(x => x.appUserId == appUserId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(budgetEntity);
 
             _mockMapper.Setup(x => x.Map<BudgetGetDto>(budgetEntity))

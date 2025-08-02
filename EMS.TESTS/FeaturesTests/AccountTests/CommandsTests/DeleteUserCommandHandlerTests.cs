@@ -22,20 +22,20 @@ namespace EMS.TESTS.Features.AccountTests.CommandsTests
         public async Task Handle_ShouldReturnTrue_When_UserIsDeletedSuccessfully()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var expectedResult = true;
 
-            _mockUserRepository.Setup(x => x.DeleteUserAsync(userId))
+            _mockUserRepository.Setup(x => x.DeleteUserAsync(appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteUserCommand(userId);
+            var command = new DeleteUserCommand(appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
-            _mockUserRepository.Verify(x => x.DeleteUserAsync(userId), Times.Once);
+            _mockUserRepository.Verify(x => x.DeleteUserAsync(appUserId), Times.Once);
         }
 
 
@@ -43,20 +43,20 @@ namespace EMS.TESTS.Features.AccountTests.CommandsTests
         public async Task Handle_ShouldReturnFalse_When_UserDeletionFails()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var expectedResult = false;
 
-            _mockUserRepository.Setup(x => x.DeleteUserAsync(userId))
+            _mockUserRepository.Setup(x => x.DeleteUserAsync(appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteUserCommand(userId);
+            var command = new DeleteUserCommand(appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsFalse(result);
-            _mockUserRepository.Verify(x => x.DeleteUserAsync(userId), Times.Once);
+            _mockUserRepository.Verify(x => x.DeleteUserAsync(appUserId), Times.Once);
         }
     }
 }

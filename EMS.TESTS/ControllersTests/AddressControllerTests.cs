@@ -49,13 +49,13 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetUserAddressAsync_ReturnsOkResult_BySearchTerm_WithAddressDtos()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var username = "testuser";
             var pageNumber = 1;
             var pageSize = 10;
             var searchTerm = "Main";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = username };
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var addressEntities = new List<AddressEntity>
             {
@@ -76,7 +76,7 @@ namespace EMS.TESTS.ControllersTests
 
             _mockSender.Setup(x => x.Send(
                 It.Is<GetUserAddressQuery>(x =>
-                    x.appUserId == userId &&
+                    x.appUserId == appUserId &&
                     x.pageNumber == pageNumber &&
                     x.pageSize == pageSize &&
                     x.searchTerm == searchTerm),
@@ -114,13 +114,13 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetUserAddressAsync_ReturnsOkResult_NotFound_WithEmptyList()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var username = "testuser";
             var pageNumber = 1;
             var pageSize = 10;
             string searchTerm = "nonexistent";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = username };
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var emptyEntities = new List<AddressEntity>();
             var paginatedResult = new PaginatedList<AddressEntity>(emptyEntities, 0, pageNumber, pageSize);
@@ -132,7 +132,7 @@ namespace EMS.TESTS.ControllersTests
 
             _mockSender.Setup(x => x.Send(
                 It.Is<GetUserAddressQuery>(x =>
-                    x.appUserId == userId &&
+                    x.appUserId == appUserId &&
                     x.pageNumber == pageNumber &&
                     x.pageSize == pageSize &&
                     x.searchTerm == searchTerm),
@@ -170,11 +170,11 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetUserAddressForTaskAsync_ReturnsOkResult_BySearchTerm_WithAddressDtos()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var username = "testuser";
             var searchTerm = "City";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = username };
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var addressEntities = new List<AddressEntity>
             {
@@ -212,11 +212,11 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetUserAddressForTaskAsync_ReturnsOkResult_NotFound_WithEmptyList()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
             var username = "testuser";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = username };
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var addressEntities = new List<AddressEntity>();
 
@@ -248,10 +248,10 @@ namespace EMS.TESTS.ControllersTests
         public async Task AddAddressAsync_ReturnsOkResult_WithAddressGetDto()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var username = "testuser";
 
-            var appUser = new AppUserEntity { Id = userId, UserName = username };
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var createDto = new AddressCreateDto
             {
