@@ -40,23 +40,23 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteUserAsync_When_UserExists_Returns_True()
         {
             // Arrange
-            var userId = "user-id-123";
-            var user = new AppUserEntity { Id = userId, UserName = "testuser" };
+            var appUserId = "user-id-123";
+            var user = new AppUserEntity { Id = appUserId, UserName = "testuser" };
 
-            _userManagerMock.Setup(x => x.FindByIdAsync(userId))
+            _userManagerMock.Setup(x => x.FindByIdAsync(appUserId))
                 .ReturnsAsync(user);
 
             _userManagerMock.Setup(x => x.DeleteAsync(user))
                 .ReturnsAsync(IdentityResult.Success);
 
             // Act
-            var result = await _repository.DeleteUserAsync(userId);
+            var result = await _repository.DeleteUserAsync(appUserId);
 
             // Assert
             Assert.IsTrue(result);
             _userManagerMock.Verify(x => x.DeleteAsync(user), Times.Once);
             var remainingUsers = _userManagerMock.Object.Users.ToList();
-            Assert.IsFalse(remainingUsers.Any(u => u.Id == userId));
+            Assert.IsFalse(remainingUsers.Any(u => u.Id == appUserId));
             Assert.AreEqual(0, remainingUsers.Count);
         }
 
@@ -64,12 +64,12 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteUserAsync_When_UserDoesNotExist_Returns_False()
         {
             // Arrange
-            var userId = "nonexistent";
-            _userManagerMock.Setup(x => x.FindByIdAsync(userId))
+            var appUserId = "nonexistent";
+            _userManagerMock.Setup(x => x.FindByIdAsync(appUserId))
                 .ReturnsAsync((AppUserEntity)null);
 
             // Act
-            var result = await _repository.DeleteUserAsync(userId);
+            var result = await _repository.DeleteUserAsync(appUserId);
 
             // Assert
             Assert.IsFalse(result);

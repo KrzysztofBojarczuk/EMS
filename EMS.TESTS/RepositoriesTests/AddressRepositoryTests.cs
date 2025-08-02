@@ -53,12 +53,12 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var addressId1 = Guid.NewGuid();
             var addressId2 = Guid.NewGuid();
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = addressId1, AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = addressId2, AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = addressId1, AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = addressId2, AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
             };
 
             var tasks = new List<TaskEntity>
@@ -137,21 +137,21 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserAddressesAsync_BySearchTerm_Returns_Addresses()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var searchTerm = "main";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
             };
 
             _context.Address.AddRange(addresses);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserAddressesAsync(userId, 1, 10, searchTerm);
+            var result = await _repository.GetUserAddressesAsync(appUserId, 1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -163,21 +163,21 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserAddressesAsync_When_AddressDoesNotExist_Returns_EmptyList()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
             };
 
             _context.Address.AddRange(addresses);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserAddressesAsync(userId, 1, 10, searchTerm);
+            var result = await _repository.GetUserAddressesAsync(appUserId, 1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -188,22 +188,22 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserAddressesForTaskAsync_BySearchTerm_Returns_Addresses()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var searchTerm = "main";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Main Koszalin", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Koszalin", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
             };
 
             _context.Address.AddRange(addresses);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserAddressesForTaskAsync(userId, searchTerm);
+            var result = await _repository.GetUserAddressesForTaskAsync(appUserId, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -215,21 +215,21 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserAddressesForTaskAsync_When_AddressDoesNotExist_Returns_EmptyList()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = userId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
             };
 
             _context.Address.AddRange(addresses);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserAddressesForTaskAsync(userId, searchTerm);
+            var result = await _repository.GetUserAddressesForTaskAsync(appUserId, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -240,14 +240,14 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task UpdateAddressAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Address()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var address = new AddressEntity
             {
                 City = "Test City",
                 Street = "Test Street",
                 Number = "123",
                 ZipCode = "00-001",
-                AppUserId = userId
+                AppUserId = appUserId
             };
 
             _context.Address.Add(address);
@@ -259,7 +259,7 @@ namespace EMS.TESTS.RepositoriesTests
                 Street = "Test New Street",
                 Number = "321",
                 ZipCode = "00-123",
-                AppUserId = userId
+                AppUserId = appUserId
             };
 
             // Act

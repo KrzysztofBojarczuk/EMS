@@ -28,21 +28,21 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserEmployeesAsync_BySearchTerm_Returns_Employees()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var searchTerm = "Tomasz";
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
             _context.Employees.AddRange(employees);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeesAsync(userId, 1, 10, searchTerm);
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -54,21 +54,21 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserEmployeesAsync_When_EmployeeesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
             _context.Employees.AddRange(employees);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeesAsync(userId, 1, 10, searchTerm);
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -79,36 +79,36 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
-            var userId1 = "user-id-123";
-            var userId2 = "user-id-1234";
+            var appUserId1 = "user-id-123";
+            var appUserId2 = "user-id-1234";
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId1, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = userId1, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = userId2, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId1, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId1, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId2, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
             _context.Employees.AddRange(employees);
             await _context.SaveChangesAsync();
 
             // Act
-            var count = await _repository.GetUserNumberOfEmployeesAsync(userId1);
+            var count = await _repository.GetUserNumberOfEmployeesAsync(appUserId1);
 
             // Assert
-            Assert.AreEqual(employees.Where(x => x.AppUserId == userId1).Count(), count);
+            Assert.AreEqual(employees.Where(x => x.AppUserId == appUserId1).Count(), count);
         }
 
         [TestMethod]
         public async Task GetNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
             _context.Employees.AddRange(employees);
@@ -126,13 +126,13 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var searchTerm = "Tomasz";
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
             _context.Employees.AddRange(employees);
@@ -152,13 +152,13 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var searchTerm = "nonexistent";
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = userId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = userId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = userId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
             };
 
             _context.Employees.AddRange(employees);
@@ -222,14 +222,14 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task UpdateEmployeeAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Employee()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var employee = new EmployeeEntity
             {
                 Name = "Tomasz Wójcik",
                 Email = "tomasz@example.com",
                 Phone = "111222333",
                 Salary = 4000,
-                AppUserId = userId
+                AppUserId = appUserId
             };
 
             _context.Employees.Add(employee);
@@ -241,7 +241,7 @@ namespace EMS.TESTS.RepositoriesTests
                 Email = "nowy@example.com",
                 Phone = "444555666",
                 Salary = 6500,
-                AppUserId = userId
+                AppUserId = appUserId
             };
 
             // Act

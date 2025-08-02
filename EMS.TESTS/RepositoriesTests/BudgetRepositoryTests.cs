@@ -83,19 +83,19 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserBudgetAsync_When_BudgetExists_Returns_Budget()
         {
             // Arrange
-            var userId = "user-id-123";
+            var appUserId = "user-id-123";
             var budget = new BudgetEntity
             {
                 Id = Guid.NewGuid(),
                 Budget = 3000.00m,
-                AppUserId = userId
+                AppUserId = appUserId
             };
 
             _context.Budgets.Add(budget);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserBudgetAsync(userId);
+            var result = await _repository.GetUserBudgetAsync(appUserId);
 
             // Assert
             Assert.IsNotNull(result);
