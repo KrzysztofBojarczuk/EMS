@@ -26,14 +26,14 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "John";
 
-            var employees = new List<EmployeeEntity>
+            var expectedEmployees = new List<EmployeeEntity>
             {
                 new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123", AppUserId = appUserId },
-                new EmployeeEntity { Name = "Jane", Email = "jane@example.com", Phone = "456", AppUserId = appUserId }
-             };
+                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "456", AppUserId = appUserId }
+            };
 
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm))
-                .ReturnsAsync(employees.Where(x => x.Name.Contains(searchTerm)).ToList());
+                .ReturnsAsync(expectedEmployees);
 
             var query = new GetUserEmployeesForListQuery(appUserId, searchTerm);
 
@@ -42,7 +42,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(2, result.Count());
             Assert.AreEqual(searchTerm, result.First().Name);
             _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm), Times.Once);
         }
@@ -54,14 +54,8 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "NonExistentName";
 
-            var employees = new List<EmployeeEntity>
-            {
-               new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123", AppUserId = appUserId },
-               new EmployeeEntity { Name = "Jane", Email = "jane@example.com", Phone = "456", AppUserId = appUserId }
-            };
-
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm))
-                .ReturnsAsync(employees.Where(x => x.Name.Contains(searchTerm)).ToList());
+                .ReturnsAsync(new List<EmployeeEntity>());
 
             var query = new GetUserEmployeesForListQuery(appUserId, searchTerm);
 
