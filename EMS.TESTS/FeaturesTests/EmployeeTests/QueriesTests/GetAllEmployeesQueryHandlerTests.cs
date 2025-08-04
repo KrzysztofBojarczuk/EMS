@@ -57,13 +57,14 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Arrange
             int pageNumber = 1;
             int pageSize = 10;
+            string searchTerm = "nonexistent";
 
-            var query = new GetAllEmployeesQuery(pageNumber, pageSize, "nonexistent");
+            var paginatedList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, pageNumber, pageSize);
 
-            var emptyList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, pageNumber, pageSize);
+            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm))
+                .ReturnsAsync(paginatedList);
 
-            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm))
-                .ReturnsAsync(emptyList);
+            var query = new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -71,7 +72,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count());
-            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm), Times.Once);
         }
     }
 }

@@ -56,15 +56,17 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         public async Task Handle_Returns_EmptyList_When_Addresses_NotFound()
         {
             // Arrange
+            var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-
-            var query = new GetUserAddressQuery("user-id-123", pageNumber, pageSize , "nonExistent");
+            string searchTerm = "nonexistent";
 
             var paginatedList = new PaginatedList<AddressEntity>(new List<AddressEntity>(), 0, pageNumber, pageSize);
 
-            _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm))
+            _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
+
+            var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize , searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -72,7 +74,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count());
-            _mockAddressRepository.Verify(x => x.GetUserAddressesAsync(query.appUserId, query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+            _mockAddressRepository.Verify(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
         }
     }
 }
