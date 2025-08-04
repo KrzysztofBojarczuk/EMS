@@ -51,5 +51,30 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.AreEqual(expectedEmployees[1].Name, result.Items[1].Name);
             _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_EmptyList_When_Employees_NotFound()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            int pageNumber = 1;
+            int pageSize = 10;
+            string searchTerm = "nonexistent";
+
+            var paginatedList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, pageNumber, pageSize);
+
+            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, searchTerm);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count);
+            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
+        }
     }
 }
