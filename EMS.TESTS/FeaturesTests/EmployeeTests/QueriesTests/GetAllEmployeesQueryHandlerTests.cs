@@ -23,9 +23,9 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         public async Task Handle_Returns_BySearchTerm_Employees()
         {
             // Arrange
-            int pageNumber = 1;
-            int pageSize = 10;
-            string searchTerm = "John";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "John";
 
             var expectedEmployees = new List<EmployeeEntity>
             {
@@ -55,9 +55,9 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         public async Task Handle_Returns_EmptyList_When_Employees_NotFound()
         {
             // Arrange
-            int pageNumber = 1;
-            int pageSize = 10;
-            string searchTerm = "nonexistent";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "nonexistent";
 
             var paginatedList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, pageNumber, pageSize);
 

@@ -85,9 +85,9 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetAllUserAsync_ReturnsOkResult_BySearchTerm_WithUsers()
         {
             // Arrange
-            int pageNumber = 1;
-            int pageSize = 10;
-            string searchTerm = "John";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "John";
 
             var expectedUsers = new List<AppUserEntity>
             {
@@ -133,9 +133,9 @@ namespace EMS.TESTS.ControllersTests
         public async Task GetAllUserAsync_ReturnsOkResult_NotFound_WithEmptyList()
         {
             // Arrange
-            int pageNumber = 1;
-            int pageSize = 10;
-            string searchTerm = "nonexistent";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "nonexistent";
 
             var expectedUsers = new List<AppUserEntity>(); 
             var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, 0, pageNumber, pageSize);
