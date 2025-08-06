@@ -23,8 +23,8 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
         public async Task Handle_Returns_BySearchTerm_Users()
         {
             // Arrange
-            int pageNumber = 1;
-            int pageSize = 10;
+            var pageNumber = 1;
+            var pageSize = 10;
             var searchTerm = "John";
 
             var expectedUsers = new List<AppUserEntity>

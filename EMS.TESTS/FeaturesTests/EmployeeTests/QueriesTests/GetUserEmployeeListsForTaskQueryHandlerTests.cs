@@ -64,5 +64,26 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.AreEqual("Dev Team", result.First().Name);
             _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_EmptyList_When_EmployeeLists_NotFound()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
+                .ReturnsAsync(new List<EmployeeListsEntity>());
+
+            var query = new GetUserEmployeeListsForTaskQuery(appUserId, searchTerm);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
+        }
     }
 }

@@ -59,7 +59,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-            string searchTerm = "nonexistent";
+            var searchTerm = "nonexistent";
 
             var paginatedList = new PaginatedList<AddressEntity>(new List<AddressEntity>(), 0, pageNumber, pageSize);
 

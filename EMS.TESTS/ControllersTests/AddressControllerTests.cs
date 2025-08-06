@@ -118,7 +118,7 @@ namespace EMS.TESTS.ControllersTests
             var username = "testuser";
             var pageNumber = 1;
             var pageSize = 10;
-            string searchTerm = "nonexistent";
+            var searchTerm = "nonexistent";
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
