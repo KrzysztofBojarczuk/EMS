@@ -10,8 +10,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
     [TestClass]
     public class GetAllEmployeesQueryHandlerTests
     {
-        private readonly Mock<IEmployeeRepository> _mockEmployeeRepository;
-        private readonly GetAllEmployeesQueryHandler _handler;
+        private Mock<IEmployeeRepository> _mockEmployeeRepository;
+        private GetAllEmployeesQueryHandler _handler;
 
         public GetAllEmployeesQueryHandlerTests()
         {

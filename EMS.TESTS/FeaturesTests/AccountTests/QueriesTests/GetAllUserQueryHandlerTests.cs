@@ -10,8 +10,8 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
     [TestClass]
     public class GetAllUserQueryHandlerTests
     {
-        private readonly Mock<IUserRepository> _mockUserRepository;
-        private readonly GetAllUserQueryHandler _handler;
+        private Mock<IUserRepository> _mockUserRepository;
+        private GetAllUserQueryHandler _handler;
 
         public GetAllUserQueryHandlerTests()
         {
