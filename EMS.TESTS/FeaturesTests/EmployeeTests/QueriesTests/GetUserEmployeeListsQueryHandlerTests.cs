@@ -7,15 +7,15 @@ using Moq;
 namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 {
     [TestClass]
-    public class GetUserEmployeeListsForTaskQueryHandlerTests
+    public class GetUserEmployeeListsQueryHandlerTests
     {
         private Mock<IEmployeeRepository> _mockEmployeeRepository;
-        private GetUserEmployeeListsForTaskQueryHandler _handler;
+        private GetUserEmployeeListsQueryHandler _handler;
 
-        public GetUserEmployeeListsForTaskQueryHandlerTests()
+        public GetUserEmployeeListsQueryHandlerTests()
         {
             _mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            _handler = new GetUserEmployeeListsForTaskQueryHandler(_mockEmployeeRepository.Object);
+            _handler = new GetUserEmployeeListsQueryHandler(_mockEmployeeRepository.Object);
         }
 
         [TestMethod]
@@ -50,10 +50,10 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 }
             };
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
+            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeeListsAsync(appUserId, searchTerm))
                 .ReturnsAsync(employeeLists);
 
-            var query = new GetUserEmployeeListsForTaskQuery(appUserId, searchTerm);
+            var query = new GetUserEmployeeListsQuery(appUserId, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -62,28 +62,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
             Assert.AreEqual("Dev Team", result.First().Name);
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task Handle_Returns_EmptyList_When_EmployeeLists_NotFound()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var searchTerm = "nonexistent";
-
-            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
-                .ReturnsAsync(new List<EmployeeListsEntity>());
-
-            var query = new GetUserEmployeeListsForTaskQuery(appUserId, searchTerm);
-
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Count());
-            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeeListsAsync(appUserId, searchTerm), Times.Once);
         }
     }
 }
