@@ -318,5 +318,34 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public async Task AddEmployeeListsAsync_When_ListWithSameNameExists_Returns_Failure()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var existingList = new EmployeeListsEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Dev Team",
+                AppUserId = appUserId
+            };
+
+            _context.EmployeeLists.Add(existingList);
+            await _context.SaveChangesAsync();
+
+            var newList = new EmployeeListsEntity
+            {
+                Name = "Dev Team",
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.AddEmployeeListsAsync(newList, new List<Guid>());
+
+            // Assert
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual("A list with that name already exists.", result.Error);
+        }
     }
 }
