@@ -320,7 +320,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task AddEmployeeListsAsync_When_ListWithSameNameExists_Returns_Failure()
+        public async Task AddEmployeeListAsync_When_ListWithSameNameExists_Returns_Failure()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -334,18 +334,46 @@ namespace EMS.TESTS.RepositoriesTests
             _context.EmployeeLists.Add(existingList);
             await _context.SaveChangesAsync();
 
-            var newList = new EmployeeListsEntity
+            var employeeList = new EmployeeListsEntity
             {
                 Name = "Dev Team",
                 AppUserId = appUserId
             };
 
             // Act
-            var result = await _repository.AddEmployeeListsAsync(newList, new List<Guid>());
+            var result = await _repository.AddEmployeeListsAsync(employeeList, new List<Guid>());
 
             // Assert
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual("A list with that name already exists.", result.Error);
+        }
+
+        [TestMethod]
+        public async Task AddEmployeeListAsync_Returns_EmployeeList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employee1 = new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" };
+            var employee2 = new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" };
+
+            _context.Employees.AddRange(employee1, employee2);
+            await _context.SaveChangesAsync();
+
+            var employeeList = new EmployeeListsEntity
+            {
+                Name = "QA Team",
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.AddEmployeeListsAsync(employeeList, new List<Guid> { employee1.Id, employee2.Id });
+
+            // Assert
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(employeeList.Name, result.Value.Name);
+            Assert.AreEqual(2, result.Value.EmployeesEntities.Count);
+            Assert.AreEqual("QA Team", result.Value.Name);
         }
     }
 }
