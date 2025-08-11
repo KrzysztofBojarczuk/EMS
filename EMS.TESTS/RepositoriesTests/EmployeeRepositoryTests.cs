@@ -373,7 +373,32 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(employeeList.Name, result.Value.Name);
             Assert.AreEqual(2, result.Value.EmployeesEntities.Count);
-            Assert.AreEqual("QA Team", result.Value.Name);
+            Assert.AreEqual(employeeList.Name, result.Value.Name);
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListsAsync_BySearchTerm_Returns_EmployeeList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "dev";
+
+            var employeeList = new List<EmployeeListsEntity> {
+                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "Other", AppUserId = "user-id-999" }
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+           await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsAsync(appUserId, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(employeeList[0].Name, result.First().Name);
         }
     }
 }
