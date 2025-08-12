@@ -1,5 +1,4 @@
-﻿using EMS.CORE.Common;
-using EMS.CORE.Entities;
+﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -9,39 +8,25 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class ReservationRepository(AppDbContext dbContext) : IReservationRepository
     {
-        public async Task<Result<ReservationEntity>> MakeReservationAsync(ReservationEntity reservation)
+        public async Task<ReservationEntity> MakeReservationAsync(ReservationEntity reservation)
         {
             reservation.Id = Guid.NewGuid();
 
-            reservation.CheckInDate = reservation.CheckInDate?.ToLocalTime();
-            reservation.CheckOutDate = reservation.CheckOutDate?.ToLocalTime();
-
-            var local = await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == reservation.LocalId);
-
-            if (local is null)
-            {
-                return Result<ReservationEntity>.Failure("Local has not found"); // Nie można zarezerwować niedostępnego lokalu
-            }
-
-            if (local.NeedsRepair)
-            {
-                return Result<ReservationEntity>.Failure("Lokcal is in reapir"); // Nie można zarezerwować niedostępnego lokalu
-            }
-
-            var isBusy = await dbContext.Reservations.Where(x => x.LocalId == reservation.LocalId)
-                                                     .AnyAsync(x => (reservation.CheckInDate >= x.CheckInDate && reservation.CheckInDate < x.CheckOutDate) // zaczyna się w trakcie
-                                                                 || (reservation.CheckOutDate > x.CheckInDate && reservation.CheckOutDate <= x.CheckOutDate) // kończy się w trakcie
-                                                                 || (reservation.CheckInDate <= x.CheckInDate && reservation.CheckOutDate >= x.CheckOutDate)); // obejmuje całą istniejącą rezerwacj
-            if (isBusy)
-            {
-                return Result<ReservationEntity>.Failure("Local has reservation");
-            }
-
-            //dbContext.Locals.Update(local);
             dbContext.Reservations.Add(reservation);
             await dbContext.SaveChangesAsync();
 
-            return Result<ReservationEntity>.Success(reservation);
+            return reservation;
+        }
+
+        public async Task<bool> IsLocalBusyAsync(Guid localId, DateTime? checkIn, DateTime? checkOut)
+        {
+            return await dbContext.Reservations
+                .Where(x => x.LocalId == localId)
+                .AnyAsync(x =>
+                    (checkIn >= x.CheckInDate && checkIn < x.CheckOutDate) || // zaczyna się w trakcie
+                    (checkOut > x.CheckInDate && checkOut <= x.CheckOutDate) || // kończy się w trakcie
+                    (checkIn <= x.CheckInDate && checkOut >= x.CheckOutDate)    // obejmuje całą istniejącą rezerwacj
+                );
         }
 
         public async Task<bool> DeleteReservationAsync(Guid reservationId)
