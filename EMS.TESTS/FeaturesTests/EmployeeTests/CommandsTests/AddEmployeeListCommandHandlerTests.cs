@@ -1,5 +1,4 @@
 ﻿using EMS.APPLICATION.Features.Employee.Commands;
-using EMS.CORE.Common;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
@@ -35,11 +34,13 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
 
             var employeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
 
-            var expectedResult = Result<EmployeeListsEntity>.Success(employeeList);
+            _mockEmployeeRepository
+               .Setup(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId))
+               .ReturnsAsync(false);
 
             _mockEmployeeRepository
-                .Setup(x => x.AddEmployeeListsAsync(employeeList, employeeIds))
-                .ReturnsAsync(expectedResult);
+               .Setup(x => x.AddEmployeeListsAsync(employeeList, employeeIds))
+               .ReturnsAsync(employeeList);
 
             var command = new AddEmployeeListCommand(employeeList, employeeIds);
 
@@ -51,6 +52,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(employeeList, result.Value);
             _mockEmployeeRepository.Verify(x => x.AddEmployeeListsAsync(employeeList, employeeIds), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId), Times.Once);
         }
 
         [TestMethod]
@@ -67,11 +69,10 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             var employeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
 
             var expectedFailureMessage = "A list with that name already exists.";
-            var expectedResult = Result<EmployeeListsEntity>.Failure(expectedFailureMessage);
 
             _mockEmployeeRepository
-                .Setup(x => x.AddEmployeeListsAsync(employeeList, employeeIds))
-                .ReturnsAsync(expectedResult);
+               .Setup(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId))
+               .ReturnsAsync(true);
 
             var command = new AddEmployeeListCommand(employeeList, employeeIds);
 
@@ -82,7 +83,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual(expectedFailureMessage, result.Error);
-            _mockEmployeeRepository.Verify(x => x.AddEmployeeListsAsync(employeeList, employeeIds), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId), Times.Once);
         }
     }
 }

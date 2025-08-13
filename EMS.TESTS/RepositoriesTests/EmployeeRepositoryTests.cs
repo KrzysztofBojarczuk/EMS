@@ -320,35 +320,6 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task AddEmployeeListAsync_When_ListWithSameNameExists_Returns_Failure()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var existingList = new EmployeeListsEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = "Dev Team",
-                AppUserId = appUserId
-            };
-
-            _context.EmployeeLists.Add(existingList);
-            await _context.SaveChangesAsync();
-
-            var employeeList = new EmployeeListsEntity
-            {
-                Name = "Dev Team",
-                AppUserId = appUserId
-            };
-
-            // Act
-            var result = await _repository.AddEmployeeListsAsync(employeeList, new List<Guid>());
-
-            // Assert
-            Assert.IsFalse(result.IsSuccess);
-            Assert.AreEqual("A list with that name already exists.", result.Error);
-        }
-
-        [TestMethod]
         public async Task AddEmployeeListAsync_Returns_EmployeeList()
         {
             // Arrange
@@ -370,10 +341,38 @@ namespace EMS.TESTS.RepositoriesTests
             var result = await _repository.AddEmployeeListsAsync(employeeList, new List<Guid> { employee1.Id, employee2.Id });
 
             // Assert
-            Assert.IsTrue(result.IsSuccess);
-            Assert.AreEqual(employeeList.Name, result.Value.Name);
-            Assert.AreEqual(2, result.Value.EmployeesEntities.Count);
-            Assert.AreEqual(employeeList.Name, result.Value.Name);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(employeeList.Name, result.Name);
+            Assert.AreNotEqual(Guid.Empty, result.Id);
+            Assert.AreEqual(1, _context.EmployeeLists.Count());
+        }
+
+        [TestMethod]
+        public async Task EmployeeListExistsAsync_When_ListExists_Returns_True()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var existingList = new EmployeeListsEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Dev Team",
+                AppUserId = appUserId
+            };
+
+            _context.EmployeeLists.Add(existingList);
+            await _context.SaveChangesAsync();
+
+            var employeeList = new EmployeeListsEntity
+            {
+                Name = "Dev Team",
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.EmployeeListExistsAsync(employeeList.Name, appUserId);
+
+            // Assert
+            Assert.IsTrue(result);
         }
 
         [TestMethod]

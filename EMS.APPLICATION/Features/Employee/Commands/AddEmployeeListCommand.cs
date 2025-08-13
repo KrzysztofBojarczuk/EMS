@@ -12,7 +12,16 @@ namespace EMS.APPLICATION.Features.Employee.Commands
     {
         public async Task<Result<EmployeeListsEntity>> Handle(AddEmployeeListCommand request, CancellationToken cancellationToken)
         {
-            return await employeeRepository.AddEmployeeListsAsync(request.employeeList, request.employeeIds);
+            var exists = await employeeRepository.EmployeeListExistsAsync(request.employeeList.Name, request.employeeList.AppUserId);
+
+            if (exists)
+            {
+                return Result<EmployeeListsEntity>.Failure("A list with that name already exists.");
+            }
+
+            var savedEmployeeList = await employeeRepository.AddEmployeeListsAsync(request.employeeList, request.employeeIds);
+
+            return Result<EmployeeListsEntity>.Success(savedEmployeeList);
         }
     }
 }
