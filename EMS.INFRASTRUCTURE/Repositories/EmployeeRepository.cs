@@ -1,5 +1,4 @@
-﻿using EMS.CORE.Common;
-using EMS.CORE.Entities;
+﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -93,15 +92,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return false;
         }
 
-        public async Task<Result<EmployeeListsEntity>> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds)
+        public async Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds)
         {
-            var exists = await dbContext.EmployeeLists.AnyAsync(x => x.Name.ToLower() == entity.Name.ToLower() && x.AppUserId == entity.AppUserId);
-
-            if (exists)
-            {
-                return Result<EmployeeListsEntity>.Failure("A list with that name already exists.");
-            }
-
             entity.Id = Guid.NewGuid();
             dbContext.EmployeeLists.Add(entity);
 
@@ -113,7 +105,12 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             await dbContext.SaveChangesAsync();
 
-            return Result<EmployeeListsEntity>.Success(entity);
+            return entity;
+        }
+
+        public async Task<bool> EmployeeListExistsAsync(string name, string appUserId)
+        {
+            return await dbContext.EmployeeLists.AnyAsync(x => x.Name.ToLower() == name.ToLower() && x.AppUserId == appUserId);
         }
 
         public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm)
