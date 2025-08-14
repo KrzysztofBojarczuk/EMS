@@ -376,6 +376,34 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task EmployeeListExistsAsync_When_ListNoExists_Returns_False()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var existingList = new EmployeeListsEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Truck driver Team",
+                AppUserId = appUserId
+            };
+
+            _context.EmployeeLists.Add(existingList);
+            await _context.SaveChangesAsync();
+
+            var employeeList = new EmployeeListsEntity
+            {
+                Name = "Dev Team",
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.EmployeeListExistsAsync(employeeList.Name, appUserId);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeeListsAsync_BySearchTerm_Returns_EmployeeList()
         {
             // Arrange
