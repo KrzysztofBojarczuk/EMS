@@ -427,5 +427,29 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(1, result.Count());
             Assert.AreEqual(employeeList[0].Name, result.First().Name);
         }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListsAsync_When_EmployeeListsDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            var employeeList = new List<EmployeeListsEntity> {
+                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "Other", AppUserId = "user-id-999" }
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsAsync(appUserId, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
     }
 }
