@@ -451,5 +451,29 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
         }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListsForTaskAsync_Returns_OnlyEmployeeListsWithoutTask()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employeeList = new List<EmployeeListsEntity> {
+                new EmployeeListsEntity { Name = "No Task", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Name = "Bulding a house", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Name = "With Task", AppUserId = appUserId, TaskId = Guid.NewGuid() }
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId, "");
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(employeeList[0].Name, result.First().Name);
+        }
     }
 }
