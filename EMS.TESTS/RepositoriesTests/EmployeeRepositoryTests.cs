@@ -453,7 +453,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeeListsForTaskAsync_Returns_OnlyEmployeesWithoutTask()
+        public async Task GetUserEmployeeListsForTaskAsync_Returns_OnlyEmployeeListsWithoutTask()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -462,7 +462,7 @@ namespace EMS.TESTS.RepositoriesTests
                 new EmployeeListsEntity { Name = "No Task", AppUserId = appUserId, TaskId = null },
                 new EmployeeListsEntity { Name = "Bulding a house", AppUserId = appUserId, TaskId = null },
                 new EmployeeListsEntity { Name = "With Task", AppUserId = appUserId, TaskId = Guid.NewGuid() },
-                new EmployeeListsEntity { Name = "Buy a car", AppUserId = "user-id-1234", TaskId = Guid.NewGuid() }
+                new EmployeeListsEntity { Name = "Buy a car", AppUserId = "user-id-1234", TaskId = Guid.NewGuid() },
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -478,11 +478,38 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeeListsForTaskAsync_BySearchTerm_Returns_Employees()
+        public async Task GetUserEmployeeListsForTaskAsync_BySearchTerm_Returns_EmployeeLists()
         {
             // Arrange
             var appUserId = "user-id-123";
             var searchTerm = "team";
+
+            var employeeList = new List<EmployeeListsEntity> {
+                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId, TaskId = null},
+                new EmployeeListsEntity { Name = "Truck drivers", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Name = "Other", AppUserId = appUserId, TaskId = null }
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(employeeList[0].Name, result.First().Name);
+        }
+
+
+        [TestMethod]
+        public async Task GetUserEmployeeListsForTaskAsync_When_EmployeeListsDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "nonexistent";
 
             var employeeList = new List<EmployeeListsEntity> {
                 new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
@@ -499,8 +526,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
-            Assert.AreEqual(employeeList[0].Name, result.First().Name);
+            Assert.AreEqual(0, result.Count());
         }
     }
 }
