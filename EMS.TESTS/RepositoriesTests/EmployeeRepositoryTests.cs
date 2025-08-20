@@ -579,7 +579,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesForListAsync(appUserId, searchTerm);
-            var lol = result.Select(x => x.Name[1]);
 
             // Assert
             Assert.IsNotNull(result);
