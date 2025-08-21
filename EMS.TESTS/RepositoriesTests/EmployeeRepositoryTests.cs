@@ -570,7 +570,7 @@ namespace EMS.TESTS.RepositoriesTests
                 new EmployeeEntity { Name = "Alice", AppUserId = appUserId, Email = "alice@example.com", Phone = "222222222", EmployeeListId = null },
                 new EmployeeEntity { Name = "John1", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
                 new EmployeeEntity { Name = "Tom", AppUserId = appUserId, Email = "tom@example.com", Phone = "444444444", EmployeeListId = null },
-                new EmployeeEntity { Name = "Bob", AppUserId = appUserId, Email = "bob@example.com", Phone = "555555555", EmployeeListId = listId },
+                new EmployeeEntity { Name = "John2", AppUserId = appUserId, Email = "john2@example.com", Phone = "555555555", EmployeeListId = listId },
                 new EmployeeEntity { Name = "Bob", AppUserId = "user-id-999", Email = "bob@example.com", Phone = "555555555", EmployeeListId =  null  }
             };
 
@@ -584,6 +584,35 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
             Assert.AreEqual(employees[0].Name, result.First().Name);       
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesForListAsync_When_EmployeeesDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var listId = Guid.NewGuid();
+            var searchTerm = "nonexistent";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "John", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
+                new EmployeeEntity { Name = "Alice", AppUserId = appUserId, Email = "alice@example.com", Phone = "222222222", EmployeeListId = null },
+                new EmployeeEntity { Name = "John1", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
+                new EmployeeEntity { Name = "Tom", AppUserId = appUserId, Email = "tom@example.com", Phone = "444444444", EmployeeListId = null },
+                new EmployeeEntity { Name = "John2", AppUserId = appUserId, Email = "john2@example.com", Phone = "555555555", EmployeeListId = listId },
+                new EmployeeEntity { Name = "Bob", AppUserId = "user-id-999", Email = "bob@example.com", Phone = "555555555", EmployeeListId =  null  }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesForListAsync(appUserId, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
         }
     }
 }
