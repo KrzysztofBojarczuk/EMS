@@ -614,5 +614,44 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
         }
+
+        [TestMethod]
+        public async Task DeleteEmployeeListsAsync_When_EmployeeLists_Returns_True()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employeeList = new List<EmployeeListsEntity> {
+                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId,  },
+                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "Truck drivers", AppUserId = appUserId },
+            };
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "John", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = employeeList[0].Id },
+                new EmployeeEntity { Name = "Alice", AppUserId = appUserId, Email = "alice@example.com", Phone = "222222222", EmployeeListId = employeeList[0].Id },
+                new EmployeeEntity { Name = "John1", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = employeeList[1].Id },
+                new EmployeeEntity { Name = "Tom", AppUserId = appUserId, Email = "tom@example.com", Phone = "444444444", EmployeeListId = employeeList[2].Id },
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            var emplyeeListCountBefore = _context.EmployeeLists.Count();
+
+            // Act
+            var result = await _repository.DeleteEmployeeListsAsync(employeeList[0].Id);
+
+            var emplyeeListCountAtfer = _context.EmployeeLists.Count();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(emplyeeListCountBefore - 1, emplyeeListCountAtfer);
+            Assert.AreEqual(2, _context.EmployeeLists.Count());
+            Assert.IsNull(_context.EmployeeLists.FirstOrDefault(x => x.Id == employeeList[0].Id));
+            Assert.IsTrue(employees.All(x => x.EmployeeListId != employeeList[0].Id));
+        }
     }
 }

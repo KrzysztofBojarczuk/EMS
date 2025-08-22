@@ -81,7 +81,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsTrue(result);
             Assert.AreEqual(addressCountBefore - 1, addressCountAfter);
-            Assert.IsNull(_context.Address.FirstOrDefault(a => a.Id == addressId1));
+            Assert.IsNull(_context.Address.FirstOrDefault(x => x.Id == addressId1));
             Assert.IsTrue(tasks.All(x => x.AddressId != addressId1));
         }
 
