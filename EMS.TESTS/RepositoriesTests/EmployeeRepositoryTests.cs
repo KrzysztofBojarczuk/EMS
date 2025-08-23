@@ -653,5 +653,15 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNull(_context.EmployeeLists.FirstOrDefault(x => x.Id == employeeList[0].Id));
             Assert.IsTrue(employees.All(x => x.EmployeeListId != employeeList[0].Id));
         }
+
+        [TestMethod]
+        public async Task DeleteEmployeeListsAsync_When_EmployeeListsDoesNotExist__Returns_False()
+        {
+            // Act
+            var result = await _repository.DeleteEmployeeListsAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }
