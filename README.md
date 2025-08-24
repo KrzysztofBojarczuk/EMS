@@ -13,8 +13,8 @@ Tasks:
 
 Locals and Reservations:
 ![6](https://github.com/user-attachments/assets/4583a764-1543-4f5e-b8d7-aee3c7cdbe9b)
-![7](https://github.com/user-attachments/assets/127ca8af-3236-4d28-88b7-69f1382e33af)
-![8](https://github.com/user-attachments/assets/6855a92d-cd04-433b-b860-362083584121)
+![7](https://github.com/user-attachments/assets/8a386e2d-62ff-44f9-85aa-16957e635920)
+![8](https://github.com/user-attachments/assets/bd96c77f-e003-4472-af26-60f04347eb8d)
 
 Employees and Employee Lists:
 ![9](https://github.com/user-attachments/assets/07cf9dcb-54fc-4eb7-b3a6-6a02882c4448)
