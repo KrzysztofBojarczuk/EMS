@@ -16,7 +16,7 @@ Locals and Reservations:
 ![7](https://github.com/user-attachments/assets/8a386e2d-62ff-44f9-85aa-16957e635920)
 ![8](https://github.com/user-attachments/assets/bd96c77f-e003-4472-af26-60f04347eb8d)
 
-Employees and Employee Lists:
+Employees and Lists Employee:
 ![9](https://github.com/user-attachments/assets/07cf9dcb-54fc-4eb7-b3a6-6a02882c4448)
 ![11](https://github.com/user-attachments/assets/592fa6c5-4631-48ad-a362-8a4b9d5dfc24)
 
