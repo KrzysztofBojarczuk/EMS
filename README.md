@@ -21,18 +21,17 @@ Employees and Employee Lists:
 ![11](https://github.com/user-attachments/assets/592fa6c5-4631-48ad-a362-8a4b9d5dfc24)
 ![12](https://github.com/user-attachments/assets/a4ae866f-d2a4-4480-b14a-808c64e3aedf)
 ![13](https://github.com/user-attachments/assets/2a7ce6dd-7f99-4de1-b0bf-f3a1ec012c18)
-![14](https://github.com/user-attachments/assets/a35091e5-10f9-4820-ade7-ff570f5da49b)
-
-
+![14](https://github.com/user-attachments/assets/d9f63789-256b-4024-8a4e-bb3db9a87b4a)
+![15](https://github.com/user-attachments/assets/f2ac94b8-70c5-4f61-b20b-772dcc9ba704)
 
 <!--![5](https://github.com/user-attachments/assets/eb410c30-720c-4ce7-aac9-d1faced2f45d)-->
 
 Budget:
-![17](https://github.com/user-attachments/assets/e794e3cf-d9d2-4edd-9d62-4c698a685a65)
-![18](https://github.com/user-attachments/assets/3d89259d-ee36-4dd2-9a18-4cb32fac42da)
-![19](https://github.com/user-attachments/assets/c28f05e3-3d18-49c6-980d-61093bd466a6)
+![16](https://github.com/user-attachments/assets/e794e3cf-d9d2-4edd-9d62-4c698a685a65)
+![17](https://github.com/user-attachments/assets/3d89259d-ee36-4dd2-9a18-4cb32fac42da)
+![18](https://github.com/user-attachments/assets/c28f05e3-3d18-49c6-980d-61093bd466a6)
 
 Admin dashboard:
-![20](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
-![21](https://github.com/user-attachments/assets/4a37fb5e-5182-4719-ac55-b8667a8f1155)
-![22](https://github.com/user-attachments/assets/f417641b-07b2-4695-9a4f-5dff0ac7d357)
+![19](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
+![20](https://github.com/user-attachments/assets/4a37fb5e-5182-4719-ac55-b8667a8f1155)
+![21](https://github.com/user-attachments/assets/f417641b-07b2-4695-9a4f-5dff0ac7d357)
