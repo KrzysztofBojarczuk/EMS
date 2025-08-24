@@ -8,7 +8,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class ReservationRepository(AppDbContext dbContext) : IReservationRepository
     {
-        public async Task<ReservationEntity> MakeReservationAsync(ReservationEntity reservation)
+        public async Task<ReservationEntity> AddReservationAsync(ReservationEntity reservation)
         {
             reservation.Id = Guid.NewGuid();
 

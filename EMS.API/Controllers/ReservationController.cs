@@ -17,7 +17,7 @@ namespace EMS.API.Controllers
     {
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> MakeReservation([FromBody] ReservationCreateDto reservationDto)
+        public async Task<IActionResult> AddReservationAsync([FromBody] ReservationCreateDto reservationDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -30,7 +30,7 @@ namespace EMS.API.Controllers
 
             reservationEntity.AppUserId = appUser.Id;
 
-            var result = await sender.Send(new MakeReservationCommand(reservationEntity));
+            var result = await sender.Send(new AddReservationCommand(reservationEntity));
 
             if (result.IsFailure)
                 return BadRequest(result.Error);
