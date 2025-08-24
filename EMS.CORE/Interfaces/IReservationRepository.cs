@@ -5,7 +5,7 @@ namespace EMS.CORE.Interfaces
 {
     public interface IReservationRepository
     {
-        Task<ReservationEntity> MakeReservationAsync(ReservationEntity reservation);
+        Task<ReservationEntity> AddReservationAsync(ReservationEntity reservation);
         Task<bool> IsLocalBusyAsync(Guid localId, DateTime? checkIn, DateTime? checkOut);
         Task<bool> DeleteReservationAsync(Guid reservationId);
         Task<ReservationEntity> GetReservationByIdAsync(Guid id);

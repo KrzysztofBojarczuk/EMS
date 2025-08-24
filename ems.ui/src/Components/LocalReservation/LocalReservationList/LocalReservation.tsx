@@ -20,7 +20,7 @@ import { InputIcon } from "primereact/inputicon";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import AddLocal from "../AddLocal/AddLocal.tsx";
-import MakeReservation from "../MakeReservation/MakeReservation.tsx";
+import AddReservation from "../MakeReservation/AddReservation.tsx";
 import { ReservationGet } from "../../../Models/Reservation.ts";
 import { Card } from "primereact/card";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
@@ -114,6 +114,15 @@ const LocalReservation = (props: Props) => {
     goToPageLocal(currentPage, rowsLocal);
   };
 
+  const handleAddReservationSuccess = () => {
+    const currentLocalPage = Math.floor(firstLocal / rowsLocal) + 1;
+    goToPageLocal(currentLocalPage, rowsLocal);
+
+    const currentReservationPage =
+      Math.floor(firstReservation / rowsReservation) + 1;
+    goToPageReservation(currentReservationPage, rowsReservation);
+  };
+
   const onPageChangeReservations = (event) => {
     setFirstReservation(event.first);
     setRowsReservation(event.rows);
@@ -167,6 +176,10 @@ const LocalReservation = (props: Props) => {
       }
 
       goToPageLocal(currentPage, rowsLocal);
+
+      const currentReservationPage =
+        Math.floor(firstReservation / rowsReservation) + 1;
+      goToPageReservation(currentReservationPage, rowsReservation);
     }
 
     setConfirmLocalVisible(false);
@@ -289,13 +302,10 @@ const LocalReservation = (props: Props) => {
           onHide={() => setVisibleReservation(false)}
         >
           {selectedLocalId && (
-            <MakeReservation
+            <AddReservation
               selectedLocalId={selectedLocalId}
               onClose={() => setVisibleReservation(false)}
-              onReservationSuccess={() => {
-                setVisibleReservation(false);
-                fetchLocal(1, rowsLocal);
-              }}
+              onAddSuccess={handleAddReservationSuccess}
             />
           )}
         </Dialog>

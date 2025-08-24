@@ -10,13 +10,13 @@ import { LocalGet } from "../../../Models/Local.ts";
 type Props = {
   selectedLocalId: string;
   onClose: () => void;
-  onReservationSuccess: () => void;
+  onAddSuccess: () => void;
 };
 
-const MakeReservation: React.FC<Props> = ({
+const AddReservation: React.FC<Props> = ({
   selectedLocalId,
   onClose,
-  onReservationSuccess,
+  onAddSuccess,
 }) => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
@@ -36,7 +36,7 @@ const MakeReservation: React.FC<Props> = ({
   const onSubmit = async (data: ReservationPost) => {
     try {
       await UserPostReservationService(data);
-      onReservationSuccess();
+      onAddSuccess();
       onClose();
       reset();
     } catch (error: any) {
@@ -101,4 +101,4 @@ const MakeReservation: React.FC<Props> = ({
   );
 };
 
-export default MakeReservation;
+export default AddReservation;

@@ -6,12 +6,12 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Reservation.Commands
 {
-    public record MakeReservationCommand(ReservationEntity Reservation) : IRequest<Result<ReservationEntity>>;
+    public record AddReservationCommand(ReservationEntity Reservation) : IRequest<Result<ReservationEntity>>;
 
-    public class MakeReservationHandler(IReservationRepository reservationRepository, ILocalRepository localRepository)
-       : IRequestHandler<MakeReservationCommand, Result<ReservationEntity>>
+    public class AddReservationHandler(IReservationRepository reservationRepository, ILocalRepository localRepository)
+       : IRequestHandler<AddReservationCommand, Result<ReservationEntity>>
     {
-        public async Task<Result<ReservationEntity>> Handle(MakeReservationCommand request, CancellationToken cancellationToken)
+        public async Task<Result<ReservationEntity>> Handle(AddReservationCommand request, CancellationToken cancellationToken)
         {
             var reservation = request.Reservation;
 
@@ -37,7 +37,7 @@ namespace EMS.APPLICATION.Features.Reservation.Commands
                 return Result<ReservationEntity>.Failure("Local is already reserved in the given time period.");
             }
 
-            var savedReservation = await reservationRepository.MakeReservationAsync(reservation);
+            var savedReservation = await reservationRepository.AddReservationAsync(reservation);
 
             return Result<ReservationEntity>.Success(savedReservation);
         }
