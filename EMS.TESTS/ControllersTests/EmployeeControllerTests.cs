@@ -62,7 +62,7 @@ namespace EMS.TESTS.ControllersTests
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2" }
             };
 
-            var paginatedEmployees = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count, pageNumber, pageSize);
+            var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count, pageNumber, pageSize);
 
             var expectedDtos = new List<EmployeeGetDto>
             {
@@ -80,7 +80,7 @@ namespace EMS.TESTS.ControllersTests
                     x.pageSize == pageSize &&
                     x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
-                .ReturnsAsync(paginatedEmployees);
+                .ReturnsAsync(paginatedResult);
 
             _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeGetDto>>(employeesEntities))
                 .Returns(expectedDtos);
@@ -104,9 +104,66 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(returnedDtos);
             Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
 
-            Assert.AreEqual(paginatedEmployees.TotalItems, totalItemsProperty.GetValue(value));
-            Assert.AreEqual(paginatedEmployees.TotalPages, totalPagesProperty.GetValue(value));
-            Assert.AreEqual(paginatedEmployees.PageIndex, pageIndexProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.PageIndex, pageIndexProperty.GetValue(value));
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesAsync_ReturnsOkResult_NotFound_WithEmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "nonexistent";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeesEntities = new List<EmployeeEntity>();
+
+            var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, 0, pageNumber, pageSize);
+
+            var expectedDtos = new List<EmployeeGetDto>();
+
+            _userManagerMock.Setup(x => x.FindByNameAsync(username))
+               .ReturnsAsync(appUser);
+
+            _senderMock.Setup(x => x.Send(
+              It.Is<GetUserEmployeesQuery>(x =>
+                  x.appUserId == appUserId &&
+                  x.pageNumber == pageNumber &&
+                  x.pageSize == pageSize &&
+                  x.searchTerm == searchTerm),
+              It.IsAny<CancellationToken>()))
+              .ReturnsAsync(paginatedResult);
+
+            _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeGetDto>>(employeesEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var value = okResult.Value;
+            var employeeGetProperty = value.GetType().GetProperty("EmployeeGet");
+            var totalItemsProperty = value.GetType().GetProperty("TotalItems");
+            var totalPagesProperty = value.GetType().GetProperty("TotalPages");
+            var pageIndexProperty = value.GetType().GetProperty("PageIndex");
+
+            Assert.IsNotNull(employeeGetProperty);
+            var returnedDtos = employeeGetProperty.GetValue(value) as IEnumerable<EmployeeGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+
+            Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.PageIndex, pageIndexProperty.GetValue(value));
         }
     }
 }
