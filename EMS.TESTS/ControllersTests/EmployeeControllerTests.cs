@@ -44,8 +44,8 @@ namespace EMS.TESTS.ControllersTests
             };
         }
 
-        [TestMethod]
-        public async Task GetUserEmployeesAsync_ReturnsOkResult_BySearchTerm_WithEmployeeDto()
+        [TestMethod]   
+        public async Task GetUserEmployeesAsync_ReturnsOkResult_BySearchTerm_WithEmployeeDtos()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -164,6 +164,53 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
             Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
             Assert.AreEqual(paginatedResult.PageIndex, pageIndexProperty.GetValue(value));
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesForListAsync_ReturnsOk_BySearchTerm_WithEmployeeDtos()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var searchTerm = "anna";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeesEntity = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1" },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2" }
+            };
+
+            var expectedDtos = new List<EmployeeGetDto>
+            {
+                new EmployeeGetDto { Id = employeesEntity[0].Id, Name = "Anna1" },
+                new EmployeeGetDto { Id = employeesEntity[1].Id, Name = "Anna2" }
+            };
+
+            _userManagerMock.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _senderMock.Setup(x => x.Send(It.Is<GetUserEmployeesForListQuery>(x =>
+                    x.appUserId == appUserId &&
+                    x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeesEntity);
+
+            _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeGetDto>>(employeesEntity))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeesForListAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDtos = okResult.Value as IEnumerable<EmployeeGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
         }
     }
 }

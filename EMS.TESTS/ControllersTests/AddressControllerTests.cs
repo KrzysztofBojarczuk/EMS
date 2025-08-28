@@ -182,6 +182,12 @@ namespace EMS.TESTS.ControllersTests
                 new AddressEntity { Id = Guid.NewGuid(), City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
             };
 
+            var expectedDtos = new List<AddressGetDto>
+            {
+                   new AddressGetDto { Id = addressEntities[0].Id, City = "City1", Street = "Street1", Number = "1", ZipCode = "00-000" },
+                   new AddressGetDto { Id = addressEntities[1].Id, City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+            };
+
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
@@ -189,11 +195,7 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(addressEntities);
 
             _mockMapper.Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
-                .Returns(new List<AddressGetDto>
-                {
-                   new AddressGetDto { Id = addressEntities[0].Id, City = "City1", Street = "Street1", Number = "1", ZipCode = "00-000" },
-                   new AddressGetDto { Id = addressEntities[1].Id, City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
-                });
+                .Returns(expectedDtos);
 
             // Act
             var result = await _controller.GetUserAddressForTaskAsync(searchTerm);
@@ -203,9 +205,9 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
 
-            var addressDtos = okResult.Value as IEnumerable<AddressGetDto>;
-            Assert.IsNotNull(addressDtos);
-            Assert.AreEqual(2, addressDtos.Count());
+            var returnedDtos = okResult.Value as IEnumerable<AddressGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
         }
 
         [TestMethod]
@@ -239,9 +241,9 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
 
-            var addressDtos = okResult.Value as IEnumerable<AddressGetDto>;
-            Assert.IsNotNull(addressDtos);
-            Assert.AreEqual(0, addressDtos.Count());
+            var returnedDtos = okResult.Value as IEnumerable<AddressGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
         }
 
         [TestMethod]
