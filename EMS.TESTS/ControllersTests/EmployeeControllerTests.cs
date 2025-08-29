@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EMS.API.Controllers;
 using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Features.Employee.Commands;
 using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -211,6 +212,83 @@ namespace EMS.TESTS.ControllersTests
             var returnedDtos = okResult.Value as IEnumerable<EmployeeGetDto>;
             Assert.IsNotNull(returnedDtos);
             Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+        }
+
+        [TestMethod]
+        public async Task AddEmployeeAsync_ReturnsOkResult_WithEmployeeGetDto()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var createDto = new EmployeeCreateDto
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com",
+                Phone = "123456789",
+                Salary = 5000m
+            };
+
+            var employeeEntity = new EmployeeEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = createDto.Name,
+                Email = createDto.Email,
+                Phone = createDto.Phone,
+                Salary = createDto.Salary,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var resultEntity = new EmployeeEntity
+            {
+                Id = employeeEntity.Id,
+                Name = employeeEntity.Name,
+                Email = employeeEntity.Email,
+                Phone = employeeEntity.Phone,
+                Salary = employeeEntity.Salary,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var expectedDto = new EmployeeGetDto
+            {
+                Id = resultEntity.Id,
+                Name = resultEntity.Name,
+                Email = resultEntity.Email,
+                Phone = resultEntity.Phone,
+                Salary = resultEntity.Salary
+            };
+
+            _userManagerMock.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mapperMock.Setup(x => x.Map<EmployeeEntity>(createDto))
+                .Returns(employeeEntity);
+
+            _senderMock.Setup(x => x.Send(It.IsAny<AddEmployeeCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(resultEntity);
+
+            _mapperMock.Setup(x => x.Map<EmployeeGetDto>(resultEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.AddEmployeeAsync(createDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as EmployeeGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.Name, returnedDto.Name);
+            Assert.AreEqual(expectedDto.Email, returnedDto.Email);
+            Assert.AreEqual(expectedDto.Phone, returnedDto.Phone);
+            Assert.AreEqual(expectedDto.Salary, returnedDto.Salary);
         }
     }
 }
