@@ -290,5 +290,77 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDto.Phone, returnedDto.Phone);
             Assert.AreEqual(expectedDto.Salary, returnedDto.Salary);
         }
+
+        [TestMethod]
+        public async Task UpdateEmployeeAsync_ReturnsOkResult_WithUpdatedEmployeeDto()
+        {
+            // Arrange
+            var employeeId = Guid.NewGuid();
+            var username = "testuser";
+
+            var updateDto = new EmployeeCreateDto
+            {
+                Name = "Updated John Doe",
+                Email = "updated.john.doe@example.com",
+                Phone = "987654321",
+                Salary = 6000m
+            };
+
+            var employeeEntity = new EmployeeEntity
+            {
+                Id = employeeId,
+                Name = updateDto.Name,
+                Email = updateDto.Email,
+                Phone = updateDto.Phone,
+                Salary = updateDto.Salary
+            };
+
+            var updatedEntity = new EmployeeEntity
+            {
+                Id = employeeId,
+                Name = updateDto.Name,
+                Email = updateDto.Email,
+                Phone = updateDto.Phone,
+                Salary = updateDto.Salary
+            };
+
+            var expectedDto = new EmployeeGetDto
+            {
+                Id = employeeId,
+                Name = updateDto.Name,
+                Email = updateDto.Email,
+                Phone = updateDto.Phone,
+                Salary = updateDto.Salary
+            };
+
+            _mapperMock.Setup(m => m.Map<EmployeeEntity>(updateDto))
+                .Returns(employeeEntity);
+
+            _senderMock.Setup(s => s.Send(
+                It.Is<UpdateEmployeeCommand>(x =>
+                    x.EmployeeId == employeeId &&
+                    x.Employee == employeeEntity),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(updatedEntity);
+
+            _mapperMock.Setup(m => m.Map<EmployeeGetDto>(updatedEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.UpdateEmployeeAsync(employeeId, updateDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as EmployeeGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.Name, returnedDto.Name);
+            Assert.AreEqual(expectedDto.Email, returnedDto.Email);
+            Assert.AreEqual(expectedDto.Phone, returnedDto.Phone);
+            Assert.AreEqual(expectedDto.Salary, returnedDto.Salary);
+        }
     }
 }
