@@ -82,7 +82,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task GetAllUserAsync_ReturnsOkResult_BySearchTerm_WithUsers()
+        public async Task GetAllUserAsync_ReturnsOkResult_WithUsers()
         {
             // Arrange
             var pageNumber = 1;
