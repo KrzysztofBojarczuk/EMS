@@ -46,7 +46,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task GetUserAddressAsync_ReturnsOkResult_BySearchTerm_WithAddressDtos()
+        public async Task GetUserAddressAsync_ReturnsOkResult_WithAddressDtos()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -167,7 +167,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task GetUserAddressForTaskAsync_ReturnsOkResult_BySearchTerm_WithAddressDtos()
+        public async Task GetUserAddressForTaskAsync_ReturnsOkResult_WithAddressDtos()
         {
             // Arrange
             var appUserId = "user-id-123";
