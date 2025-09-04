@@ -215,6 +215,45 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeesForListAsync_ReturnsOk_NotFound_WithEmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var searchTerm = "nonexistent";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeesEntity = new List<EmployeeEntity>();
+
+            var expectedDtos = new List<EmployeeGetDto>();
+
+            _userManagerMock.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _senderMock.Setup(x => x.Send(It.Is<GetUserEmployeesForListQuery>(x =>
+                    x.appUserId == appUserId &&
+                    x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeesEntity);
+
+            _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeGetDto>>(employeesEntity))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeesForListAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDtos = okResult.Value as IEnumerable<EmployeeGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+        }
+
+        [TestMethod]
         public async Task AddEmployeeAsync_ReturnsOkResult_WithEmployeeGetDto()
         {
             // Arrange
