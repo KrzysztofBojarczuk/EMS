@@ -653,5 +653,45 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDtos[0].Name, returnedDtos.First().Name);
             Assert.AreEqual(expectedDtos.First().Employees.First().Name, returnedDtos.First().Employees.First().Name);
         }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListAsync_ReturnsOkResult_NotFound_WithEmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var searchTerm = "nonexistent";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeeListsEntities = new List<EmployeeListsEntity> { };
+
+            var expectedDtos = new List<EmployeeListsGetDto> { };
+
+            _userManagerMock.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _senderMock.Setup(x => x.Send(
+                    It.Is<GetUserEmployeeListsQuery>(q =>
+                        q.appUserId == appUserId &&
+                        q.searchTerm == searchTerm),
+                    It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(employeeListsEntities);
+
+            _mapperMock.Setup(m => m.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeeListAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+        }
     }
 }
