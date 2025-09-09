@@ -760,5 +760,48 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDto.Id, returnedDto.Id);
             Assert.AreEqual(expectedDto.Name, returnedDto.Name);
         }
+
+        [TestMethod]
+        public async Task AddEmployeeListAsync_ReturnsBadRequest_WhenResultIsFailure()
+        {
+            // Arrange
+            var username = "testuser";
+            var appUserId = "user-id-123";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var createDto = new EmployeeListsCreateDto
+            {
+                Name = "Invalid Team",
+                EmployeeIds = new List<Guid> { Guid.NewGuid() }
+            };
+
+            var employeeListsEntity = new EmployeeListsEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = createDto.Name,
+                AppUserId = appUserId
+            };
+
+            var expectedError = "A list with that name already exists.";
+
+            _userManagerMock.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mapperMock.Setup(x => x.Map<EmployeeListsEntity>(createDto))
+                .Returns(employeeListsEntity);
+
+            _mockSender.Setup(x => x.Send(It.IsAny<AddEmployeeListCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<EmployeeListsEntity>.Failure(expectedError));
+
+            // Act
+            var result = await _controller.AddEmployeeListAsync(createDto);
+
+            // Assert
+            var badRequestResult = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequestResult);
+            Assert.AreEqual(400, badRequestResult.StatusCode);
+            Assert.AreEqual(expectedError, badRequestResult.Value);
+        }
     }
 }
