@@ -803,5 +803,25 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(400, badRequestResult.StatusCode);
             Assert.AreEqual(expectedError, badRequestResult.Value);
         }
+
+        [TestMethod]
+        public async Task DeleteEmployeeListAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
+        {
+            // Arrange
+            var employeeListId = Guid.NewGuid();
+            var expectedResult = true;
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteEmployeeListCommand>(x => x.employeeListId == employeeListId), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.DeletedEmployeeListAsync(employeeListId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(expectedResult, okResult.Value);
+        }
     }
 }
