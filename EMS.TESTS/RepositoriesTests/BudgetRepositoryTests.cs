@@ -38,9 +38,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(budget.Budget, result.Budget);
             Assert.AreEqual(budget.AppUserId, result.AppUserId);
+            Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, await _context.Budgets.CountAsync());
         }
 
