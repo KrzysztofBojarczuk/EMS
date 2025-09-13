@@ -205,7 +205,7 @@ namespace EMS.API.Controllers
 
         [HttpDelete("EmployeeList/{employeeListId}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> DeletedEmployeeListAsync([FromRoute] Guid employeeListId)
+        public async Task<IActionResult> DeleteEmployeeListAsync([FromRoute] Guid employeeListId)
         {
             var result = await sender.Send(new DeleteEmployeeListCommand(employeeListId));
 

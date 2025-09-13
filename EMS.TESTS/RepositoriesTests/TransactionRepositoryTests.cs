@@ -1,4 +1,5 @@
-﻿using EMS.CORE.Entities;
+﻿using EMS.APPLICATION.Dtos;
+using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
@@ -50,6 +51,44 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(transaction.BudgetId, result.BudgetId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, _context.Transactions.Count());
+        }
+
+        [TestMethod]
+        public async Task DeleteTransactionsAsync_When_TransactionExists_Returns_True()
+        {
+            // Arrange
+            var budget = new BudgetEntity
+            {
+                Id = Guid.NewGuid(),
+                Budget = 1000m,
+                AppUserId = "user-id-123"
+            };
+
+            _context.Budgets.Add(budget);
+
+            var transaction = new TransactionEntity
+            {
+                Name = "Invoice",
+                CreationDate = DateTimeOffset.UtcNow,
+                Category = CategoryType.Expense,
+                Amount = 250.75m,
+                BudgetId = budget.Id 
+            };
+
+            _context.Transactions.Add(transaction);
+            await _context.SaveChangesAsync();
+
+            var transactionCountBefore = _context.Transactions.Count();
+
+            // Act
+            var result = await _repository.DeleteTransactionsAsync(transaction.Id);
+
+            var transactionCountAfter = _context.Transactions.Count();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(transactionCountBefore - 1, transactionCountAfter);
+            Assert.AreEqual(0, _context.Transactions.Count());
         }
     }
 }

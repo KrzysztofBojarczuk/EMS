@@ -815,7 +815,7 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(expectedResult);
 
             // Act
-            var result = await _controller.DeletedEmployeeListAsync(employeeListId);
+            var result = await _controller.DeleteEmployeeListAsync(employeeListId);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -835,7 +835,7 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(expectedResult);
 
             // Act
-            var result = await _controller.DeletedEmployeeListAsync(employeeListId);
+            var result = await _controller.DeleteEmployeeListAsync(employeeListId);
 
             // Assert
             var okResult = result as OkObjectResult;
