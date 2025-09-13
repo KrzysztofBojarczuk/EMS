@@ -290,7 +290,7 @@ namespace EMS.TESTS.RepositoriesTests
                 Name = "Anna Kowalska",
                 Email = "anna.k@example.com",
                 Phone = "987654321",
-                AppUserId = "user999"
+                AppUserId = "user-id-123"
             };
 
             _context.Employees.Add(employee);
