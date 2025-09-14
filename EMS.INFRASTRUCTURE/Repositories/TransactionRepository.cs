@@ -60,7 +60,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                query = query.Where(x => x.Name.Contains(searchTerm));
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
             return await query.ToListAsync();
