@@ -24,9 +24,14 @@ namespace EMS.INFRASTRUCTURE.Repositories
         {
             var transaction = await dbContext.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId);
 
+            if (transaction is null)
+            {
+                return false;
+            }
+
             var budget = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == transaction.BudgetId);
 
-            if (transaction is not null)
+            if (budget is not null)
             {
                 if (transaction.Category == CategoryType.Income)
                 {
@@ -36,13 +41,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 {
                     budget.Budget += transaction.Amount;
                 }
-
-                dbContext.Transactions.Remove(transaction);
-
-                return await dbContext.SaveChangesAsync() > 0; 
             }
 
-            return false;
+            dbContext.Transactions.Remove(transaction);
+            return await dbContext.SaveChangesAsync() > 0;
         }
 
         public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm)
