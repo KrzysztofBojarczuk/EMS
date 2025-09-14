@@ -90,5 +90,15 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(transactionCountBefore - 1, transactionCountAfter);
             Assert.AreEqual(0, _context.Transactions.Count());
         }
+
+        [TestMethod]
+        public async Task DeleteTransactionsAsync_When_TransactionDoesNotExist_Returns_False()
+        {
+            // Act
+            var result = await _repository.DeleteTransactionsAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }
