@@ -126,5 +126,30 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(2, result.Count());
             Assert.AreEqual(transactions[0].Name, result.First().Name);
         }
+
+        [TestMethod]
+        public async Task GetTransactionsByBudgetIdAsync_When_TransactionDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+            var searchTerm = "nonexistent";
+
+            var transactions = new List<TransactionEntity>
+            {
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", Category = CategoryType.Income, Amount = 1500, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Groceries", Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow.AddMinutes(-1) }
+            };
+
+            _context.Transactions.AddRange(transactions);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, new List<CategoryType>(), searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
     }
 }
