@@ -102,6 +102,30 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetTransactionsByBudgetIdAsync_Returns_AllTransactions()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+
+            var transactions = new List<TransactionEntity>
+            {
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", Category = CategoryType.Income, Amount = 1500, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Groceries", Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow.AddMinutes(-1) }
+            };
+
+            _context.Transactions.AddRange(transactions);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, new List<CategoryType>(), null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count());
+        }
+
+        [TestMethod]
         public async Task GetTransactionsByBudgetIdAsync_BySearchTerm_Returns_Transactions()
         {
             // Arrange
