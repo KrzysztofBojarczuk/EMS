@@ -1,12 +1,12 @@
 ﻿using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
-using EMS.INFRASTRUCTURE.Extensions;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace EMS.TESTS.RepositoriesTests
 {
@@ -14,50 +14,42 @@ namespace EMS.TESTS.RepositoriesTests
     public class UsersRepositoryTests
     {
         private AppDbContext _context;
-        private Mock<UserManager<AppUserEntity>> _userManagerMock;
+        private UserManager<AppUserEntity> _userManager;
         private IUserRepository _repository;
-        private Mock<IUserRepository> _mockUserRepository;
 
         [TestInitialize]
         public void Setup()
         {
-            var store = new Mock<IUserStore<AppUserEntity>>();
-            _userManagerMock = new Mock<UserManager<AppUserEntity>>(
-                store.Object, null, null, null, null, null, null, null, null);
-
             var options = new DbContextOptionsBuilder<AppDbContext>()
-              .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-              .Options;
-
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
 
             _context = new AppDbContext(options);
-            _repository = new UsersRepository(_context, _userManagerMock.Object);
-
-            _mockUserRepository = new Mock<IUserRepository>();
+            _userManager = CreateUserManager(_context);
+            _repository = new UsersRepository(_context, _userManager);
         }
 
         [TestMethod]
         public async Task DeleteUserAsync_When_UserExists_Returns_True()
         {
             // Arrange
-            var appUserId = "user-id-123";
-            var user = new AppUserEntity { Id = appUserId, UserName = "testuser" };
+            var user = new AppUserEntity { UserName = "john", Email = "john@example.com" };
+ 
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
 
-            _userManagerMock.Setup(x => x.FindByIdAsync(appUserId))
-                .ReturnsAsync(user);
-
-            _userManagerMock.Setup(x => x.DeleteAsync(user))
-                .ReturnsAsync(IdentityResult.Success);
+            var userCountBefore = _context.Users.Count();
 
             // Act
-            var result = await _repository.DeleteUserAsync(appUserId);
+            var result = await _repository.DeleteUserAsync(user.Id);
+
+            var userCountAfter = _context.Users.Count();
 
             // Assert
             Assert.IsTrue(result);
-            _userManagerMock.Verify(x => x.DeleteAsync(user), Times.Once);
-            var remainingUsers = _userManagerMock.Object.Users.ToList();
-            Assert.IsFalse(remainingUsers.Any(u => u.Id == appUserId));
-            Assert.AreEqual(0, remainingUsers.Count);
+            Assert.AreEqual(userCountBefore -1, userCountAfter);
+            Assert.IsNull(_context.Users.FirstOrDefault(u => u.Id == user.Id));
+            Assert.AreEqual(0, _context.Users.Count());
         }
 
         [TestMethod]
@@ -65,15 +57,57 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "nonexistent";
-            _userManagerMock.Setup(x => x.FindByIdAsync(appUserId))
-                .ReturnsAsync((AppUserEntity)null);
 
             // Act
             var result = await _repository.DeleteUserAsync(appUserId);
 
             // Assert
             Assert.IsFalse(result);
-            _userManagerMock.Verify(x => x.DeleteAsync(It.IsAny<AppUserEntity>()), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GetNumberOfUsersAsync_Returns_NumberOfUsers()
+        {
+            // Arrange
+            var users = new List<AppUserEntity>
+            {
+               new AppUserEntity { UserName = "john", Email = "john@example.com" },
+               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
+               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
+            };
+
+            _context.Users.AddRange(users);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var count = await _repository.GetNumberOfUsersAsync();
+
+            // Assert
+            Assert.IsNotNull(count);
+            Assert.AreEqual(3, count);
+        }
+
+        [TestMethod]
+        public async Task GetAllUsersAsync_Returns_AllUsers()
+        {
+            // Arrange
+            var users = new List<AppUserEntity>
+            {
+               new AppUserEntity { UserName = "john", Email = "john@example.com" },
+               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
+               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" },
+               new AppUserEntity { UserName = "Tom", Email = "tom@example.com" }
+            };
+
+            _context.Users.AddRange(users);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetAllUsersAsync(1, 10, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(4, result.Items.Count());
         }
 
         [TestMethod]
@@ -89,15 +123,11 @@ namespace EMS.TESTS.RepositoriesTests
                new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
             };
 
-            var paginatedList = new PaginatedList<AppUserEntity>(
-                users.Where(x => x.UserName.ToLower().Contains(searchTerm.ToLower())).ToList(),
-                1, 1, 10);
-
-            _mockUserRepository.Setup(x => x.GetAllUsersAsync(1, 10, searchTerm))
-                .ReturnsAsync(paginatedList);
+            _context.Users.AddRange(users);
+            await _context.SaveChangesAsync();
 
             // Act
-            var result = await _mockUserRepository.Object.GetAllUsersAsync(1, 10, searchTerm);
+            var result = await _repository.GetAllUsersAsync(1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -110,24 +140,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var searchTerm = "nonexistent";
-            var emptyList = new List<AppUserEntity>();
-            var paginatedList = new PaginatedList<AppUserEntity>(emptyList, 0, 1, 10);
 
-            _mockUserRepository.Setup(x => x.GetAllUsersAsync(1, 10, searchTerm))
-                .ReturnsAsync(paginatedList);
-
-            // Act
-            var result = await _mockUserRepository.Object.GetAllUsersAsync(1, 10, searchTerm);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count);
-        }
-
-        [TestMethod]
-        public async Task GetNumberOfUsersAsync_Returns_NumberOfUsers()
-        {
-            // Arrange
             var users = new List<AppUserEntity>
             {
                new AppUserEntity { UserName = "john", Email = "john@example.com" },
@@ -135,14 +148,31 @@ namespace EMS.TESTS.RepositoriesTests
                new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
             };
 
-            _mockUserRepository.Setup(x => x.GetNumberOfUsersAsync()).ReturnsAsync(users.Count);
+            _context.Users.AddRange(users);
+            await _context.SaveChangesAsync();
 
             // Act
-            var count = await _mockUserRepository.Object.GetNumberOfUsersAsync();
+            var result = await _repository.GetAllUsersAsync(1, 10, searchTerm);
 
             // Assert
-            Assert.IsNotNull(count);
-            Assert.AreEqual(3, count);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count);
+        }
+
+        private static UserManager<AppUserEntity> CreateUserManager(AppDbContext context)
+        {
+            var store = new UserStore<AppUserEntity>(context);
+            return new UserManager<AppUserEntity>(
+                store,
+                null,
+                new PasswordHasher<AppUserEntity>(),
+                Array.Empty<IUserValidator<AppUserEntity>>(),
+                Array.Empty<IPasswordValidator<AppUserEntity>>(),
+                new UpperInvariantLookupNormalizer(),
+                new IdentityErrorDescriber(),
+                null,
+                new Logger<UserManager<AppUserEntity>>(new LoggerFactory())
+            );
         }
     }
 }
