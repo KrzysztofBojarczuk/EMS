@@ -111,6 +111,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow },
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", Category = CategoryType.Income, Amount = 1500, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Iphone", Category = CategoryType.Income, Amount = 1500, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow },
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Groceries", Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId, CreationDate = DateTimeOffset.UtcNow.AddMinutes(-1) }
             };
 
@@ -122,7 +123,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.Count());
+            Assert.AreEqual(4, result.Count());
         }
 
         [TestMethod]
