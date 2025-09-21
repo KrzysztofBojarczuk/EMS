@@ -148,6 +148,32 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetEmployeesAsync_Returns_AllEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
+                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
+                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" },
+                new EmployeeEntity { Name = "Jan", AppUserId = appUserId, Email = "jan@example.com", Phone = "333333333" },
+                new EmployeeEntity { Name = "Adam", AppUserId = appUserId, Email = "adam@example.com", Phone = "333333333" }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetEmployeesAsync(1, 10, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetEmployeesAsync_BySearchTerm_Returns_Employees()
         {
             // Arrange
