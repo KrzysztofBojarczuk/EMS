@@ -249,6 +249,16 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetEmployeeByIdAsync_When_EmployeeDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetEmployeeByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public async Task AddEmployeeAsync_Returns_Employee()
         {
             // Arrange
