@@ -6,8 +6,19 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { CategoryType } from "../../../Enum/CategoryType.ts";
 import { UserGetBudgetService } from "../../../Services/BudgetService.tsx";
+import { TransactionPost } from "../../../Models/Transaction.ts";
 
-const AddTransaction = ({ budgetId, onClose, onAddSuccess }) => {
+type Props = {
+  budgetId: string;
+  onClose: () => void;
+  onAddSuccess: () => void;
+};
+
+const AddTransaction: React.FC<Props> = ({
+  budgetId,
+  onClose,
+  onAddSuccess,
+}) => {
   const {
     control,
     handleSubmit,
@@ -22,8 +33,8 @@ const AddTransaction = ({ budgetId, onClose, onAddSuccess }) => {
     },
   });
 
-  const onSubmit = async (data) => {
-    const payload = { ...data, creationDate: new Date() };
+  const onSubmit = async (data: TransactionPost) => {
+    const payload = { ...data, creationDate: data.creationDate };
     await UserPostTransactionService(budgetId, payload);
     onAddSuccess();
     onClose();

@@ -5,8 +5,14 @@ import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { UserPostEmployeesService } from "../../../Services/EmployeeService.tsx";
+import { EmployeePost } from "../../../Models/Employee.ts";
 
-const AddEmployee = ({ onClose, onAddSuccess }) => {
+type Props = {
+  onClose: () => void;
+  onAddSuccess: () => void;
+};
+
+const AddEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   const {
     control,
     handleSubmit,
@@ -21,7 +27,7 @@ const AddEmployee = ({ onClose, onAddSuccess }) => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: EmployeePost) => {
     await UserPostEmployeesService(data);
     onAddSuccess();
     onClose();

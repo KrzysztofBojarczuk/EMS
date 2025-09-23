@@ -2,7 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "primereact/button";
 import { UserUpdateAddressService } from "../../../Services/AddressService.tsx";
-import { AddressGet } from "../../../Models/Address.ts";
+import { AddressGet, AddressPost } from "../../../Models/Address.ts";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 
@@ -31,7 +31,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: AddressPost) => {
     await UserUpdateAddressService(data, address.id);
     onUpdateSuccess();
     onClose();

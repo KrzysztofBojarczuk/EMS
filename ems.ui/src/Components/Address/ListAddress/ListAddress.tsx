@@ -14,7 +14,7 @@ import AddAddress from "../AddAddress/AddAddress.tsx";
 import UpdateAddress from "../UpdateAddress/UpdateAddress.tsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
-import { Paginator } from "primereact/paginator";
+import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 
 type Props = {};
 
@@ -49,7 +49,7 @@ const ListAddress = (props: Props) => {
     goToPage(1, rowsAddress);
   }, [searchTerm, rowsAddress]);
 
-  const onPageChangeAddresses = (event: any) => {
+  const onPageChangeAddresses = (event: PaginatorPageChangeEvent) => {
     setRowsAddress(event.rows);
     goToPage(event.page + 1, event.rows);
   };

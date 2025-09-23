@@ -9,13 +9,14 @@ import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputIcon } from "primereact/inputicon";
+import { EmployeeListPost } from "../../../Models/EmployeeList.ts";
 
 type Props = {
   onClose: () => void;
   onAddSuccess: () => void;
 };
 
-const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
+const AddListEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const {
@@ -26,8 +27,10 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
   } = useForm({
     defaultValues: {
       name: "",
+      employeeIds: [],
     },
   });
+
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
@@ -53,7 +56,7 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
     fetchEmployees();
   }, [searchTerm]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: EmployeeListPost) => {
     const postData = {
       name: data.name,
       employeeIds: selectedEmployees,

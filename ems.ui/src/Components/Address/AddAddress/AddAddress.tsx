@@ -4,10 +4,14 @@ import { UserPostAddressService } from "../../../Services/AddressService.tsx";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
+import { AddressGet, AddressPost } from "../../../Models/Address.ts";
 
-type Props = {};
+type Props = {
+  onClose: () => void;
+  onAddSuccess: () => void;
+};
 
-const AddAddress = ({ onClose, onAddSuccess }) => {
+const AddAddress: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   const {
     control,
     handleSubmit,
@@ -22,7 +26,7 @@ const AddAddress = ({ onClose, onAddSuccess }) => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: AddressPost) => {
     await UserPostAddressService(data);
     onAddSuccess();
     onClose();

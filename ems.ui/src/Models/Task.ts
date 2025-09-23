@@ -10,7 +10,7 @@ export interface TaskGet {
   startDate: string;
   endDate: string;
   address: AddressGet;
-  employeeList: EmployeeListGet[];
+  employeeLists: EmployeeListGet[];
 }
 
 export interface TaskPost {

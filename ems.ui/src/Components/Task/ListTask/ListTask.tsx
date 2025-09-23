@@ -104,7 +104,7 @@ const ListTask = (props: Props) => {
     [StatusOfTask.Archive]: "Archive",
   };
 
-  const statusOfTaskBodyTemplate = (rowData) => {
+  const statusOfTaskBodyTemplate = (rowData: TaskGet) => {
     return (
       <Tag
         value={statusToText[rowData.status]}
@@ -113,7 +113,7 @@ const ListTask = (props: Props) => {
     );
   };
 
-  const getStatusOfTask = (task) => {
+  const getStatusOfTask = (task: TaskGet) => {
     switch (task.status) {
       case StatusOfTask.Active:
         return "success";
@@ -142,8 +142,11 @@ const ListTask = (props: Props) => {
     return formatDate(rowData[field]);
   };
 
-  const rowExpansionTemplate = (data) => {
-    const handleStatusChange = async (taskId, newStatus) => {
+  const rowExpansionTemplate = (data: TaskGet) => {
+    const handleStatusChange = async (
+      taskId: string,
+      newStatus: StatusOfTask
+    ) => {
       await UserUpdateTaskStatusService(taskId, newStatus);
       // const updatedTasks = tasks.map((task) => {
       //   if (task.id === taskId) {
@@ -200,19 +203,25 @@ const ListTask = (props: Props) => {
         </div>
         <div className="col">
           <h4>Assigned Employee Lists</h4>
-          {data.employeeLists.map((employeeList, index) => (
-            <SplitButton
-              key={index}
-              label={employeeList.name}
-              className="m-2"
-              severity="info"
-              model={employeeList.employees.map((employee) => ({
-                label: employee.name,
-                icon: "pi pi-user",
-                key: employee.id,
-              }))}
-            />
-          ))}
+          {data.employeeLists && data.employeeLists.length > 0 ? (
+            data.employeeLists.map((employeeList) => (
+              <SplitButton
+                key={employeeList.id}
+                label={employeeList.name}
+                className="m-2"
+                severity="info"
+                model={
+                  employeeList.employees?.map((employee) => ({
+                    label: employee.name,
+                    icon: "pi pi-user",
+                    key: employee.id,
+                  })) ?? []
+                }
+              />
+            ))
+          ) : (
+            <p>No Employee List assigned.</p>
+          )}
         </div>
       </div>
     );

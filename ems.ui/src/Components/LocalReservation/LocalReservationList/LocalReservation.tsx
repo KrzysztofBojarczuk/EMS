@@ -24,6 +24,7 @@ import AddReservation from "../MakeReservation/AddReservation.tsx";
 import { ReservationGet } from "../../../Models/Reservation.ts";
 import { Card } from "primereact/card";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
+import { PaginatorPageChangeEvent } from "primereact/paginator";
 
 type Props = {};
 
@@ -89,7 +90,7 @@ const LocalReservation = (props: Props) => {
     goToPageLocal(1, rowsLocal);
   }, [searchLocalTerm]);
 
-  const fetchReservations = async (page, size) => {
+  const fetchReservations = async (page: number, size: number) => {
     const data = await UserGetReservationService(
       page,
       size,
@@ -103,7 +104,7 @@ const LocalReservation = (props: Props) => {
     goToPageReservation(1, rowsReservation);
   }, [searchReservationTerm]);
 
-  const onPageChangeLocals = (event: any) => {
+  const onPageChangeLocals = (event: PaginatorPageChangeEvent) => {
     setFirstLocal(event.first);
     setRowsLocal(event.rows);
     goToPageLocal(event.page + 1, event.rows);
@@ -123,7 +124,7 @@ const LocalReservation = (props: Props) => {
     goToPageReservation(currentReservationPage, rowsReservation);
   };
 
-  const onPageChangeReservations = (event) => {
+  const onPageChangeReservations = (event: PaginatorPageChangeEvent) => {
     setFirstReservation(event.first);
     setRowsReservation(event.rows);
     fetchReservations(event.page + 1, event.rows);
@@ -198,12 +199,12 @@ const LocalReservation = (props: Props) => {
     });
   };
 
-  const rowExpansionTemplate = (data) => {
+  const rowExpansionTemplate = (data: LocalGet) => {
     return (
       <div>
-        {data.reservationsEntities && data.reservationsEntities.length > 0 ? (
+        {data.reservations && data.reservations.length > 0 ? (
           <div className="flex flex-row flex-wrap">
-            {data.reservationsEntities.map((reservation, index) => (
+            {data.reservations.map((reservation, index) => (
               <div key={index}>
                 <Card
                   className="flex flex-column m-2"
