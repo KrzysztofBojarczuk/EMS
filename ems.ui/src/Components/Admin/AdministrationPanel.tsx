@@ -16,7 +16,7 @@ import {
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
 import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
-import { Paginator } from "primereact/paginator";
+import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { TaskGet } from "../../Models/Task.ts";
 import {
   GetTaskService,
@@ -186,19 +186,19 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setDeleteTaskId(null);
   };
 
-  const onPageChangeEmployees = (event: any) => {
+  const onPageChangeEmployees = (event: PaginatorPageChangeEvent) => {
     setFirstEmployee(event.first);
     setRowsEmployee(event.rows);
     fetchEmployees(event.page + 1, event.rows);
   };
 
-  const onPageChangeTasks = (event: any) => {
+  const onPageChangeTasks = (event: PaginatorPageChangeEvent) => {
     setFirstTask(event.first);
     setRowsTask(event.rows);
     fetchTasks(event.page + 1, event.rows);
   };
 
-  const onPageChangeUsers = (event: any) => {
+  const onPageChangeUsers = (event: PaginatorPageChangeEvent) => {
     setFirstUser(event.first);
     setRowsUser(event.rows);
     fetchUsers(event.page + 1, event.rows);
@@ -210,7 +210,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     [StatusOfTask.Archive]: "Archive",
   };
 
-  const statusOfTaskBodyTemplate = (rowData) => {
+  const statusOfTaskBodyTemplate = (rowData: TaskGet) => {
     return (
       <Tag
         value={statusToText[rowData.status]}
@@ -219,7 +219,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     );
   };
 
-  const getStatusOfTask = (task) => {
+  const getStatusOfTask = (task: TaskGet) => {
     switch (task.status) {
       case StatusOfTask.Active:
         return "success";
@@ -232,16 +232,20 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     }
   };
 
-  const formatDate = (value: Date) => {
-    return value.toLocaleDateString("en-EN", {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
       day: "2-digit",
       month: "long",
       year: "numeric",
     });
   };
 
-  const dateBodyTemplate = (rowData: TaskGet) => {
-    return formatDate(new Date(rowData.startDate));
+  const dateBodyTemplate = (
+    rowData: TaskGet,
+    field: "startDate" | "endDate"
+  ) => {
+    return formatDate(rowData[field]);
   };
 
   return (
@@ -320,14 +324,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           <Column
             field="startDate"
             dataType="date"
-            body={dateBodyTemplate}
+            body={(rowData) => dateBodyTemplate(rowData, "startDate")}
             header="Start Date"
           ></Column>
 
           <Column
             field="endDate"
             dataType="date"
-            body={dateBodyTemplate}
+            body={(rowData) => dateBodyTemplate(rowData, "endDate")}
             header="End Date"
           ></Column>
           <Column

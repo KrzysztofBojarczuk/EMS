@@ -23,7 +23,7 @@ import { InputIcon } from "primereact/inputicon";
 import AddListEmployee from "../AddListEmployee/AddListEmployee.tsx";
 import { EmployeeListGet } from "../../../Models/EmployeeList.tsx";
 import { Card } from "primereact/card";
-import { Paginator } from "primereact/paginator";
+import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 
 interface Props {}
 
@@ -136,13 +136,13 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     return rowData.id!.length > 0;
   };
 
-  const onPageChangeEmployees = (event: any) => {
+  const onPageChangeEmployees = (event: PaginatorPageChangeEvent) => {
     setFirstEmployee(event.first);
     setRowsEmployee(event.rows);
     fetchEmployees(event.page + 1, event.rows);
   };
 
-  const rowExpansionTemplate = (data) => {
+  const rowExpansionTemplate = (data: EmployeeListGet) => {
     return (
       <div>
         {data.employees ? (

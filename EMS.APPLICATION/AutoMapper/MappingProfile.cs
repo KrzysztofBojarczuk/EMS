@@ -34,7 +34,7 @@ namespace EMS.APPLICATION.AutoMapper
 
             CreateMap<LocalCreateDto, LocalEntity>();
             CreateMap<LocalEntity, LocalGetDto>()
-                .ForMember(dest => dest.ReservationsEntities, opt => opt.MapFrom(src => src.ReservationsEntities));
+                .ForMember(dest => dest.Reservations, opt => opt.MapFrom(src => src.ReservationsEntities));
 
             CreateMap<ReservationCreateDto, ReservationEntity>();
             CreateMap<ReservationEntity, ReservationGetDto>();
