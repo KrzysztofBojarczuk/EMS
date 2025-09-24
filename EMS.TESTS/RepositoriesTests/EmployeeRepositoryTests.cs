@@ -466,6 +466,29 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeeListsAsync_Returns_AllEmployeeList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employeeList = new List<EmployeeListsEntity> {
+                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "Truck Drivers", AppUserId = appUserId },
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsAsync(appUserId, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeeListsAsync_BySearchTerm_Returns_EmployeeList()
         {
             // Arrange
