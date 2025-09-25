@@ -554,7 +554,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId, "");
+            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -634,7 +634,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeesForListAsync(appUserId, "");
+            var result = await _repository.GetUserEmployeesForListAsync(appUserId, null);
 
             // Assert
             Assert.AreEqual(3, result.Count());
