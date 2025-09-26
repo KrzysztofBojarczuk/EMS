@@ -210,6 +210,31 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserAddressesForTaskAsync_Returns_AllAddresses()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var addresses = new List<AddressEntity>
+            {
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Koszalin", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+            };
+
+            _context.Address.AddRange(addresses);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserAddressesForTaskAsync(appUserId, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(4, result.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserAddressesForTaskAsync_BySearchTerm_Returns_Addresses()
         {
             // Arrange
