@@ -10,9 +10,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
-            var query = dbContext.Employees.AsQueryable();
-
-            query = query.Where(x => x.AppUserId == appUserId);
+            var query = dbContext.Employees.Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -115,9 +113,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm)
         {
-            var query = dbContext.EmployeeLists.Include(x => x.EmployeesEntities).AsQueryable();
-
-            query = query.Where(x => x.AppUserId == appUserId);
+            var query = dbContext.EmployeeLists.Include(x => x.EmployeesEntities).Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -129,9 +125,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskAsync(string appUserId, string searchTerm)
         {
-            var query = dbContext.EmployeeLists.Include(x => x.EmployeesEntities).AsQueryable();
-
-            query = query.Where(x => x.AppUserId == appUserId && x.TaskId == null);
+            var query = dbContext.EmployeeLists.Include(x => x.EmployeesEntities).Where(x => x.AppUserId == appUserId && x.TaskId == null);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -143,9 +137,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm)
         {
-            var query = dbContext.Employees.AsQueryable();
-
-            query = query.Where(x => x.AppUserId == appUserId && x.EmployeeListId == null);
+            var query = dbContext.Employees .Where(x => x.AppUserId == appUserId && x.EmployeeListId == null);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

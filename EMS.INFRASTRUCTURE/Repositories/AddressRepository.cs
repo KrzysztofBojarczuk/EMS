@@ -49,9 +49,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<PaginatedList<AddressEntity>> GetUserAddressesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
-            var query = dbContext.Address.AsQueryable();
-
-            query = query.Where(x => x.AppUserId == appUserId);
+            var query = dbContext.Address.Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -66,9 +64,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<IEnumerable<AddressEntity>> GetUserAddressesForTaskAsync(string appUserId, string searchTerm)
         {
-            var query = dbContext.Address.AsQueryable();
-
-            query = query.Where(x => x.AppUserId == appUserId);
+            var query = dbContext.Address.Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
