@@ -39,7 +39,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<PaginatedList<LocalEntity>> GetUserLocalAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
-            var query = dbContext.Locals.Where(x => x.AppUserId == appUserId).Include(x => x.ReservationsEntities).AsQueryable();
+            var query = dbContext.Locals.Include(x => x.ReservationsEntities).Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

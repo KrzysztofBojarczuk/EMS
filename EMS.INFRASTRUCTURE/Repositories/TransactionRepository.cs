@@ -49,9 +49,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm)
         {
-            var query = dbContext.Transactions.OrderByDescending(x => x.CreationDate).AsQueryable();
-
-            query = query.Where(x => x.BudgetId == id);
+            var query = dbContext.Transactions.Where(x => x.BudgetId == id);
 
             if (category.Any())
             {
@@ -63,7 +61,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            return await query.ToListAsync();
+            return await query.OrderByDescending(x => x.CreationDate).ToListAsync();
         }
 
         private async Task UpdateBudgetAsync(Guid budgetId)

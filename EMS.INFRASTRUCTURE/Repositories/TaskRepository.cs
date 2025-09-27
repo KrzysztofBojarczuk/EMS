@@ -11,15 +11,18 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
-            var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities).AsQueryable();
 
-            query = query.OrderByDescending(x => x.EndDate).Where(x => x.AppUserId == appUserId);
+            var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities)
+                                       .Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())
                                       || x.Description.ToLower().Contains(searchTerm.ToLower()));
             }
+
+
+            query = query.OrderByDescending(x => x.EndDate);
 
             return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }

@@ -47,7 +47,6 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Verify(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm), Times.Once);
         }
 
-
         [TestMethod]
         public async Task Handle_Returns_EmptyList_When_Addresses_NotFound()
         {
