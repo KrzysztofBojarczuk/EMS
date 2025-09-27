@@ -53,7 +53,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "NonExistentName";
+            var searchTerm = "nonexistent";
 
             _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm))
                .ReturnsAsync(new List<AddressEntity>());
