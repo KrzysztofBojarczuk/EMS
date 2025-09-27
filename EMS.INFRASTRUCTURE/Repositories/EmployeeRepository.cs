@@ -137,7 +137,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm)
         {
-            var query = dbContext.Employees .Where(x => x.AppUserId == appUserId && x.EmployeeListId == null);
+            var query = dbContext.Employees.Where(x => x.AppUserId == appUserId && x.EmployeeListId == null);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

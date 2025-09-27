@@ -11,7 +11,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
-
             var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities)
                                        .Where(x => x.AppUserId == appUserId);
 
