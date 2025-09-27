@@ -20,6 +20,36 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_AllUsers()
+        {
+            // Arrange
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var expectedUsers = new List<AppUserEntity>
+            {
+               new AppUserEntity { UserName = "John", Email = "john@example.com" },
+               new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" },
+               new AppUserEntity { UserName = "Tom", Email = "johnny@example.com" }
+            };
+
+            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
+
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, null))
+                .ReturnsAsync(expectedResult);
+
+            var query = new GetAllUserQuery(pageNumber, pageSize, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedUsers.Count(), result.Items.Count());
+            _mockUserRepository.Verify(x => x.GetAllUsersAsync(pageNumber, pageSize, null), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_BySearchTerm_Users()
         {
             // Arrange
@@ -56,12 +86,14 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             // Arrange
             var pageNumber = 1;
             var pageSize = 10;
+            var searchTerm = "nonexistent";
 
-            var query = new GetAllUserQuery(pageNumber, pageSize, "nonexistent");
             var expectedResult = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, pageNumber, pageSize);
 
-            _mockUserRepository.Setup(x => x.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm))
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(expectedResult);
+
+            var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
