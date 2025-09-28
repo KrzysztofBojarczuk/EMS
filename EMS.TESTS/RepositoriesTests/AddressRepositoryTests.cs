@@ -58,13 +58,13 @@ namespace EMS.TESTS.RepositoriesTests
             var addresses = new List<AddressEntity>
             {
                 new AddressEntity { Id = addressId1, AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = addressId2, AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
+                new AddressEntity { Id = addressId2, AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" }
             };
 
             var tasks = new List<TaskEntity>
             {
                 new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 1", Description = "Test Description", AppUserId = "user1", AddressId = addressId1 },
-                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addressId2 },
+                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addressId2 }
             };
 
             _context.Tasks.AddRange(tasks);

@@ -474,7 +474,7 @@ namespace EMS.TESTS.RepositoriesTests
             var employeeList = new List<EmployeeListsEntity> {
                 new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
                 new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "Truck Drivers", AppUserId = appUserId },
+                new EmployeeListsEntity { Name = "Truck Drivers", AppUserId = appUserId }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -547,7 +547,7 @@ namespace EMS.TESTS.RepositoriesTests
                 new EmployeeListsEntity { Name = "No Task", AppUserId = appUserId, TaskId = null },
                 new EmployeeListsEntity { Name = "Bulding a house", AppUserId = appUserId, TaskId = null },
                 new EmployeeListsEntity { Name = "With Task", AppUserId = appUserId, TaskId = Guid.NewGuid() },
-                new EmployeeListsEntity { Name = "Buy a car", AppUserId = "user-id-1234", TaskId = Guid.NewGuid() },
+                new EmployeeListsEntity { Name = "Buy a car", AppUserId = "user-id-1234", TaskId = Guid.NewGuid() }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
