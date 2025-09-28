@@ -20,7 +20,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
-
             query = query.OrderByDescending(x => x.EndDate);
 
             return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);

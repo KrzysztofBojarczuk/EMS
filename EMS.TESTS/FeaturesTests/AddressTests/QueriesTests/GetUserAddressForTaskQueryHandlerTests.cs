@@ -20,6 +20,34 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_AllAddresses()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var expectedAddresses = new List<AddressEntity>
+            {
+                new AddressEntity { City = "City A", Street = "Test Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId },
+                new AddressEntity { City = "City C", Street = "Street Koszalin", Number = "2", ZipCode = "00-002", AppUserId = appUserId },
+            };
+
+            _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, null))
+                .ReturnsAsync(expectedAddresses);
+
+            var query = new GetUserAddressForTaskQuery(appUserId, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedAddresses.Count(), result.Count());
+            CollectionAssert.AreEqual(expectedAddresses, new List<AddressEntity>(result));
+            _mockAddressRepository.Verify(x => x.GetUserAddressesForTaskAsync(appUserId, null), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_BySearchTerm_Addresses()
         {
             // Arrange
