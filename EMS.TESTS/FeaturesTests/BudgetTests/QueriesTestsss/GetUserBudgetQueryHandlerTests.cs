@@ -8,7 +8,7 @@ using Moq;
 namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTestsss
 {
     [TestClass]
-    public class GetUserBudgetQueryTests
+    public class GetUserBudgetQueryHandlerTests
     {
         private Mock<IBudgetRepository> _mockBudgetRepository;
         private GetUserBudgetQueryHandler _handler;

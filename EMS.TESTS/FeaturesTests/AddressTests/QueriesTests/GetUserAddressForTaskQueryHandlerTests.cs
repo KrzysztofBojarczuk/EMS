@@ -29,7 +29,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             {
                 new AddressEntity { City = "City A", Street = "Test Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
                 new AddressEntity { City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId },
-                new AddressEntity { City = "City C", Street = "Street Koszalin", Number = "2", ZipCode = "00-002", AppUserId = appUserId },
+                new AddressEntity { City = "City C", Street = "Street Koszalin", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
             };
 
             _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, null))
