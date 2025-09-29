@@ -46,8 +46,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
-            Assert.AreEqual(expectedEmployees[0].Name, result.Items[0].Name);
-            Assert.AreEqual(expectedEmployees[1].Name, result.Items[1].Name);
+            CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
             _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm), Times.Once);
         }
 
