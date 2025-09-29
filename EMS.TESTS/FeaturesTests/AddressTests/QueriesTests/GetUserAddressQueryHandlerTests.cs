@@ -21,6 +21,38 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_AllAddresses()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var expectedAddreses = new List<AddressEntity>
+            {
+                new AddressEntity { City = "City A", Street = "Main Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { City = "City B", Street = "Second Street", Number = "2", ZipCode = "00-002", AppUserId = appUserId },
+                new AddressEntity { City = "City C", Street = "Street Koszalin", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
+            };
+
+            var paginatedList = new PaginatedList<AddressEntity>(expectedAddreses, expectedAddreses.Count(), pageNumber, pageSize);
+
+            _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, null))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedAddreses.Count(), result.Items.Count());
+            CollectionAssert.AreEqual(expectedAddreses, result.Items.ToList());
+            _mockAddressRepository.Verify(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, null), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_BySearchTerm_Addresses()
         {
             // Arrange
