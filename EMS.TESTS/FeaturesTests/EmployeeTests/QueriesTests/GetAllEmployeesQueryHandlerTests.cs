@@ -20,6 +20,37 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_AllEmployees()
+        {
+            // Arrange
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var expectedEmployees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123" },
+                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "456" },
+                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "416" },
+            };
+
+            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
+
+            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(pageNumber, pageSize, null))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetAllEmployeesQuery(pageNumber, pageSize, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
+            CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(pageNumber, pageSize, null), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_BySearchTerm_Employees()
         {
             // Arrange
