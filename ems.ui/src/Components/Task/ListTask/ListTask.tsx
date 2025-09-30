@@ -26,6 +26,7 @@ import { Tag } from "primereact/tag";
 import { Dropdown } from "primereact/dropdown";
 import { SplitButton } from "primereact/splitbutton";
 import { Paginator } from "primereact/paginator";
+import { formatDate } from "../../Utils/DateUtils.ts";
 
 type Props = {};
 
@@ -124,15 +125,6 @@ const ListTask = (props: Props) => {
       default:
         return null;
     }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
   };
 
   const dateBodyTemplate = (

@@ -25,6 +25,7 @@ import { ReservationGet } from "../../../Models/Reservation.ts";
 import { Card } from "primereact/card";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
+import { formatDateTime } from "../../Utils/DateUtils.ts";
 
 type Props = {};
 
@@ -185,18 +186,6 @@ const LocalReservation = (props: Props) => {
 
     setConfirmLocalVisible(false);
     setDeleteLocalId(null);
-  };
-
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
   };
 
   const rowExpansionTemplate = (data: LocalGet) => {

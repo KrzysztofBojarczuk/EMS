@@ -24,6 +24,7 @@ import {
 } from "../../Services/TaskService.tsx";
 import { Tag } from "primereact/tag";
 import { StatusOfTask } from "../../Enum/StatusOfTask.ts";
+import { formatDate } from "../Utils/DateUtils.ts";
 
 const AdministrationPanel: React.FC = (): JSX.Element => {
   const [numberUser, setNumberUsers] = useState<number>(0);
@@ -230,15 +231,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       default:
         return null;
     }
-  };
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    });
   };
 
   const dateBodyTemplate = (
