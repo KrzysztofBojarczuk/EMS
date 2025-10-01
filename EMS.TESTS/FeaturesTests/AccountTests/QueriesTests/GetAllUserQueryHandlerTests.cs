@@ -33,10 +33,10 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
                new AppUserEntity { UserName = "Tom", Email = "johnny@example.com" }
             };
 
-            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
+            var paginatedList = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
             _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, null))
-                .ReturnsAsync(expectedResult);
+                .ReturnsAsync(paginatedList);
 
             var query = new GetAllUserQuery(pageNumber, pageSize, null);
 
@@ -64,10 +64,10 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
                new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
             };
 
-            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
+            var paginatedList = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
             _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
-                .ReturnsAsync(expectedResult);
+                .ReturnsAsync(paginatedList);
 
             var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
 
@@ -89,10 +89,10 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             var pageSize = 10;
             var searchTerm = "nonexistent";
 
-            var expectedResult = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, pageNumber, pageSize);
+            var paginatedList = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, pageNumber, pageSize);
 
             _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
-                .ReturnsAsync(expectedResult);
+                .ReturnsAsync(paginatedList);
 
             var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
 

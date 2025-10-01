@@ -95,7 +95,7 @@ namespace EMS.TESTS.ControllersTests
                 new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
             };
 
-            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count, pageNumber, pageSize);
+            var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count, pageNumber, pageSize);
 
             _mockSender.Setup(x => x.Send(
                 It.Is<GetAllUserQuery>(x =>
@@ -103,7 +103,7 @@ namespace EMS.TESTS.ControllersTests
                     x.pageSize == pageSize &&
                     x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
-                .ReturnsAsync(expectedResult);
+                .ReturnsAsync(paginatedResult);
 
             // Act
             var result = await _controller.GetAllUserAsync(pageNumber, pageSize, searchTerm);
@@ -124,9 +124,9 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(users);
             Assert.AreEqual(expectedUsers.Count, users.Count());
 
-            Assert.AreEqual(expectedResult.TotalItems, totalItemsProperty.GetValue(value));
-            Assert.AreEqual(expectedResult.TotalPages, totalPagesProperty.GetValue(value));
-            Assert.AreEqual(expectedResult.PageIndex, pageIndexProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.PageIndex, pageIndexProperty.GetValue(value));
         }
 
         [TestMethod]
@@ -137,8 +137,9 @@ namespace EMS.TESTS.ControllersTests
             var pageSize = 10;
             var searchTerm = "nonexistent";
 
-            var expectedUsers = new List<AppUserEntity>(); 
-            var expectedResult = new PaginatedList<AppUserEntity>(expectedUsers, 0, pageNumber, pageSize);
+            var expectedUsers = new List<AppUserEntity>();
+
+            var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, 0, pageNumber, pageSize);
 
             _mockSender.Setup(x => x.Send(
                 It.Is<GetAllUserQuery>(x =>
@@ -146,7 +147,7 @@ namespace EMS.TESTS.ControllersTests
                     x.pageSize == pageSize &&
                     x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
-                .ReturnsAsync(expectedResult);
+                .ReturnsAsync(paginatedResult);
 
             // Act
             var result = await _controller.GetAllUserAsync(pageNumber, pageSize, searchTerm);
@@ -167,9 +168,9 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(users);
             Assert.AreEqual(expectedUsers.Count, users.Count());
 
-            Assert.AreEqual(expectedResult.TotalItems, totalItemsProperty.GetValue(value));
-            Assert.AreEqual(expectedResult.TotalPages, totalPagesProperty.GetValue(value));
-            Assert.AreEqual(expectedResult.PageIndex, pageIndexProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.PageIndex, pageIndexProperty.GetValue(value));
         }
     }
 }
