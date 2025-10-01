@@ -22,9 +22,10 @@ import {
   GetTaskService,
   DeleteTaskService,
 } from "../../Services/TaskService.tsx";
-import { Tag } from "primereact/tag";
-import { StatusOfTask } from "../../Enum/StatusOfTask.ts";
-import { formatDate } from "../Utils/DateUtils.ts";
+import {
+  dateBodyTemplate,
+  statusOfTaskBodyTemplate,
+} from "../Utils/TaskTemplates.tsx";
 
 const AdministrationPanel: React.FC = (): JSX.Element => {
   const [numberUser, setNumberUsers] = useState<number>(0);
@@ -203,41 +204,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setFirstUser(event.first);
     setRowsUser(event.rows);
     fetchUsers(event.page + 1, event.rows);
-  };
-
-  const statusToText = {
-    [StatusOfTask.Active]: "Active",
-    [StatusOfTask.Done]: "Done",
-    [StatusOfTask.Archive]: "Archive",
-  };
-
-  const statusOfTaskBodyTemplate = (rowData: TaskGet) => {
-    return (
-      <Tag
-        value={statusToText[rowData.status]}
-        severity={getStatusOfTask(rowData)}
-      ></Tag>
-    );
-  };
-
-  const getStatusOfTask = (task: TaskGet) => {
-    switch (task.status) {
-      case StatusOfTask.Active:
-        return "success";
-      case StatusOfTask.Done:
-        return "warning";
-      case StatusOfTask.Archive:
-        return "info";
-      default:
-        return null;
-    }
-  };
-
-  const dateBodyTemplate = (
-    rowData: TaskGet,
-    field: "startDate" | "endDate"
-  ) => {
-    return formatDate(rowData[field]);
   };
 
   return (

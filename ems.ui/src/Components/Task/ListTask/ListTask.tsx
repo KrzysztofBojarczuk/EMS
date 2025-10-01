@@ -26,7 +26,10 @@ import { Tag } from "primereact/tag";
 import { Dropdown } from "primereact/dropdown";
 import { SplitButton } from "primereact/splitbutton";
 import { Paginator } from "primereact/paginator";
-import { formatDate } from "../../Utils/DateUtils.ts";
+import {
+  dateBodyTemplate,
+  statusOfTaskBodyTemplate,
+} from "../../Utils/TaskTemplates.tsx";
 
 type Props = {};
 
@@ -97,41 +100,6 @@ const ListTask = (props: Props) => {
     setFirstTask(event.first);
     setRowsTask(event.rows);
     fetchTasks(event.page + 1, event.rows);
-  };
-
-  const statusToText = {
-    [StatusOfTask.Active]: "Active",
-    [StatusOfTask.Done]: "Done",
-    [StatusOfTask.Archive]: "Archive",
-  };
-
-  const statusOfTaskBodyTemplate = (rowData: TaskGet) => {
-    return (
-      <Tag
-        value={statusToText[rowData.status]}
-        severity={getStatusOfTask(rowData)}
-      ></Tag>
-    );
-  };
-
-  const getStatusOfTask = (task: TaskGet) => {
-    switch (task.status) {
-      case StatusOfTask.Active:
-        return "success";
-      case StatusOfTask.Done:
-        return "warning";
-      case StatusOfTask.Archive:
-        return "info";
-      default:
-        return null;
-    }
-  };
-
-  const dateBodyTemplate = (
-    rowData: TaskGet,
-    field: "startDate" | "endDate"
-  ) => {
-    return formatDate(rowData[field]);
   };
 
   const rowExpansionTemplate = (data: TaskGet) => {
