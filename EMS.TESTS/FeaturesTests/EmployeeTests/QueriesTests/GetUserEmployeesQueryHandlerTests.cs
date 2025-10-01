@@ -36,7 +36,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count, pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
             var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, searchTerm);
@@ -47,8 +47,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
-            Assert.AreEqual(expectedEmployees[0].Name, result.Items[0].Name);
-            Assert.AreEqual(expectedEmployees[1].Name, result.Items[1].Name);
+            CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
             _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
         }
 
@@ -63,7 +62,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
             var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, searchTerm);
@@ -74,7 +73,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
-            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
         }
     }
 }

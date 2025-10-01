@@ -43,7 +43,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            _mockEmployeeRepository.Setup(repo => repo.GetUserNumberOfEmployeesAsync(appUserId))
+            _mockEmployeeRepository.Setup(x => x.GetUserNumberOfEmployeesAsync(appUserId))
                 .ReturnsAsync(0);
 
             var query = new GetUserNumberOfEmployeesQuery(appUserId);
@@ -53,7 +53,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             // Assert
             Assert.AreEqual(0, result);
-            _mockEmployeeRepository.Verify(repo => repo.GetUserNumberOfEmployeesAsync(appUserId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserNumberOfEmployeesAsync(appUserId), Times.Once);
         }
     }
 }
