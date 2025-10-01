@@ -72,7 +72,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
-            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
                 .ReturnsAsync(new List<EmployeeListsEntity>());
 
             var query = new GetUserEmployeeListsForTaskQuery(appUserId, searchTerm);
@@ -83,7 +83,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
-            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
         }
     }
 }
