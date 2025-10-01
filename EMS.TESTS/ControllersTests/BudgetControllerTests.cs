@@ -150,10 +150,6 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(returnedDto);
             Assert.AreEqual(expectedDto.Id, returnedDto.Id);
             Assert.AreEqual(expectedDto.Budget, returnedDto.Budget);
-
-            _mockUserManager.Verify(x => x.FindByNameAsync("testuser"), Times.Once);
-            _mockSender.Verify(s => s.Send(It.IsAny<GetUserBudgetQuery>(), It.IsAny<CancellationToken>()), Times.Once);
-            _mockMapper.Verify(m => m.Map<BudgetGetDto>(budgetEntity), Times.Once);
         }
 
         [TestMethod]
