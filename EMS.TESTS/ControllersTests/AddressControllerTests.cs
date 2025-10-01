@@ -365,17 +365,17 @@ namespace EMS.TESTS.ControllersTests
                 ZipCode = updateDto.ZipCode
             };
 
-            _mockMapper.Setup(m => m.Map<AddressEntity>(updateDto))
+            _mockMapper.Setup(x => x.Map<AddressEntity>(updateDto))
                 .Returns(addressEntity);
 
-            _mockSender.Setup(s => s.Send(
+            _mockSender.Setup(x => x.Send(
                 It.Is<UpdateAddressCommand>(x =>
                     x.AddressId == addressId &&
                     x.Address == addressEntity),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
 
-            _mockMapper.Setup(m => m.Map<AddressGetDto>(updatedEntity))
+            _mockMapper.Setup(x=> x.Map<AddressGetDto>(updatedEntity))
                 .Returns(expectedDto);
 
             // Act

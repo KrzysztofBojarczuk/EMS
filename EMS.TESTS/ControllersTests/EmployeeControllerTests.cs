@@ -373,17 +373,17 @@ namespace EMS.TESTS.ControllersTests
                 Salary = updateDto.Salary
             };
 
-            _mapperMock.Setup(m => m.Map<EmployeeEntity>(updateDto))
+            _mapperMock.Setup(x => x.Map<EmployeeEntity>(updateDto))
                 .Returns(employeeEntity);
 
-            _mockSender.Setup(s => s.Send(
+            _mockSender.Setup(x => x.Send(
                 It.Is<UpdateEmployeeCommand>(x =>
                     x.EmployeeId == employeeId &&
                     x.Employee == employeeEntity),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
 
-            _mapperMock.Setup(m => m.Map<EmployeeGetDto>(updatedEntity))
+            _mapperMock.Setup(x => x.Map<EmployeeGetDto>(updatedEntity))
                 .Returns(expectedDto);
 
             // Act
@@ -553,7 +553,7 @@ namespace EMS.TESTS.ControllersTests
                     It.IsAny<CancellationToken>()))
                     .ReturnsAsync(employeeListsEntities);
 
-            _mapperMock.Setup(m => m.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+            _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
 
             // Act
@@ -637,7 +637,7 @@ namespace EMS.TESTS.ControllersTests
                     It.IsAny<CancellationToken>()))
                     .ReturnsAsync(employeeListsEntities);
 
-            _mapperMock.Setup(m => m.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+            _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
 
             // Act
@@ -679,7 +679,7 @@ namespace EMS.TESTS.ControllersTests
                     It.IsAny<CancellationToken>()))
                     .ReturnsAsync(employeeListsEntities);
 
-            _mapperMock.Setup(m => m.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+            _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
 
             // Act

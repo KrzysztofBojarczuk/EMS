@@ -122,7 +122,7 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(userGetProperty);
             var users = userGetProperty.GetValue(value) as IEnumerable<AppUserEntity>;
             Assert.IsNotNull(users);
-            Assert.AreEqual(expectedUsers.Count, users.Count());
+            Assert.AreEqual(expectedUsers.Count(), users.Count());
 
             Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
             Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
@@ -166,7 +166,7 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(userGetProperty);
             var users = userGetProperty.GetValue(value) as IEnumerable<AppUserEntity>;
             Assert.IsNotNull(users);
-            Assert.AreEqual(expectedUsers.Count, users.Count());
+            Assert.AreEqual(expectedUsers.Count(), users.Count());
 
             Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
             Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
