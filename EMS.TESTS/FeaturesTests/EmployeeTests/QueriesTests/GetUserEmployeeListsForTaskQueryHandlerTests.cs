@@ -25,7 +25,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "dev";
 
-            var employeeLists = new List<EmployeeListsEntity>
+            var expectedEmployeeLists = new List<EmployeeListsEntity>
             {
                 new EmployeeListsEntity
                 {
@@ -51,7 +51,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             };
 
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
-                .ReturnsAsync(employeeLists);
+                .ReturnsAsync(expectedEmployeeLists);
 
             var query = new GetUserEmployeeListsForTaskQuery(appUserId, searchTerm);
 
@@ -60,8 +60,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
-            Assert.AreEqual("Dev Team", result.First().Name);
+            Assert.AreEqual(expectedEmployeeLists.Count(), result.Count());
+            CollectionAssert.AreEqual(expectedEmployeeLists, result.ToList());
             _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
         }
 

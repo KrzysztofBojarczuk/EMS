@@ -25,7 +25,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "dev";
 
-            var employeeLists = new List<EmployeeListsEntity>
+            var expectedEmployeeLists = new List<EmployeeListsEntity>
             {
                 new EmployeeListsEntity
                 {
@@ -50,8 +50,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 }
             };
 
-            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeeListsAsync(appUserId, searchTerm))
-                .ReturnsAsync(employeeLists);
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsAsync(appUserId, searchTerm))
+                .ReturnsAsync(expectedEmployeeLists);
 
             var query = new GetUserEmployeeListsQuery(appUserId, searchTerm);
 
@@ -60,9 +60,9 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(2, result.Count());
-            Assert.AreEqual("Dev Team", result.First().Name);
-            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeeListsAsync(appUserId, searchTerm), Times.Once);
+            Assert.AreEqual(expectedEmployeeLists.Count(), result.Count());
+            CollectionAssert.AreEqual(expectedEmployeeLists.ToList(), result.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsAsync(appUserId, searchTerm), Times.Once);
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
-            _mockEmployeeRepository.Setup(repo => repo.GetUserEmployeeListsAsync(appUserId, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsAsync(appUserId, searchTerm))
                 .ReturnsAsync(new List<EmployeeListsEntity>());
 
             var query = new GetUserEmployeeListsQuery(appUserId, searchTerm);
@@ -83,7 +83,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
-            _mockEmployeeRepository.Verify(repo => repo.GetUserEmployeeListsAsync(appUserId, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsAsync(appUserId, searchTerm), Times.Once);
         }
     }
 }
