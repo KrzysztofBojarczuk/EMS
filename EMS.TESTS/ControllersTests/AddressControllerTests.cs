@@ -375,7 +375,7 @@ namespace EMS.TESTS.ControllersTests
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
 
-            _mockMapper.Setup(x=> x.Map<AddressGetDto>(updatedEntity))
+            _mockMapper.Setup(x => x.Map<AddressGetDto>(updatedEntity))
                 .Returns(expectedDto);
 
             // Act
