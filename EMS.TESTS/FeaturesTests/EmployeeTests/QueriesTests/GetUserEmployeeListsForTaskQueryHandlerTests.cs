@@ -47,7 +47,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                         new EmployeeEntity { Name = "Charlie" }
                     }
                 },
-                    new EmployeeListsEntity
+                new EmployeeListsEntity
                 {
                     Id = Guid.NewGuid(),
                     Name = "Truck drivers",
