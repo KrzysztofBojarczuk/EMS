@@ -505,13 +505,13 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(appUser);
 
             _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsForTaskQuery>(q =>
-                        q.appUserId == appUserId &&
-                        q.searchTerm == searchTerm),
+                    It.Is<GetUserEmployeeListsForTaskQuery>(x =>
+                        x.appUserId == appUserId &&
+                        x.searchTerm == searchTerm),
                     It.IsAny<CancellationToken>()))
                     .ReturnsAsync(employeeListsEntities);
 
-            _mapperMock.Setup(m => m.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+            _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
 
             // Act
@@ -547,9 +547,9 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(appUser);
 
             _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsForTaskQuery>(q =>
-                        q.appUserId == appUserId &&
-                        q.searchTerm == searchTerm),
+                    It.Is<GetUserEmployeeListsForTaskQuery>(x =>
+                        x.appUserId == appUserId &&
+                        x.searchTerm == searchTerm),
                     It.IsAny<CancellationToken>()))
                     .ReturnsAsync(employeeListsEntities);
 
@@ -631,9 +631,9 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(appUser);
 
             _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsQuery>(q =>
-                        q.appUserId == appUserId &&
-                        q.searchTerm == searchTerm),
+                    It.Is<GetUserEmployeeListsQuery>(x =>
+                        x.appUserId == appUserId &&
+                        x.searchTerm == searchTerm),
                     It.IsAny<CancellationToken>()))
                     .ReturnsAsync(employeeListsEntities);
 
@@ -673,9 +673,9 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(appUser);
 
             _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsQuery>(q =>
-                        q.appUserId == appUserId &&
-                        q.searchTerm == searchTerm),
+                    It.Is<GetUserEmployeeListsQuery>(x =>
+                        x.appUserId == appUserId &&
+                        x.searchTerm == searchTerm),
                     It.IsAny<CancellationToken>()))
                     .ReturnsAsync(employeeListsEntities);
 
