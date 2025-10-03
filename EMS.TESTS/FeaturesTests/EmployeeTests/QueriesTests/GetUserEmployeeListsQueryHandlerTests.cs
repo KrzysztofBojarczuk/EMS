@@ -19,6 +19,62 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_AllEmployeeLists()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var expectedEmployeeLists = new List<EmployeeListsEntity>
+            {
+                new EmployeeListsEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Dev Team",
+                    AppUserId = appUserId,
+                    EmployeesEntities = new List<EmployeeEntity>
+                    {
+                        new EmployeeEntity { Name = "Alice" },
+                        new EmployeeEntity { Name = "Bob" }
+                    }
+                },
+                new EmployeeListsEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "QA and Dev Team",
+                    AppUserId = appUserId,
+                    EmployeesEntities = new List<EmployeeEntity>
+                    {
+                        new EmployeeEntity { Name = "Charlie" }
+                    }
+                },
+                new EmployeeListsEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Truck drivers",
+                    AppUserId = appUserId,
+                    EmployeesEntities = new List<EmployeeEntity>
+                    {
+                        new EmployeeEntity { Name = "John" }
+                    }
+                }
+            };
+
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsAsync(appUserId, null))
+                .ReturnsAsync(expectedEmployeeLists);
+
+            var query = new GetUserEmployeeListsQuery(appUserId, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedEmployeeLists.Count(), result.Count());
+            CollectionAssert.AreEqual(expectedEmployeeLists.ToList(), result.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsAsync(appUserId, null), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_BySearchTerm_EmployeeLists()
         {
             // Arrange
