@@ -20,6 +20,34 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_AllEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var expectedEmployees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123", AppUserId = appUserId },
+                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "456", AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "416", AppUserId = appUserId }
+            };
+
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, null))
+                .ReturnsAsync(expectedEmployees);
+
+            var query = new GetUserEmployeesForListQuery(appUserId, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedEmployees.Count(), result.Count());
+            CollectionAssert.AreEqual(expectedEmployees, result.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAsync(appUserId, null), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_BySearchTerm_Employees()
         {
             // Arrange
