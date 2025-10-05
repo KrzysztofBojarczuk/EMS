@@ -34,7 +34,7 @@ namespace EMS.TESTS.RepositoriesTests
                 Street = "Test Street",
                 Number = "123",
                 ZipCode = "00-001",
-                AppUserId = "user123"
+                AppUserId = "user-id-123"
             };
 
             // Act

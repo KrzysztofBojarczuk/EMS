@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EMS.INFRASTRUCTURE.Repositories
 {
-    internal class LocalRepository(AppDbContext dbContext) : ILocalRepository
+    public class LocalRepository(AppDbContext dbContext) : ILocalRepository
     {
         public async Task<LocalEntity> AddLocalAsync(LocalEntity entity)
         {
