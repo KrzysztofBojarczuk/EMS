@@ -74,12 +74,11 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-                It.Is<GetUserAddressQuery>(x =>
-                    x.appUserId == appUserId &&
-                    x.pageNumber == pageNumber &&
-                    x.pageSize == pageSize &&
-                    x.searchTerm == searchTerm),
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressQuery>(x =>
+                x.appUserId == appUserId &&
+                x.pageNumber == pageNumber &&
+                x.pageSize == pageSize &&
+                x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -130,12 +129,11 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-                It.Is<GetUserAddressQuery>(x =>
-                    x.appUserId == appUserId &&
-                    x.pageNumber == pageNumber &&
-                    x.pageSize == pageSize &&
-                    x.searchTerm == searchTerm),
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressQuery>(x =>
+                x.appUserId == appUserId &&
+                x.pageNumber == pageNumber &&
+                x.pageSize == pageSize &&
+                x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -191,7 +189,10 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.IsAny<GetUserAddressForTaskQuery>(), It.IsAny<CancellationToken>()))
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressForTaskQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
                 .ReturnsAsync(addressEntities);
 
             _mockMapper.Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
@@ -227,8 +228,11 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.IsAny<GetUserAddressForTaskQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(addressEntities);
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressForTaskQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+               .ReturnsAsync(addressEntities);
 
             _mockMapper.Setup(x => x.Map<IEnumerable<AddressGetDto>>(It.IsAny<IEnumerable<AddressEntity>>()))
                 .Returns(expectedDtos);
@@ -368,10 +372,9 @@ namespace EMS.TESTS.ControllersTests
             _mockMapper.Setup(x => x.Map<AddressEntity>(updateDto))
                 .Returns(addressEntity);
 
-            _mockSender.Setup(x => x.Send(
-                It.Is<UpdateAddressCommand>(x =>
-                    x.AddressId == addressId &&
-                    x.Address == addressEntity),
+            _mockSender.Setup(x => x.Send(It.Is<UpdateAddressCommand>(x =>
+                x.AddressId == addressId &&
+                x.Address == addressEntity),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
 
