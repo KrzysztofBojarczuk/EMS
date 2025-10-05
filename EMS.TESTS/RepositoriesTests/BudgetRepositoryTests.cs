@@ -30,7 +30,7 @@ namespace EMS.TESTS.RepositoriesTests
             var budget = new BudgetEntity
             {
                 Budget = 1500.00m,
-                AppUserId = "user123"
+                AppUserId = "user-id-123"
             };
 
             // Act
@@ -53,7 +53,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = budgetId,
                 Budget = 2500.00m,
-                AppUserId = "user123"
+                AppUserId = "user-id-123"
             };
 
             _context.Budgets.Add(budget);

@@ -73,7 +73,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
           rules={{ required: "Number is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputMask {...field} mask="999" />
+              <InputText keyfilter="int" {...field} placeholder="Number" />
               {errors.number && (
                 <small className="p-error">{errors.number.message}</small>
               )}
