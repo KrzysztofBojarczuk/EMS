@@ -75,12 +75,11 @@ namespace EMS.TESTS.ControllersTests
             _userManagerMock.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-                It.Is<GetUserEmployeesQuery>(x =>
-                    x.appUserId == appUserId &&
-                    x.pageNumber == pageNumber &&
-                    x.pageSize == pageSize &&
-                    x.searchTerm == searchTerm),
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesQuery>(x =>
+                x.appUserId == appUserId &&
+                x.pageNumber == pageNumber &&
+                x.pageSize == pageSize &&
+                x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -132,14 +131,13 @@ namespace EMS.TESTS.ControllersTests
             _userManagerMock.Setup(x => x.FindByNameAsync(username))
                .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-              It.Is<GetUserEmployeesQuery>(x =>
-                  x.appUserId == appUserId &&
-                  x.pageNumber == pageNumber &&
-                  x.pageSize == pageSize &&
-                  x.searchTerm == searchTerm),
-              It.IsAny<CancellationToken>()))
-              .ReturnsAsync(paginatedResult);
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesQuery>(x =>
+                x.appUserId == appUserId &&
+                x.pageNumber == pageNumber &&
+                x.pageSize == pageSize &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(paginatedResult);
 
             _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeGetDto>>(employeesEntities))
                 .Returns(expectedDtos);
@@ -194,8 +192,8 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(appUser);
 
             _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesForListQuery>(x =>
-                    x.appUserId == appUserId &&
-                    x.searchTerm == searchTerm),
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(employeesEntity);
 
@@ -233,8 +231,8 @@ namespace EMS.TESTS.ControllersTests
                 .ReturnsAsync(appUser);
 
             _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesForListQuery>(x =>
-                    x.appUserId == appUserId &&
-                    x.searchTerm == searchTerm),
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(employeesEntity);
 
@@ -376,10 +374,9 @@ namespace EMS.TESTS.ControllersTests
             _mapperMock.Setup(x => x.Map<EmployeeEntity>(updateDto))
                 .Returns(employeeEntity);
 
-            _mockSender.Setup(x => x.Send(
-                It.Is<UpdateEmployeeCommand>(x =>
-                    x.EmployeeId == employeeId &&
-                    x.Employee == employeeEntity),
+            _mockSender.Setup(x => x.Send(It.Is<UpdateEmployeeCommand>(x =>
+                x.EmployeeId == employeeId &&
+                x.Employee == employeeEntity),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
 
@@ -504,12 +501,11 @@ namespace EMS.TESTS.ControllersTests
             _userManagerMock.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsForTaskQuery>(x =>
-                        x.appUserId == appUserId &&
-                        x.searchTerm == searchTerm),
-                    It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(employeeListsEntities);
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsForTaskQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
 
             _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
@@ -546,12 +542,11 @@ namespace EMS.TESTS.ControllersTests
             _userManagerMock.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsForTaskQuery>(x =>
-                        x.appUserId == appUserId &&
-                        x.searchTerm == searchTerm),
-                    It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(employeeListsEntities);
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsForTaskQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
 
             _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
@@ -630,12 +625,11 @@ namespace EMS.TESTS.ControllersTests
             _userManagerMock.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsQuery>(x =>
-                        x.appUserId == appUserId &&
-                        x.searchTerm == searchTerm),
-                    It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(employeeListsEntities);
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
 
             _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
@@ -672,12 +666,11 @@ namespace EMS.TESTS.ControllersTests
             _userManagerMock.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(
-                    It.Is<GetUserEmployeeListsQuery>(x =>
-                        x.appUserId == appUserId &&
-                        x.searchTerm == searchTerm),
-                    It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(employeeListsEntities);
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
 
             _mapperMock.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
                 .Returns(expectedDtos);
@@ -737,10 +730,9 @@ namespace EMS.TESTS.ControllersTests
             _mapperMock.Setup(x => x.Map<EmployeeListsEntity>(createDto))
                 .Returns(employeeListsEntity);
 
-            _mockSender.Setup(x => x.Send(
-                It.Is<AddEmployeeListCommand>(x =>
-                    x.employeeList == employeeListsEntity &&
-                    x.employeeIds.SequenceEqual(createDto.EmployeeIds)),
+            _mockSender.Setup(x => x.Send(It.Is<AddEmployeeListCommand>(x =>
+                x.employeeList == employeeListsEntity &&
+                x.employeeIds.SequenceEqual(createDto.EmployeeIds)),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<EmployeeListsEntity>.Success(resultEntity));
 
