@@ -18,15 +18,14 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<bool> DeleteAddressAsync(Guid addressId)
+        public async Task<bool> DeleteAddressAsync(Guid addressId, string appUserId)
         {
-            var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId);
+            var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId && x.AppUserId == appUserId);
 
-            var addressTaskId = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == addressId);
+            var addressTaskId = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == addressId && x.AppUserId == appUserId);
 
             if (address is not null)
             {
-
                 var tasksWithAddress = await dbContext.Tasks.Where(x => x.AddressId == addressId).ToListAsync();
 
                 foreach (var task in tasksWithAddress)
@@ -77,9 +76,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<AddressEntity> UpdateAddressAsync(Guid addressId, AddressEntity entity)
+        public async Task<AddressEntity> UpdateAddressAsync(Guid addressId, string appUserId, AddressEntity entity)
         {
-            var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId);
+            var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId && x.AppUserId == appUserId);
 
             if (address is not null)
             {

@@ -11,13 +11,13 @@ namespace EMS.CORE.Interfaces
         Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm);
         Task<EmployeeEntity> GetEmployeeByIdAsync(Guid id);
         Task<EmployeeEntity> AddEmployeeAsync(EmployeeEntity entity);
-        Task<EmployeeEntity> UpdateEmployeeAsync(Guid employId, EmployeeEntity entity);
-        Task<bool> DeleteEmployeeAsync(Guid employeeId);
+        Task<EmployeeEntity> UpdateEmployeeAsync(Guid employId, string appUserId, EmployeeEntity entity);
+        Task<bool> DeleteEmployeeAsync(Guid employeeId, string appUserId);
         Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm);
         Task<IEnumerable<EmployeeListsEntity>>  GetUserEmployeeListsForTaskAsync(string appUserId, string searchTerm);
         Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm);
         Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds);
         Task<bool> EmployeeListExistsAsync(string name, string appUserId);
-        Task<bool> DeleteEmployeeListsAsync(Guid employeeListId);
+        Task<bool> DeleteEmployeeListsAsync(Guid employeeListId, string appUserId);
     }
 }

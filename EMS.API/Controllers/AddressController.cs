@@ -80,9 +80,13 @@ namespace EMS.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
             var addressEntity = mapper.Map<AddressEntity>(updateAddressDto);
 
-            var result = await sender.Send(new UpdateAddressCommand(addressId, addressEntity));
+            var result = await sender.Send(new UpdateAddressCommand(addressId, appUser.Id, addressEntity));
 
             var addressGet = mapper.Map<AddressGetDto>(result);
 
@@ -90,10 +94,14 @@ namespace EMS.API.Controllers
         }
 
         [HttpDelete("{addressId}")]
-        [Authorize(Roles = "User, Admin")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteAddressAsync([FromRoute] Guid addressId)
         {
-            var result = await sender.Send(new DeleteAddressCommand(addressId));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteAddressCommand(addressId, appUser.Id));
 
             return Ok(result);
         }

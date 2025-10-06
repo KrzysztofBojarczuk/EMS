@@ -24,18 +24,19 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
         {
             //Arrange
             var employeeId = Guid.NewGuid();
+            var appUserId = "user-id-123";
             var updatedEmployee = new EmployeeEntity
             {
                 Name = "Test User",
                 Email = "test@example.com",
                 Phone = "123456789",
-                AppUserId = "user-id-123"
+                AppUserId = appUserId
             };
 
-            _mockEmployeeRepository.Setup(x => x.UpdateEmployeeAsync(employeeId, updatedEmployee))
+            _mockEmployeeRepository.Setup(x => x.UpdateEmployeeAsync(employeeId, appUserId, updatedEmployee))
                 .ReturnsAsync(updatedEmployee);
 
-            var command = new UpdateEmployeeCommand(employeeId, updatedEmployee);
+            var command = new UpdateEmployeeCommand(employeeId, appUserId, updatedEmployee);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -43,7 +44,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(updatedEmployee, result);
-            _mockEmployeeRepository.Verify(x => x.UpdateEmployeeAsync(employeeId, updatedEmployee), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.UpdateEmployeeAsync(employeeId, appUserId, updatedEmployee), Times.Once);
         }
     }
 }

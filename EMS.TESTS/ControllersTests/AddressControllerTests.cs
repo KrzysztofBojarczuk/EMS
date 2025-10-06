@@ -332,7 +332,13 @@ namespace EMS.TESTS.ControllersTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
+            var appUserId = "user-id-123";
             var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+               .ReturnsAsync(appUser);
 
             var updateDto = new AddressCreateDto
             {
@@ -374,6 +380,7 @@ namespace EMS.TESTS.ControllersTests
 
             _mockSender.Setup(x => x.Send(It.Is<UpdateAddressCommand>(x =>
                 x.AddressId == addressId &&
+                x.appUserId == appUserId &&
                 x.Address == addressEntity),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
@@ -404,8 +411,15 @@ namespace EMS.TESTS.ControllersTests
             // Arrange
             var addressId = Guid.NewGuid();
             var expectedResult = true;
+            var appUserId = "user-id-123";
+            var username = "testuser";
 
-            _mockSender.Setup(x => x.Send(It.Is<DeleteAddressCommand>(x => x.addressId == addressId), It.IsAny<CancellationToken>()))
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+               .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteAddressCommand>(x => x.addressId == addressId && x.appUserId == appUserId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
             // Act
@@ -424,8 +438,15 @@ namespace EMS.TESTS.ControllersTests
             // Arrange
             var addressId = Guid.NewGuid();
             var expectedResult = false;
+            var appUserId = "user-id-123";
+            var username = "testuser";
 
-            _mockSender.Setup(x => x.Send(It.Is<DeleteAddressCommand>(x => x.addressId == addressId), It.IsAny<CancellationToken>()))
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+               .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteAddressCommand>(x => x.addressId == addressId && x.appUserId == appUserId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
             // Act

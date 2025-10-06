@@ -60,10 +60,14 @@ namespace EMS.API.Controllers
         }
 
         [HttpDelete("{localId}")]
-        [Authorize(Roles = "User, Admin")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteLocalAsync([FromRoute] Guid localId)
         {
-            var result = await sender.Send(new DeleteLocalCommand(localId));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteLocalCommand(localId, appUser.Id));
 
             return Ok(result);
         }

@@ -24,19 +24,20 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
+            var appUserId = "user-id-123";
             var updatedAddress = new AddressEntity
             {
                 City = "Updated City",
                 Street = "Updated Street",
                 Number = "456",
                 ZipCode = "11-111",
-                AppUserId = "user-id-123"
+                AppUserId = appUserId
             };
 
-            _mockAddressRepository.Setup(x => x.UpdateAddressAsync(addressId, updatedAddress))
+            _mockAddressRepository.Setup(x => x.UpdateAddressAsync(addressId, appUserId, updatedAddress))
                 .ReturnsAsync(updatedAddress);
 
-            var command = new UpdateAddressCommand(addressId, updatedAddress);
+            var command = new UpdateAddressCommand(addressId, appUserId, updatedAddress);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -44,7 +45,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(updatedAddress, result);
-            _mockAddressRepository.Verify(x => x.UpdateAddressAsync(addressId, updatedAddress), Times.Once);
+            _mockAddressRepository.Verify(x => x.UpdateAddressAsync(addressId, appUserId, updatedAddress), Times.Once);
         }
     }
 }

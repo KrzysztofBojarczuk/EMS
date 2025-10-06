@@ -34,13 +34,11 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
 
             var employeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
 
-            _mockEmployeeRepository
-               .Setup(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId))
-               .ReturnsAsync(false);
+            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId))
+                .ReturnsAsync(false);
 
-            _mockEmployeeRepository
-               .Setup(x => x.AddEmployeeListsAsync(employeeList, employeeIds))
-               .ReturnsAsync(employeeList);
+            _mockEmployeeRepository.Setup(x => x.AddEmployeeListsAsync(employeeList, employeeIds))
+                .ReturnsAsync(employeeList);
 
             var command = new AddEmployeeListCommand(employeeList, employeeIds);
 
@@ -70,9 +68,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
 
             var expectedFailureMessage = "A list with that name already exists.";
 
-            _mockEmployeeRepository
-               .Setup(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId))
-               .ReturnsAsync(true);
+            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsAsync(employeeList.Name, employeeList.AppUserId))
+                .ReturnsAsync(true);
 
             var command = new AddEmployeeListCommand(employeeList, employeeIds);
 

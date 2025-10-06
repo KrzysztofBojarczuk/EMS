@@ -9,6 +9,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
         Task<LocalEntity> GetLocalByIdAsync(Guid id);
         Task<LocalEntity> AddLocalAsync(LocalEntity entity);
         Task<LocalEntity> UpdateLocalAsync(Guid localId, LocalEntity entity);
-        Task<bool> DeleteLocalAsync(Guid localId);
+        Task<bool> DeleteLocalAsync(Guid localId, string appUserId);
     }
 }

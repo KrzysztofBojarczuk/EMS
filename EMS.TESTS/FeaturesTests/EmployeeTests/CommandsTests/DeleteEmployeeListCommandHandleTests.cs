@@ -24,18 +24,19 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             // Arrange
             var employeeListId = Guid.NewGuid();
             var expectedResult = true;
+            var appUserId = "user-id-123";
 
-            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeListsAsync(employeeListId))
+            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeListsAsync(employeeListId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteEmployeeListCommand(employeeListId);
+            var command = new DeleteEmployeeListCommand(employeeListId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
-            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeListsAsync(employeeListId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeListsAsync(employeeListId, appUserId), Times.Once);
         }
 
         [TestMethod]
@@ -44,18 +45,19 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             // Arrange
             var employeeListId = Guid.NewGuid();
             var expectedResult = false;
+            var appUserId = "user-id-123";
 
-            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeListsAsync(employeeListId))
+            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeListsAsync(employeeListId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteEmployeeListCommand(employeeListId);
+            var command = new DeleteEmployeeListCommand(employeeListId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsFalse(result);
-            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeListsAsync(employeeListId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeListsAsync(employeeListId, appUserId), Times.Once);
         }
     }
 }
