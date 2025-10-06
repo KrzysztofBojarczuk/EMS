@@ -17,9 +17,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<bool> DeleteLocalAsync(Guid localId)
+        public async Task<bool> DeleteLocalAsync(Guid localId, string appUserId)
         {
-            var local = await dbContext.Locals.Include(x => x.ReservationsEntities).FirstOrDefaultAsync(x => x.Id == localId);
+            var local = await dbContext.Locals.Include(x => x.ReservationsEntities).FirstOrDefaultAsync(x => x.Id == localId && x.AppUserId == appUserId);
 
             if (local is not null)
             {

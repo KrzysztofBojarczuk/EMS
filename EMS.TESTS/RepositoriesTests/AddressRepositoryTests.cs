@@ -74,7 +74,7 @@ namespace EMS.TESTS.RepositoriesTests
             var addressCountBefore = _context.Address.Count();
 
             // Act
-            var result = await _repository.DeleteAddressAsync(addressId1);
+            var result = await _repository.DeleteAddressAsync(addressId1, appUserId);
 
             var addressCountAfter = _context.Address.Count();
 
@@ -88,8 +88,11 @@ namespace EMS.TESTS.RepositoriesTests
         [TestMethod]
         public async Task DeleteAddressAsync_When_AddressDoesNotExist_Returns_False()
         {
+            // Arrange
+            var appUserId = "user-id-123";
+
             // Act
-            var result = await _repository.DeleteAddressAsync(Guid.NewGuid());
+            var result = await _repository.DeleteAddressAsync(Guid.NewGuid(), appUserId);
 
             // Assert
             Assert.IsFalse(result);
@@ -313,7 +316,7 @@ namespace EMS.TESTS.RepositoriesTests
             };
 
             // Act
-            var result = await _repository.UpdateAddressAsync(address.Id, updatedAddress);
+            var result = await _repository.UpdateAddressAsync(address.Id, appUserId, updatedAddress);
 
             // Assert
             Assert.IsNotNull(result);
@@ -329,17 +332,18 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
+            var appUserId = "user-id-123";
             var updatedAddress = new AddressEntity
             {
                 City = "Test New City",
                 Street = "Test New Street",
                 Number = "321",
                 ZipCode = "00-123",
-                AppUserId = "user-id-123"
+                AppUserId = appUserId
             };
 
             // Act
-            var result = await _repository.UpdateAddressAsync(nonExistentId, updatedAddress);
+            var result = await _repository.UpdateAddressAsync(nonExistentId, appUserId, updatedAddress);
 
             // Assert
             Assert.IsNotNull(result);

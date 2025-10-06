@@ -29,9 +29,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 );
         }
 
-        public async Task<bool> DeleteReservationAsync(Guid reservationId)
+        public async Task<bool> DeleteReservationAsync(Guid reservationId, string appUserId)
         {
-            var reservation = await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == reservationId);
+            var reservation = await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == reservationId && x.AppUserId == appUserId);
 
             if (reservation is not null)
             {

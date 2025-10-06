@@ -6,6 +6,6 @@ namespace EMS.CORE.Interfaces
     {
         Task<BudgetEntity> GetUserBudgetAsync(string appUserId);
         Task<BudgetEntity> AddBudgetAsync(BudgetEntity entity);
-        Task<bool> DeleteBudgetAsync(Guid budgetId);
+        Task<bool> DeleteBudgetAsync(Guid budgetId, string appUserId);
     }
 }

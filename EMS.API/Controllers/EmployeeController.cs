@@ -130,9 +130,13 @@ namespace EMS.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
             var employeeEntity = mapper.Map<EmployeeEntity>(updateEmployeeDto);
 
-            var result = await sender.Send(new UpdateEmployeeCommand(employeeId, employeeEntity));
+            var result = await sender.Send(new UpdateEmployeeCommand(employeeId, appUser.Id, employeeEntity));
 
             var employeeGet = mapper.Map<EmployeeGetDto>(result);
 
@@ -140,10 +144,14 @@ namespace EMS.API.Controllers
         }
 
         [HttpDelete("{employeeId}")]
-        [Authorize(Roles = "User, Admin")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteEmployeeAsync([FromRoute] Guid employeeId)
         {
-            var result = await sender.Send(new DeleteEmployeeCommand(employeeId));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteEmployeeCommand(employeeId, appUser.Id));
 
             return Ok(result);
         }
@@ -207,7 +215,11 @@ namespace EMS.API.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteEmployeeListAsync([FromRoute] Guid employeeListId)
         {
-            var result = await sender.Send(new DeleteEmployeeListCommand(employeeListId));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteEmployeeListCommand(employeeListId, appUser.Id));
 
             return Ok(result);
         }

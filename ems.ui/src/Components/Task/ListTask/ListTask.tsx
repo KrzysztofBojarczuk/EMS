@@ -262,7 +262,7 @@ const ListTask = (props: Props) => {
       />
       <ConfirmationDialog
         visible={confirmVisible}
-        header="Confirm Deletion of Taske"
+        header="Confirm Deletion of Task"
         message="Are you sure you want to delete this Task?"
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmVisible(false)}

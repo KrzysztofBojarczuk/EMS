@@ -9,19 +9,12 @@ import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { EmployeeGet } from "../../Models/Employee.ts";
-import {
-  GetEmployeesService,
-  UserDeleteEmployeesService,
-} from "../../Services/EmployeeService.tsx";
+import { GetEmployeesService } from "../../Services/EmployeeService.tsx";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
-import { Button } from "primereact/button";
 import { Panel } from "primereact/panel";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { TaskGet } from "../../Models/Task.ts";
-import {
-  GetTaskService,
-  DeleteTaskService,
-} from "../../Services/TaskService.tsx";
+import { GetTaskService } from "../../Services/TaskService.tsx";
 import {
   dateBodyTemplate,
   statusOfTaskBodyTemplate,
@@ -38,12 +31,8 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   const [searchTaskTerm, setSearchTaskTerm] = useState("");
 
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
-  const [deleteEmployeeId, setDeleteEmployeeId] = useState<string | null>(null);
-  const [deleteTaskId, setDeleteTaskId] = useState<string | null>(null);
 
   const [confirmUserVisible, setConfirmUserVisible] = useState(false);
-  const [confirmEmployeeVisible, setConfirmEmployeeVisible] = useState(false);
-  const [confirmTaskVisible, setConfirmTaskVisible] = useState(false);
 
   const [firstEmployee, setFirstEmployee] = useState(0);
   const [rowsEmployee, setRowsEmployee] = useState(10);
@@ -123,16 +112,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setConfirmUserVisible(true);
   };
 
-  const showEmployeeDeleteConfirmation = (id: string) => {
-    setDeleteEmployeeId(id);
-    setConfirmEmployeeVisible(true);
-  };
-
-  const showTaskDeleteConfirmation = (id: string) => {
-    setDeleteTaskId(id);
-    setConfirmTaskVisible(true);
-  };
-
   const handleConfirmDeleteUser = async () => {
     if (deleteUserId) {
       await UserDeleteService(deleteUserId);
@@ -150,42 +129,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     }
     setConfirmUserVisible(false);
     setDeleteUserId(null);
-  };
-
-  const handleConfirmDeleteEmployee = async () => {
-    if (deleteEmployeeId) {
-      await UserDeleteEmployeesService(deleteEmployeeId);
-
-      const totalAfterDelete = totalEmployees - 1;
-      const maxPage = Math.ceil(totalAfterDelete / rowsEmployee);
-      let currentPage = Math.floor(firstEmployee / rowsEmployee) + 1;
-
-      if (currentPage > maxPage) {
-        currentPage = maxPage;
-      }
-
-      goToPageEmployees(currentPage, rowsEmployee);
-    }
-    setConfirmEmployeeVisible(false);
-    setDeleteEmployeeId(null);
-  };
-
-  const handleConfirmDeleteTask = async () => {
-    if (deleteTaskId) {
-      await DeleteTaskService(deleteTaskId);
-
-      const totalAfterDelete = totalTasks - 1;
-      const maxPage = Math.ceil(totalAfterDelete / rowsTask);
-      let currentPage = Math.floor(firstTask / rowsTask) + 1;
-
-      if (currentPage > maxPage) {
-        currentPage = maxPage;
-      }
-
-      goToPageTasks(currentPage, rowsTask);
-    }
-    setConfirmTaskVisible(false);
-    setDeleteTaskId(null);
   };
 
   const onPageChangeEmployees = (event: PaginatorPageChangeEvent) => {
@@ -249,16 +192,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           <Column field="id" header="Id" />
           <Column field="name" header="Name" />
           <Column field="email" header="Email" />
-          <Column
-            header="Action"
-            body={(rowData) => (
-              <i
-                className="pi pi-trash"
-                style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                onClick={() => showEmployeeDeleteConfirmation(rowData.id)}
-              ></i>
-            )}
-          />
         </DataTable>
         <Paginator
           first={firstEmployee}
@@ -297,16 +230,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
             header="Status"
             body={statusOfTaskBodyTemplate}
           ></Column>
-          <Column
-            header="Action"
-            body={(rowData) => (
-              <i
-                className="pi pi-trash"
-                style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                onClick={() => showTaskDeleteConfirmation(rowData.id)}
-              ></i>
-            )}
-          />
         </DataTable>
         <Paginator
           first={firstTask}
@@ -324,22 +247,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
         message="Are you sure you want to delete this user?"
         onConfirm={handleConfirmDeleteUser}
         onCancel={() => setConfirmUserVisible(false)}
-      />
-
-      <ConfirmationDialog
-        visible={confirmEmployeeVisible}
-        header="Confirm Employee Deletion"
-        message="Are you sure you want to delete this employee?"
-        onConfirm={handleConfirmDeleteEmployee}
-        onCancel={() => setConfirmEmployeeVisible(false)}
-      />
-
-      <ConfirmationDialog
-        visible={confirmTaskVisible}
-        header="Confirm Task Deletion"
-        message="Are you sure you want to delete this task?"
-        onConfirm={handleConfirmDeleteTask}
-        onCancel={() => setConfirmTaskVisible(false)}
       />
     </div>
   );

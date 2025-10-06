@@ -66,9 +66,13 @@ namespace EMS.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
             var taskEntity = mapper.Map<TaskEntity>(updateTaskDto);
 
-            var result = await sender.Send(new UpdateTaskCommand(taskId, taskEntity));
+            var result = await sender.Send(new UpdateTaskCommand(taskId, appUser.Id, taskEntity));
 
             var taskGet = mapper.Map<TaskGetDto>(result);
 
@@ -79,16 +83,24 @@ namespace EMS.API.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateTaskStatusAsync([FromRoute] Guid taskId, [FromBody] StatusOfTask newStatus)
         {
-            var result = await sender.Send(new UpdateTaskStatusCommand(taskId, newStatus));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new UpdateTaskStatusCommand(taskId, appUser.Id, newStatus));
 
             return Ok(result);
         }
 
         [HttpDelete("{taskId}")]
-        [Authorize(Roles = "User, Admin")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteTaskAsync([FromRoute] Guid taskId)
         {
-            var result = await sender.Send(new DeleteTaskCommand(taskId));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteTaskCommand(taskId, appUser.Id));
 
             return Ok(result);
         }

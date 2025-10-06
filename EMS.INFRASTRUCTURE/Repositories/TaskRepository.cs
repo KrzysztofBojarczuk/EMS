@@ -49,11 +49,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<bool> DeleteTaskAsync(Guid taskId)
+        public async Task<bool> DeleteTaskAsync(Guid taskId, string appUserId)
         {
-            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == taskId);
+            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == taskId && x.AppUserId == appUserId);
 
-            var employeeList = await dbContext.EmployeeLists.Where(x =>x.TaskId == taskId).ToListAsync();
+            var employeeList = await dbContext.EmployeeLists.Where(x =>x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
             if (task is not null)
             {
@@ -69,9 +69,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return false;
         }
 
-        public async Task<bool> UpdateTaskStatusAsync(Guid taskId, StatusOfTask newStatus)
+        public async Task<bool> UpdateTaskStatusAsync(Guid taskId, string appUserId, StatusOfTask newStatus)
         {
-            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == taskId);
+            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == taskId && x.AppUserId == appUserId);
 
             if (task is not null)
             {
@@ -90,9 +90,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return false;
         }
 
-        public async Task<TaskEntity> UpdateTaskAsync(Guid id, TaskEntity entity)
+        public async Task<TaskEntity> UpdateTaskAsync(Guid id, string appUserId, TaskEntity entity)
         {
-            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == appUserId);
 
             if (task is not null)
             {

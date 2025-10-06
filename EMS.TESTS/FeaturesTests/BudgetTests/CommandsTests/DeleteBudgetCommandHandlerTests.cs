@@ -24,17 +24,19 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
             // Arrange
             var budgetId = Guid.NewGuid();
             var expectedResult = true;
+            var appUserId = "user-id-123";
 
-            _mockBudgetRepository.Setup(x => x.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
+            _mockBudgetRepository.Setup(x => x.DeleteBudgetAsync(budgetId, appUserId))
+                .ReturnsAsync(expectedResult);
 
-            var command = new DeleteBudgetCommand(budgetId);
+            var command = new DeleteBudgetCommand(budgetId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
-            _mockBudgetRepository.Verify(x => x.DeleteBudgetAsync(budgetId), Times.Once);
+            _mockBudgetRepository.Verify(x => x.DeleteBudgetAsync(budgetId, appUserId), Times.Once);
         }
 
         [TestMethod]
@@ -43,17 +45,19 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.CommandsTests
             // Arrange
             var budgetId = Guid.NewGuid();
             var expectedResult = false;
+            var appUserId = "user-id-123";
 
-            _mockBudgetRepository.Setup(x => x.DeleteBudgetAsync(budgetId)).ReturnsAsync(expectedResult);
+            _mockBudgetRepository.Setup(x => x.DeleteBudgetAsync(budgetId, appUserId))
+                .ReturnsAsync(expectedResult);
 
-            var command = new DeleteBudgetCommand(budgetId);
+            var command = new DeleteBudgetCommand(budgetId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsFalse(result);
-            _mockBudgetRepository.Verify(x => x.DeleteBudgetAsync(budgetId), Times.Once);
+            _mockBudgetRepository.Verify(x => x.DeleteBudgetAsync(budgetId, appUserId), Times.Once);
         }
     }
 }

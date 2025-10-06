@@ -24,18 +24,19 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             // Arrange
             var addressId = Guid.NewGuid();
             var expectedResult = true;
+            var appUserId = "user-id-123";
 
-            _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId))
+            _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteAddressCommand(addressId);
+            var command = new DeleteAddressCommand(addressId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
-            _mockAddressRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
+            _mockAddressRepository.Verify(x => x.DeleteAddressAsync(addressId, appUserId), Times.Once);
         }
 
         [TestMethod]
@@ -44,18 +45,19 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             // Arrange
             var addressId = Guid.NewGuid();
             var expectedResult = false;
+            var appUserId = "user-id-123";
 
-            _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId))
+            _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteAddressCommand(addressId);
+            var command = new DeleteAddressCommand(addressId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsFalse(result);
-            _mockAddressRepository.Verify(x => x.DeleteAddressAsync(addressId), Times.Once);
+            _mockAddressRepository.Verify(x => x.DeleteAddressAsync(addressId, appUserId), Times.Once);
         }
     }
 }

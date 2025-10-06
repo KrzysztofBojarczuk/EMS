@@ -4,13 +4,13 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Task.Commands
 {
-    public record UpdateTaskStatusCommand(Guid TaskId, StatusOfTask newStatus) : IRequest<bool>;
+    public record UpdateTaskStatusCommand(Guid TaskId, string appUserId, StatusOfTask newStatus) : IRequest<bool>;
 
     public class UpdateTaskStatusCommandHandler(ITaskRepository taskRepository) : IRequestHandler<UpdateTaskStatusCommand, bool>
     {
         public async Task<bool> Handle(UpdateTaskStatusCommand request, CancellationToken cancellationToken)
         {
-            return await taskRepository.UpdateTaskStatusAsync(request.TaskId, request.newStatus);
+            return await taskRepository.UpdateTaskStatusAsync(request.TaskId, request.appUserId, request.newStatus);
         }
     }
 }

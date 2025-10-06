@@ -24,18 +24,19 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             // Arrange
             var emplyeeId = Guid.NewGuid();
             var expectedResult = true;
+            var appUserId = "user-id-123";
 
-            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeAsync(emplyeeId))
+            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeAsync(emplyeeId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteEmployeeCommand(emplyeeId);
+            var command = new DeleteEmployeeCommand(emplyeeId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsTrue(result);
-            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeAsync(emplyeeId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeAsync(emplyeeId, appUserId), Times.Once);
         }
 
         [TestMethod]
@@ -44,18 +45,19 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             // Arrange
             var emplyeeId = Guid.NewGuid();
             var expectedResult = false;
+            var appUserId = "user-id-123";
 
-            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeAsync(emplyeeId))
+            _mockEmployeeRepository.Setup(x => x.DeleteEmployeeAsync(emplyeeId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteEmployeeCommand(emplyeeId);
+            var command = new DeleteEmployeeCommand(emplyeeId, appUserId);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsFalse(result);
-            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeAsync(emplyeeId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.DeleteEmployeeAsync(emplyeeId, appUserId), Times.Once);
         }
     }
 }

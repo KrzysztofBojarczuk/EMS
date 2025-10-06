@@ -307,7 +307,7 @@ namespace EMS.TESTS.RepositoriesTests
             };
 
             // Act
-            var result = await _repository.UpdateEmployeeAsync(employee.Id, updatedEmployee);
+            var result = await _repository.UpdateEmployeeAsync(employee.Id, appUserId, updatedEmployee);
 
             // Assert
             Assert.IsNotNull(result);
@@ -323,6 +323,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var nonExistentId = Guid.NewGuid();
+            var appUserId = "user-id-123";
             var updatedEmployee = new EmployeeEntity
             {
                 Name = "Tomasz Nowy",
@@ -333,7 +334,7 @@ namespace EMS.TESTS.RepositoriesTests
             };
 
             // Act
-            var result = await _repository.UpdateEmployeeAsync(nonExistentId, updatedEmployee);
+            var result = await _repository.UpdateEmployeeAsync(nonExistentId, appUserId, updatedEmployee);
 
             // Assert
             Assert.IsNotNull(result);
@@ -347,12 +348,13 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteEmployeeAsync_When_EmployeeExists_Returns_True()
         {
             // Arrange
+            var appUserId = "user-id-123";
             var employee = new EmployeeEntity
             {
                 Name = "Anna Kowalska",
                 Email = "anna.k@example.com",
                 Phone = "987654321",
-                AppUserId = "user-id-123"
+                AppUserId = appUserId
             };
 
             _context.Employees.Add(employee);
@@ -361,7 +363,7 @@ namespace EMS.TESTS.RepositoriesTests
             var emplyeeCountBefore = _context.Employees.Count();
 
             // Act
-            var result = await _repository.DeleteEmployeeAsync(employee.Id);
+            var result = await _repository.DeleteEmployeeAsync(employee.Id, appUserId);
 
             var emplyeeCountAfter = _context.Employees.Count();
 
@@ -374,8 +376,11 @@ namespace EMS.TESTS.RepositoriesTests
         [TestMethod]
         public async Task DeleteEmployeeAsync_When_EmployeeDoesNotExist_Returns_False()
         {
+            // Arrange
+            var appUserId = "user-id-123";
+
             // Act
-            var result = await _repository.DeleteEmployeeAsync(Guid.NewGuid());
+            var result = await _repository.DeleteEmployeeAsync(Guid.NewGuid(), appUserId);
 
             // Assert
             Assert.IsFalse(result);
@@ -727,7 +732,7 @@ namespace EMS.TESTS.RepositoriesTests
             var emplyeeListCountBefore = _context.EmployeeLists.Count();
 
             // Act
-            var result = await _repository.DeleteEmployeeListsAsync(employeeList[0].Id);
+            var result = await _repository.DeleteEmployeeListsAsync(employeeList[0].Id, appUserId);
 
             var emplyeeListCountAtfer = _context.EmployeeLists.Count();
 
@@ -741,9 +746,12 @@ namespace EMS.TESTS.RepositoriesTests
 
         [TestMethod]
         public async Task DeleteEmployeeListsAsync_When_EmployeeListsDoesNotExist__Returns_False()
-        {
+        {  
+            // Arrange
+            var appUserId = "user-id-123";
+
             // Act
-            var result = await _repository.DeleteEmployeeListsAsync(Guid.NewGuid());
+            var result = await _repository.DeleteEmployeeListsAsync(Guid.NewGuid(), appUserId);
 
             // Assert
             Assert.IsFalse(result);

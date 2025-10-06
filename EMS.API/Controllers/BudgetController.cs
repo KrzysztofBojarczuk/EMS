@@ -56,7 +56,11 @@ namespace EMS.API.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteBudgetAsync([FromRoute] Guid budgetId)
         {
-            var result = await sender.Send(new DeleteBudgetCommand(budgetId));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteBudgetCommand(budgetId, appUser.Id));
 
             return Ok(result);
         }

@@ -62,10 +62,14 @@ namespace EMS.API.Controllers
         }
 
         [HttpDelete("{reservationId}")]
-        [Authorize(Roles = "User, Admin")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteReservationAsync([FromRoute] Guid reservationId)
         {
-            var result = await sender.Send(new DeleteReservationCommand(reservationId));
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteReservationCommand(reservationId, appUser.Id));
 
             return Ok(result);
         }

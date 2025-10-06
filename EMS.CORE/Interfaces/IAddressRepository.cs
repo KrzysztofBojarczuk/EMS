@@ -9,7 +9,7 @@ namespace EMS.CORE.Interfaces
         Task<IEnumerable<AddressEntity>> GetUserAddressesForTaskAsync(string appUserId, string searchTerm);
         Task<AddressEntity> GetAddressByIdAsync(Guid id);
         Task<AddressEntity> AddAddressAsync(AddressEntity entity);
-        Task<AddressEntity> UpdateAddressAsync(Guid addressId, AddressEntity entity);
-        Task<bool> DeleteAddressAsync(Guid addressId);
+        Task<AddressEntity> UpdateAddressAsync(Guid addressId, string appUserId, AddressEntity entity);
+        Task<bool> DeleteAddressAsync(Guid addressId, string appUserId);
     }
 }

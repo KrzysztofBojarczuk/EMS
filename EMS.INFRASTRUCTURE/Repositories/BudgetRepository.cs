@@ -17,9 +17,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<bool> DeleteBudgetAsync(Guid budgetId)
+        public async Task<bool> DeleteBudgetAsync(Guid budgetId, string appUserId)
         {
-            var budget = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == budgetId);
+            var budget = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == budgetId && x.AppUserId == appUserId);
 
             if (budget is not null)
             {

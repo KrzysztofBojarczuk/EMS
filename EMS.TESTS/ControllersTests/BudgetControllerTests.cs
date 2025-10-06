@@ -158,8 +158,15 @@ namespace EMS.TESTS.ControllersTests
             // Arrange
             var budgetId = Guid.NewGuid();
             var expectedResult = false;
+            var appUserId = "user-id-123";
+            var username = "testuser";
 
-            _mockSender.Setup(x => x.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+               .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId && x.appUserId == appUserId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
             // Act
@@ -178,8 +185,15 @@ namespace EMS.TESTS.ControllersTests
             // Arrange
             var budgetId = Guid.NewGuid();
             var expectedResult = false;
+            var appUserId = "user-id-123";
+            var username = "testuser";
 
-            _mockSender.Setup(x => x.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId), It.IsAny<CancellationToken>()))
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+               .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteBudgetCommand>(x => x.budgetId == budgetId && x.appUserId == appUserId), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expectedResult);
 
             // Act
