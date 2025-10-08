@@ -37,5 +37,25 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.CommandsTests
             Assert.IsTrue(result);
             _mockTransactionRepository.Verify(x => x.DeleteTransactionsAsync(transactionId), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_ShouldReturnFalse_When_TransactionIsDeletionFails()
+        {
+            // Arrange
+            var transactionId = Guid.NewGuid();
+            var expectedResult = false;
+
+            _mockTransactionRepository.Setup(x => x.DeleteTransactionsAsync(transactionId))
+                .ReturnsAsync(expectedResult);
+
+            var command = new DeleteTransactionCommand(transactionId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
+            _mockTransactionRepository.Verify(x => x.DeleteTransactionsAsync(transactionId), Times.Once);
+        }
     }
 }
