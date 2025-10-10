@@ -80,7 +80,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "NonExistentName";
+            var searchTerm = "nonexistent";
 
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm))
                 .ReturnsAsync(new List<EmployeeEntity>());
