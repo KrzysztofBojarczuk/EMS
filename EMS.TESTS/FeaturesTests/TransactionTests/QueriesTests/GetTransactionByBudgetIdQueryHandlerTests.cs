@@ -73,5 +73,26 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             CollectionAssert.AreEqual(expectedTransactions, result.ToList());
             _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_EmptyList_When_Transactions_NotFound()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+            var searchTerm = "nonexistent";
+
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm))
+                .ReturnsAsync(new List<TransactionEntity>());
+
+            var query = new GetTransactionByBudgetIdQuery(budgetId, null, searchTerm);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm), Times.Once);
+        }
     }
 }
