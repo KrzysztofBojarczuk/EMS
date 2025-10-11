@@ -55,6 +55,13 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (task is not null)
             {
+                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+
+                foreach (var item in employeeListsEntities)
+                {
+                    item.TaskId = null;
+                }
+
                 dbContext.Tasks.Remove(task);
                 return await dbContext.SaveChangesAsync() > 0;
             }
@@ -68,7 +75,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (task is not null)
             {
-                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId).ToListAsync();
+                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
                 foreach (var item in employeeListsEntities)
                 {

@@ -22,8 +22,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
         {
             var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId && x.AppUserId == appUserId);
 
-            var addressTaskId = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == addressId && x.AppUserId == appUserId);
-
             if (address is not null)
             {
                 var tasksWithAddress = await dbContext.Tasks.Where(x => x.AddressId == addressId).ToListAsync();
