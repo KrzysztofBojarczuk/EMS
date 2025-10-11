@@ -53,15 +53,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
         {
             var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == taskId && x.AppUserId == appUserId);
 
-            var employeeList = await dbContext.EmployeeLists.Where(x =>x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
-
             if (task is not null)
             {
-                foreach (var item in employeeList) 
-                {
-                    item.TaskId = null;
-                }
-
                 dbContext.Tasks.Remove(task);
                 return await dbContext.SaveChangesAsync() > 0;
             }
