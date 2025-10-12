@@ -267,7 +267,7 @@ namespace EMS.TESTS.RepositoriesTests
                 Name = "Anna Nowak",
                 Email = "anna@example.com",
                 Phone = "123456789",
-                AppUserId = "user123"
+                AppUserId = "user-id-123"
             };
 
             // Act
@@ -276,6 +276,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(employee.Name, result.Name);
+            Assert.AreEqual(employee.Email, result.Email);
+            Assert.AreEqual(employee.Phone, result.Phone);
+            Assert.AreEqual(employee.AppUserId, result.AppUserId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, _context.Employees.Count());
         }
