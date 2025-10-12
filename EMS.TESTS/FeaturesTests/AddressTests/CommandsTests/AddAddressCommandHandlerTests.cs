@@ -25,7 +25,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         public async Task Handle_AddAddress_And_Returns_Address()
         {
             // Arrange
-            var addressToAdd = new AddressEntity
+            var address = new AddressEntity
             {
                 City = "Test City",
                 Street = "Test Street",
@@ -34,19 +34,19 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
                 AppUserId = "user-id-123"
             };
 
-            _mockAddressRepository.Setup(x => x.AddAddressAsync(addressToAdd))
-                .ReturnsAsync(addressToAdd);
+            _mockAddressRepository.Setup(x => x.AddAddressAsync(address))
+                .ReturnsAsync(address);
 
-            var command = new AddAddressCommand(addressToAdd);
+            var command = new AddAddressCommand(address);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(addressToAdd, result);
+            Assert.AreEqual(address, result);
 
-            _mockAddressRepository.Verify(x => x.AddAddressAsync(addressToAdd), Times.Once);
+            _mockAddressRepository.Verify(x => x.AddAddressAsync(address), Times.Once);
         }
     }
 }

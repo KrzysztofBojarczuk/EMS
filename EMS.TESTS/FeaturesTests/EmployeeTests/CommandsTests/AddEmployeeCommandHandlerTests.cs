@@ -25,7 +25,7 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
         public async Task Handle_AddEmployee_And_Returns_Employee()
         {
             // Arrange
-            var employeeToAdd = new EmployeeEntity
+            var employee = new EmployeeEntity
             {
                 Name = "Test User",
                 Email = "test@example.com",
@@ -33,18 +33,18 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
                 AppUserId = "user-id-123"
             };
 
-            _mockEmployeeRepository.Setup(x => x.AddEmployeeAsync(employeeToAdd))
-                .ReturnsAsync(employeeToAdd);
+            _mockEmployeeRepository.Setup(x => x.AddEmployeeAsync(employee))
+                .ReturnsAsync(employee);
 
-            var command = new AddEmployeeCommand(employeeToAdd);
+            var command = new AddEmployeeCommand(employee);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(employeeToAdd, result);
-            _mockEmployeeRepository.Verify(x => x.AddEmployeeAsync(employeeToAdd), Times.Once);
+            Assert.AreEqual(employee, result);
+            _mockEmployeeRepository.Verify(x => x.AddEmployeeAsync(employee), Times.Once);
         }
     }
 }
