@@ -94,5 +94,33 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             Assert.AreEqual(0, result.Count());
             _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_ByCategoryFilter_Transactions()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+            var category = new List<CategoryType> { CategoryType.Income };
+
+            var expectedTransactions = new List<TransactionEntity>
+            {
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", CreationDate = DateTimeOffset.UtcNow, Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", CreationDate = DateTimeOffset.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
+            };
+
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, category, null))
+                .ReturnsAsync(expectedTransactions);
+
+            var query = new GetTransactionByBudgetIdQuery(budgetId, category, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedTransactions.Count(), result.Count());
+            CollectionAssert.AreEqual(expectedTransactions, result.ToList());
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, category, null), Times.Once);
+        }
     }
 }
