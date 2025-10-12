@@ -25,24 +25,24 @@ namespace EMS.TESTS.Features.BudgetTests.CommandsTests
         public async Task Handle_AddBudget_And_Returns_Budget()
         {
             // Arrange
-            var budget = new BudgetEntity
+            var expectedBudget = new BudgetEntity
             {
                 Id = Guid.NewGuid(),
                 Budget = 5000.00m,
             };
 
-            _mockBudgetRepository.Setup(x => x.AddBudgetAsync(budget))
-                .ReturnsAsync(budget);
+            _mockBudgetRepository.Setup(x => x.AddBudgetAsync(expectedBudget))
+                .ReturnsAsync(expectedBudget);
 
-            var command = new AddBudgetCommand(budget);
+            var command = new AddBudgetCommand(expectedBudget);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(budget, result);
-            _mockBudgetRepository.Verify(x => x.AddBudgetAsync(budget), Times.Once);
+            Assert.AreEqual(expectedBudget, result);
+            _mockBudgetRepository.Verify(x => x.AddBudgetAsync(expectedBudget), Times.Once);
         }
     }
 }
