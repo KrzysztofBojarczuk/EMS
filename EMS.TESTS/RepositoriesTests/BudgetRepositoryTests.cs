@@ -1,4 +1,5 @@
 ﻿using EMS.APPLICATION.Dtos;
+using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace EMS.TESTS.RepositoriesTests
     public class BudgetRepositoryTests
     {
         private AppDbContext _context;
-        private BudgetRepository _repository;
+        private IBudgetRepository _repository;
 
         [TestInitialize]
         public void Setup()
