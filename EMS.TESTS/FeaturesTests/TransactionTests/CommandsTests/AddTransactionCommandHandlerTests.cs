@@ -26,7 +26,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.CommandsTests
         public async Task Handle_AddTransaction_And_Returns_Transaction()
         {
             // Arrange
-            var transaction = new TransactionEntity
+            var expectedTransaction = new TransactionEntity
             {
                 Id = Guid.NewGuid(),
                 Name = "Test Transaction",
@@ -36,18 +36,18 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.CommandsTests
                 BudgetId = Guid.NewGuid()
             };
 
-            _mockTransactionRepository.Setup(x => x.AddTransactionAsync(transaction))
-                .ReturnsAsync(transaction);
+            _mockTransactionRepository.Setup(x => x.AddTransactionAsync(expectedTransaction))
+                .ReturnsAsync(expectedTransaction);
 
-            var command = new AddTransactionCommand(transaction);
+            var command = new AddTransactionCommand(expectedTransaction);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(transaction, result);
-            _mockTransactionRepository.Verify(x => x.AddTransactionAsync(transaction), Times.Once);
+            Assert.AreEqual(expectedTransaction, result);
+            _mockTransactionRepository.Verify(x => x.AddTransactionAsync(expectedTransaction), Times.Once);
         }
     }
 }
