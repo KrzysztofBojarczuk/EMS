@@ -49,11 +49,9 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteBudgetAsync_When_BudgetExists_Returns_True()
         {
             // Arrange
-            var budgetId = Guid.NewGuid();
             var appUserId = "user-id-123";
             var budget = new BudgetEntity
             {
-                Id = budgetId,
                 Budget = 2500.00m,
                 AppUserId = appUserId
             };
@@ -62,11 +60,11 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.DeleteBudgetAsync(budgetId, appUserId);
+            var result = await _repository.DeleteBudgetAsync(budget.Id, appUserId);
 
             // Assert
             Assert.IsTrue(result);
-            var deleted = await _context.Budgets.FirstOrDefaultAsync(x => x.Id == budgetId && x.AppUserId == appUserId);
+            var deleted = await _context.Budgets.FirstOrDefaultAsync(x => x.Id == budget.Id && x.AppUserId == appUserId);
             Assert.IsNull(deleted);
             Assert.AreEqual(0, _context.Budgets.Count());
         }

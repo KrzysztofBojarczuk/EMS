@@ -55,20 +55,18 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteAddressAsync_When_AddressExists_DeletesAddress_AndNullifies_TaskReferences()
         {
             // Arrange
-            var addressId1 = Guid.NewGuid();
-            var addressId2 = Guid.NewGuid();
             var appUserId = "user-id-123";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = addressId1, AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = addressId2, AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" }
+                new AddressEntity { AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" }
             };
 
             var tasks = new List<TaskEntity>
             {
-                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 1", Description = "Test Description", AppUserId = "user1", AddressId = addressId1 },
-                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addressId2 }
+                new TaskEntity { Name = "Test Task 1", Description = "Test Description", AppUserId = "user1", AddressId = addresses[0].Id },
+                new TaskEntity { Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addresses[1].Id }
             };
 
             _context.Tasks.AddRange(tasks);
@@ -78,15 +76,15 @@ namespace EMS.TESTS.RepositoriesTests
             var addressCountBefore = _context.Address.Count();
 
             // Act
-            var result = await _repository.DeleteAddressAsync(addressId1, appUserId);
+            var result = await _repository.DeleteAddressAsync(addresses[0].Id, appUserId);
 
             var addressCountAfter = _context.Address.Count();
 
             // Assert
             Assert.IsTrue(result);
             Assert.AreEqual(addressCountBefore - 1, addressCountAfter);
-            Assert.IsNull(_context.Address.FirstOrDefault(x => x.Id == addressId1));
-            Assert.IsTrue(tasks.All(x => x.AddressId != addressId1));
+            Assert.IsNull(_context.Address.FirstOrDefault(x => x.Id == addresses[0].Id));
+            Assert.IsTrue(tasks.All(x => x.AddressId != addresses[0].Id));
         }
 
         [TestMethod]
