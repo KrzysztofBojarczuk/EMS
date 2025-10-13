@@ -363,16 +363,16 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
-            var emplyeeCountBefore = _context.Employees.Count();
+            var employeeCountBefore = _context.Employees.Count();
 
             // Act
             var result = await _repository.DeleteEmployeeAsync(employee.Id, appUserId);
 
-            var emplyeeCountAfter = _context.Employees.Count();
+            var employeeCountAfter = _context.Employees.Count();
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(emplyeeCountBefore - 1, emplyeeCountAfter);
+            Assert.AreEqual(employeeCountBefore - 1, employeeCountAfter);
             Assert.AreEqual(0, _context.Employees.Count());
         }
 
@@ -732,16 +732,16 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Employees.AddRange(employees);
             await _context.SaveChangesAsync();
 
-            var emplyeeListCountBefore = _context.EmployeeLists.Count();
+            var employeeListCountBefore = _context.EmployeeLists.Count();
 
             // Act
             var result = await _repository.DeleteEmployeeListsAsync(employeeList[0].Id, appUserId);
 
-            var emplyeeListCountAtfer = _context.EmployeeLists.Count();
+            var employeeListCountAtfer = _context.EmployeeLists.Count();
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(emplyeeListCountBefore - 1, emplyeeListCountAtfer);
+            Assert.AreEqual(employeeListCountBefore - 1, employeeListCountAtfer);
             Assert.AreEqual(2, _context.EmployeeLists.Count());
             Assert.IsNull(_context.EmployeeLists.FirstOrDefault(x => x.Id == employeeList[0].Id));
             Assert.IsTrue(employees.All(x => x.EmployeeListId != employeeList[0].Id));
