@@ -49,5 +49,35 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, _context.Locals.Count());
         }
+
+        [TestMethod]
+        public async Task DeleteLocalAsync_When_LocalExists_Returns_True()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var local = new LocalEntity
+            {
+                Description = "Test",
+                LocalNumber = 1,
+                Surface = 100.0,
+                NeedsRepair = false,
+                AppUserId = appUserId
+            };
+
+            _context.Locals.Add(local);
+            await _context.SaveChangesAsync();
+
+            var localCountBefore = _context.Locals.Count();
+
+            // Act
+            var result = await _repository.DeleteLocalAsync(local.Id, appUserId);
+
+            var localCountAfter = _context.Locals.Count();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreEqual(localCountBefore - 1, localCountAfter);
+            Assert.AreEqual(0, _context.Locals.Count());
+        }
     }
 }
