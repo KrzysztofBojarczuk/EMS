@@ -79,5 +79,18 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(localCountBefore - 1, localCountAfter);
             Assert.AreEqual(0, _context.Locals.Count());
         }
+
+        [TestMethod]
+        public async Task DeleteLocalAsync_When_LocalDoesNotExist_Returns_False()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.DeleteLocalAsync(Guid.NewGuid(), appUserId);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }
