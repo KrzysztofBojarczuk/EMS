@@ -120,5 +120,15 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
             Assert.AreEqual(local.AppUserId, result.AppUserId);
         }
+
+        [TestMethod]
+        public async Task GetLocalByIdAsync_When_LocalDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetLocalByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
     }
 }
