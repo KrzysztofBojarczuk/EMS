@@ -2,7 +2,6 @@
 using EMS.INFRASTRUCTURE;
 using EMS.CORE;
 
-
 namespace EMS.API
 {
     public static class DependencyInjection
