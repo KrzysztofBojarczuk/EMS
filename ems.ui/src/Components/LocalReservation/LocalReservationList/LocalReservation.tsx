@@ -1,12 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { LocalGet } from "../../../Models/Local.ts";
 import { Panel } from "primereact/panel";
-import {
-  DeleteLocalService,
-  DeleteReservationService,
-  UserGetLocalService,
-  UserGetReservationService,
-} from "../../../Services/LocalReservationService.tsx";
 import { InputText } from "primereact/inputtext";
 import {
   DataTable,
@@ -19,14 +12,22 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
-import AddLocal from "../AddLocal/AddLocal.tsx";
-import AddReservation from "../MakeReservation/AddReservation.tsx";
-import { ReservationGet } from "../../../Models/Reservation.ts";
+
 import { Card } from "primereact/card";
-import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
-import { formatDateTime } from "../../Utils/DateUtils.ts";
-import UpdateLocal from "../UpdateLocal/UpdateLocal.tsx";
+import { LocalGet } from "../../../Models/Local";
+import { ReservationGet } from "../../../Models/Reservation";
+import {
+  DeleteLocalService,
+  DeleteReservationService,
+  UserGetLocalService,
+  UserGetReservationService,
+} from "../../../Services/LocalReservationService";
+import { formatDateTime } from "../../Utils/DateUtils";
+import AddLocal from "../AddLocal/AddLocal";
+import AddReservation from "../MakeReservation/AddReservation";
+import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
+import UpdateLocal from "../UpdateLocal/UpdateLocal";
 
 type Props = {};
 

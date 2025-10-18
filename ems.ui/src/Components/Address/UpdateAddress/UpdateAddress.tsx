@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "primereact/button";
-import { UserUpdateAddressService } from "../../../Services/AddressService.tsx";
-import { AddressGet, AddressPost } from "../../../Models/Address.ts";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
+import { AddressGet, AddressPost } from "../../../Models/Address";
+import { UserUpdateAddressService } from "../../../Services/AddressService";
 
 interface UpdateAddressProps {
   address: AddressGet;

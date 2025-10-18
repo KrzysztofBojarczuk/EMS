@@ -1,11 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
 import { LocalGet, LocalPost } from "../../../Models/Local";
 import React, { useEffect } from "react";
-import { UserUpdateLocalService } from "../../../Services/LocalReservationService.tsx";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
+import { UserUpdateLocalService } from "../../../Services/LocalReservationService";
 
 interface UpdateLocalProps {
   local: LocalGet;

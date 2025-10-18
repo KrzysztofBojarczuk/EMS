@@ -6,24 +6,24 @@ import {
 } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { EmployeeGet } from "../../../Models/Employee";
-import {
-  UserGetEmployeesService,
-  UserDeleteEmployeesService,
-  UserGetListEmployeesService,
-  UserDeleteEmployeesListService,
-} from "../../../Services/EmployeeService.tsx";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
-import AddEmployee from "../AddEmployee/AddEmployee.tsx";
 import { InputText } from "primereact/inputtext";
-import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
-import UpdateEmployee from "../UpdateEmployee/UpdateEmployee.tsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
-import AddListEmployee from "../AddListEmployee/AddListEmployee.tsx";
-import { EmployeeListGet } from "../../../Models/EmployeeList.tsx";
 import { Card } from "primereact/card";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
+import { EmployeeListGet } from "../../../Models/EmployeeList";
+import {
+  UserDeleteEmployeesListService,
+  UserDeleteEmployeesService,
+  UserGetEmployeesService,
+  UserGetListEmployeesService,
+} from "../../../Services/EmployeeService";
+import AddEmployee from "../AddEmployee/AddEmployee";
+import AddListEmployee from "../AddListEmployee/AddListEmployee";
+import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
+import UpdateEmployee from "../UpdateEmployee/UpdateEmployee";
 
 interface Props {}
 

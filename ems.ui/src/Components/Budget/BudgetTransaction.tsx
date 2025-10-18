@@ -7,24 +7,23 @@ import { DataView, DataViewLayoutOptions } from "primereact/dataview";
 import { Tag } from "primereact/tag";
 import { Dialog } from "primereact/dialog";
 import { classNames } from "primereact/utils";
-import { CategoryType } from "../../Enum/CategoryType.ts";
-import { BudgetGet, BudgetPost } from "../../Models/Budget.ts";
-import { TransactionGet } from "../../Models/Transaction.ts";
+import "./BudgetTransaction.css";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
+import { BudgetGet, BudgetPost } from "../../Models/Budget";
+import { TransactionGet } from "../../Models/Transaction";
 import {
+  UserDeleteBudgetService,
   UserGetBudgetService,
   UserPostBudgetService,
-  UserDeleteBudgetService,
-} from "../../Services/BudgetService.tsx";
+} from "../../Services/BudgetService";
 import {
   UserDeleteTransactionService,
   UserGetTransactionService,
-} from "../../Services/TransactionService.tsx";
-import AddTransaction from "./AddTransaction/AddTransaction.tsx";
-import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
-import "./BudgetTransaction.css";
-
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
+} from "../../Services/TransactionService";
+import { CategoryType } from "../../Enum/CategoryType";
+import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
+import AddTransaction from "./AddTransaction/AddTransaction";
 
 type Props = {};
 

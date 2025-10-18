@@ -1,10 +1,11 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { UserPostAddressService } from "../../../Services/AddressService.tsx";
+
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
-import { AddressGet, AddressPost } from "../../../Models/Address.ts";
+import { UserPostAddressService } from "../../../Services/AddressService";
+import { AddressPost } from "../../../Models/Address";
 
 type Props = {
   onClose: () => void;

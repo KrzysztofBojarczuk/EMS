@@ -1,12 +1,11 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { UserPostTransactionService } from "../../../Services/TransactionService.tsx";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
-import { CategoryType } from "../../../Enum/CategoryType.ts";
-import { UserGetBudgetService } from "../../../Services/BudgetService.tsx";
-import { TransactionPost } from "../../../Models/Transaction.ts";
+import { TransactionPost } from "../../../Models/Transaction";
+import { UserPostTransactionService } from "../../../Services/TransactionService";
+import { CategoryType } from "../../../Enum/CategoryType";
 
 type Props = {
   budgetId: string;

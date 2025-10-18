@@ -5,16 +5,16 @@ import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { AddressGet } from "../../../Models/Address";
-import {
-  UserDeleteAddressService,
-  UserGetAddressService,
-} from "../../../Services/AddressService.tsx";
-import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
-import AddAddress from "../AddAddress/AddAddress.tsx";
-import UpdateAddress from "../UpdateAddress/UpdateAddress.tsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
+import {
+  UserDeleteAddressService,
+  UserGetAddressService,
+} from "../../../Services/AddressService";
+import AddAddress from "../AddAddress/AddAddress";
+import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
+import UpdateAddress from "../UpdateAddress/UpdateAddress";
 
 type Props = {};
 

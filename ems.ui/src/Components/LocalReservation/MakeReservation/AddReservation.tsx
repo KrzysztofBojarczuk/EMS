@@ -3,9 +3,8 @@ import { useForm, Controller } from "react-hook-form";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
-import { UserPostReservationService } from "../../../Services/LocalReservationService.tsx";
-import { ReservationPost } from "../../../Models/Reservation.ts";
-import { LocalGet } from "../../../Models/Local.ts";
+import { ReservationPost } from "../../../Models/Reservation";
+import { UserPostReservationService } from "../../../Services/LocalReservationService";
 
 type Props = {
   selectedLocalId: string;

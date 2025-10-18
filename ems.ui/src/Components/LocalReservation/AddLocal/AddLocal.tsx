@@ -7,7 +7,7 @@ import {
   InputNumber,
   InputNumberValueChangeEvent,
 } from "primereact/inputnumber";
-import { UserPostLocalService } from "../../../Services/LocalReservationService.tsx";
+import { UserPostLocalService } from "../../../Services/LocalReservationService";
 
 interface LocalPost {
   description: string;
