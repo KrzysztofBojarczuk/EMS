@@ -10,4 +10,3 @@
         public ICollection<ReservationGetDto> Reservations{ get; set; } = new List<ReservationGetDto>();
     }
 }
-
