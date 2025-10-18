@@ -47,9 +47,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new GetUserBudgetQuery(appUser.Id));
 
-            var budgetDto = mapper.Map<BudgetGetDto>(result);
+            var budgetGet = mapper.Map<BudgetGetDto>(result);
 
-            return Ok(budgetDto);
+            return Ok(budgetGet);
         }
 
         [HttpDelete("{budgetId}")]

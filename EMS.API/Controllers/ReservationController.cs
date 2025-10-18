@@ -50,11 +50,11 @@ namespace EMS.API.Controllers
 
             var paginatedReservation = await sender.Send(new GetUserReservationQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
-            var reservationDtos = mapper.Map<IEnumerable<ReservationGetDto>>(paginatedReservation.Items);
+            var reservationGet = mapper.Map<IEnumerable<ReservationGetDto>>(paginatedReservation.Items);
 
             return Ok(new
             {
-                ReservationGet = reservationDtos,
+                ReservationGet = reservationGet,
                 paginatedReservation.TotalItems,
                 paginatedReservation.TotalPages,
                 paginatedReservation.PageIndex

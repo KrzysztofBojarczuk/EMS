@@ -26,11 +26,11 @@ namespace EMS.API.Controllers
 
             var paginatedTasks = await sender.Send(new GetUserTasksQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
-            var taskDtos = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
+            var taskGet = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
 
             return Ok(new
             {
-                TaskGet = taskDtos,
+                TaskGet = taskGet,
                 paginatedTasks.TotalItems,
                 paginatedTasks.TotalPages,
                 paginatedTasks.PageIndex
@@ -111,11 +111,11 @@ namespace EMS.API.Controllers
         {
             var paginatedTasks = await sender.Send(new GetAllTasksQuery(pageNumber, pageSize, searchTerm));
 
-            var taskDtos = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
+            var taskGet = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
 
             return Ok(new
             {
-                TaskGet = taskDtos,
+                TaskGet = taskGet,
                 paginatedTasks.TotalItems,
                 paginatedTasks.TotalPages,
                 paginatedTasks.PageIndex
