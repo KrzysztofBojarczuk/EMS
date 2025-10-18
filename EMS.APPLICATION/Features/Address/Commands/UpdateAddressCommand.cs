@@ -4,11 +4,9 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Address.Commands
 {
-    public record UpdateAddressCommand(Guid AddressId, string appUserId, AddressEntity Address) 
-        : IRequest<AddressEntity>;
+    public record UpdateAddressCommand(Guid AddressId, string appUserId, AddressEntity Address) : IRequest<AddressEntity>;
 
-    public class UpdateAddressCommandHandler(IAddressRepository addressRepository)
-        : IRequestHandler<UpdateAddressCommand, AddressEntity>
+    public class UpdateAddressCommandHandler(IAddressRepository addressRepository) : IRequestHandler<UpdateAddressCommand, AddressEntity>
     {
         public async Task<AddressEntity> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
         {

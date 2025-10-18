@@ -6,8 +6,7 @@ namespace EMS.APPLICATION.Features.Transaction.Commands
 {
    public record AddTransactionCommand(TransactionEntity transaction) : IRequest<TransactionEntity>;
 
-    public class AddTransactioCommandHandler(ITransactionRepository transactionRepository, IPublisher mediator) 
-        : IRequestHandler<AddTransactionCommand, TransactionEntity>
+    public class AddTransactioCommandHandler(ITransactionRepository transactionRepository, IPublisher mediator) : IRequestHandler<AddTransactionCommand, TransactionEntity>
     {
         public async Task<TransactionEntity> Handle(AddTransactionCommand request, CancellationToken cancellationToken)
         {

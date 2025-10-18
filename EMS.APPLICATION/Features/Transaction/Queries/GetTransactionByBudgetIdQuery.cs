@@ -7,8 +7,7 @@ namespace EMS.APPLICATION.Features.Transaction.Queries
 {
     public record GetTransactionByBudgetIdQuery(Guid budgetId, List<CategoryType> category, string searchTerm) : IRequest<IEnumerable<TransactionEntity>>;
 
-    public class GetTransactionByIdBudgetIdQueryHandler(ITransactionRepository transactionRepository)
-        : IRequestHandler<GetTransactionByBudgetIdQuery, IEnumerable<TransactionEntity>>
+    public class GetTransactionByIdBudgetIdQueryHandler(ITransactionRepository transactionRepository) : IRequestHandler<GetTransactionByBudgetIdQuery, IEnumerable<TransactionEntity>>
     {
         public async Task<IEnumerable<TransactionEntity>> Handle(GetTransactionByBudgetIdQuery request, CancellationToken cancellation)
         {

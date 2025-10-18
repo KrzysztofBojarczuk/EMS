@@ -5,11 +5,9 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Reservation.Queries
 {
-    public record GetUserReservationQuery(string appUserId, int pageNumber, int pageSize, string searchTerm)
-       : IRequest<PaginatedList<ReservationEntity>>;
+    public record GetUserReservationQuery(string appUserId, int pageNumber, int pageSize, string searchTerm) : IRequest<PaginatedList<ReservationEntity>>;
 
-    public class GetUserReservatioQueryHandler(IReservationRepository reservationRepository)
-     : IRequestHandler<GetUserReservationQuery, PaginatedList<ReservationEntity>>
+    public class GetUserReservatioQueryHandler(IReservationRepository reservationRepository) : IRequestHandler<GetUserReservationQuery, PaginatedList<ReservationEntity>>
     {
         public async Task<PaginatedList<ReservationEntity>> Handle(GetUserReservationQuery request, CancellationToken cancellationToken)
         {

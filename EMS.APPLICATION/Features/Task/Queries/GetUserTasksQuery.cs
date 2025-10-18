@@ -7,8 +7,7 @@ namespace EMS.APPLICATION.Features.Task.Queries
 {
     public record GetUserTasksQuery(string appUserId, int pageNumber, int pageSize, string searchTerm) : IRequest<PaginatedList<TaskEntity>>;
 
-    public class GetUserTasksQueryHandler(ITaskRepository taskRepository)
-        : IRequestHandler<GetUserTasksQuery, PaginatedList<TaskEntity>>
+    public class GetUserTasksQueryHandler(ITaskRepository taskRepository) : IRequestHandler<GetUserTasksQuery, PaginatedList<TaskEntity>>
     {
         public async Task<PaginatedList<TaskEntity>> Handle(GetUserTasksQuery request, CancellationToken cancellationToken)
         {

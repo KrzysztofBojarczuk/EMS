@@ -6,8 +6,7 @@ namespace EMS.APPLICATION.Features.Address.Queries
 {
     public record GetUserAddressForTaskQuery(string appUserId, string searchTerm) : IRequest<IEnumerable<AddressEntity>>;
 
-    public class GetUserAddressForTaskQueryHandler(IAddressRepository addressRepository)
-        : IRequestHandler<GetUserAddressForTaskQuery, IEnumerable<AddressEntity>>
+    public class GetUserAddressForTaskQueryHandler(IAddressRepository addressRepository) : IRequestHandler<GetUserAddressForTaskQuery, IEnumerable<AddressEntity>>
     {
         public async Task<IEnumerable<AddressEntity>> Handle(GetUserAddressForTaskQuery request, CancellationToken cancellationToken)
         {

@@ -6,8 +6,7 @@ namespace EMS.APPLICATION.Features.Employee.Queries
 {
     public record GetUserEmployeeListsForTaskQuery(string appUserId, string searchTerm) : IRequest<IEnumerable<EmployeeListsEntity>>;
 
-    public class GetUserEmployeeListsForTaskQueryHandler(IEmployeeRepository employeeRepository)
-            : IRequestHandler<GetUserEmployeeListsForTaskQuery, IEnumerable<EmployeeListsEntity>>
+    public class GetUserEmployeeListsForTaskQueryHandler(IEmployeeRepository employeeRepository) : IRequestHandler<GetUserEmployeeListsForTaskQuery, IEnumerable<EmployeeListsEntity>>
     {
         public async Task<IEnumerable<EmployeeListsEntity>> Handle(GetUserEmployeeListsForTaskQuery request, CancellationToken cancellationToken)
         {
