@@ -6,8 +6,7 @@ namespace EMS.APPLICATION.Features.Budget.Queries
 {
     public record GetUserBudgetQuery(string appUserId) : IRequest<BudgetEntity>;
 
-    public class GetUserBudgetQueryHandler(IBudgetRepository budgetRepository)
-        : IRequestHandler<GetUserBudgetQuery, BudgetEntity>
+    public class GetUserBudgetQueryHandler(IBudgetRepository budgetRepository) : IRequestHandler<GetUserBudgetQuery, BudgetEntity>
     {
         public async Task<BudgetEntity> Handle(GetUserBudgetQuery request, CancellationToken cancellationToken)
         {

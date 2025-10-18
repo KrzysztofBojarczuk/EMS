@@ -8,8 +8,7 @@ namespace EMS.APPLICATION.Features.Reservation.Commands
 {
     public record AddReservationCommand(ReservationEntity Reservation) : IRequest<Result<ReservationEntity>>;
 
-    public class AddReservationHandler(IReservationRepository reservationRepository, ILocalRepository localRepository)
-       : IRequestHandler<AddReservationCommand, Result<ReservationEntity>>
+    public class AddReservationHandler(IReservationRepository reservationRepository, ILocalRepository localRepository) : IRequestHandler<AddReservationCommand, Result<ReservationEntity>>
     {
         public async Task<Result<ReservationEntity>> Handle(AddReservationCommand request, CancellationToken cancellationToken)
         {

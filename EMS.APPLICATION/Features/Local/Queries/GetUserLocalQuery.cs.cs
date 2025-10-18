@@ -5,11 +5,9 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Local.Queries
 {
-    public record GetUserLocalQuery(string appUserId, int pageNumber, int pageSize, string searchTerm)
-       : IRequest<PaginatedList<LocalEntity>>;
+    public record GetUserLocalQuery(string appUserId, int pageNumber, int pageSize, string searchTerm) : IRequest<PaginatedList<LocalEntity>>;
 
-    public class GetUserLocalQueryHandler(ILocalRepository localRepository)
-        : IRequestHandler<GetUserLocalQuery, PaginatedList<LocalEntity>>
+    public class GetUserLocalQueryHandler(ILocalRepository localRepository) : IRequestHandler<GetUserLocalQuery, PaginatedList<LocalEntity>>
     {
         public async Task<PaginatedList<LocalEntity>> Handle(GetUserLocalQuery request, CancellationToken cancellationToken)
         {
