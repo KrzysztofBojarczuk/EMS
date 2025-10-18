@@ -15,7 +15,6 @@ namespace EMS.API.Controllers
     [ApiController]
     public class LocalController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
-
         [HttpGet()]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserLocalAsync(int pageNumber, int pageSize, string searchTerm = null)

@@ -15,11 +15,9 @@ namespace EMS.API.Controllers
     [ApiController]
     public class AccountController(UserManager<AppUserEntity> userManager, ITokenService tokenService, SignInManager<AppUserEntity> signinManager, ISender sender) : ControllerBase
     {
-
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
