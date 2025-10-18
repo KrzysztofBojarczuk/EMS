@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BudgetGet, BudgetPost } from "../Models/Budget";
 import { TransactionGet, TransactionPost } from "../Models/Transaction";
-import { UserGetBudgetService } from "./BudgetService.tsx";
+import { UserGetBudgetService } from "./BudgetService";
 
 const api = "https://localhost:7256/api/";
 

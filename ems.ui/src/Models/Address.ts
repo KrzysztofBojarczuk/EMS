@@ -13,7 +13,7 @@ export interface AddressPost {
   zipCode: string;
 }
 
-export interface PaginatedAddressesponse {
+export interface PaginatedAddressResponse {
   addressGet: AddressGet[];
   totalItems: number;
   totalPages: number;
