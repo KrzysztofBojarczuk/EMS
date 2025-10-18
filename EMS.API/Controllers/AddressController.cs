@@ -25,11 +25,11 @@ namespace EMS.API.Controllers
 
             var paginatedAddresses = await sender.Send(new GetUserAddressQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
-            var addressDtos = mapper.Map<IEnumerable<AddressGetDto>>(paginatedAddresses.Items);
+            var addressGet = mapper.Map<IEnumerable<AddressGetDto>>(paginatedAddresses.Items);
 
             return Ok(new
             {
-                AddressGet = addressDtos,
+                AddressGet = addressGet,
                 paginatedAddresses.TotalItems,
                 paginatedAddresses.TotalPages,
                 paginatedAddresses.PageIndex
@@ -46,9 +46,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new GetUserAddressForTaskQuery(appUser.Id, searchTerm));
 
-            var addressDtos = mapper.Map<IEnumerable<AddressGetDto>>(result);
+            var addressGet = mapper.Map<IEnumerable<AddressGetDto>>(result);
 
-            return Ok(addressDtos);
+            return Ok(addressGet);
         }
 
         [HttpPost()]

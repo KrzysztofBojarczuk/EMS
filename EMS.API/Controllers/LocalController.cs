@@ -25,11 +25,11 @@ namespace EMS.API.Controllers
 
             var paginatedLocal = await sender.Send(new GetUserLocalQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
-            var localDtos = mapper.Map<IEnumerable<LocalGetDto>>(paginatedLocal.Items);
+            var localGet = mapper.Map<IEnumerable<LocalGetDto>>(paginatedLocal.Items);
 
             return Ok(new
             {
-                LocalGet = localDtos,
+                LocalGet = localGet,
                 paginatedLocal.TotalItems,
                 paginatedLocal.TotalPages,
                 paginatedLocal.PageIndex

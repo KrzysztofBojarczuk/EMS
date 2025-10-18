@@ -25,11 +25,11 @@ namespace EMS.API.Controllers
 
             var paginatedEmployees = await sender.Send(new GetUserEmployeesQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
-            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
+            var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
 
             return Ok(new
             {
-                EmployeeGet = employeeDtos,
+                EmployeeGet = employeeGet,
                 paginatedEmployees.TotalItems,
                 paginatedEmployees.TotalPages,
                 paginatedEmployees.PageIndex
@@ -46,9 +46,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new GetUserEmployeesForListQuery(appUser.Id, searchTerm));
 
-            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(result);
+            var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(result);
 
-            return Ok(employeeDtos);
+            return Ok(employeeGet);
         }
 
         [HttpGet("GetUserNumberOfEmployee")]
@@ -92,11 +92,11 @@ namespace EMS.API.Controllers
         {
             var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm));
 
-            var employeeDtos = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
+            var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
 
             return Ok(new
             {
-                EmployeeGet = employeeDtos,
+                EmployeeGet = employeeGet,
                 paginatedEmployees.TotalItems,
                 paginatedEmployees.TotalPages,
                 paginatedEmployees.PageIndex
@@ -118,9 +118,9 @@ namespace EMS.API.Controllers
         {
             var result = await sender.Send(new GetEmployeeByIdQuery(employeeId));
 
-            var employeeDtos = mapper.Map<EmployeeGetDto>(result);
+            var employeeGet = mapper.Map<EmployeeGetDto>(result);
 
-            return Ok(employeeDtos);
+            return Ok(employeeGet);
         }
 
         [HttpPut("{employeeId}")]
@@ -166,9 +166,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new GetUserEmployeeListsForTaskQuery(appUser.Id, searchTerm));
 
-            var listEmployeeDtos = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
+            var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
 
-            return Ok(listEmployeeDtos);
+            return Ok(listEmployeeGet);
         }
 
         [HttpGet("UserEmployeeList")]
@@ -181,9 +181,9 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new GetUserEmployeeListsQuery(appUser.Id, searchTerm));
 
-            var listEmployeeDtos = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
+            var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
 
-            return Ok(listEmployeeDtos);
+            return Ok(listEmployeeGet);
         }
 
         [HttpPost("AddEmployeeList")]
