@@ -556,9 +556,9 @@ namespace EMS.TESTS.ControllersTests
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
-            var employeeListsEntities = new List<EmployeeListsEntity>{};
+            var employeeListsEntities = new List<EmployeeListsEntity>();
 
-            var expectedDtos = new List<EmployeeListsGetDto>{};
+            var expectedDtos = new List<EmployeeListsGetDto>();
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
@@ -680,9 +680,9 @@ namespace EMS.TESTS.ControllersTests
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
-            var employeeListsEntities = new List<EmployeeListsEntity> { };
+            var employeeListsEntities = new List<EmployeeListsEntity>();
 
-            var expectedDtos = new List<EmployeeListsGetDto> { };
+            var expectedDtos = new List<EmployeeListsGetDto>();
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
