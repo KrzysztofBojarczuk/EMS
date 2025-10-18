@@ -59,6 +59,26 @@ namespace EMS.API.Controllers
             return Ok(localGet);
         }
 
+        [HttpPut("{localId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateLocalAsync([FromRoute] Guid localId, [FromBody] LocalCreateDto updateLocalDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var localEntity = mapper.Map<LocalEntity>(updateLocalDto);
+
+            var result = await sender.Send(new UpdateLocalCommand(localId, appUser.Id, localEntity));
+
+            var localGet = mapper.Map<LocalGetDto>(result);
+
+            return Ok(localGet);
+        }
+
         [HttpDelete("{localId}")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteLocalAsync([FromRoute] Guid localId)
