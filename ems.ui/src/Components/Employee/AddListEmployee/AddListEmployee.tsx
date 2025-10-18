@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { EmployeeGet } from "../../../Models/Employee";
-import {
-  UserGetEmployeesForListService,
-  UserPostListEmployeesService,
-} from "../../../Services/EmployeeService.tsx";
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
 import { Controller, useForm } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputIcon } from "primereact/inputicon";
-import { EmployeeListPost } from "../../../Models/EmployeeList.ts";
+import {
+  UserGetEmployeesForListService,
+  UserPostListEmployeesService,
+} from "../../../Services/EmployeeService";
+import { EmployeeListPost } from "../../../Models/EmployeeList";
 
 type Props = {
   onClose: () => void;

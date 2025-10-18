@@ -1,24 +1,24 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
-import { UserGet } from "../../Models/User.ts";
-import {
-  UserGetService,
-  UserDeleteService,
-  GetNumberOfUsersService,
-} from "../../Services/UserService.tsx";
 import { InputText } from "primereact/inputtext";
 import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { EmployeeGet } from "../../Models/Employee.ts";
-import { GetEmployeesService } from "../../Services/EmployeeService.tsx";
-import ConfirmationDialog from "../Confirmation/ConfirmationDialog.tsx";
 import { Panel } from "primereact/panel";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
-import { TaskGet } from "../../Models/Task.ts";
-import { GetTaskService } from "../../Services/TaskService.tsx";
+import { EmployeeGet } from "../../Models/Employee";
+import { TaskGet } from "../../Models/Task";
+import { UserGet } from "../../Models/User";
+import {
+  GetNumberOfUsersService,
+  UserDeleteService,
+  UserGetService,
+} from "../../Services/UserService";
+import { GetEmployeesService } from "../../Services/EmployeeService";
+import { GetTaskService } from "../../Services/TaskService";
+import { Column } from "primereact/column";
 import {
   dateBodyTemplate,
   statusOfTaskBodyTemplate,
-} from "../Utils/TaskTemplates.tsx";
+} from "../Utils/TaskTemplates";
+import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
 
 const AdministrationPanel: React.FC = (): JSX.Element => {
   const [numberUser, setNumberUsers] = useState<number>(0);

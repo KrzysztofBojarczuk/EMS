@@ -4,8 +4,8 @@ import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
-import { UserUpdateEmployeesService } from "../../../Services/EmployeeService.tsx";
 import { EmployeeGet, EmployeePost } from "../../../Models/Employee";
+import { UserUpdateEmployeesService } from "../../../Services/EmployeeService";
 
 interface UpdateEmployeeProps {
   employee: EmployeeGet;

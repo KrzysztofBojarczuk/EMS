@@ -2,7 +2,7 @@ import React from "react";
 import { Menubar } from "primereact/menubar";
 import { MenuItem } from "primereact/menuitem";
 import { useNavigate } from "react-router";
-import { useAuth } from "../../Context/useAuth.tsx";
+import { useAuth } from "../../Context/useAuth";
 
 type Props = {};
 

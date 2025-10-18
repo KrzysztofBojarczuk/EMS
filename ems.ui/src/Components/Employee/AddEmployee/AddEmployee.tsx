@@ -4,8 +4,8 @@ import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
-import { UserPostEmployeesService } from "../../../Services/EmployeeService.tsx";
-import { EmployeePost } from "../../../Models/Employee.ts";
+import { EmployeePost } from "../../../Models/Employee";
+import { UserPostEmployeesService } from "../../../Services/EmployeeService";
 
 type Props = {
   onClose: () => void;
