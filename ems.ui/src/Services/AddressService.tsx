@@ -2,7 +2,7 @@ import axios from "axios";
 import {
   AddressGet,
   AddressPost,
-  PaginatedAddressesponse,
+  PaginatedAddressResponse,
 } from "../Models/Address";
 
 const api = "https://localhost:7256/api/";
@@ -12,7 +12,7 @@ export const UserGetAddressService = async (
   pageSize: number,
   searchTerm?: string
 ) => {
-  const response = await axios.get<PaginatedAddressesponse>(
+  const response = await axios.get<PaginatedAddressResponse>(
     api + "Address/User",
     {
       params: { pageNumber, pageSize, searchTerm },
