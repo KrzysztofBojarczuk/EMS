@@ -8,7 +8,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
         Task<PaginatedList<LocalEntity>> GetUserLocalAsync(string appUserId, int pageNumber, int pageSize, string searchTerm);
         Task<LocalEntity> GetLocalByIdAsync(Guid id);
         Task<LocalEntity> AddLocalAsync(LocalEntity entity);
-        Task<LocalEntity> UpdateLocalAsync(Guid localId, LocalEntity entity);
+        Task<LocalEntity> UpdateLocalAsync(Guid localId, string appUserId, LocalEntity entity);
         Task<bool> DeleteLocalAsync(Guid localId, string appUserId);
     }
 }

@@ -24,6 +24,44 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetLocalByIdAsync_When_LocalExists_Returns_Local()
+        {
+            // Arrange
+            var local = new LocalEntity
+            {
+                Description = "Test",
+                LocalNumber = 1,
+                Surface = 100.0,
+                NeedsRepair = false,
+                AppUserId = "user-id-123"
+            };
+
+            _context.Locals.Add(local);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetLocalByIdAsync(local.Id);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(local.Description, result.Description);
+            Assert.AreEqual(local.LocalNumber, result.LocalNumber);
+            Assert.AreEqual(local.Surface, result.Surface);
+            Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
+            Assert.AreEqual(local.AppUserId, result.AppUserId);
+        }
+
+        [TestMethod]
+        public async Task GetLocalByIdAsync_When_LocalDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetLocalByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public async Task AddLocalAsync_Returns_Local()
         {
             // Arrange
@@ -91,44 +129,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public async Task GetLocalByIdAsync_When_LocalExists_Returns_Local()
-        {
-            // Arrange
-            var local = new LocalEntity
-            {
-                Description = "Test",
-                LocalNumber = 1,
-                Surface = 100.0,
-                NeedsRepair = false,
-                AppUserId = "user-id-123"
-            };
-
-            _context.Locals.Add(local);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetLocalByIdAsync(local.Id);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(local.Description, result.Description);
-            Assert.AreEqual(local.LocalNumber, result.LocalNumber);
-            Assert.AreEqual(local.Surface, result.Surface);
-            Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
-            Assert.AreEqual(local.AppUserId, result.AppUserId);
-        }
-
-        [TestMethod]
-        public async Task GetLocalByIdAsync_When_LocalDoesNotExist_Returns_Null()
-        {
-            // Act
-            var result = await _repository.GetLocalByIdAsync(Guid.NewGuid());
-
-            // Assert
-            Assert.IsNull(result);
         }
     }
 }

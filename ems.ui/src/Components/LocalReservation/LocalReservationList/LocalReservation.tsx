@@ -26,6 +26,7 @@ import { Card } from "primereact/card";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
 import { PaginatorPageChangeEvent } from "primereact/paginator";
 import { formatDateTime } from "../../Utils/DateUtils.ts";
+import UpdateLocal from "../UpdateLocal/UpdateLocal.tsx";
 
 type Props = {};
 
@@ -40,6 +41,9 @@ const LocalReservation = (props: Props) => {
   const [deleteReservationId, setDeleteReservationId] = useState<string | null>(
     null
   );
+
+  const [selectedLocal, setSelectedLocal] = useState<LocalGet | null>(null);
+  const [updateVisible, setUpdateVisible] = useState(false);
 
   const [firstLocal, setFirstLocal] = useState(0);
   const [rowsLocal, setRowsLocal] = useState(10);
@@ -116,6 +120,12 @@ const LocalReservation = (props: Props) => {
     goToPageLocal(currentPage, rowsLocal);
   };
 
+  const handleUpdateSuccess = () => {
+    const currentPage = Math.floor(firstLocal / rowsLocal) + 1;
+    goToPageLocal(currentPage, rowsLocal);
+    setUpdateVisible(false);
+  };
+
   const handleAddReservationSuccess = () => {
     const currentLocalPage = Math.floor(firstLocal / rowsLocal) + 1;
     goToPageLocal(currentLocalPage, rowsLocal);
@@ -186,6 +196,11 @@ const LocalReservation = (props: Props) => {
 
     setConfirmLocalVisible(false);
     setDeleteLocalId(null);
+  };
+
+  const showUpdateDialog = (local: LocalGet) => {
+    setSelectedLocal(local);
+    setUpdateVisible(true);
   };
 
   const rowExpansionTemplate = (data: LocalGet) => {
@@ -260,6 +275,15 @@ const LocalReservation = (props: Props) => {
             header="Action"
             body={(rowData) => (
               <>
+                <i
+                  className="pi pi-pencil"
+                  style={{
+                    fontSize: "1.5rem",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
+                  onClick={() => showUpdateDialog(rowData)}
+                ></i>
                 <i
                   className="pi pi-warehouse"
                   style={{
@@ -362,6 +386,20 @@ const LocalReservation = (props: Props) => {
         onConfirm={handleDeleteReservation}
         onCancel={() => setConfirmReservationVisible(false)}
       />
+
+      <Dialog
+        header="Update Local"
+        visible={updateVisible}
+        onHide={() => setUpdateVisible(false)}
+      >
+        {selectedLocal && (
+          <UpdateLocal
+            local={selectedLocal}
+            onClose={() => setUpdateVisible(false)}
+            onUpdateSuccess={handleUpdateSuccess}
+          />
+        )}
+      </Dialog>
     </div>
   );
 };
