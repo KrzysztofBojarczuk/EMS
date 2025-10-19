@@ -89,6 +89,44 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task UpdateLocalAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Local()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var local = new LocalEntity
+            {
+                Description = "Test",
+                LocalNumber = 1,
+                Surface = 100.0,
+                NeedsRepair = true,
+                AppUserId = appUserId
+            };
+
+            _context.Locals.Add(local);
+            await _context.SaveChangesAsync();
+
+            var updatedLocal = new LocalEntity
+            {
+                Description = "Test New",
+                LocalNumber = 2,
+                Surface = 200.0,
+                NeedsRepair = false,
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.UpdateLocalAsync(local.Id, appUserId, updatedLocal);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(local.Id, result.Id);
+            Assert.AreEqual(updatedLocal.Description, result.Description);
+            Assert.AreEqual(updatedLocal.LocalNumber, result.LocalNumber);
+            Assert.AreEqual(updatedLocal.Surface, result.Surface);
+            Assert.AreEqual(updatedLocal.NeedsRepair, result.NeedsRepair);
+        }
+
+        [TestMethod]
         public async Task DeleteLocalAsync_When_LocalExists_Returns_True()
         {
             // Arrange
