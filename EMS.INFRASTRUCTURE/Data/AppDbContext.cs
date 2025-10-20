@@ -51,10 +51,10 @@ namespace EMS.INFRASTRUCTURE.Data
                 .IsRequired();
 
             builder.Entity<AppUserEntity>()
-               .HasMany(x => x.EmployeeEntities)
-               .WithOne(x => x.AppUserEntity)
-               .HasForeignKey(x => x.AppUserId)
-               .IsRequired();
+                .HasMany(x => x.EmployeeEntities)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey(x => x.AppUserId)
+                .IsRequired();
 
             builder.Entity<BudgetEntity>()
                 .HasMany(x => x.TransactionEntity)
