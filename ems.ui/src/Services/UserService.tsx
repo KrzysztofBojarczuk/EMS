@@ -9,7 +9,7 @@ export const UserGetService = async (
   searchTerm: string
 ) => {
   const response = await axios.get<PaginatedUserResponse>(
-    api + "account/GetAllUser",
+    api + "user/GetAllUser",
     {
       params: { pageNumber, pageSize, searchTerm },
     }
@@ -18,11 +18,11 @@ export const UserGetService = async (
 };
 
 export const UserDeleteService = async (id: string) => {
-  const response = await axios.delete(`${api}account/${id}`);
+  const response = await axios.delete(`${api}user/${id}`);
   return response.data;
 };
 
 export const GetNumberOfUsersService = async () => {
-  const response = await axios.get<number>(api + "account/GetNumberOfUsers");
+  const response = await axios.get<number>(api + "user/GetNumberOfUsers");
   return response.data;
 };

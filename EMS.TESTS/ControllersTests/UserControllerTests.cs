@@ -11,16 +11,16 @@ using Moq;
 namespace EMS.TESTS.ControllersTests
 {
     [TestClass]
-    public class AccountControllerTests
+    public class UserControllerTests
     {
         private Mock<ISender> _mockSender;
-        private AccountController _controller;
+        private UserController _controller;
 
         [TestInitialize]
         public void Setup()
         {
             _mockSender = new Mock<ISender>();
-            _controller = new AccountController(null, null, null, _mockSender.Object);
+            _controller = new UserController(_mockSender.Object);
         }
 
         [TestMethod]

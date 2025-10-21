@@ -1,10 +1,8 @@
 ﻿using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Account.Commands;
-using EMS.APPLICATION.Features.Account.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -61,39 +59,6 @@ namespace EMS.API.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-        }
-
-        [HttpGet("GetAllUser")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllUserAsync(int pageNumber, int pageSize, string searchTerm = null)
-        {
-            var result = await sender.Send(new GetAllUserQuery(pageNumber, pageSize, searchTerm));
-
-            return Ok(new
-            {
-                userGet = result.Items,
-                result.TotalItems,
-                result.TotalPages,
-                result.PageIndex
-            });
-        }
-
-        [HttpDelete("{appUserId}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteUserAsync([FromRoute] string appUserId)
-        {
-            var result = await sender.Send(new DeleteUserCommand(appUserId));
-
-            return Ok(result);
-        }
-
-        [HttpGet("GetNumberOfUsers")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetNumberOfUsersAsync()
-        {
-            var result = await sender.Send(new GetNumberOfUsersQuery());
-
-            return Ok(result);
         }
     }
 }
