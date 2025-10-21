@@ -24,6 +24,30 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserLocalAsync_Returns_AllLocals()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var locals = new List<LocalEntity>
+            {
+                new LocalEntity { Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = true, AppUserId = appUserId, },
+                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId, }
+            };
+
+            _context.Locals.AddRange(locals);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserLocalAsync(appUserId, 1, 10, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetLocalByIdAsync_When_LocalExists_Returns_Local()
         {
             // Arrange
