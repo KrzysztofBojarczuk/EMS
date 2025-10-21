@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Account.Queries;
+﻿using EMS.APPLICATION.Features.Userss.Queries;
 using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

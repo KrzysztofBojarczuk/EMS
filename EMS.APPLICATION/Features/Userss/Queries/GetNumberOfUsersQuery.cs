@@ -1,7 +1,7 @@
 ﻿using EMS.CORE.Interfaces;
 using MediatR;
 
-namespace EMS.APPLICATION.Features.Account.Queries
+namespace EMS.APPLICATION.Features.Userss.Queries
 {
     public record GetNumberOfUsersQuery() : IRequest<int>;
 

@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Account.Queries;
+﻿using EMS.APPLICATION.Features.Userss.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Extensions;
