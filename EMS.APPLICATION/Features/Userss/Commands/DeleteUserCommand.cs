@@ -1,7 +1,7 @@
 ﻿using EMS.CORE.Interfaces;
 using MediatR;
 
-namespace EMS.APPLICATION.Features.Account.Commands
+namespace EMS.APPLICATION.Features.Userss.Commands
 {
     public record DeleteUserCommand(string appUserId) : IRequest<bool>;
 

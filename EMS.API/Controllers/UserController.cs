@@ -1,5 +1,5 @@
-﻿using EMS.APPLICATION.Features.Account.Commands;
-using EMS.APPLICATION.Features.Account.Queries;
+﻿using EMS.APPLICATION.Features.Userss.Commands;
+using EMS.APPLICATION.Features.Userss.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

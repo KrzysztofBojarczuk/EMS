@@ -3,7 +3,7 @@ using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Extensions;
 using MediatR;
 
-namespace EMS.APPLICATION.Features.Account.Queries
+namespace EMS.APPLICATION.Features.Userss.Queries
 {
     public record GetAllUserQuery(int pageNumber, int pageSize, string searchTerm) : IRequest<PaginatedList<AppUserEntity>>;
 
