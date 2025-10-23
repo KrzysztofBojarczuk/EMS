@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTestsss
+namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTests
 {
     [TestClass]
     public class GetUserBudgetQueryHandlerTests
