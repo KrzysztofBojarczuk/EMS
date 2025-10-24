@@ -34,7 +34,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "416", AppUserId = appUserId },
             };
 
-            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count, pageNumber, pageSize);
+            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null))
                 .ReturnsAsync(paginatedList);
@@ -66,7 +66,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "456", AppUserId = appUserId }
             };
 
-            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count, pageNumber, pageSize);
+            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
