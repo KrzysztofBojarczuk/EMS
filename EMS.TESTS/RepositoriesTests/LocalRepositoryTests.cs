@@ -32,8 +32,8 @@ namespace EMS.TESTS.RepositoriesTests
             var locals = new List<LocalEntity>
             {
                 new LocalEntity { Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = true, AppUserId = appUserId, },
-                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId, }
+                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
             };
 
             _context.Locals.AddRange(locals);
@@ -56,11 +56,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             var locals = new List<LocalEntity>
             {
-                new LocalEntity { Description = "Local 1 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = true, AppUserId = appUserId, },
-                new LocalEntity { Description = "Local 2 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = true, AppUserId = appUserId, },
+                new LocalEntity { Description = "Local 1 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 2 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = false, AppUserId = appUserId },
                 new LocalEntity { Description = "Local 3", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 4", LocalNumber = 2, Surface = 150.0, NeedsRepair = true, AppUserId = appUserId, },
-                new LocalEntity { Description = "Local 5", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId, },
+                new LocalEntity { Description = "Local 4", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 5", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId },
             };
 
             _context.Locals.AddRange(locals);
@@ -85,8 +85,8 @@ namespace EMS.TESTS.RepositoriesTests
             var locals = new List<LocalEntity>
             {
                 new LocalEntity { Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = true, AppUserId = appUserId, },
-                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId, }
+                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
             };
 
             _context.Locals.AddRange(locals);
