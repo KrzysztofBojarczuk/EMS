@@ -200,7 +200,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetEmployeesAsync_When_EmployeeesDoesNotExist_Returns_EmptyList()
+        public async Task GetEmployeesAsync_When_EmployeesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
