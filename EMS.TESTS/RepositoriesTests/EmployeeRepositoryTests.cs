@@ -177,8 +177,8 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetEmployeesAsync_BySearchTerm_Returns_Employees()
         {
             // Arrange
-            var searchTerm = "Tomasz";
             var appUserId = "user-id-123";
+            var searchTerm = "Tomasz";
 
             var employees = new List<EmployeeEntity>
             {
@@ -203,8 +203,8 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetEmployeesAsync_When_EmployeeesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
-            var searchTerm = "nonexistent";
             var appUserId = "user-id-123";
+            var searchTerm = "nonexistent";
 
             var employees = new List<EmployeeEntity>
             {
