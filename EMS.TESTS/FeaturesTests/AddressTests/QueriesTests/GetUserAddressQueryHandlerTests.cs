@@ -98,7 +98,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize , searchTerm);
+            var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
