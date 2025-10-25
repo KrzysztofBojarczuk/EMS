@@ -50,5 +50,38 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.QueriesTests
             CollectionAssert.AreEqual(expectedLocals, result.Items.ToList());
             _mockLocalRepository.Verify(x => x.GetUserLocalAsync(appUserId, pageNumber, pageSize, null), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_BySearchTerm_Locals()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "Local";
+
+            var expectedLocals = new List<LocalEntity>
+            {
+                new LocalEntity { Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
+            };
+
+            var paginatedList = new PaginatedList<LocalEntity>(expectedLocals, expectedLocals.Count(), pageNumber, pageSize);
+
+            _mockLocalRepository.Setup(x => x.GetUserLocalAsync(appUserId, pageNumber, pageSize, searchTerm))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserLocalQuery(appUserId, pageNumber, pageSize, searchTerm);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedLocals.Count(), result.Items.Count());
+            CollectionAssert.AreEqual(expectedLocals, result.Items.ToList());
+            _mockLocalRepository.Verify(x => x.GetUserLocalAsync(appUserId, pageNumber, pageSize, searchTerm), Times.Once);
+        }
     }
 }
