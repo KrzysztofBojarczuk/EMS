@@ -45,7 +45,6 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedAddress, result);
-
             _mockAddressRepository.Verify(x => x.AddAddressAsync(expectedAddress), Times.Once);
         }
     }
