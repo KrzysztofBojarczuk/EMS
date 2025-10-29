@@ -38,5 +38,26 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.CommandsTests
             Assert.IsTrue(result);
             _mockLocalRepository.Verify(x => x.DeleteLocalAsync(localId, appUserId), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_ShouldReturnFalse_When_LocalDeletionFails()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+            var expectedResult = false;
+            var appUserId = "user-id-123";
+
+            _mockLocalRepository.Setup(x => x.DeleteLocalAsync(localId, appUserId))
+                .ReturnsAsync(expectedResult);
+
+            var command = new DeleteLocalCommand(localId, appUserId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
+            _mockLocalRepository.Verify(x => x.DeleteLocalAsync(localId, appUserId), Times.Once);
+        }
     }
 }
