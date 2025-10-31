@@ -365,7 +365,7 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
-            var employeeCountBefore = _context.Employees.Count();
+            var employeeCountBefore = await _context.Employees.CountAsync();
 
             // Act
             var result = await _repository.DeleteEmployeeAsync(employee.Id, appUserId);
@@ -738,7 +738,7 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Employees.AddRange(employees);
             await _context.SaveChangesAsync();
 
-            var employeeListCountBefore = _context.EmployeeLists.Count();
+            var employeeListCountBefore = await _context.EmployeeLists.CountAsync();
 
             // Act
             var result = await _repository.DeleteEmployeeListsAsync(employeeList[0].Id, appUserId);
@@ -747,7 +747,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var noEmployeesReferenceDeletedList = employees.All(x => x.EmployeeListId != employeeList[0].Id);
 
-            var employeeListCountAfter = _context.EmployeeLists.Count();
+            var employeeListCountAfter = await _context.EmployeeLists.CountAsync();
 
             // Assert
             Assert.IsTrue(result);
