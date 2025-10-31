@@ -39,6 +39,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.AddReservationAsync(reservation);
 
+            var reservationCount = await _context.Reservations.CountAsync();
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(reservation.LocalId, result.LocalId);
@@ -46,7 +48,7 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(reservation.CheckInDate, result.CheckInDate);
             Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
             Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, _context.Reservations.Count());
+            Assert.AreEqual(1, reservationCount);
         }
     }
 }
