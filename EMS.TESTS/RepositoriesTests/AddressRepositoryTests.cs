@@ -40,6 +40,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.AddAddressAsync(address);
 
+            var addressCount = await _context.Address.CountAsync();
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(address.City, result.City);
@@ -48,7 +50,7 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(address.ZipCode, result.ZipCode);
             Assert.AreEqual(address.AppUserId, result.AppUserId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, _context.Address.Count());
+            Assert.AreEqual(1, addressCount);
         }
 
         [TestMethod]
@@ -73,18 +75,22 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Address.AddRange(addresses);
             await _context.SaveChangesAsync();
 
-            var addressCountBefore = _context.Address.Count();
+            var addressCountBefore = await _context.Address.CountAsync();
 
             // Act
             var result = await _repository.DeleteAddressAsync(addresses[0].Id, appUserId);
 
-            var addressCountAfter = _context.Address.Count();
+            var deletedAddress = await _context.Address.FirstOrDefaultAsync(x => x.Id == addresses[0].Id);
+
+            var noTaskReferencesDeletedAddress = tasks.All(x => x.AddressId != addresses[0].Id);
+
+            var addressCountAfter = await _context.Address.CountAsync();
 
             // Assert
             Assert.IsTrue(result);
+            Assert.IsNull(deletedAddress);
+            Assert.IsTrue(noTaskReferencesDeletedAddress);
             Assert.AreEqual(addressCountBefore - 1, addressCountAfter);
-            Assert.IsNull(_context.Address.FirstOrDefault(x => x.Id == addresses[0].Id));
-            Assert.IsTrue(tasks.All(x => x.AddressId != addresses[0].Id));
         }
 
         [TestMethod]

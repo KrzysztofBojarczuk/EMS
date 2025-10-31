@@ -154,6 +154,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.AddLocalAsync(local);
 
+            var localCount = await _context.Locals.CountAsync();
+
             // Assert 
             Assert.IsNotNull(result);
             Assert.AreEqual(local.Description, result.Description);
@@ -162,7 +164,7 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
             Assert.AreEqual(local.AppUserId, result.AppUserId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, _context.Locals.Count());
+            Assert.AreEqual(1, localCount);
         }
 
         [TestMethod]
@@ -251,12 +253,14 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.DeleteLocalAsync(local.Id, appUserId);
 
-            var localCountAfter = _context.Locals.Count();
+            var deletedLocal = await _context.Locals.FirstOrDefaultAsync(x => x.Id == local.Id && x.AppUserId == appUserId);
+
+            var localCountAfter = await _context.Locals.CountAsync();
 
             // Assert
             Assert.IsTrue(result);
+            Assert.IsNull(deletedLocal);
             Assert.AreEqual(localCountBefore - 1, localCountAfter);
-            Assert.AreEqual(0, _context.Locals.Count());
         }
 
         [TestMethod]
