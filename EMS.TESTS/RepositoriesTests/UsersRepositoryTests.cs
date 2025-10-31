@@ -38,14 +38,14 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            var userCountBefore = _context.Users.Count();
+            var userCountBefore = await _context.Users.CountAsync();
 
             // Act
             var result = await _repository.DeleteUserAsync(user.Id);
 
             var deletedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
 
-            var userCountAfter = _context.Users.Count();
+            var userCountAfter = await _context.Users.CountAsync();
 
             // Assert
             Assert.IsTrue(result);
