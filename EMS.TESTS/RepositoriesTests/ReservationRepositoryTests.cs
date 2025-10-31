@@ -1,0 +1,52 @@
+﻿using EMS.CORE.Entities;
+using EMS.CORE.Interfaces;
+using EMS.INFRASTRUCTURE.Data;
+using EMS.INFRASTRUCTURE.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace EMS.TESTS.RepositoriesTests
+{
+    [TestClass]
+    public class ReservationRepositoryTests
+    {
+        private AppDbContext _context;
+        private IReservationRepository _repository;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .Options;
+
+            _context = new AppDbContext(options);
+            _repository = new ReservationRepository(_context);
+        }
+
+        [TestMethod]
+        public async Task AddReservationAsync_Returns_Reservation()
+        {
+            // Arrange
+            var reservation = new ReservationEntity
+            {
+                LocalId = Guid.NewGuid(),
+                AppUserId = "user-123",
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(2)
+            };
+
+            // Act
+            var result = await _repository.AddReservationAsync(reservation);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(reservation.LocalId, result.LocalId);
+            Assert.AreEqual(reservation.AppUserId, result.AppUserId);
+            Assert.AreEqual(reservation.CheckInDate, result.CheckInDate);
+            Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
+            Assert.AreNotEqual(Guid.Empty, result.Id);
+            Assert.AreEqual(1, _context.Reservations.Count());
+        }
+    }
+}
