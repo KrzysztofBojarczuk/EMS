@@ -715,7 +715,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeListsAsync_When_EmployeeLists_Returns_True()
+        public async Task DeleteEmployeeListsAsync_When_EmployeeListsExists_Returns_True()
         {
             // Arrange
             var appUserId = "user-id-123";

@@ -54,7 +54,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteAddressAsync_When_AddressExists_DeletesAddress_AndNullifies_TaskReferences()
+        public async Task DeleteAddressAsync_When_AddressExists_Returns_True()
         {
             // Arrange
             var appUserId = "user-id-123";
