@@ -31,7 +31,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 LocalId = Guid.NewGuid(),
-                AppUserId = "user-123",
+                AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2)
             };

@@ -42,6 +42,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.AddTransactionAsync(transaction);
 
+            var transactionCount = await _context.Transactions.CountAsync();
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(transaction.Name, result.Name);
@@ -50,7 +52,7 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(transaction.Amount, result.Amount);
             Assert.AreEqual(transaction.BudgetId, result.BudgetId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, _context.Transactions.Count());
+            Assert.AreEqual(1, transactionCount);
         }
 
         [TestMethod]
@@ -78,17 +80,19 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
 
-            var transactionCountBefore = _context.Transactions.Count();
+            var transactionCountBefore = await _context.Transactions.CountAsync();
 
             // Act
             var result = await _repository.DeleteTransactionsAsync(transaction.Id);
 
-            var transactionCountAfter = _context.Transactions.Count();
+            var deletedTransaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == transaction.Id);
+
+            var transactionCountAfter = await _context.Transactions.CountAsync();
 
             // Assert
             Assert.IsTrue(result);
+            Assert.IsNull(deletedTransaction);
             Assert.AreEqual(transactionCountBefore - 1, transactionCountAfter);
-            Assert.AreEqual(0, _context.Transactions.Count());
         }
 
         [TestMethod]

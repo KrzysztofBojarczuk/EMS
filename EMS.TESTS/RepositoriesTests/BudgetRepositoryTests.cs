@@ -37,12 +37,14 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.AddBudgetAsync(budget);
 
+            var budgetCount = await _context.Budgets.CountAsync();
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(budget.Budget, result.Budget);
             Assert.AreEqual(budget.AppUserId, result.AppUserId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, await _context.Budgets.CountAsync());
+            Assert.AreEqual(1, budgetCount);
         }
 
         [TestMethod]
@@ -59,14 +61,19 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Budgets.Add(budget);
             await _context.SaveChangesAsync();
 
+            var budgetCountBefore = await _context.Budgets.CountAsync();
+
             // Act
             var result = await _repository.DeleteBudgetAsync(budget.Id, appUserId);
 
+            var deletedBudget = await _context.Budgets.FirstOrDefaultAsync(x => x.Id == budget.Id && x.AppUserId == appUserId);
+
+            var budgetCountAfter = await _context.Budgets.CountAsync();
+
             // Assert
             Assert.IsTrue(result);
-            var deleted = await _context.Budgets.FirstOrDefaultAsync(x => x.Id == budget.Id && x.AppUserId == appUserId);
-            Assert.IsNull(deleted);
-            Assert.AreEqual(0, _context.Budgets.Count());
+            Assert.IsNull(deletedBudget);
+            Assert.AreEqual(budgetCountBefore - 1, budgetCountAfter);
         }
 
         [TestMethod]

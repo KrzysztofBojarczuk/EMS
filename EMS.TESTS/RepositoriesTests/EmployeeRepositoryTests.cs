@@ -273,6 +273,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.AddEmployeeAsync(employee);
 
+            var employeeCount = await _context.Employees.CountAsync();
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(employee.Name, result.Name);
@@ -280,7 +282,7 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(employee.Phone, result.Phone);
             Assert.AreEqual(employee.AppUserId, result.AppUserId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, _context.Employees.Count());
+            Assert.AreEqual(1, employeeCount);
         }
 
         [TestMethod]
@@ -368,12 +370,14 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.DeleteEmployeeAsync(employee.Id, appUserId);
 
-            var employeeCountAfter = _context.Employees.Count();
+            var deletedEmployee = await _context.Employees.FirstOrDefaultAsync(x => x.Id == employee.Id && x.AppUserId == appUserId);
+
+            var employeeCountAfter = await _context.Employees.CountAsync();
 
             // Assert
             Assert.IsTrue(result);
+            Assert.IsNull(deletedEmployee);
             Assert.AreEqual(employeeCountBefore - 1, employeeCountAfter);
-            Assert.AreEqual(0, _context.Employees.Count());
         }
 
         [TestMethod]
@@ -410,11 +414,13 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.AddEmployeeListsAsync(employeeList, new List<Guid> { employee1.Id, employee2.Id });
 
+            var employeeListCount = await _context.EmployeeLists.CountAsync();
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(employeeList.Name, result.Name);
             Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, _context.EmployeeLists.Count());
+            Assert.AreEqual(1, employeeListCount);
         }
 
         [TestMethod]
@@ -737,14 +743,17 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.DeleteEmployeeListsAsync(employeeList[0].Id, appUserId);
 
-            var employeeListCountAtfer = _context.EmployeeLists.Count();
+            var deletedEmployeeList = await _context.EmployeeLists.FirstOrDefaultAsync(x => x.Id == employeeList[0].Id && x.AppUserId == appUserId);
+
+            var noEmployeesReferenceDeletedList = employees.All(x => x.EmployeeListId != employeeList[0].Id);
+
+            var employeeListCountAfter = _context.EmployeeLists.Count();
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(employeeListCountBefore - 1, employeeListCountAtfer);
-            Assert.AreEqual(2, _context.EmployeeLists.Count());
-            Assert.IsNull(_context.EmployeeLists.FirstOrDefault(x => x.Id == employeeList[0].Id));
-            Assert.IsTrue(employees.All(x => x.EmployeeListId != employeeList[0].Id));
+            Assert.IsNull(deletedEmployeeList);
+            Assert.IsTrue(noEmployeesReferenceDeletedList);
+            Assert.AreEqual(employeeListCountBefore - 1, employeeListCountAfter);
         }
 
         [TestMethod]

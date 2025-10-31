@@ -43,13 +43,14 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.DeleteUserAsync(user.Id);
 
+            var deletedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+
             var userCountAfter = _context.Users.Count();
 
             // Assert
             Assert.IsTrue(result);
+            Assert.IsNull(deletedUser);
             Assert.AreEqual(userCountBefore -1, userCountAfter);
-            Assert.IsNull(_context.Users.FirstOrDefault(u => u.Id == user.Id));
-            Assert.AreEqual(0, _context.Users.Count());
         }
 
         [TestMethod]
