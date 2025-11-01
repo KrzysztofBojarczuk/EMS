@@ -11,6 +11,7 @@ namespace EMS.CORE.Entities
         public ICollection<EmployeeListsEntity> EmployeeListsEntities { get; set; } = new List<EmployeeListsEntity>();
         public ICollection<LocalEntity> LocalEntities { get; set; } = new List<LocalEntity>();
         public ICollection<ReservationEntity> ReservationsEntities { get; set; } = new List<ReservationEntity>();
+        public ICollection<VehicleEntity> VehicleEntities { get; set; } = new List<VehicleEntity>();
         public BudgetEntity BudgetEntity { get; set; } = null!;
     }
 }

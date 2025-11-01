@@ -15,5 +15,6 @@ namespace EMS.CORE.Entities
         public Guid? AddressId { get; set; }
         public AddressEntity AddressEntity { get; set; } = null!;
         public ICollection<EmployeeListsEntity> EmployeeListsEntities { get; set; } = new List<EmployeeListsEntity>();
+        public ICollection<VehicleEntity> VehicleEntities { get; set; } = new List<VehicleEntity>();
     }
 }
