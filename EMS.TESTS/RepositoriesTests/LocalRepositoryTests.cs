@@ -248,7 +248,7 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Locals.Add(local);
             await _context.SaveChangesAsync();
 
-            var localCountBefore = _context.Locals.Count();
+            var localCountBefore = await _context.Locals.CountAsync();
 
             // Act
             var result = await _repository.DeleteLocalAsync(local.Id, appUserId);

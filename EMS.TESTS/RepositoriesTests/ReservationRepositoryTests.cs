@@ -50,5 +50,36 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, reservationCount);
         }
+
+        [TestMethod]
+        public async Task DeleteReservationAsync_When_ReservationExists_Returns_True()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var reservation = new ReservationEntity
+            {
+                LocalId = Guid.NewGuid(),
+                AppUserId = appUserId,
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(2)
+            };
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            var reservationCountBefore = await _context.Reservations.CountAsync();
+
+            // Act
+            var result = await _repository.DeleteReservationAsync(reservation.Id, appUserId);
+
+            var deletedReservation = await _context.Reservations.FirstOrDefaultAsync(x => x.Id == reservation.Id && x.AppUserId == appUserId);
+
+            var reservationCountAfter = await _context.Reservations.CountAsync();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsNull(deletedReservation);
+            Assert.AreEqual(reservationCountBefore - 1, reservationCountAfter);
+        }
     }
 }
