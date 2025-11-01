@@ -3,6 +3,7 @@ using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMS.INFRASTRUCTURE.Repositories
 {
@@ -17,29 +18,75 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             return entity;
         }
-        public Task<bool> DeleteVehicleAsync(Guid vehicleId, string appUserId)
+
+        public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, List<VehicleType> vehicleType, string searchTerm)
         {
-            throw new NotImplementedException();
+            var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId);
+
+            if(vehicleType.Any())
+            {
+                query = query.Where(x => vehicleType.Contains(x.VehicleType));
+            }
+
+            if(!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())
+                                      || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await PaginatedList<VehicleEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, List<VehicleType> vehicleType, string searchTerm)
+        public async Task<IEnumerable<VehicleEntity>> GetUserVehiclesForTaskAsync(string appUserId, string searchTerm)
         {
-            throw new NotImplementedException();
+            var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId && x.TaskId == null && x.IsAvailable == true);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())
+                                      || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
         }
 
-        public Task<IEnumerable<VehicleEntity>> GetUserVehiclesForTaskAsync(string appUserId, string searchTerm)
+        public async Task<VehicleEntity> GetVehicleByIdAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            return await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public Task<VehicleEntity> GetVehicleByIdAsync(Guid vehicleId)
+        public async Task<VehicleEntity> UpdateVehicleAsync(Guid vehicleId, string appUserId, VehicleEntity entity)
         {
-            throw new NotImplementedException();
+            var vehicle = dbContext.Vehicles.FirstOrDefault(x => x.Id == vehicleId && x.AppUserId == appUserId);
+
+            if (vehicle is not null)
+            {
+                vehicle.Name = entity.Name;
+                vehicle.RegistrationNumber = entity.RegistrationNumber;
+                vehicle.VehicleType = entity.VehicleType;
+                vehicle.DateOfProduction = entity.DateOfProduction;
+                vehicle.IsAvailable = entity.IsAvailable;
+
+                await dbContext.SaveChangesAsync();
+
+                return vehicle;
+            }
+
+            return entity;
         }
 
-        public Task<VehicleEntity> UpdateVehicleAsync(Guid vehicleId, string appUserId, VehicleEntity entity)
+        public async Task<bool> DeleteVehicleAsync(Guid vehicleId, string appUserId)
         {
-            throw new NotImplementedException();
+            var vehicle = dbContext.Vehicles.FirstOrDefault(x => x.Id == vehicleId && x.AppUserId == appUserId);
+
+            if (vehicle is not null)
+            {
+                dbContext.Vehicles.Remove(vehicle);
+                
+                return await dbContext.SaveChangesAsync() > 0;  //Jeśli usunięcie się powiodło: SaveChangesAsync() zwróci liczbę większą od 0, więc metoda zwróci true.
+            }
+
+            return true;
         }
     }
 }
