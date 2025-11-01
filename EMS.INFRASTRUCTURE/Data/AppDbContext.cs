@@ -103,6 +103,18 @@ namespace EMS.INFRASTRUCTURE.Data
                 .WithOne(x => x.EmployeeListsEntity)
                 .HasForeignKey(x => x.EmployeeListId);
 
+            builder.Entity<AppUserEntity>()
+                .HasMany(x => x.VehicleEntities)
+                .WithOne(x => x.AppUserEntity)
+                .HasForeignKey(x => x.AppUserId)
+                .IsRequired();
+
+            builder.Entity<TaskEntity>()
+                .HasMany(x => x.VehicleEntities)
+                .WithOne(x => x.TaskEntities)
+                .HasForeignKey(x => x.TaskId)
+                .IsRequired(false);
+
             List<IdentityRole> roles = new List<IdentityRole>
             {
                 new IdentityRole
