@@ -369,11 +369,19 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateOfProduction")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -427,13 +435,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fb2df54b-a63c-4871-9aac-0ff43dfbab55",
+                            Id = "1e4603cb-01be-439a-8751-43fd1fd820aa",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "29afe4aa-1105-4d40-9735-0c42254a517f",
+                            Id = "f48870c7-88ff-4ff0-9ee8-575b213f3201",
                             Name = "User",
                             NormalizedName = "USER"
                         });

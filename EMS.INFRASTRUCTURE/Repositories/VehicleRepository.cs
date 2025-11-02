@@ -61,6 +61,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (vehicle is not null)
             {
+                vehicle.Brand = entity.Brand;
+                vehicle.Model = entity.Model;
                 vehicle.Name = entity.Name;
                 vehicle.RegistrationNumber = entity.RegistrationNumber;
                 vehicle.VehicleType = entity.VehicleType;

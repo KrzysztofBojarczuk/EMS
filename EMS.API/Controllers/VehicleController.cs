@@ -2,7 +2,9 @@
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Vehicle.Commands;
+using EMS.APPLICATION.Features.Vehicle.Queries;
 using EMS.CORE.Entities;
+using EMS.CORE.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +18,7 @@ namespace EMS.API.Controllers
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddVehicleAsync([FromBody] VehicleEntity vehicleEntity)
+        public async Task<IActionResult> AddVehicleAsync([FromBody] VehicleCreateDto vehicleDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -25,11 +27,49 @@ namespace EMS.API.Controllers
 
             var appUser = await userManager.FindByNameAsync(username);
 
+            var vehicleEntity = mapper.Map<VehicleEntity>(vehicleDto);
+
             vehicleEntity.AppUserId = appUser.Id;
 
             var result = await sender.Send(new AddVehicleCommand(vehicleEntity));
 
             var vehicleGet = mapper.Map<VehicleGetDto>(result);
+
+            return Ok(vehicleGet);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserVehiclesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] List<VehicleType> vehicleType, [FromQuery] string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var paginatedVehicles = await sender.Send(new GetUserVehiclesQuery(appUser.Id, pageNumber, pageSize, vehicleType, searchTerm));
+
+            var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(paginatedVehicles.Items);
+
+            return Ok(new
+            {
+                VehicleGet = vehicleGet,
+                paginatedVehicles.TotalItems,
+                paginatedVehicles.TotalPages,
+                paginatedVehicles.PageIndex
+            });
+        }
+
+        [HttpGet("UserVehicleListForTask")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserVehiclesForTaskAsync(string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserVehiclesForTaskQuery(appUser.Id, searchTerm));
+
+            var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(result);
 
             return Ok(vehicleGet);
         }
