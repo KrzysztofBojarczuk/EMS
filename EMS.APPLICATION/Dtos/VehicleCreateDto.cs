@@ -4,6 +4,8 @@ namespace EMS.APPLICATION.Dtos
 {
     public class VehicleCreateDto
     {
+        public string Brand { get; set; } = null!;
+        public string Model { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string RegistrationNumber { get; set; } = null!;
         public VehicleType VehicleType { get; set; }

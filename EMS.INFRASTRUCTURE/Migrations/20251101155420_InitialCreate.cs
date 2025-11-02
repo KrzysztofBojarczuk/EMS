@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -348,6 +348,37 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Vehicles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RegistrationNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    VehicleType = table.Column<int>(type: "int", nullable: false),
+                    DateOfProduction = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vehicles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Vehicles_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vehicles_Tasks_TaskId",
+                        column: x => x.TaskId,
+                        principalTable: "Tasks",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -380,8 +411,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3b3a5eb2-7b0e-400a-9279-508aac24bed4", null, "User", "USER" },
-                    { "5d9b8eab-6033-4a6a-bf62-33a4d9219630", null, "Admin", "ADMIN" }
+                    { "1e4603cb-01be-439a-8751-43fd1fd820aa", null, "Admin", "ADMIN" },
+                    { "f48870c7-88ff-4ff0-9ee8-575b213f3201", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -488,6 +519,16 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 name: "IX_Transactions_BudgetId",
                 table: "Transactions",
                 column: "BudgetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_AppUserId",
+                table: "Vehicles",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_TaskId",
+                table: "Vehicles",
+                column: "TaskId");
         }
 
         /// <inheritdoc />
@@ -519,6 +560,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             migrationBuilder.DropTable(
                 name: "Transactions");
+
+            migrationBuilder.DropTable(
+                name: "Vehicles");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

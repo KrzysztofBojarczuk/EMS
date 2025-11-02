@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251101065437_addevehicle")]
-    partial class addevehicle
+    [Migration("20251101155420_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -372,11 +372,19 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfProduction")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastServiceDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -398,7 +406,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("VehicleEntity");
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -430,13 +438,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "05810c10-9574-4f39-85ca-437d24fd5ab5",
+                            Id = "1e4603cb-01be-439a-8751-43fd1fd820aa",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5f2fd7e0-f343-4278-8512-371a4b9d607c",
+                            Id = "f48870c7-88ff-4ff0-9ee8-575b213f3201",
                             Name = "User",
                             NormalizedName = "USER"
                         });
