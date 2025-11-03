@@ -6,12 +6,6 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import {
-  UserGetTaskService,
-  DeleteTaskService,
-  UserUpdateTaskStatusService,
-} from "../../../Services/TaskService.tsx";
-import AddTask from "../AddTask/AddTask.tsx";
-import {
   DataTable,
   DataTableExpandedRows,
   DataTableRowEvent,
@@ -19,17 +13,23 @@ import {
 } from "primereact/datatable";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
-import { AddressGet } from "../../../Models/Address.ts";
-import ConfirmationDialog from "../../Confirmation/ConfirmationDialog.tsx";
-import { StatusOfTask } from "../../../Enum/StatusOfTask.ts";
+
 import { Tag } from "primereact/tag";
 import { Dropdown } from "primereact/dropdown";
 import { SplitButton } from "primereact/splitbutton";
 import { Paginator } from "primereact/paginator";
 import {
+  DeleteTaskService,
+  UserGetTaskService,
+  UserUpdateTaskStatusService,
+} from "../../../Services/TaskService";
+import { StatusOfTask } from "../../../Enum/StatusOfTask";
+import {
   dateBodyTemplate,
   statusOfTaskBodyTemplate,
-} from "../../Utils/TaskTemplates.tsx";
+} from "../../Utils/TaskTemplates";
+import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
+import AddTask from "../AddTask/AddTask";
 
 type Props = {};
 

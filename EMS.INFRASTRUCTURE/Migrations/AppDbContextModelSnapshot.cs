@@ -379,6 +379,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
+                    b.Property<decimal>("Mileage")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -435,13 +438,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1e4603cb-01be-439a-8751-43fd1fd820aa",
+                            Id = "ea62e6ba-872c-4202-a813-4d146583689f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f48870c7-88ff-4ff0-9ee8-575b213f3201",
+                            Id = "ae94f7ab-8ea8-4056-9f63-4e43e5bf1d4c",
                             Name = "User",
                             NormalizedName = "USER"
                         });

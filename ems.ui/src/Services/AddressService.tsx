@@ -23,7 +23,8 @@ export const UserGetAddressService = async (
 };
 
 export const UserPostAddressService = async (addressPost: AddressPost) => {
-  return await axios.post<AddressPost>(api + "Address", addressPost);
+  const response = await axios.post<AddressPost>(api + "Address", addressPost);
+  return response.data;
 };
 
 export const UserGetAddressForTaskService = async (searchTerm?: string) => {
