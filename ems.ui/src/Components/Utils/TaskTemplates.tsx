@@ -1,7 +1,7 @@
 import { Tag } from "primereact/tag";
-import { StatusOfTask } from "../../Enum/StatusOfTask.ts";
 import { TaskGet } from "../../Models/Task";
-import { formatDate } from "./DateUtils.ts";
+import { StatusOfTask } from "../../Enum/StatusOfTask";
+import { formatDate } from "./DateUtils";
 
 export const statusToText: Record<StatusOfTask, string> = {
   [StatusOfTask.Active]: "Active",

@@ -1,9 +1,9 @@
 import { createContext, useEffect, useState } from "react";
 import { UserProfile } from "../Models/User";
 import { useNavigate } from "react-router-dom";
-import { loginAPI, registerAPI } from "../Services/AuthService.tsx";
 import React from "react";
 import axios from "axios";
+import { loginAPI, registerAPI } from "../Services/AuthService";
 
 type UserContextType = {
   user: UserProfile | null;

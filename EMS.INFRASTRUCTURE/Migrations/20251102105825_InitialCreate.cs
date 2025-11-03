@@ -356,6 +356,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegistrationNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mileage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     VehicleType = table.Column<int>(type: "int", nullable: false),
                     DateOfProduction = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
@@ -411,8 +412,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1e4603cb-01be-439a-8751-43fd1fd820aa", null, "Admin", "ADMIN" },
-                    { "f48870c7-88ff-4ff0-9ee8-575b213f3201", null, "User", "USER" }
+                    { "ae94f7ab-8ea8-4056-9f63-4e43e5bf1d4c", null, "User", "USER" },
+                    { "ea62e6ba-872c-4202-a813-4d146583689f", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

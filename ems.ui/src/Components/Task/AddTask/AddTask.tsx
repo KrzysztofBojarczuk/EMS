@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { UserPostTaskService } from "../../../Services/TaskService.tsx";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { AutoComplete } from "primereact/autocomplete";
-import {
-  UserGetAddressForTaskService,
-  UserGetAddressService,
-} from "../../../Services/AddressService.tsx";
-import { AddressGet } from "../../../Models/Address.ts";
+
 import { Calendar } from "primereact/calendar";
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
-import {
-  UserGetListEmployeesService,
-  UserGetListForTaskEmployeesService,
-} from "../../../Services/EmployeeService.tsx";
-import { EmployeeListGet } from "../../../Models/EmployeeList.tsx";
+
 import { MultiSelect } from "primereact/multiselect";
+import { AddressGet } from "../../../Models/Address";
+import { EmployeeListGet } from "../../../Models/EmployeeList";
+import { UserGetListForTaskEmployeesService } from "../../../Services/EmployeeService";
+import { UserGetAddressForTaskService } from "../../../Services/AddressService";
+import { UserPostTaskService } from "../../../Services/TaskService";
 
 type Props = {
   onClose: () => void;

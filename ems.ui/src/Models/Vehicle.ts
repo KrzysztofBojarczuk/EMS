@@ -6,14 +6,18 @@ export interface VehicleGet {
   model: string;
   name: string;
   registrationNumber: string;
+  mileage: number;
   vehicleType: VehicleType;
   dateOfProduction: string;
   isAvailable: boolean;
 }
 
 export interface VehiclePost {
+  brand: string;
+  model: string;
   name: string;
   registrationNumber: string;
+  mileage: number;
   vehicleType: VehicleType;
   dateOfProduction: string;
   isAvailable?: boolean;

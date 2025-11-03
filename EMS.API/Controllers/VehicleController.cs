@@ -38,7 +38,7 @@ namespace EMS.API.Controllers
             return Ok(vehicleGet);
         }
 
-        [HttpGet]
+        [HttpGet("User")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserVehiclesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] List<VehicleType> vehicleType, [FromQuery] string searchTerm = null)
         {
@@ -59,7 +59,7 @@ namespace EMS.API.Controllers
             });
         }
 
-        [HttpGet("UserVehicleListForTask")]
+        [HttpGet("UserVehiclesForTask")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserVehiclesForTaskAsync(string searchTerm = null)
         {
@@ -70,6 +70,26 @@ namespace EMS.API.Controllers
             var result = await sender.Send(new GetUserVehiclesForTaskQuery(appUser.Id, searchTerm));
 
             var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(result);
+
+            return Ok(vehicleGet);
+        }
+
+        [HttpPut("{vehicleId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateVehicleAsync([FromRoute] Guid vehicleId, [FromBody] VehicleCreateDto vehicleDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var vehicleEntity = mapper.Map<VehicleEntity>(vehicleDto);
+
+            var result = await sender.Send(new UpdateVehicleCommand(vehicleId, appUser.Id, vehicleEntity));
+
+            var vehicleGet = mapper.Map<VehicleGetDto>(result);
 
             return Ok(vehicleGet);
         }
