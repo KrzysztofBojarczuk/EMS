@@ -93,5 +93,18 @@ namespace EMS.API.Controllers
 
             return Ok(vehicleGet);
         }
+
+        [HttpDelete("{vehicleId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> DeleteVehicleAsync([FromRoute] Guid vehicleId)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new DeleteVehicleCommand(vehicleId, appUser.Id));
+
+            return Ok(result);
+        }
     }
 }
