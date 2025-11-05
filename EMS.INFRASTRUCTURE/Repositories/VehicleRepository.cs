@@ -19,7 +19,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, List<VehicleType> vehicleType, string searchTerm)
+        public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, List<VehicleType> vehicleType, string searchTerm, DateTime? dateFrom, DateTime? dateTo, string sortOrderDate, string sortOrderMileage)
         {
             var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId);
 
@@ -32,6 +32,37 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())
                                       || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (dateFrom.HasValue && dateTo.HasValue)
+            {
+                query = query.Where(x => x.DateOfProduction >= dateFrom.Value && x.DateOfProduction <= dateTo.Value);
+            }
+
+            switch (sortOrderDate)
+            {
+                case ("date_asc"):
+                    query = query.OrderBy(x => x.DateOfProduction);
+                    break;
+                case ("date_desc"):
+                    query = query.OrderByDescending(x => x.DateOfProduction);
+                    break;
+                default:
+                    query = query.OrderByDescending(x => x.Id);
+                    break;
+            }
+
+            switch (sortOrderMileage)
+            {
+                case ("mileage_asc"):
+                    query = query.OrderBy(x => x.Mileage);
+                    break;
+                case ("mileage_desc"):
+                    query = query.OrderByDescending(x => x.Mileage);
+                    break;
+                default:
+                    query = query.OrderByDescending(x => x.Id);
+                    break;
             }
 
             return await PaginatedList<VehicleEntity>.CreateAsync(query, pageNumber, pageSize);
