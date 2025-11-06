@@ -17,7 +17,7 @@ namespace EMS.API.Controllers
     {
         [HttpGet()]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserLocalAsync(int pageNumber, int pageSize, string searchTerm = null)
+        public async Task<IActionResult> GetUserLocalAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 

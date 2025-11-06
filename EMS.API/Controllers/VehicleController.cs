@@ -40,13 +40,13 @@ namespace EMS.API.Controllers
 
         [HttpGet("User")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserVehiclesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] List<VehicleType> vehicleType, [FromQuery] string searchTerm = null, [FromQuery] DateTime? dateFrom = null, [FromQuery] DateTime? dateTo = null, [FromQuery] string sortOrderDate = null, [FromQuery] string sortOrderMileage = null)
+        public async Task<IActionResult> GetUserVehiclesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] List<VehicleType> vehicleType = null, [FromQuery] DateTime? dateFrom = null, [FromQuery] DateTime? dateTo = null, [FromQuery] string sortOrderDate = null, [FromQuery] string sortOrderMileage = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var paginatedVehicles = await sender.Send(new GetUserVehiclesQuery(appUser.Id, pageNumber, pageSize, vehicleType, searchTerm, dateFrom, dateTo, sortOrderDate, sortOrderMileage));
+            var paginatedVehicles = await sender.Send(new GetUserVehiclesQuery(appUser.Id, pageNumber, pageSize, searchTerm, vehicleType, dateFrom, dateTo, sortOrderDate, sortOrderMileage));
 
             var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(paginatedVehicles.Items);
 
@@ -61,7 +61,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserVehiclesForTask")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserVehiclesForTaskAsync(string searchTerm = null)
+        public async Task<IActionResult> GetUserVehiclesForTaskAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 

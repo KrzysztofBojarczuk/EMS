@@ -15,18 +15,34 @@ export const UserPostVehicleService = async (vehiclePost: VehiclePost) => {
 export const UserGetVehicleService = async (
   pageNumber: number,
   pageSize: number,
+  searchTerm?: string,
   vehicleType?: string[],
-  searchTerm?: string
+  dateFrom?: Date | null,
+  dateTo?: Date | null,
+  sortOrderDate?: string | null,
+  sortOrderMileage?: string | null
 ) => {
-  const url = `${api}Vehicle/User?pageNumber=${pageNumber}&pageSize=${pageSize}&searchTerm=${
-    searchTerm ?? ""
-  }${
-    vehicleType
-      ? `&${vehicleType.map((type) => `vehicleType=${type}`).join("&")}`
-      : ""
-  }`;
+  const params = new URLSearchParams();
 
-  const response = await axios.get<PaginatedVehicleResponse>(url);
+  params.append("pageNumber", pageNumber.toString());
+  params.append("pageSize", pageSize.toString());
+
+  if (searchTerm) params.append("searchTerm", searchTerm);
+
+  if (vehicleType && vehicleType.length > 0) {
+    vehicleType.forEach((type) => params.append("vehicleType", type));
+  }
+
+  if (dateFrom) params.append("dateFrom", dateFrom.toISOString());
+  if (dateTo) params.append("dateTo", dateTo.toISOString());
+
+  if (sortOrderDate) params.append("sortOrderDate", sortOrderDate);
+  if (sortOrderMileage) params.append("sortOrderMileage", sortOrderMileage);
+
+  const response = await axios.get<PaginatedVehicleResponse>(
+    `${api}Vehicle/User?${params.toString()}`
+  );
+
   return response.data;
 };
 

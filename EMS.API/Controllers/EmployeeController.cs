@@ -17,7 +17,7 @@ namespace EMS.API.Controllers
     {
         [HttpGet("User")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeesAsync(int pageNumber, int pageSize, string searchTerm = null)
+        public async Task<IActionResult> GetUserEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 
@@ -38,7 +38,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserList")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeesForListAsync(string searchTerm = null)
+        public async Task<IActionResult> GetUserEmployeesForListAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 
@@ -88,7 +88,7 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllEmployeesAsync(int pageNumber, int pageSize, string searchTerm = null)
+        public async Task<IActionResult> GetAllEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
             var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm));
 
@@ -158,7 +158,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserEmployeeListForTask")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeeListForTaskAsync(string searchTerm = null)
+        public async Task<IActionResult> GetUserEmployeeListForTaskAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 
@@ -173,7 +173,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserEmployeeList")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeeListAsync(string searchTerm = null)
+        public async Task<IActionResult> GetUserEmployeeListAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 

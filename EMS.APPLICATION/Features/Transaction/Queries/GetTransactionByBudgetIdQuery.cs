@@ -5,13 +5,13 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Transaction.Queries
 {
-    public record GetTransactionByBudgetIdQuery(Guid budgetId, List<CategoryType> category, string searchTerm) : IRequest<IEnumerable<TransactionEntity>>;
+    public record GetTransactionByBudgetIdQuery(Guid budgetId, string searchTerm, List<CategoryType> category) : IRequest<IEnumerable<TransactionEntity>>;
 
     public class GetTransactionByIdBudgetIdQueryHandler(ITransactionRepository transactionRepository) : IRequestHandler<GetTransactionByBudgetIdQuery, IEnumerable<TransactionEntity>>
     {
         public async Task<IEnumerable<TransactionEntity>> Handle(GetTransactionByBudgetIdQuery request, CancellationToken cancellation)
         {
-            return await transactionRepository.GetTransactionsByBudgetIdAsync(request.budgetId, request.category, request.searchTerm);
+            return await transactionRepository.GetTransactionsByBudgetIdAsync(request.budgetId, request.searchTerm, request.category);
         }
     }
 }

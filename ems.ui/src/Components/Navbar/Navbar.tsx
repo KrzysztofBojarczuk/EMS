@@ -47,6 +47,11 @@ const Navbar = (props: Props) => {
           label: "Addresses",
           icon: "pi pi-address-book",
           command: () => navigate("/Address"),
+        },
+        {
+          label: "Vehicles",
+          icon: "pi pi-car",
+          command: () => navigate("/Vehicle"),
         }
       );
     }

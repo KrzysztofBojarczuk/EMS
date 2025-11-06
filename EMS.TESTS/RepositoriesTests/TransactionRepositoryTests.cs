@@ -123,7 +123,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, new List<CategoryType>(), null);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, new List<CategoryType>());
 
             // Assert
             Assert.IsNotNull(result);
@@ -148,7 +148,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, new List<CategoryType>(), searchTerm);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, new List<CategoryType>());
 
             // Assert
             Assert.IsNotNull(result);
@@ -174,7 +174,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, new List<CategoryType>(), searchTerm);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, new List<CategoryType>());
 
             // Assert
             Assert.IsNotNull(result);
@@ -198,7 +198,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, new List<CategoryType> { CategoryType.Expense }, null);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, new List<CategoryType> { CategoryType.Expense });
 
             // Assert
             Assert.IsNotNull(result);
