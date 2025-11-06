@@ -59,10 +59,10 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", CreationDate = DateTimeOffset.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
             };
 
-            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm))
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionByBudgetIdQuery(budgetId, null, searchTerm);
+            var query = new GetTransactionByBudgetIdQuery(budgetId, searchTerm, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -71,7 +71,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedTransactions.Count(), result.Count());
             CollectionAssert.AreEqual(expectedTransactions, result.ToList());
-            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm), Times.Once);
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null), Times.Once);
         }
 
         [TestMethod]
@@ -81,10 +81,10 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             var budgetId = Guid.NewGuid();
             var searchTerm = "nonexistent";
 
-            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm))
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null))
                 .ReturnsAsync(new List<TransactionEntity>());
 
-            var query = new GetTransactionByBudgetIdQuery(budgetId, null, searchTerm);
+            var query = new GetTransactionByBudgetIdQuery(budgetId, searchTerm, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -92,7 +92,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
-            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, searchTerm), Times.Once);
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null), Times.Once);
         }
 
         [TestMethod]
@@ -108,10 +108,10 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Salary", CreationDate = DateTimeOffset.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
             };
 
-            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, category, null))
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId,null, category))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionByBudgetIdQuery(budgetId, category, null);
+            var query = new GetTransactionByBudgetIdQuery(budgetId,null, category);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -120,7 +120,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedTransactions.Count(), result.Count());
             CollectionAssert.AreEqual(expectedTransactions, result.ToList());
-            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, category, null), Times.Once);
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, category), Times.Once);
         }
     }
 }

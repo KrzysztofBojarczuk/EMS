@@ -42,7 +42,7 @@ namespace EMS.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserReservationAsync(int pageNumber, int pageSize, string searchTerm = null)
+        public async Task<IActionResult> GetUserReservationAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 

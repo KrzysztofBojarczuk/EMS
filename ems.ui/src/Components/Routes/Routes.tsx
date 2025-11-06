@@ -1,16 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../../App.tsx";
+import App from "../../App";
 
 import React from "react";
-import LoginPage from "../Pages/LoginPage/LoginPage.tsx";
-import RegisterPage from "../Pages/RegisterPage/RegisterPage.tsx";
-import ListEmployee from "../Employee/ListEmployee/ListEmployee.tsx";
-import ProtectedRoute from "./ProtectedRoute.tsx";
-import AdministrationPanel from "../Admin/AdministrationPanel.tsx";
-import Budget from "../Budget/BudgetTransaction.tsx";
-import ListAddress from "../Address/ListAddress/ListAddress.tsx";
-import ListTask from "../Task/ListTask/ListTask.tsx";
-import LocalReservation from "../LocalReservation/LocalReservationList/LocalReservation.tsx";
+import LoginPage from "../Pages/LoginPage/LoginPage";
+import RegisterPage from "../Pages/RegisterPage/RegisterPage";
+import ListEmployee from "../Employee/ListEmployee/ListEmployee";
+import ProtectedRoute from "./ProtectedRoute";
+import AdministrationPanel from "../Admin/AdministrationPanel";
+import Budget from "../Budget/BudgetTransaction";
+import ListAddress from "../Address/ListAddress/ListAddress";
+import ListTask from "../Task/ListTask/ListTask";
+import LocalReservation from "../LocalReservation/LocalReservationList/LocalReservation";
+import ListVehicle from "../Vehicle/ListVehicles/ListVehicle";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
             <ListAddress />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "Vehicle",
+        element: (
+          <ProtectedRoute allowedRoles={["User"]}>
+            <ListVehicle />
           </ProtectedRoute>
         ),
       },

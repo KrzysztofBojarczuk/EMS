@@ -35,9 +35,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("{budgetId}")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetTransactionsByBudgetId([FromRoute] Guid budgetId, [FromQuery] List<CategoryType> category, string? searchTerm = null)
+        public async Task<IActionResult> GetTransactionsByBudgetId([FromRoute] Guid budgetId, [FromQuery] string? searchTerm = null, [FromQuery] List<CategoryType>? category = null)
         {
-            var result = await sender.Send(new GetTransactionByBudgetIdQuery(budgetId, category, searchTerm));
+            var result = await sender.Send(new GetTransactionByBudgetIdQuery(budgetId, searchTerm, category));
 
             var budgetDtos = mapper.Map<IEnumerable<TransactionGetDto>>(result);
 

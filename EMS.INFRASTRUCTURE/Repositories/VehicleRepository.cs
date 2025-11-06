@@ -19,14 +19,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, List<VehicleType> vehicleType, string searchTerm, DateTime? dateFrom, DateTime? dateTo, string sortOrderDate, string sortOrderMileage)
+        public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<VehicleType> vehicleType, DateTime? dateFrom, DateTime? dateTo, string sortOrderDate, string sortOrderMileage)
         {
             var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId);
-
-            if(vehicleType.Any())
-            {
-                query = query.Where(x => vehicleType.Contains(x.VehicleType));
-            }
 
             if(!string.IsNullOrEmpty(searchTerm))
             {
@@ -34,35 +29,51 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
             }
 
+            if(vehicleType != null && vehicleType.Any())
+            {
+                query = query.Where(x => vehicleType.Contains(x.VehicleType));
+            }
+
             if (dateFrom.HasValue && dateTo.HasValue)
             {
                 query = query.Where(x => x.DateOfProduction >= dateFrom.Value && x.DateOfProduction <= dateTo.Value);
             }
 
-            switch (sortOrderDate)
+            if (!string.IsNullOrEmpty(sortOrderMileage))
             {
-                case ("date_asc"):
-                    query = query.OrderBy(x => x.DateOfProduction);
-                    break;
-                case ("date_desc"):
-                    query = query.OrderByDescending(x => x.DateOfProduction);
-                    break;
-                default:
-                    query = query.OrderByDescending(x => x.Id);
-                    break;
+                switch (sortOrderMileage)
+                {
+                    case "mileage_asc":
+                        query = query.OrderBy(x => x.Mileage);
+                        break;
+                    case "mileage_desc":
+                        query = query.OrderByDescending(x => x.Mileage);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.Id);
+                        break;
+                }
             }
 
-            switch (sortOrderMileage)
+            if (!string.IsNullOrEmpty(sortOrderDate))
             {
-                case ("mileage_asc"):
-                    query = query.OrderBy(x => x.Mileage);
-                    break;
-                case ("mileage_desc"):
-                    query = query.OrderByDescending(x => x.Mileage);
-                    break;
-                default:
-                    query = query.OrderByDescending(x => x.Id);
-                    break;
+                switch (sortOrderDate)
+                {
+                    case "date_asc":
+                        query = query.Expression.Type == typeof(IOrderedQueryable<VehicleEntity>)
+                            ? ((IOrderedQueryable<VehicleEntity>)query).ThenBy(x => x.DateOfProduction)
+                            : query.OrderBy(x => x.DateOfProduction);
+                        break;
+
+                    case "date_desc":
+                        query = query.Expression.Type == typeof(IOrderedQueryable<VehicleEntity>)
+                            ? ((IOrderedQueryable<VehicleEntity>)query).ThenByDescending(x => x.DateOfProduction)
+                            : query.OrderByDescending(x => x.DateOfProduction);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.Id);
+                        break;
+                }
             }
 
             return await PaginatedList<VehicleEntity>.CreateAsync(query, pageNumber, pageSize);

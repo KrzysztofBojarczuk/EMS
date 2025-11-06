@@ -6,7 +6,7 @@ namespace EMS.CORE.Interfaces
     public interface ITransactionRepository
     {
         Task<TransactionEntity> AddTransactionAsync(TransactionEntity entity);
-        Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm);
+        Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, string searchTerm, List<CategoryType> category);
         Task<bool> DeleteTransactionsAsync(Guid transactionId);
     }
 }

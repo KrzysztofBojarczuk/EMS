@@ -47,18 +47,18 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, List<CategoryType> category, string searchTerm)
+        public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, string searchTerm, List<CategoryType> category)
         {
             var query = dbContext.Transactions.Where(x => x.BudgetId == id);
-
-            if (category.Any())
-            {
-                query = query.Where(x => category.Contains(x.Category));
-            }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (category != null && category.Any())
+            {
+                query = query.Where(x => category.Contains(x.Category));
             }
 
             return await query.OrderByDescending(x => x.CreationDate).ToListAsync();
