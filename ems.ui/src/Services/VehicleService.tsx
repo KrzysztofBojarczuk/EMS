@@ -57,12 +57,12 @@ export const UserGetVehicleForTaskService = async (searchTerm?: string) => {
   return response.data;
 };
 
-export const UserDeleteVehicleService = async (id: string) => {
+export const DeleteVehicleService = async (id: string) => {
   const response = await axios.delete(`${api}Vehicle/${id}`);
   return response.data;
 };
 
-export const UserUpdateVehicleService = async (
+export const UpdateVehicleService = async (
   vehiclePost: VehiclePost,
   id: string
 ) => {

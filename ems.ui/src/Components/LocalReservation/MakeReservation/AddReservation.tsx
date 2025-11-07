@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { ReservationPost } from "../../../Models/Reservation";
-import { UserPostReservationService } from "../../../Services/LocalReservationService";
+import { PostReservationService } from "../../../Services/LocalReservationService";
 
 type Props = {
   selectedLocalId: string;
@@ -34,7 +34,7 @@ const AddReservation: React.FC<Props> = ({
 
   const onSubmit = async (data: ReservationPost) => {
     try {
-      await UserPostReservationService(data);
+      await PostReservationService(data);
       onAddSuccess();
       onClose();
       reset();

@@ -7,7 +7,7 @@ import {
   InputNumber,
   InputNumberValueChangeEvent,
 } from "primereact/inputnumber";
-import { UserPostLocalService } from "../../../Services/LocalReservationService";
+import { PostLocalService } from "../../../Services/LocalReservationService";
 
 interface LocalPost {
   description: string;
@@ -40,7 +40,7 @@ const AddLocal: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   });
 
   const onSubmit = async (data: LocalPost) => {
-    await UserPostLocalService(data);
+    await PostLocalService(data);
     onAddSuccess();
     onClose();
     reset();

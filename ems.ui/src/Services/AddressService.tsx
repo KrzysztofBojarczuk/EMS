@@ -22,7 +22,7 @@ export const UserGetAddressService = async (
   return response.data;
 };
 
-export const UserPostAddressService = async (addressPost: AddressPost) => {
+export const PostAddressService = async (addressPost: AddressPost) => {
   const response = await axios.post<AddressPost>(api + "Address", addressPost);
   return response.data;
 };
@@ -38,12 +38,12 @@ export const UserGetAddressForTaskService = async (searchTerm?: string) => {
   return response.data;
 };
 
-export const UserDeleteAddressService = async (id: string) => {
+export const DeleteAddressService = async (id: string) => {
   const response = await axios.delete(`${api}Address/${id}`);
   return response.data;
 };
 
-export const UserUpdateAddressService = async (
+export const UpdateAddressService = async (
   addressPost: AddressPost,
   id: string
 ) => {

@@ -266,12 +266,12 @@ const LocalReservation = (props: Props) => {
           onRowToggle={(e) => setExpandedRows(e.data)}
           rowExpansionTemplate={rowExpansionTemplate}
         >
-          <Column expander={allowExpansion} style={{ width: "5rem" }} />
-          <Column field="id" header="Id" />
-          <Column field="description" header="Description" />
-          <Column field="localNumber" header="Local Number" />
-          <Column field="surface" header="Surface" />
-          <Column field="needsRepair" header="Needs Repair" />
+          <Column expander={allowExpansion} style={{ width: "5rem" }}></Column>
+          <Column field="id" header="Id"></Column>
+          <Column field="description" header="Description"></Column>
+          <Column field="localNumber" header="Local Number"></Column>
+          <Column field="surface" header="Surface"></Column>
+          <Column field="needsRepair" header="Needs Repair"></Column>
           <Column
             header="Action"
             body={(rowData) => (
@@ -342,17 +342,17 @@ const LocalReservation = (props: Props) => {
           </IconField>
         </div>
         <DataTable value={reservations}>
-          <Column field="id" header="ID" />
+          <Column field="id" header="ID"></Column>
           <Column
             field="checkInDate"
             header="Check In Date"
             body={(rowData) => formatDateTime(rowData.checkInDate)}
-          />
+          ></Column>
           <Column
             field="checkOutDate"
             header="Check Out Date"
             body={(rowData) => formatDateTime(rowData.checkOutDate)}
-          />
+          ></Column>
           <Column
             header="Action"
             body={(rowData) => (
@@ -362,7 +362,7 @@ const LocalReservation = (props: Props) => {
                 onClick={() => showReservationDeleteConfirmation(rowData.id)}
               ></i>
             )}
-          />
+          ></Column>
         </DataTable>
         <Paginator
           first={firstReservation}

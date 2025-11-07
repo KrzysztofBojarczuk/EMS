@@ -1,6 +1,9 @@
 import React, { JSX, useEffect, useState } from "react";
 import { VehicleGet } from "../../../Models/Vehicle";
-import { UserGetVehicleService } from "../../../Services/VehicleService";
+import {
+  DeleteVehicleService,
+  UserGetVehicleService,
+} from "../../../Services/VehicleService";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
@@ -18,6 +21,7 @@ import { formatDate } from "../../Utils/DateUtils";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
+import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 
 interface VehicleTypeOption {
   name: string;
@@ -37,6 +41,9 @@ const ListVehicle = () => {
   const [firstVehicle, setFirstVehicle] = useState(0);
   const [rowsVehicle, setRowsVehicle] = useState(10);
   const [totalVehicles, setTotalVehicles] = useState(0);
+
+  const [deleteVehicleId, setDeleteVehicleId] = useState<string | null>(null);
+  const [confirmVehicleVisible, setConfirmVehicleVisible] = useState(false);
 
   const resetFilters = () => {
     setDateFrom(null);
@@ -106,6 +113,30 @@ const ListVehicle = () => {
 
   const buttonToggleVehicleType = (selectedVehicleType: string[]) => {
     seVehicleType(selectedVehicleType);
+  };
+
+  const handleDeleteVehicle = async () => {
+    if (deleteVehicleId) {
+      await DeleteVehicleService(deleteVehicleId);
+
+      const totalAfterDelete = totalVehicles - 1;
+      const maxPage = Math.ceil(totalAfterDelete / rowsVehicle);
+      let currentPage = Math.floor(firstVehicle / rowsVehicle) + 1;
+
+      if (currentPage > maxPage) {
+        currentPage = maxPage;
+      }
+
+      goToPageVehicle(currentPage, rowsVehicle);
+    }
+
+    setConfirmVehicleVisible(false);
+    setDeleteVehicleId(null);
+  };
+
+  const showVehicleDeleteConfirmation = (id: string) => {
+    setDeleteVehicleId(id);
+    setConfirmVehicleVisible(true);
   };
 
   return (
@@ -182,6 +213,16 @@ const ListVehicle = () => {
           header="Date Of Production"
         ></Column>
         <Column field="isAvailable" header="isAvailable"></Column>
+        <Column
+          header="Action"
+          body={(rowData) => (
+            <i
+              className="pi pi-trash"
+              style={{ fontSize: "1.5rem", cursor: "pointer" }}
+              onClick={() => showVehicleDeleteConfirmation(rowData.id)}
+            ></i>
+          )}
+        />
       </DataTable>
 
       <Paginator
@@ -191,6 +232,13 @@ const ListVehicle = () => {
         onPageChange={onPageChangeVehicles}
         rowsPerPageOptions={[5, 10, 20, 30]}
         style={{ border: "none" }}
+      />
+      <ConfirmationDialog
+        visible={confirmVehicleVisible}
+        header="Confirm Vehicle Deletion"
+        message="Are you sure you want to delete this vehicle?"
+        onConfirm={handleDeleteVehicle}
+        onCancel={() => setConfirmVehicleVisible(false)}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { TransactionPost } from "../../../Models/Transaction";
-import { UserPostTransactionService } from "../../../Services/TransactionService";
+import { PostTransactionService } from "../../../Services/TransactionService";
 import { CategoryType } from "../../../Enum/CategoryType";
 
 type Props = {
@@ -34,7 +34,7 @@ const AddTransaction: React.FC<Props> = ({
 
   const onSubmit = async (data: TransactionPost) => {
     const payload = { ...data, creationDate: data.creationDate };
-    await UserPostTransactionService(budgetId, payload);
+    await PostTransactionService(budgetId, payload);
     onAddSuccess();
     onClose();
     reset();

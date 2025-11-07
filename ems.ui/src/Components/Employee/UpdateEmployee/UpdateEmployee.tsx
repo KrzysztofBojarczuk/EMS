@@ -5,7 +5,7 @@ import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { EmployeeGet, EmployeePost } from "../../../Models/Employee";
-import { UserUpdateEmployeesService } from "../../../Services/EmployeeService";
+import { UpdateEmployeesService } from "../../../Services/EmployeeService";
 
 interface UpdateEmployeeProps {
   employee: EmployeeGet;
@@ -33,7 +33,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
   });
 
   const onSubmit = async (data: EmployeePost) => {
-    await UserUpdateEmployeesService(data, employee.id);
+    await UpdateEmployeesService(data, employee.id);
     onUpdateSuccess();
     onClose();
   };

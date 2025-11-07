@@ -4,7 +4,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { AddressGet, AddressPost } from "../../../Models/Address";
-import { UserUpdateAddressService } from "../../../Services/AddressService";
+import { UpdateAddressService } from "../../../Services/AddressService";
 
 interface UpdateAddressProps {
   address: AddressGet;
@@ -32,7 +32,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
   });
 
   const onSubmit = async (data: AddressPost) => {
-    await UserUpdateAddressService(data, address.id);
+    await UpdateAddressService(data, address.id);
     onUpdateSuccess();
     onClose();
     reset();
@@ -94,7 +94,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
           )}
         />
         <div className="inline-flex flex-column gap-2">
-          <Button label="Submit" type="submit" />
+          <Button label="Update" type="submit" />
         </div>
       </div>
     </form>

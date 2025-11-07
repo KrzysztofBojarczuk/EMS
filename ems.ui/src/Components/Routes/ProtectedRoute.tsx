@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "../../Context/useAuth.tsx";
+import { useAuth } from "../../Context/useAuth";
 
 type Props = {
   children: React.ReactNode;

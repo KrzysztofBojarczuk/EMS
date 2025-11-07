@@ -35,10 +35,18 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "LocalsAndReservations",
+        path: "Employee",
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
-            <LocalReservation />
+            <ListEmployee />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "Vehicle",
+        element: (
+          <ProtectedRoute allowedRoles={["User"]}>
+            <ListVehicle />
           </ProtectedRoute>
         ),
       },
@@ -51,10 +59,10 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "Employee",
+        path: "LocalsAndReservations",
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
-            <ListEmployee />
+            <LocalReservation />
           </ProtectedRoute>
         ),
       },
@@ -63,14 +71,6 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["User"]}>
             <ListAddress />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "Vehicle",
-        element: (
-          <ProtectedRoute allowedRoles={["User"]}>
-            <ListVehicle />
           </ProtectedRoute>
         ),
       },

@@ -20,7 +20,7 @@ export const UserGetTransactionService = async (
   return response.data;
 };
 
-export const UserPostTransactionService = async (
+export const PostTransactionService = async (
   budgetId: string,
   transactionPost: TransactionPost
 ) => {
@@ -32,7 +32,7 @@ export const UserPostTransactionService = async (
   return response.data;
 };
 
-export const UserDeleteTransactionService = async (id: string) => {
+export const DeleteTransactionService = async (id: string) => {
   const response = await axios.delete(`${api}Transaction/${id}`);
   return response.data;
 };

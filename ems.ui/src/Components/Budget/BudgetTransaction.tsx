@@ -13,12 +13,12 @@ import { InputIcon } from "primereact/inputicon";
 import { BudgetGet, BudgetPost } from "../../Models/Budget";
 import { TransactionGet } from "../../Models/Transaction";
 import {
-  UserDeleteBudgetService,
+  DeleteBudgetService,
   UserGetBudgetService,
-  UserPostBudgetService,
+  PostBudgetService,
 } from "../../Services/BudgetService";
 import {
-  UserDeleteTransactionService,
+  DeleteTransactionService,
   UserGetTransactionService,
 } from "../../Services/TransactionService";
 import { CategoryType } from "../../Enum/CategoryType";
@@ -72,13 +72,13 @@ const BudgetTransaction = ({}: Props) => {
     const newBudget: BudgetPost = {
       budget: 0,
     };
-    await UserPostBudgetService(newBudget);
+    await PostBudgetService(newBudget);
     await fetchBudgetUser();
   };
 
   const handleConfirmDeleteBudget = async () => {
     if (budgetUser?.id) {
-      await UserDeleteBudgetService(budgetUser.id);
+      await DeleteBudgetService(budgetUser.id);
       setBudgetUser(null);
       setIsDialogVisible(false);
     }
@@ -99,7 +99,7 @@ const BudgetTransaction = ({}: Props) => {
 
   const handleConfirmDeleteTransaction = async () => {
     if (deleteId) {
-      await UserDeleteTransactionService(deleteId);
+      await DeleteTransactionService(deleteId);
       await fetchTransaction();
       await fetchBudgetUser();
     }

@@ -15,8 +15,8 @@ import { Card } from "primereact/card";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { EmployeeListGet } from "../../../Models/EmployeeList";
 import {
-  UserDeleteEmployeesListService,
-  UserDeleteEmployeesService,
+  DeleteEmployeesListService,
+  DeleteEmployeesService,
   UserGetEmployeesService,
   UserGetListEmployeesService,
 } from "../../../Services/EmployeeService";
@@ -91,7 +91,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
 
   const handleConfirmDeleteEmployee = async () => {
     if (deleteId) {
-      await UserDeleteEmployeesService(deleteId);
+      await DeleteEmployeesService(deleteId);
 
       const totalAfterDelete = totalEmployees - 1;
       const maxPage = Math.ceil(totalAfterDelete / rowsEmployee);
@@ -120,7 +120,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
 
   const handleConfirmDeleteListEmployee = async () => {
     if (deleteId) {
-      await UserDeleteEmployeesListService(deleteId);
+      await DeleteEmployeesListService(deleteId);
       fetchEmployeesList();
     }
     setConfirmListEmployeeVisible(false);

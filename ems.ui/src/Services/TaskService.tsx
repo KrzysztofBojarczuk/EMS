@@ -27,7 +27,7 @@ export const UserGetTaskService = async (
   return response.data;
 };
 
-export const UserPostTaskService = async (taskPost: TaskPost) => {
+export const PostTaskService = async (taskPost: TaskPost) => {
   const response = await axios.post<TaskPost>(api + "Task", taskPost);
   return response.data;
 };
@@ -37,15 +37,12 @@ export const DeleteTaskService = async (id: string) => {
   return response.data;
 };
 
-export const UserUpdateTaskService = async (taskPost: TaskPost, id: string) => {
+export const UpdateTaskService = async (taskPost: TaskPost, id: string) => {
   const response = await axios.put<TaskPost>(`${api}Task/${id}`, taskPost);
   return response.data;
 };
 
-export const UserUpdateTaskStatusService = async (
-  id: string,
-  status: number
-) => {
+export const UpdateTaskStatusService = async (id: string, status: number) => {
   const response = await axios.patch(`${api}Task/${id}/status`, status, {
     headers: {
       "Content-Type": "application/json",
