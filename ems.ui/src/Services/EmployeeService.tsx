@@ -46,16 +46,16 @@ export const UserGetEmployeesForListService = async (searchTerm: string) => {
   return response.data;
 };
 
-export const UserPostEmployeesService = async (employeePost: EmployeePost) => {
+export const PostEmployeesService = async (employeePost: EmployeePost) => {
   return await axios.post<EmployeePost>(api + "Employee", employeePost);
 };
 
-export const UserDeleteEmployeesService = async (id: string) => {
+export const DeleteEmployeesService = async (id: string) => {
   const response = await axios.delete(`${api}Employee/${id}`);
   return response.data;
 };
 
-export const UserUpdateEmployeesService = async (
+export const UpdateEmployeesService = async (
   employeePost: EmployeePost,
   id: string
 ) => {
@@ -90,7 +90,7 @@ export const UserGetListForTaskEmployeesService = async (
   return response.data;
 };
 
-export const UserPostListEmployeesService = async (
+export const PostListEmployeesService = async (
   employeeListPost: EmployeeListPost
 ) => {
   return await axios.post<EmployeeListPost>(
@@ -99,7 +99,7 @@ export const UserPostListEmployeesService = async (
   );
 };
 
-export const UserDeleteEmployeesListService = async (id: string) => {
+export const DeleteEmployeesListService = async (id: string) => {
   const response = await axios.delete(`${api}Employee/EmployeeList/${id}`);
   return response.data;
 };

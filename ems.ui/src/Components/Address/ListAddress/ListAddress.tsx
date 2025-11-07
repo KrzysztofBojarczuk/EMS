@@ -9,7 +9,7 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import {
-  UserDeleteAddressService,
+  DeleteAddressService,
   UserGetAddressService,
 } from "../../../Services/AddressService";
 import AddAddress from "../AddAddress/AddAddress";
@@ -61,7 +61,7 @@ const ListAddress = (props: Props) => {
 
   const handleConfirmDelete = async () => {
     if (deleteId) {
-      await UserDeleteAddressService(deleteId);
+      await DeleteAddressService(deleteId);
 
       const totalAfterDelete = totalAddress - 1;
       const maxPage = Math.ceil(totalAfterDelete / rowsAddress);

@@ -8,12 +8,12 @@ export const UserGetBudgetService = async () => {
   return response.data;
 };
 
-export const UserPostBudgetService = async (budgetPost: BudgetPost) => {
+export const PostBudgetService = async (budgetPost: BudgetPost) => {
   const response = await axios.post<BudgetPost>(api + "Budget", budgetPost);
   return response.data;
 };
 
-export const UserDeleteBudgetService = async (id: string) => {
+export const DeleteBudgetService = async (id: string) => {
   const response = await axios.delete(`${api}Budget/${id}`);
   return response.data;
 };

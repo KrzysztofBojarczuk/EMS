@@ -29,14 +29,14 @@ const Navbar = (props: Props) => {
           command: () => navigate("/Task"),
         },
         {
-          label: "Local and Reservations",
-          icon: "pi pi-warehouse",
-          command: () => navigate("/LocalsAndReservations"),
-        },
-        {
           label: "Employees",
           icon: "pi pi-user",
           command: () => navigate("/Employee"),
+        },
+        {
+          label: "Vehicles",
+          icon: "pi pi-car",
+          command: () => navigate("/Vehicle"),
         },
         {
           label: "Budget",
@@ -44,14 +44,14 @@ const Navbar = (props: Props) => {
           command: () => navigate("/Budget"),
         },
         {
+          label: "Local and Reservations",
+          icon: "pi pi-warehouse",
+          command: () => navigate("/LocalsAndReservations"),
+        },
+        {
           label: "Addresses",
           icon: "pi pi-address-book",
           command: () => navigate("/Address"),
-        },
-        {
-          label: "Vehicles",
-          icon: "pi pi-car",
-          command: () => navigate("/Vehicle"),
         }
       );
     }

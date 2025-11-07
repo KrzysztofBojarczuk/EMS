@@ -7,7 +7,7 @@ import { Button } from "primereact/button";
 import { InputIcon } from "primereact/inputicon";
 import {
   UserGetEmployeesForListService,
-  UserPostListEmployeesService,
+  PostListEmployeesService,
 } from "../../../Services/EmployeeService";
 import { EmployeeListPost } from "../../../Models/EmployeeList";
 
@@ -63,7 +63,7 @@ const AddListEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     };
 
     try {
-      await UserPostListEmployeesService(postData);
+      await PostListEmployeesService(postData);
       onAddSuccess();
       onClose();
       reset();

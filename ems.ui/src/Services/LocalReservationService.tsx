@@ -19,12 +19,12 @@ export const UserGetLocalService = async (
   return response.data;
 };
 
-export const UserPostLocalService = async (localPost: LocalPost) => {
+export const PostLocalService = async (localPost: LocalPost) => {
   const response = await axios.post<LocalPost>(api + "Local", localPost);
   return response.data;
 };
 
-export const UserPostReservationService = async (
+export const PostReservationService = async (
   reservationPost: ReservationPost
 ) => {
   const response = await axios.post<ReservationPost>(
@@ -59,10 +59,7 @@ export const DeleteLocalService = async (id: string) => {
   return response.data;
 };
 
-export const UserUpdateLocalService = async (
-  localPost: LocalPost,
-  id: string
-) => {
+export const UpdateLocalService = async (localPost: LocalPost, id: string) => {
   const response = await axios.put<LocalPost>(`${api}Local/${id}`, localPost);
   return response.data;
 };

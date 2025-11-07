@@ -21,7 +21,7 @@ import { Paginator } from "primereact/paginator";
 import {
   DeleteTaskService,
   UserGetTaskService,
-  UserUpdateTaskStatusService,
+  UpdateTaskStatusService,
 } from "../../../Services/TaskService";
 import { StatusOfTask } from "../../../Enum/StatusOfTask";
 import {
@@ -107,7 +107,7 @@ const ListTask = (props: Props) => {
       taskId: string,
       newStatus: StatusOfTask
     ) => {
-      await UserUpdateTaskStatusService(taskId, newStatus);
+      await UpdateTaskStatusService(taskId, newStatus);
       // const updatedTasks = tasks.map((task) => {
       //   if (task.id === taskId) {
       //     return { ...task, status: newStatus };

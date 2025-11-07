@@ -5,7 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
-import { UserUpdateLocalService } from "../../../Services/LocalReservationService";
+import { UpdateLocalService } from "../../../Services/LocalReservationService";
 
 interface UpdateLocalProps {
   local: LocalGet;
@@ -33,7 +33,7 @@ const UpdateLocal: React.FC<UpdateLocalProps> = ({
   });
 
   const onSubmit = async (data: LocalPost) => {
-    await UserUpdateLocalService(data, local.id);
+    await UpdateLocalService(data, local.id);
     onUpdateSuccess();
     onClose();
   };

@@ -13,7 +13,7 @@ import { AddressGet } from "../../../Models/Address";
 import { EmployeeListGet } from "../../../Models/EmployeeList";
 import { UserGetListForTaskEmployeesService } from "../../../Services/EmployeeService";
 import { UserGetAddressForTaskService } from "../../../Services/AddressService";
-import { UserPostTaskService } from "../../../Services/TaskService";
+import { PostTaskService } from "../../../Services/TaskService";
 
 type Props = {
   onClose: () => void;
@@ -119,7 +119,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   };
 
   const onSubmit = async (data: any) => {
-    await UserPostTaskService({
+    await PostTaskService({
       name: data.name,
       description: data.description,
       employeeListIds: selectedListEmployees,

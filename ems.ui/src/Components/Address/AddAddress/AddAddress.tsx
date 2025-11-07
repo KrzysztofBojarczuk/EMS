@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { Button } from "primereact/button";
-import { UserPostAddressService } from "../../../Services/AddressService";
+import { PostAddressService } from "../../../Services/AddressService";
 import { AddressPost } from "../../../Models/Address";
 
 type Props = {
@@ -28,7 +28,7 @@ const AddAddress: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   });
 
   const onSubmit = async (data: AddressPost) => {
-    await UserPostAddressService(data);
+    await PostAddressService(data);
     onAddSuccess();
     onClose();
     reset();

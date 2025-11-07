@@ -5,7 +5,7 @@ import { InputMask } from "primereact/inputmask";
 import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { EmployeePost } from "../../../Models/Employee";
-import { UserPostEmployeesService } from "../../../Services/EmployeeService";
+import { PostEmployeesService } from "../../../Services/EmployeeService";
 
 type Props = {
   onClose: () => void;
@@ -28,7 +28,7 @@ const AddEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   });
 
   const onSubmit = async (data: EmployeePost) => {
-    await UserPostEmployeesService(data);
+    await PostEmployeesService(data);
     onAddSuccess();
     onClose();
     reset();
