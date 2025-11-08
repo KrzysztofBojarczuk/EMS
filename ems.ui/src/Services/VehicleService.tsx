@@ -7,7 +7,7 @@ import {
 
 const api = "https://localhost:7256/api/";
 
-export const UserPostVehicleService = async (vehiclePost: VehiclePost) => {
+export const PostVehicleService = async (vehiclePost: VehiclePost) => {
   const response = await axios.post<VehiclePost>(api + "Vehicle", vehiclePost);
   return response.data;
 };
