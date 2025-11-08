@@ -25,7 +25,7 @@ import {
 } from "../../../Services/LocalReservationService";
 import { formatDateTime } from "../../Utils/DateUtils";
 import AddLocal from "../AddLocal/AddLocal";
-import AddReservation from "../MakeReservation/AddReservation";
+import AddReservation from "../AddReservation/AddReservation";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateLocal from "../UpdateLocal/UpdateLocal";
 

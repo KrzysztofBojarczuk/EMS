@@ -62,7 +62,7 @@ const AddTransaction: React.FC<Props> = ({
           control={control}
           rules={{
             required: "Amount is required",
-            min: { value: 1, message: "Amount must be greater than 0" },
+            min: { value: 0, message: "Amount must be greater than 0" },
           }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">

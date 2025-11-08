@@ -22,6 +22,8 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
+import { Dialog } from "primereact/dialog";
+import AddVehicle from "../AddVehicle/AddVehicle";
 
 interface VehicleTypeOption {
   name: string;
@@ -44,6 +46,8 @@ const ListVehicle = () => {
 
   const [deleteVehicleId, setDeleteVehicleId] = useState<string | null>(null);
   const [confirmVehicleVisible, setConfirmVehicleVisible] = useState(false);
+
+  const [visibleVehicle, setVisibleVehicle] = useState<boolean>(false);
 
   const resetFilters = () => {
     setDateFrom(null);
@@ -139,6 +143,11 @@ const ListVehicle = () => {
     setConfirmVehicleVisible(true);
   };
 
+  const handleAddSuccess = () => {
+    const currentPage = Math.floor(firstVehicle / rowsVehicle) + 1;
+    goToPageVehicle(currentPage, rowsVehicle);
+  };
+
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
@@ -191,6 +200,21 @@ const ListVehicle = () => {
           icon="pi pi-refresh"
           onClick={resetFilters}
         />
+
+        <Button label="Add Vehicle" onClick={() => setVisibleVehicle(true)} />
+        <Dialog
+          header="Add Vehicle"
+          visible={visibleVehicle}
+          onHide={() => {
+            if (!visibleVehicle) return;
+            setVisibleVehicle(false);
+          }}
+        >
+          <AddVehicle
+            onClose={() => setVisibleVehicle(false)}
+            onAddSuccess={handleAddSuccess}
+          />
+        </Dialog>
       </div>
 
       <DataTable value={vehicle} tableStyle={{ minWidth: "50rem" }}>
