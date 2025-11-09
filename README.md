@@ -42,9 +42,8 @@ Locals and Reservations:
 
 Addresses:
 ![24](https://github.com/user-attachments/assets/ff029566-feb4-4412-935a-00271252165e)
-![25](https://github.com/user-attachments/assets/923ce682-3cd4-4b04-b41f-5d0d20b5a9ee)
-![26](https://github.com/user-attachments/assets/8bbb451f-325e-4fbe-aa41-4f2127788024)
-
+![25](https://github.com/user-attachments/assets/0d7b14b9-80b2-4b60-957d-bc611f838a3a)
+![26](https://github.com/user-attachments/assets/8766ccf7-6994-40f2-bec9-2f1750dbb36e)
 
 Admin dashboard:
 ![27](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
