@@ -10,10 +10,8 @@ Tasks:
 ![3](https://github.com/user-attachments/assets/bcc50d62-70b7-4752-9cef-0e9141d2c1e7)
 ![4](https://github.com/user-attachments/assets/fd662b76-6025-4037-bb2f-84ee0bbb7e86)
 ![5](https://github.com/user-attachments/assets/f7b67fff-6cc3-4254-954b-9b30cf6a988a)
-![6](https://github.com/user-attachments/assets/97718f81-d629-4dfe-9769-f34099843c15)
-![7](https://github.com/user-attachments/assets/83783df3-774e-4420-b4fd-16239f06cf77)
-![8](https://github.com/user-attachments/assets/4f0a55f7-77a2-4ebc-83d1-703fa3069be1)
-![9](https://github.com/user-attachments/assets/8fe62b8c-b457-47ca-8105-0592a77039b7)
+![6](https://github.com/user-attachments/assets/4f0a55f7-77a2-4ebc-83d1-703fa3069be1)
+![7](https://github.com/user-attachments/assets/8fe62b8c-b457-47ca-8105-0592a77039b7)
 
 Locals and Reservations:
 
