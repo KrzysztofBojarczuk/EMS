@@ -10,7 +10,7 @@ Tasks:
 ![3](https://github.com/user-attachments/assets/bcc50d62-70b7-4752-9cef-0e9141d2c1e7)
 ![4](https://github.com/user-attachments/assets/fd662b76-6025-4037-bb2f-84ee0bbb7e86)
 ![5](https://github.com/user-attachments/assets/f7b67fff-6cc3-4254-954b-9b30cf6a988a)
-![6](https://github.com/user-attachments/assets/15424449-3092-4968-a5e7-bacc950203d5)
+![6](https://github.com/user-attachments/assets/b2b71e9f-f899-49b6-a117-097fc99b78b3)
 ![7](https://github.com/user-attachments/assets/d4175f33-6f21-42a8-8a2d-630a1797e1be)
 
 Employees and Lists Employee:
