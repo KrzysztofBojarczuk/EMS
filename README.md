@@ -6,10 +6,14 @@ After login user has acces to his resources:
 ![1](https://github.com/user-attachments/assets/b0bc9fd4-e8b0-4f4f-aa11-fd4995ba9401)
 
 Tasks:
-![2](https://github.com/user-attachments/assets/3aa72e47-7a94-4ea4-a296-12bf6fa92be1)
-![3](https://github.com/user-attachments/assets/c613b50a-b08c-43d3-820c-06602cb121a7)
-![4](https://github.com/user-attachments/assets/83783df3-774e-4420-b4fd-16239f06cf77)
-![5](https://github.com/user-attachments/assets/4f0a55f7-77a2-4ebc-83d1-703fa3069be1)
+![2](https://github.com/user-attachments/assets/a970b557-4bbd-4f07-9731-304ab9adaa46)
+![3](https://github.com/user-attachments/assets/bcc50d62-70b7-4752-9cef-0e9141d2c1e7)
+![4](https://github.com/user-attachments/assets/fd662b76-6025-4037-bb2f-84ee0bbb7e86)
+![5](https://github.com/user-attachments/assets/f7b67fff-6cc3-4254-954b-9b30cf6a988a)
+![6](https://github.com/user-attachments/assets/97718f81-d629-4dfe-9769-f34099843c15)
+![7](https://github.com/user-attachments/assets/83783df3-774e-4420-b4fd-16239f06cf77)
+![8](https://github.com/user-attachments/assets/4f0a55f7-77a2-4ebc-83d1-703fa3069be1)
+![9](https://github.com/user-attachments/assets/8fe62b8c-b457-47ca-8105-0592a77039b7)
 
 Locals and Reservations:
 
