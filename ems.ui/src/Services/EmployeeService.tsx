@@ -56,8 +56,8 @@ export const DeleteEmployeesService = async (id: string) => {
 };
 
 export const UpdateEmployeesService = async (
-  employeePost: EmployeePost,
-  id: string
+  id: string,
+  employeePost: EmployeePost
 ) => {
   const response = await axios.put<EmployeePost>(
     `${api}Employee/${id}`,

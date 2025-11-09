@@ -44,8 +44,8 @@ export const DeleteAddressService = async (id: string) => {
 };
 
 export const UpdateAddressService = async (
-  addressPost: AddressPost,
-  id: string
+  id: string,
+  addressPost: AddressPost
 ) => {
   const response = await axios.put<AddressPost>(
     `${api}Address/${id}`,

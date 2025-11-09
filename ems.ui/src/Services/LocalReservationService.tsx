@@ -59,7 +59,7 @@ export const DeleteLocalService = async (id: string) => {
   return response.data;
 };
 
-export const UpdateLocalService = async (localPost: LocalPost, id: string) => {
+export const UpdateLocalService = async (id: string, localPost: LocalPost) => {
   const response = await axios.put<LocalPost>(`${api}Local/${id}`, localPost);
   return response.data;
 };

@@ -33,7 +33,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
   });
 
   const onSubmit = async (data: EmployeePost) => {
-    await UpdateEmployeesService(data, employee.id);
+    await UpdateEmployeesService(employee.id, data);
     onUpdateSuccess();
     onClose();
   };

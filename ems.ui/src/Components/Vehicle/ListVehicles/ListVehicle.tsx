@@ -24,6 +24,7 @@ import { Button } from "primereact/button";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import { Dialog } from "primereact/dialog";
 import AddVehicle from "../AddVehicle/AddVehicle";
+import UpdateVehicle from "../UpdateVehicle/UpdateVehicle";
 
 interface VehicleTypeOption {
   name: string;
@@ -48,6 +49,11 @@ const ListVehicle = () => {
   const [confirmVehicleVisible, setConfirmVehicleVisible] = useState(false);
 
   const [visibleVehicle, setVisibleVehicle] = useState<boolean>(false);
+
+  const [selectedVehicle, setSelectedVehicle] = useState<VehicleGet | null>(
+    null
+  );
+  const [updateVisible, setUpdateVisible] = useState(false);
 
   const resetFilters = () => {
     setDateFrom(null);
@@ -148,6 +154,17 @@ const ListVehicle = () => {
     goToPageVehicle(currentPage, rowsVehicle);
   };
 
+  const showUpdateDialog = (vehicle: VehicleGet) => {
+    setSelectedVehicle(vehicle);
+    setUpdateVisible(true);
+  };
+
+  const handleUpdateSuccess = () => {
+    const currentPage = Math.floor(firstVehicle / rowsVehicle) + 1;
+    goToPageVehicle(currentPage, rowsVehicle);
+    setUpdateVisible(false);
+  };
+
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
@@ -240,11 +257,22 @@ const ListVehicle = () => {
         <Column
           header="Action"
           body={(rowData) => (
-            <i
-              className="pi pi-trash"
-              style={{ fontSize: "1.5rem", cursor: "pointer" }}
-              onClick={() => showVehicleDeleteConfirmation(rowData.id)}
-            ></i>
+            <>
+              <i
+                className="pi pi-pencil"
+                style={{
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  marginRight: "10px",
+                }}
+                onClick={() => showUpdateDialog(rowData)}
+              ></i>
+              <i
+                className="pi pi-trash"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => showVehicleDeleteConfirmation(rowData.id)}
+              ></i>
+            </>
           )}
         />
       </DataTable>
@@ -264,6 +292,19 @@ const ListVehicle = () => {
         onConfirm={handleDeleteVehicle}
         onCancel={() => setConfirmVehicleVisible(false)}
       />
+      <Dialog
+        header="Update Vehicle"
+        visible={updateVisible}
+        onHide={() => setUpdateVisible(false)}
+      >
+        {selectedVehicle && (
+          <UpdateVehicle
+            vehicle={selectedVehicle}
+            onClose={() => setUpdateVisible(false)}
+            onUpdateSuccess={handleUpdateSuccess}
+          />
+        )}
+      </Dialog>
     </div>
   );
 };

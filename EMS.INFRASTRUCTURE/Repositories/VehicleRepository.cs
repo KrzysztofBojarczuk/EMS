@@ -107,6 +107,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 vehicle.Model = entity.Model;
                 vehicle.Name = entity.Name;
                 vehicle.RegistrationNumber = entity.RegistrationNumber;
+                vehicle.Mileage = entity.Mileage;
                 vehicle.VehicleType = entity.VehicleType;
                 vehicle.DateOfProduction = entity.DateOfProduction;
                 vehicle.IsAvailable = entity.IsAvailable;
