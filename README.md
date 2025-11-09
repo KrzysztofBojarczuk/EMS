@@ -42,10 +42,11 @@ Locals and Reservations:
 
 Addresses:
 ![24](https://github.com/user-attachments/assets/ff029566-feb4-4412-935a-00271252165e)
-![25](https://github.com/user-attachments/assets/0d7b14b9-80b2-4b60-957d-bc611f838a3a)
-![26](https://github.com/user-attachments/assets/8766ccf7-6994-40f2-bec9-2f1750dbb36e)
+![25](https://github.com/user-attachments/assets/dcbb79be-b507-4a94-8cb5-ed126959a22f)
+![26](https://github.com/user-attachments/assets/af0d5904-d79b-4978-8dba-d8a8aa719ff0)
+![28](https://github.com/user-attachments/assets/8766ccf7-6994-40f2-bec9-2f1750dbb36e)
 
 Admin dashboard:
-![27](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
-![28](https://github.com/user-attachments/assets/a715bac4-3d61-4d31-966e-55c98a252070)
-![29](https://github.com/user-attachments/assets/29d2409f-251e-46c1-8986-1aa6854fe44a)
+![28](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
+![29](https://github.com/user-attachments/assets/a715bac4-3d61-4d31-966e-55c98a252070)
+![30](https://github.com/user-attachments/assets/29d2409f-251e-46c1-8986-1aa6854fe44a)
