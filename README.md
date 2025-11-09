@@ -13,11 +13,6 @@ Tasks:
 ![6](https://github.com/user-attachments/assets/15424449-3092-4968-a5e7-bacc950203d5)
 ![7](https://github.com/user-attachments/assets/8dd5700d-36d3-4b01-a78f-e113a90a1ae5)
 
-Locals and Reservations:
-
-![6](https://github.com/user-attachments/assets/35effe80-3c2b-4b07-8f4b-fca8fd7d821e)
-![7](https://github.com/user-attachments/assets/be07c2cf-290b-4783-a178-a8494a7fd7f1)
-![8](https://github.com/user-attachments/assets/ab7c214b-18a4-449f-bfbb-1ed266038451)
 
 Employees and Lists Employee:
 ![9](https://github.com/user-attachments/assets/dc8283ca-5b76-437b-8a46-8c80a1723d47)
@@ -29,18 +24,29 @@ Employees and Lists Employee:
 ![15](https://github.com/user-attachments/assets/0d6157f7-63bc-4aa4-8f7f-a934a5bae29c)
 ![16](https://github.com/user-attachments/assets/68830e74-a038-4fa9-a0b2-033f0e1322e1)
 
-<!--![5](https://github.com/user-attachments/assets/eb410c30-720c-4ce7-aac9-d1faced2f45d)-->
+Vehicles
+![17](https://github.com/user-attachments/assets/5e5c4b76-72c9-4afb-a57a-6db40439dae4)
+![18](https://github.com/user-attachments/assets/f07392d3-ef67-4997-ac98-6074994753e0)
+![19](https://github.com/user-attachments/assets/8eba388c-76aa-466b-ab54-e7075a3f85c7)
+![20](https://github.com/user-attachments/assets/84c99a96-b197-4040-bbac-cc0a66ca35c0)
 
 Budget:
-<img width="1183" height="1161" alt="image" src="https://github.com/user-attachments/assets/ac707a17-e8eb-4a2e-8798-8a96707de288" />
-<img width="1174" height="889" alt="image" src="https://github.com/user-attachments/assets/8c1c893a-f630-49ec-9a51-5dd5c493f737" />
-<img width="1101" height="916" alt="image" src="https://github.com/user-attachments/assets/ff233909-fe56-4baa-bea9-5de64a148e82" />
+![21](https://github.com/user-attachments/assets/ac707a17-e8eb-4a2e-8798-8a96707de288)
+![22](https://github.com/user-attachments/assets/8c1c893a-f630-49ec-9a51-5dd5c493f737)
+![23](https://github.com/user-attachments/assets/ff233909-fe56-4baa-bea9-5de64a148e82)
 
-![17](https://github.com/user-attachments/assets/fedc41e0-2ecb-4860-bec3-ce0c28e7c7ce)
-![18](https://github.com/user-attachments/assets/467fd818-bf6d-463f-8057-167b2a31fd82)
-![19](https://github.com/user-attachments/assets/5abb7f06-aaa5-4945-8b6d-da743204590d)
+Locals and Reservations:
+![23](https://github.com/user-attachments/assets/c7db3e93-759f-4a84-8eb9-54a23f6a3642)
+![23](https://github.com/user-attachments/assets/1a8cc217-f14a-4b25-a038-b31a6023cb31)
+![23](https://github.com/user-attachments/assets/c555958f-6dc3-41e1-ab6a-6e507be924f6)
+
+Addresses:
+![24](https://github.com/user-attachments/assets/ff029566-feb4-4412-935a-00271252165e)
+![25](https://github.com/user-attachments/assets/923ce682-3cd4-4b04-b41f-5d0d20b5a9ee)
+![26](https://github.com/user-attachments/assets/8bbb451f-325e-4fbe-aa41-4f2127788024)
+
 
 Admin dashboard:
-![20](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
-![21](https://github.com/user-attachments/assets/a715bac4-3d61-4d31-966e-55c98a252070)
-![22](https://github.com/user-attachments/assets/29d2409f-251e-46c1-8986-1aa6854fe44a)
+![27](https://github.com/user-attachments/assets/19bf3cbd-956c-41aa-9402-a4fc102f32cf)
+![28](https://github.com/user-attachments/assets/a715bac4-3d61-4d31-966e-55c98a252070)
+![29](https://github.com/user-attachments/assets/29d2409f-251e-46c1-8986-1aa6854fe44a)
