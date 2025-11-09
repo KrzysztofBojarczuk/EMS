@@ -40,7 +40,7 @@ Locals and Reservations:
 ![23](https://github.com/user-attachments/assets/0da98c0a-5918-4ca0-8383-7b0edd267a23)
 
 Addresses:
-![24](https://github.com/user-attachments/assets/ff029566-feb4-4412-935a-00271252165e)
+![24](https://github.com/user-attachments/assets/06a7dab0-bf33-44dc-90b3-4ac831d9908)
 ![25](https://github.com/user-attachments/assets/dcbb79be-b507-4a94-8cb5-ed126959a22f)
 ![26](https://github.com/user-attachments/assets/af0d5904-d79b-4978-8dba-d8a8aa719ff0)
 ![28](https://github.com/user-attachments/assets/8766ccf7-6994-40f2-bec9-2f1750dbb36e)
