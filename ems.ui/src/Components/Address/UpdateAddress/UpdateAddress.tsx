@@ -32,7 +32,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
   });
 
   const onSubmit = async (data: AddressPost) => {
-    await UpdateAddressService(data, address.id);
+    await UpdateAddressService(address.id, data);
     onUpdateSuccess();
     onClose();
     reset();

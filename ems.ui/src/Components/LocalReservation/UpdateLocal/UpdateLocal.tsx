@@ -33,7 +33,7 @@ const UpdateLocal: React.FC<UpdateLocalProps> = ({
   });
 
   const onSubmit = async (data: LocalPost) => {
-    await UpdateLocalService(data, local.id);
+    await UpdateLocalService(local.id, data);
     onUpdateSuccess();
     onClose();
   };

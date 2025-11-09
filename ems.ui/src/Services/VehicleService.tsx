@@ -63,8 +63,8 @@ export const DeleteVehicleService = async (id: string) => {
 };
 
 export const UpdateVehicleService = async (
-  vehiclePost: VehiclePost,
-  id: string
+  id: string,
+  vehiclePost: VehiclePost
 ) => {
   const response = await axios.put<VehiclePost>(
     `${api}Vehicle/${id}`,
