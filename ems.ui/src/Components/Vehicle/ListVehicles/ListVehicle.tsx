@@ -121,7 +121,7 @@ const ListVehicle = () => {
     goToPageVehicle(event.page + 1, event.rows);
   };
 
-  const buttonToggleVehicleType = (selectedVehicleType: string[]) => {
+  const selectButtonVehicleType = (selectedVehicleType: string[]) => {
     seVehicleType(selectedVehicleType);
   };
 
@@ -179,7 +179,7 @@ const ListVehicle = () => {
 
         <SelectButton
           value={vehicleType}
-          onChange={(e) => buttonToggleVehicleType(e.value)}
+          onChange={(e) => selectButtonVehicleType(e.value)}
           optionLabel="name"
           options={vehicleTypeOptions}
           multiple
@@ -233,11 +233,11 @@ const ListVehicle = () => {
           />
         </Dialog>
       </div>
-
       <DataTable value={vehicle} tableStyle={{ minWidth: "50rem" }}>
         <Column field="id" header="Id"></Column>
         <Column field="brand" header="Brand"></Column>
         <Column field="model" header="Model"></Column>
+        <Column field="name" header="Name"></Column>
         <Column
           field="registrationNumber"
           header="Registration Number"
@@ -276,7 +276,6 @@ const ListVehicle = () => {
           )}
         />
       </DataTable>
-
       <Paginator
         first={firstVehicle}
         rows={rowsVehicle}

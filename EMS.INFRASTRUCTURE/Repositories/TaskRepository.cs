@@ -9,9 +9,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class TaskRepository(AppDbContext dbContext) : ITaskRepository
     {
-        public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
+        public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<StatusOfTask> statusOfTask, string sortOrderDate)
         {
-            var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities)
+            var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities).Include(x => x.VehicleEntities)
                                        .Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
@@ -20,7 +20,36 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            query = query.OrderByDescending(x => x.EndDate);
+            if (statusOfTask != null && statusOfTask.Any())
+            {
+                query = query.Where(x => statusOfTask.Contains(x.Status));
+            }
+
+            if (!string.IsNullOrEmpty(sortOrderDate))
+            {
+                switch (sortOrderDate)
+                {
+                    case "start_asc":
+                        query = query.OrderBy(x => x.StartDate);
+                        break;
+                    case "start_desc":
+                        query = query.OrderByDescending(x => x.StartDate);
+                        break;
+                    case "end_asc":
+                        query = query.OrderBy(x => x.EndDate);
+                        break;
+                    case "end_desc":
+                        query = query.OrderByDescending(x => x.EndDate);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.EndDate);
+                        break;
+                }
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.EndDate);
+            }
 
             return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }
@@ -30,7 +59,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> EmployeeListIds)
+        public async Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> EmployeeListIds, List<Guid> VehicleIds)
         { 
             entity.Id = Guid.NewGuid(); // Przypisanie nowego identyfikatora
 
@@ -40,6 +69,14 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 item.TaskId = entity.Id;
             }
+
+            var vehicles = await dbContext.Vehicles.Where(x => VehicleIds.Contains(x.Id)).ToListAsync();
+
+            foreach (var item in vehicles)
+            {
+                item.TaskId = entity.Id;
+            }
+
             entity.StartDate = entity.StartDate.ToLocalTime();
             entity.EndDate = entity.EndDate.ToLocalTime();
 
@@ -62,6 +99,13 @@ namespace EMS.INFRASTRUCTURE.Repositories
                     item.TaskId = null;
                 }
 
+                var vehiclesEntities = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+
+                foreach (var item in vehiclesEntities)
+                {
+                    item.TaskId = null;
+                }
+
                 dbContext.Tasks.Remove(task);
                 return await dbContext.SaveChangesAsync() > 0;
             }
@@ -78,6 +122,13 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
                 foreach (var item in employeeListsEntities)
+                {
+                    item.TaskId = null;
+                }
+
+                var vehiclesEntities = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+
+                foreach (var item in vehiclesEntities)
                 {
                     item.TaskId = null;
                 }

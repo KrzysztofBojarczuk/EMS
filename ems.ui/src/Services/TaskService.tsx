@@ -1,5 +1,6 @@
 import axios from "axios";
 import { PaginatedTaskResponse, TaskGet, TaskPost } from "../Models/Task";
+import { StatusOfTask } from "../Enum/StatusOfTask";
 
 const api = "https://localhost:7256/api/";
 
@@ -18,17 +19,33 @@ export const GetTaskService = async (
 export const UserGetTaskService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm: string
-) => {
-  const response = await axios.get<PaginatedTaskResponse>(api + "Task/User", {
-    params: { pageNumber, pageSize, searchTerm },
-  });
+  searchTerm?: string,
+  statusOfTask?: string[],
+  sortOrderDate?: string | null
+): Promise<PaginatedTaskResponse> => {
+  const params = new URLSearchParams();
+
+  params.append("pageNumber", pageNumber.toString());
+  params.append("pageSize", pageSize.toString());
+
+  if (searchTerm?.trim()) params.append("searchTerm", searchTerm.trim());
+
+  if (statusOfTask && statusOfTask.length > 0)
+    statusOfTask.forEach((status) =>
+      params.append("statusOfTask", status.toString())
+    );
+
+  if (sortOrderDate) params.append("sortOrderDate", sortOrderDate);
+
+  const response = await axios.get<PaginatedTaskResponse>(
+    `${api}Task/User?${params.toString()}`
+  );
 
   return response.data;
 };
 
 export const PostTaskService = async (taskPost: TaskPost) => {
-  const response = await axios.post<TaskPost>(api + "Task", taskPost);
+  const response = await axios.post<TaskPost>(api + "Task/", taskPost);
   return response.data;
 };
 

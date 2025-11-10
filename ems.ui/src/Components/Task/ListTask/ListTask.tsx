@@ -27,11 +27,19 @@ import { StatusOfTask } from "../../../Enum/StatusOfTask";
 import {
   dateBodyTemplate,
   statusOfTaskBodyTemplate,
+  taskTypeToText,
 } from "../../Utils/TaskTemplates";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import AddTask from "../AddTask/AddTask";
+import { SelectButton } from "primereact/selectbutton";
+import { Checkbox } from "primereact/checkbox";
 
 type Props = {};
+
+interface TaskTypeOption {
+  name: string;
+  value: StatusOfTask;
+}
 
 const ListTask = (props: Props) => {
   const [tasks, setTasks] = useState<TaskGet[]>([]);
@@ -48,8 +56,42 @@ const ListTask = (props: Props) => {
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
+  const [statusOfTask, setStatusOfTask] = useState<string[]>([]);
+  const [sortOrderDate, setSortOrderDate] = useState<string | null>(null);
+
+  const sortDateOptions = [
+    { label: "None", value: null },
+    { label: "Start Date ↑", value: "start_asc" },
+    { label: "Start Date ↓", value: "start_desc" },
+    { label: "End Date ↑", value: "end_asc" },
+    { label: "End Date ↓", value: "end_desc" },
+  ];
+
+  const taskTypeOptions: TaskTypeOption[] = Object.entries(
+    taskTypeToText as Record<StatusOfTask, string>
+  ).map(([key, value]) => ({
+    name: value as string,
+    value: Number(key) as StatusOfTask,
+  }));
+
+  const selectButtonStatusTask = (selectedCategories: string[]) => {
+    setStatusOfTask(selectedCategories);
+  };
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setStatusOfTask([]);
+    setSortOrderDate(null);
+  };
+
   const fetchTasks = async (page: number, size: number) => {
-    const data = await UserGetTaskService(page, size, searchTerm);
+    const data = await UserGetTaskService(
+      page,
+      size,
+      searchTerm,
+      statusOfTask,
+      sortOrderDate
+    );
     setTasks(data.taskGet);
     setTotalTasks(data.totalItems);
   };
@@ -62,7 +104,7 @@ const ListTask = (props: Props) => {
 
   useEffect(() => {
     goToPage(1, rowsTask);
-  }, [searchTerm]);
+  }, [searchTerm, statusOfTask, sortOrderDate]);
 
   const allowExpansion = (rowData: TaskGet) => {
     return rowData.id!.length > 0;
@@ -150,6 +192,20 @@ const ListTask = (props: Props) => {
           )}
         </div>
         <div className="col">
+          <h4>Assigned Vehicles</h4>
+          {data.vehicles && data.vehicles.length > 0 ? (
+            data.vehicles.map((vehicle) => (
+              <div key={vehicle.id}>
+                <p>
+                  {vehicle.brand} {vehicle.model} {vehicle.name}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p>No Vehicles assigned.</p>
+          )}
+        </div>
+        <div className="col">
           <Dropdown
             value={data.status}
             options={[
@@ -198,6 +254,26 @@ const ListTask = (props: Props) => {
             placeholder="Search"
           />
         </IconField>
+        <SelectButton
+          value={statusOfTask}
+          onChange={(e) => selectButtonStatusTask(e.value)}
+          optionLabel="name"
+          options={taskTypeOptions}
+          multiple
+          className="mr-4"
+        />
+        <Dropdown
+          value={sortOrderDate}
+          options={sortDateOptions}
+          onChange={(e) => setSortOrderDate(e.value)}
+          placeholder="Sort by Date"
+          showClear
+        />
+        <Button
+          label="Reset Filters"
+          icon="pi pi-refresh"
+          onClick={resetFilters}
+        />
         <Button label="Add Task" onClick={() => setVisible(true)} />
         <Dialog
           header="Add Task"
