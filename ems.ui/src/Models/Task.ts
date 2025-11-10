@@ -1,6 +1,7 @@
 import { StatusOfTask } from "../Enum/StatusOfTask";
 import { AddressGet, AddressPost } from "./Address";
 import { EmployeeListGet } from "./EmployeeList";
+import { VehicleGet } from "./Vehicle";
 
 export interface TaskGet {
   id: string;
@@ -11,12 +12,14 @@ export interface TaskGet {
   endDate: string;
   address: AddressGet;
   employeeLists: EmployeeListGet[];
+  vehicles: VehicleGet[];
 }
 
 export interface TaskPost {
   name: string;
   description: string;
   employeeListIds: string[];
+  vehicleIds: string[];
   startDate: string;
   endDate: string;
   addressId: string;

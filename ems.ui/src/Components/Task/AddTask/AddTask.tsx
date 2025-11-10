@@ -14,6 +14,8 @@ import { EmployeeListGet } from "../../../Models/EmployeeList";
 import { UserGetListForTaskEmployeesService } from "../../../Services/EmployeeService";
 import { UserGetAddressForTaskService } from "../../../Services/AddressService";
 import { PostTaskService } from "../../../Services/TaskService";
+import { UserGetVehicleForTaskService } from "../../../Services/VehicleService";
+import { VehicleGet } from "../../../Models/Vehicle";
 
 type Props = {
   onClose: () => void;
@@ -29,6 +31,10 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   );
   const [employeesList, setEmployeesList] = useState<EmployeeListGet[]>([]);
   const [searchTermList, setSearchTermList] = useState("");
+
+  const [vehicles, setVehicles] = useState<VehicleGet[]>([]);
+  const [selectedVehicles, setSelectedVehicles] = useState<string[]>([]);
+  const [vehicleSearchTerm, setVehicleSearchTerm] = useState("");
 
   // const onSelectedListEmployee = (e: CheckboxChangeEvent) => {
   //   let _selectedListEmployees = [...selectedListEmployees];
@@ -48,6 +54,15 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     const data = await UserGetListForTaskEmployeesService(searchTermList);
     setEmployeesList(data);
   };
+
+  const fetchVehicles = async () => {
+    const data = await UserGetVehicleForTaskService(vehicleSearchTerm);
+    setVehicles(data);
+  };
+
+  useEffect(() => {
+    fetchVehicles();
+  }, [vehicleSearchTerm]);
 
   useEffect(() => {
     fetchEmployeesList();
@@ -73,6 +88,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
       name: "",
       description: "",
       employeeListIds: [],
+      vehicleIds: [],
       startDate: null,
       endDate: null,
       address: {
@@ -123,6 +139,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
       name: data.name,
       description: data.description,
       employeeListIds: selectedListEmployees,
+      vehicleIds: selectedVehicles,
       startDate: data.startDate.toISOString(),
       endDate: data.endDate.toISOString(),
       addressId: data.address.id || undefined,
@@ -199,7 +216,33 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                 </div>
               )}
             />
-
+            <Controller
+              name="vehicleIds"
+              control={control}
+              render={({ field }) => (
+                <MultiSelect
+                  {...field}
+                  value={selectedVehicles}
+                  options={vehicles}
+                  onChange={(e) => {
+                    setSelectedVehicles(e.value);
+                    field.onChange(e.value);
+                  }}
+                  onFilter={(e) => setVehicleSearchTerm(e.filter)}
+                  optionLabel="name"
+                  optionValue="id"
+                  placeholder="Select Vehicles"
+                  filter
+                  itemTemplate={(option) => (
+                    <div>
+                      <strong>
+                        {option.brand} {option.model} {option.name}
+                      </strong>
+                    </div>
+                  )}
+                />
+              )}
+            />
             <Controller
               name="startDate"
               control={control}
@@ -220,7 +263,6 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                 </div>
               )}
             />
-
             <Controller
               name="endDate"
               control={control}
@@ -241,7 +283,6 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
             />
           </div>
         </div>
-
         <div className="col-6">
           <div className="flex flex-column px-8 py-5 gap-4">
             <AutoComplete
@@ -300,7 +341,6 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                 </div>
               )}
             />
-
             <div className="inline-flex flex-column gap-2 mt-8">
               <Button label="Submit" type="submit" />
             </div>

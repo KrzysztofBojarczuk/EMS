@@ -50,7 +50,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                         query = query.OrderByDescending(x => x.Mileage);
                         break;
                     default:
-                        query = query.OrderByDescending(x => x.Id);
+                        query = query.OrderByDescending(x => x.Mileage);
                         break;
                 }
             }
@@ -71,7 +71,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                             : query.OrderByDescending(x => x.DateOfProduction);
                         break;
                     default:
-                        query = query.OrderByDescending(x => x.Id);
+                        query = query.Expression.Type == typeof(IOrderedQueryable<VehicleEntity>)
+                             ? ((IOrderedQueryable<VehicleEntity>)query).ThenByDescending(x => x.DateOfProduction)
+                             : query.OrderByDescending(x => x.DateOfProduction);
                         break;
                 }
             }

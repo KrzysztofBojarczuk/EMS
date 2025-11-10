@@ -11,7 +11,8 @@ namespace EMS.APPLICATION.AutoMapper
             CreateMap<TaskCreateDto, TaskEntity>();
             CreateMap<TaskEntity, TaskGetDto>()
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.AddressEntity))
-                .ForMember(dest => dest.EmployeeLists, opt => opt.MapFrom(src => src.EmployeeListsEntities));
+                .ForMember(dest => dest.EmployeeLists, opt => opt.MapFrom(src => src.EmployeeListsEntities))
+                .ForMember(dest => dest.Vehicles, opt => opt.MapFrom(src => src.VehicleEntities));
 
             CreateMap<EmployeeCreateDto, EmployeeEntity>();
             CreateMap<EmployeeEntity, EmployeeGetDto>();

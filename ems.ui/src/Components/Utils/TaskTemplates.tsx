@@ -3,7 +3,7 @@ import { TaskGet } from "../../Models/Task";
 import { StatusOfTask } from "../../Enum/StatusOfTask";
 import { formatDate } from "./DateUtils";
 
-export const statusToText: Record<StatusOfTask, string> = {
+export const taskTypeToText: Record<StatusOfTask, string> = {
   [StatusOfTask.Active]: "Active",
   [StatusOfTask.Done]: "Done",
   [StatusOfTask.Archive]: "Archive",
@@ -24,7 +24,7 @@ export const getStatusOfTask = (task: TaskGet) => {
 
 export const statusOfTaskBodyTemplate = (rowData: TaskGet) => (
   <Tag
-    value={statusToText[rowData.status]}
+    value={taskTypeToText[rowData.status]}
     severity={getStatusOfTask(rowData)}
   ></Tag>
 );

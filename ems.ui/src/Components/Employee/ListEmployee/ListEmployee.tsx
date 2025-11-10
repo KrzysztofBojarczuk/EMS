@@ -187,7 +187,6 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           />
         </IconField>
         <Button label="Add Employee" onClick={() => setVisible(true)} />
-
         <Dialog
           header="Add Employee"
           visible={visible}
@@ -288,7 +287,6 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           )}
         ></Column>
       </DataTable>
-
       <ConfirmationDialog
         visible={confirmListEmployeeVisible}
         header="Confirm Deletion of List Employee"
