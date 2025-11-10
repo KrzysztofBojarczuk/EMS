@@ -14,14 +14,15 @@ Tasks:
 ![7](https://github.com/user-attachments/assets/1702539b-136a-4b73-a5d3-94f9a801d3b3)
 
 Employees and Lists Employee:
-![9](https://github.com/user-attachments/assets/dc8283ca-5b76-437b-8a46-8c80a1723d47)
-![11](https://github.com/user-attachments/assets/592fa6c5-4631-48ad-a362-8a4b9d5dfc24)
-
-![12](https://github.com/user-attachments/assets/280a821d-8417-4af4-b476-a60b2d6e712b)
-![13](https://github.com/user-attachments/assets/80b95127-1802-49f1-9a9d-3b0fb28b60f9)
-![14](https://github.com/user-attachments/assets/2a7ce6dd-7f99-4de1-b0bf-f3a1ec012c18)
-![15](https://github.com/user-attachments/assets/0d6157f7-63bc-4aa4-8f7f-a934a5bae29c)
-![16](https://github.com/user-attachments/assets/68830e74-a038-4fa9-a0b2-033f0e1322e1)
+![8](https://github.com/user-attachments/assets/1a50df59-27b4-493c-8063-728fdfac3622)
+![9](https://github.com/user-attachments/assets/00a0f9a9-2c54-47c2-9e93-e007cd2f97cd)
+![10](https://github.com/user-attachments/assets/d91df6b5-b6d7-4bb7-b446-762ddea82940)
+![11](https://github.com/user-attachments/assets/0bffa5d3-ad28-45b2-a071-70b6fd9393e5)
+![12](https://github.com/user-attachments/assets/4c24a637-faf0-4ecb-a7f8-06ce70eba4d6)
+![13](https://github.com/user-attachments/assets/cfdfdb69-1291-4eb5-9170-3c8e29ed2abf)
+![14](https://github.com/user-attachments/assets/ca1f2fa1-caf2-42bf-a9ae-73242bcbd391)
+![15](https://github.com/user-attachments/assets/a8b156be-7533-4c66-9d18-843ccd33677b)
+![16](https://github.com/user-attachments/assets/2eaba156-0ea1-4a2d-b741-9a43c87601bd)
 
 Vehicles
 ![17](https://github.com/user-attachments/assets/5e5c4b76-72c9-4afb-a57a-6db40439dae4)
