@@ -11,7 +11,7 @@ const api = "https://localhost:7256/api/";
 export const GetEmployeesService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm: string
+  searchTerm?: string
 ) => {
   const response = await axios.get<PaginatedEmployeeResponse>(
     api + "Employee",
@@ -26,19 +26,20 @@ export const GetEmployeesService = async (
 export const UserGetEmployeesService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm: string
+  searchTerm?: string,
+  sortOrderSalary?: string | null
 ) => {
   const response = await axios.get<PaginatedEmployeeResponse>(
     api + "Employee/User",
     {
-      params: { pageNumber, pageSize, searchTerm },
+      params: { pageNumber, pageSize, searchTerm, sortOrderSalary },
     }
   );
 
   return response.data;
 };
 
-export const UserGetEmployeesForListService = async (searchTerm: string) => {
+export const UserGetEmployeesForListService = async (searchTerm?: string) => {
   const response = await axios.get<EmployeeGet[]>(api + "Employee/UserList", {
     params: { searchTerm },
   });

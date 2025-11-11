@@ -6,7 +6,7 @@ const api = "https://localhost:7256/api/";
 export const UserGetService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm: string
+  searchTerm?: string
 ) => {
   const response = await axios.get<PaginatedUserResponse>(
     api + "user/GetAllUser",

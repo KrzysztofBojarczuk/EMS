@@ -176,7 +176,6 @@ const ListVehicle = () => {
             placeholder="Search"
           />
         </IconField>
-
         <SelectButton
           value={vehicleType}
           onChange={(e) => selectButtonVehicleType(e.value)}
@@ -185,7 +184,6 @@ const ListVehicle = () => {
           multiple
           className="mr-4"
         />
-
         <Dropdown
           value={sortOrderMileage}
           options={sortMileageOptions}
@@ -204,20 +202,17 @@ const ListVehicle = () => {
           placeholder="Date to"
           showIcon
         />
-
         <Dropdown
           value={sortOrderDate}
           options={sortDateOptions}
           onChange={(e) => setSortOrderDate(e.value)}
           placeholder="Sort by Date"
         />
-
         <Button
-          label="Reset filters"
+          label="Reset Filters"
           icon="pi pi-refresh"
           onClick={resetFilters}
         />
-
         <Button label="Add Vehicle" onClick={() => setVisibleVehicle(true)} />
         <Dialog
           header="Add Vehicle"

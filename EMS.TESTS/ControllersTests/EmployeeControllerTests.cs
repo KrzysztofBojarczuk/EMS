@@ -79,7 +79,8 @@ namespace EMS.TESTS.ControllersTests
                 x.appUserId == appUserId &&
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
-                x.searchTerm == searchTerm),
+                x.searchTerm == searchTerm &&
+                x.sortOrderSalary == null),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -87,7 +88,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, searchTerm);
+            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, searchTerm, null);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -135,7 +136,8 @@ namespace EMS.TESTS.ControllersTests
                 x.appUserId == appUserId &&
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
-                x.searchTerm == searchTerm),
+                x.searchTerm == searchTerm &&
+                x.sortOrderSalary == null),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -143,7 +145,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, searchTerm);
+            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, searchTerm, null);
 
             // Assert
             var okResult = result as OkObjectResult;

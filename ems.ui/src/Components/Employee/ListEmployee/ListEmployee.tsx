@@ -24,6 +24,7 @@ import AddEmployee from "../AddEmployee/AddEmployee";
 import AddListEmployee from "../AddListEmployee/AddListEmployee";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateEmployee from "../UpdateEmployee/UpdateEmployee";
+import { Dropdown } from "primereact/dropdown";
 
 interface Props {}
 
@@ -53,8 +54,26 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
+  const [sortOrderSalary, setSortOrderSalary] = useState<string | null>(null);
+
+  const sortSalaryOptions = [
+    { label: "None", value: null },
+    { label: "Salary ↑", value: "salary_asc" },
+    { label: "Salary ↓", value: "salary_desc" },
+  ];
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setSortOrderSalary(null);
+  };
+
   const fetchEmployees = async (page: number, size: number) => {
-    const data = await UserGetEmployeesService(page, size, searchTerm);
+    const data = await UserGetEmployeesService(
+      page,
+      size,
+      searchTerm,
+      sortOrderSalary
+    );
     setEmployees(data.employeeGet);
     setTotalEmployees(data.totalItems);
   };
@@ -67,7 +86,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
 
   useEffect(() => {
     goToPage(1, rowsEmployee);
-  }, [searchTerm]);
+  }, [searchTerm, sortOrderSalary]);
 
   const fetchEmployeesList = async () => {
     const data = await UserGetListEmployeesService(searchTermList);
@@ -186,6 +205,18 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
             placeholder="Search Name"
           />
         </IconField>
+        <Dropdown
+          value={sortOrderSalary}
+          options={sortSalaryOptions}
+          onChange={(e) => setSortOrderSalary(e.value)}
+          placeholder="Sort by Salary"
+          showClear
+        />
+        <Button
+          label="Reset Filters"
+          icon="pi pi-refresh"
+          onClick={resetFilters}
+        />
         <Button label="Add Employee" onClick={() => setVisible(true)} />
         <Dialog
           header="Add Employee"

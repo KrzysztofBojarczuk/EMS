@@ -10,7 +10,7 @@ const api = "https://localhost:7256/api/";
 export const UserGetLocalService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm: string
+  searchTerm?: string
 ) => {
   const response = await axios.get<PaginatedLocalResponse>(api + "Local", {
     params: { pageNumber, pageSize, searchTerm },
@@ -37,7 +37,7 @@ export const PostReservationService = async (
 export const UserGetReservationService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm: string
+  searchTerm?: string
 ) => {
   const response = await axios.get<PaginatedReservationResponse>(
     api + "Reservation",
