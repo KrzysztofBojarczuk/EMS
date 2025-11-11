@@ -17,13 +17,13 @@ namespace EMS.API.Controllers
     {
         [HttpGet("User")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetUserEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrderSalary = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var paginatedEmployees = await sender.Send(new GetUserEmployeesQuery(appUser.Id, pageNumber, pageSize, searchTerm));
+            var paginatedEmployees = await sender.Send(new GetUserEmployeesQuery(appUser.Id, pageNumber, pageSize, searchTerm, sortOrderSalary));
 
             var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
 

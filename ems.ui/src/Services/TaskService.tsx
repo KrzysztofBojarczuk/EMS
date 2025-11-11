@@ -7,7 +7,7 @@ const api = "https://localhost:7256/api/";
 export const GetTaskService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm: string
+  searchTerm?: string
 ) => {
   const response = await axios.get<PaginatedTaskResponse>(api + "Task", {
     params: { pageNumber, pageSize, searchTerm },

@@ -8,13 +8,29 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class EmployeeRepository(AppDbContext dbContext) : IEmployeeRepository
     {
-        public async Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
+        public async Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrderSalary)
         {
             var query = dbContext.Employees.Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(sortOrderSalary))
+            {
+                switch (sortOrderSalary)
+                {
+                    case "salary_asc":
+                        query = query.OrderBy(x => x.Salary);
+                        break;
+                    case "salary_desc":
+                        query = query.OrderByDescending(x => x.Salary);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.Salary);
+                        break;
+                }
             }
 
             return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);
