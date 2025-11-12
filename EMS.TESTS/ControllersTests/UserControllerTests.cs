@@ -95,7 +95,7 @@ namespace EMS.TESTS.ControllersTests
                 new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
             };
 
-            var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count, pageNumber, pageSize);
+            var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
             _mockSender.Setup(x => x.Send(It.Is<GetAllUserQuery>(x =>
                 x.pageNumber == pageNumber &&

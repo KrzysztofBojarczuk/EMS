@@ -29,7 +29,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 Id = employeeId,
                 Name = "Jane Doe",
                 Email = "jane.doe@example.com",
-                Phone = "555-1234"
+                Phone = "123-456-789",
+                Salary = 5000
             };
 
             _mockEmployeeRepository.Setup(x => x.GetEmployeeByIdAsync(employeeId))

@@ -63,7 +63,7 @@ namespace EMS.TESTS.ControllersTests
                 new AddressEntity { Id = Guid.NewGuid(), City = "MainCity2", Street = "Street2", Number = "2", ZipCode = "11-111" }
              };
 
-            var paginatedResult = new PaginatedList<AddressEntity>(addressEntities, addressEntities.Count, pageNumber, pageSize);
+            var paginatedResult = new PaginatedList<AddressEntity>(addressEntities, addressEntities.Count(), pageNumber, pageSize);
 
             var expectedDtos = new List<AddressGetDto>
             {

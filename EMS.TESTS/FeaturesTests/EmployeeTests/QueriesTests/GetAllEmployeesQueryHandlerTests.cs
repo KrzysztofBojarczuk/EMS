@@ -28,9 +28,9 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var expectedEmployees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123" },
-                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "456" },
-                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "416" },
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000 },
+                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000 },
+                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000 },
             };
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
@@ -60,8 +60,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var expectedEmployees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123" },
-                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "456" }
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000 },
+                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000 }
             };
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
