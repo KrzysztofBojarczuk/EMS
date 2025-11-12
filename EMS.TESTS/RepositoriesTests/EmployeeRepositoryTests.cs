@@ -32,11 +32,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" },
-                new EmployeeEntity { Name = "Jan", AppUserId = appUserId, Email = "jan@example.com", Phone = "333333333" },
-                new EmployeeEntity { Name = "Adam", AppUserId = appUserId, Email = "adam@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Jan", Email = "jan@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Adam", Email = "adam@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -59,9 +59,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -85,9 +85,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -102,6 +102,35 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeesAsync_SortedBySalaryAscending_Returns_SortedEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var sortOrderSalary = "salary_asc";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
+            var sorted = result.Items.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, sorted.Count());
+            Assert.AreEqual(employees[0].Name, sorted[2].Name);
+            Assert.AreEqual(employees[1].Name, sorted[1].Name);
+            Assert.AreEqual(employees[2].Name, sorted[0].Name);
+        }
+
+        [TestMethod]
         public async Task GetUserNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
@@ -110,9 +139,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId1, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId1, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId2, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId1 },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId1 },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId2 }
             };
 
             _context.Employees.AddRange(employees);
@@ -132,9 +161,9 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -155,11 +184,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" },
-                new EmployeeEntity { Name = "Jan", AppUserId = appUserId, Email = "jan@example.com", Phone = "333333333" },
-                new EmployeeEntity { Name = "Adam", AppUserId = appUserId, Email = "adam@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Jan", Email = "jan@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Adam", Email = "adam@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -182,9 +211,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -208,9 +237,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", AppUserId = appUserId, Email = "grzegorz@example.com", Phone = "111111111" },
-                new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" },
-                new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" }
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -232,8 +261,9 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Name = "Anna Nowak",
                 Email = "anna@example.com",
-                Phone = "123456789",
-                AppUserId = "user123"
+                Phone = "123-456-789",
+                Salary = 5000,
+                AppUserId = "user-id-123"
             };
 
             _context.Employees.Add(employee);
@@ -266,7 +296,8 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Name = "Anna Nowak",
                 Email = "anna@example.com",
-                Phone = "123456789",
+                Phone = "123-456-789",
+                Salary = 5000,
                 AppUserId = "user-id-123"
             };
 
@@ -294,8 +325,8 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Name = "Tomasz Wójcik",
                 Email = "tomasz@example.com",
-                Phone = "111222333",
-                Salary = 4000,
+                Phone = "123-456-789",
+                Salary = 5000,
                 AppUserId = appUserId
             };
 
@@ -306,7 +337,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Name = "Tomasz Nowy",
                 Email = "nowy@example.com",
-                Phone = "444555666",
+                Phone = "123-456-789",
                 Salary = 6500,
                 AppUserId = appUserId
             };
@@ -333,8 +364,8 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Name = "Tomasz Nowy",
                 Email = "nowy@example.com",
-                Phone = "444555666",
-                Salary = 6500,
+                Phone = "123-456-789",
+                Salary = 5000,
                 AppUserId = "user-id-123"
             };
 
@@ -358,7 +389,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Name = "Anna Kowalska",
                 Email = "anna.k@example.com",
-                Phone = "987654321",
+                Phone = "123-456-789",
                 AppUserId = appUserId
             };
 
@@ -399,8 +430,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId = "user-id-123";
 
-            var employee1 = new EmployeeEntity { Name = "Janusz", AppUserId = appUserId, Email = "janusz@example.com", Phone = "222222222" };
-            var employee2 = new EmployeeEntity { Name = "Tomasz", AppUserId = appUserId, Email = "tomasz@example.com", Phone = "333333333" };
+            var employee1 = new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId };
+            var employee2 = new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 7000, AppUserId = appUserId };
 
             _context.Employees.AddRange(employee1, employee2);
             await _context.SaveChangesAsync();
@@ -637,11 +668,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Alice", AppUserId = appUserId, Email = "alice@example.com", Phone = "222222222", EmployeeListId = null },
-                new EmployeeEntity { Name = "John", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
-                new EmployeeEntity { Name = "Tom", AppUserId = appUserId, Email = "tom@example.com", Phone = "444444444", EmployeeListId = null },
-                new EmployeeEntity { Name = "Bob", AppUserId = appUserId, Email = "bob@example.com", Phone = "555555555", EmployeeListId = listId },
-                new EmployeeEntity { Name = "Bob", AppUserId = "user-id-999", Email = "bob@example.com", Phone = "555555555", EmployeeListId =  null  }
+                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = listId },
+                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = "user-id-999", EmployeeListId =  null  }
             };
 
             _context.Employees.AddRange(employees);
@@ -665,12 +696,12 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
-                new EmployeeEntity { Name = "Alice", AppUserId = appUserId, Email = "alice@example.com", Phone = "222222222", EmployeeListId = null },
-                new EmployeeEntity { Name = "John1", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
-                new EmployeeEntity { Name = "Tom", AppUserId = appUserId, Email = "tom@example.com", Phone = "444444444", EmployeeListId = null },
-                new EmployeeEntity { Name = "John2", AppUserId = appUserId, Email = "john2@example.com", Phone = "555555555", EmployeeListId = listId },
-                new EmployeeEntity { Name = "Bob", AppUserId = "user-id-999", Email = "bob@example.com", Phone = "555555555", EmployeeListId =  null  }
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "John2", Email = "john2@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = listId },
+                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = "user-id-999", EmployeeListId =  null  }
             };
 
             _context.Employees.AddRange(employees);
@@ -695,12 +726,12 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
-                new EmployeeEntity { Name = "Alice", AppUserId = appUserId, Email = "alice@example.com", Phone = "222222222", EmployeeListId = null },
-                new EmployeeEntity { Name = "John1", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = null },
-                new EmployeeEntity { Name = "Tom", AppUserId = appUserId, Email = "tom@example.com", Phone = "444444444", EmployeeListId = null },
-                new EmployeeEntity { Name = "John2", AppUserId = appUserId, Email = "john2@example.com", Phone = "555555555", EmployeeListId = listId },
-                new EmployeeEntity { Name = "Bob", AppUserId = "user-id-999", Email = "bob@example.com", Phone = "555555555", EmployeeListId =  null  }
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "Tom",  Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Name = "John2", Email = "john2@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = listId },
+                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = "user-id-999", EmployeeListId =  null  }
             };
 
             _context.Employees.AddRange(employees);
@@ -728,10 +759,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = employeeList[0].Id },
-                new EmployeeEntity { Name = "Alice", AppUserId = appUserId, Email = "alice@example.com", Phone = "222222222", EmployeeListId = employeeList[0].Id },
-                new EmployeeEntity { Name = "John1", AppUserId = appUserId, Email = "john@example.com", Phone = "333333333", EmployeeListId = employeeList[1].Id },
-                new EmployeeEntity { Name = "Tom", AppUserId = appUserId, Email = "tom@example.com", Phone = "444444444", EmployeeListId = employeeList[2].Id },
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[0].Id },
+                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[0].Id },
+                new EmployeeEntity { Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[1].Id },
+                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = employeeList[2].Id },
             };
 
             _context.EmployeeLists.AddRange(employeeList);

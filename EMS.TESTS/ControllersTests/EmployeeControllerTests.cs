@@ -60,11 +60,11 @@ namespace EMS.TESTS.ControllersTests
 
             var employeesEntities = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1" },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2" }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000 }
             };
 
-            var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count, pageNumber, pageSize);
+            var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count(), pageNumber, pageSize);
 
             var expectedDtos = new List<EmployeeGetDto>
             {
@@ -180,14 +180,14 @@ namespace EMS.TESTS.ControllersTests
 
             var employeesEntity = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1" },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2" }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000},
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000 }
             };
 
             var expectedDtos = new List<EmployeeGetDto>
             {
-                new EmployeeGetDto { Id = employeesEntity[0].Id, Name = "Anna1" },
-                new EmployeeGetDto { Id = employeesEntity[1].Id, Name = "Anna2" }
+                new EmployeeGetDto { Id = employeesEntity[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000 },
+                new EmployeeGetDto { Id = employeesEntity[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000 }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -267,7 +267,7 @@ namespace EMS.TESTS.ControllersTests
             {
                 Name = "John Doe",
                 Email = "john.doe@example.com",
-                Phone = "123456789",
+                Phone = "123-456-789",
                 Salary = 5000m
             };
 
@@ -348,7 +348,7 @@ namespace EMS.TESTS.ControllersTests
             {
                 Name = "Updated John Doe",
                 Email = "updated.john.doe@example.com",
-                Phone = "987654321",
+                Phone = "123-456-789",
                 Salary = 6000m
             };
 
@@ -482,8 +482,8 @@ namespace EMS.TESTS.ControllersTests
                      AppUserId = appUserId,
                      EmployeesEntities = new List<EmployeeEntity>
                      {
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice" },
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob" }
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 },
                      }
                 },
                 new EmployeeListsEntity
@@ -506,8 +506,8 @@ namespace EMS.TESTS.ControllersTests
                     Name = "Dev Team",
                     Employees = new List<EmployeeGetDto>
                     {
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice" },
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob" }
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
                     }
             },
                  new EmployeeListsGetDto
@@ -516,7 +516,7 @@ namespace EMS.TESTS.ControllersTests
                      Name = "QA Team",
                      Employees = new List<EmployeeGetDto>
                      {
-                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie" }
+                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000 }
                      }
                   }
              };
@@ -606,8 +606,8 @@ namespace EMS.TESTS.ControllersTests
                      AppUserId = appUserId,
                      EmployeesEntities = new List<EmployeeEntity>
                      {
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice" },
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob" }
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
                      }
                 },
                 new EmployeeListsEntity
@@ -617,7 +617,7 @@ namespace EMS.TESTS.ControllersTests
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie" }
+                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie", Email = "Charlie@example.com", Phone = "123-456-789", Salary = 5000 }
                      }
                 }
             };
@@ -630,8 +630,8 @@ namespace EMS.TESTS.ControllersTests
                     Name = "Dev Team",
                     Employees = new List<EmployeeGetDto>
                     {
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice" },
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob" }
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
                     }
             },
                  new EmployeeListsGetDto
@@ -640,7 +640,7 @@ namespace EMS.TESTS.ControllersTests
                      Name = "QA Team",
                      Employees = new List<EmployeeGetDto>
                      {
-                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie" }
+                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000 }
                      }
                   }
              };
