@@ -25,8 +25,8 @@ Employees and Lists Employee:
 ![16](https://github.com/user-attachments/assets/2eaba156-0ea1-4a2d-b741-9a43c87601bd)
 
 Vehicles
-![17](https://github.com/user-attachments/assets/690f8be4-7e29-4594-91e8-02a889cf5c2f)
-![18](https://github.com/user-attachments/assets/6e7ed91c-7818-4bf7-bff3-cbf1e6656d89)
+![17](https://github.com/user-attachments/assets/8e8a340a-910b-47f1-ba56-b54bf5461d4c)
+![18](https://github.com/user-attachments/assets/8201587b-d601-48f6-b8de-8410aadded86)
 ![19](https://github.com/user-attachments/assets/8eba388c-76aa-466b-ab54-e7075a3f85c7)
 ![20](https://github.com/user-attachments/assets/84c99a96-b197-4040-bbac-cc0a66ca35c0)
 
