@@ -131,6 +131,35 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeesAsync_SortedBySalaryDescending_Returns_SortedEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var sortOrderSalary = "salary_desc";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
+            var sorted = result.Items.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, sorted.Count());
+            Assert.AreEqual(employees[0].Name, sorted[0].Name);
+            Assert.AreEqual(employees[2].Name, sorted[1].Name);
+            Assert.AreEqual(employees[1].Name, sorted[2].Name);
+        }
+
+        [TestMethod]
         public async Task GetUserNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
