@@ -248,7 +248,7 @@ const ListVehicle = () => {
           body={(rowData) => dateBodyTemplate(rowData, "dateOfProduction")}
           header="Date Of Production"
         ></Column>
-        <Column field="isAvailable" header="isAvailable"></Column>
+        <Column field="isAvailable" header="Availability"></Column>
         <Column
           header="Action"
           body={(rowData) => (
