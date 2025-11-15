@@ -104,8 +104,41 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count);
+            Assert.AreEqual(0, result.Items.Count());
             _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, searchTerm, null), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task Handle_Returns_SortedBySalaryAscending_Employees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var sortOrder = "salary_asc";
+
+            var expectedEmployees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 7000, AppUserId = appUserId },
+            };
+
+            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
+
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrder);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+  
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedEmployees.Count, result.Items.Count());
+            CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
         }
     }
 }
