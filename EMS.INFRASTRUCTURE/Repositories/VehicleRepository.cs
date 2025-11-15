@@ -101,7 +101,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<VehicleEntity> UpdateVehicleAsync(Guid vehicleId, string appUserId, VehicleEntity entity)
         {
-            var vehicle = dbContext.Vehicles.FirstOrDefault(x => x.Id == vehicleId && x.AppUserId == appUserId);
+            var vehicle = await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == vehicleId && x.AppUserId == appUserId);
 
             if (vehicle is not null)
             {
@@ -124,7 +124,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<bool> DeleteVehicleAsync(Guid vehicleId, string appUserId)
         {
-            var vehicle = dbContext.Vehicles.FirstOrDefault(x => x.Id == vehicleId && x.AppUserId == appUserId);
+            var vehicle = await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == vehicleId && x.AppUserId == appUserId);
 
             if (vehicle is not null)
             {

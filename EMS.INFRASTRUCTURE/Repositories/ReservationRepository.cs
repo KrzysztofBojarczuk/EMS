@@ -11,8 +11,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<ReservationEntity> AddReservationAsync(ReservationEntity reservation)
         {
             reservation.Id = Guid.NewGuid();
-
             dbContext.Reservations.Add(reservation);
+
             await dbContext.SaveChangesAsync();
 
             return reservation;

@@ -11,8 +11,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<TransactionEntity> AddTransactionAsync(TransactionEntity entity)
         {
             entity.Id = Guid.NewGuid();
-
             dbContext.Add(entity);
+
             await dbContext.SaveChangesAsync();
 
             await UpdateBudgetAsync(entity.BudgetId);
