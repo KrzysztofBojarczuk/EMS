@@ -28,7 +28,7 @@ Vehicles
 ![17](https://github.com/user-attachments/assets/8e8a340a-910b-47f1-ba56-b54bf5461d4c)
 ![18](https://github.com/user-attachments/assets/8201587b-d601-48f6-b8de-8410aadded86)
 ![19](https://github.com/user-attachments/assets/df705384-d0bc-4947-9e19-27fa488ad219)
-![20]("https://github.com/user-attachments/assets/b7ad264e-5ded-4898-b5ba-30918da8e967)
+![20](https://github.com/user-attachments/assets/b7ad264e-5ded-4898-b5ba-30918da8e967)
 
 Budget:
 ![21](https://github.com/user-attachments/assets/ac707a17-e8eb-4a2e-8798-8a96707de288)
