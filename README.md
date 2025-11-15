@@ -27,8 +27,8 @@ Employees and Lists Employee:
 Vehicles
 ![17](https://github.com/user-attachments/assets/8e8a340a-910b-47f1-ba56-b54bf5461d4c)
 ![18](https://github.com/user-attachments/assets/8201587b-d601-48f6-b8de-8410aadded86)
-![19](https://github.com/user-attachments/assets/29e652b2-a788-411f-abf2-1f362d3fabfa)
-![20](https://github.com/user-attachments/assets/920302d9-b4ba-48cf-a0e1-4eea16f53e8d)
+![19](https://github.com/user-attachments/assets/1acd012c-de01-4f69-a171-5b9430afdd38)
+![20](https://github.com/user-attachments/assets/0c3a5815-d38e-4cba-8ba1-1db5b5ee314e)
 
 Budget:
 ![21](https://github.com/user-attachments/assets/ac707a17-e8eb-4a2e-8798-8a96707de288)
