@@ -250,10 +250,11 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               render={({ field }) => (
                 <div className="inline-flex flex-column gap-2">
                   <Calendar
-                    {...field}
-                    id="startDate"
-                    dateFormat="yy-mm-dd"
+                    value={field.value ? new Date(field.value) : null}
+                    onChange={(e) => field.onChange(e.value)}
                     placeholder="Select Start Date"
+                    showIcon
+                    dateFormat="dd/mm/yy"
                   />
                   {errors.startDate && (
                     <small className="p-error">
@@ -270,10 +271,11 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               render={({ field }) => (
                 <div className="inline-flex flex-column gap-2">
                   <Calendar
-                    {...field}
-                    id="endDate"
-                    dateFormat="yy-mm-dd"
+                    value={field.value ? new Date(field.value) : null}
+                    onChange={(e) => field.onChange(e.value)}
                     placeholder="Select End Date"
+                    showIcon
+                    dateFormat="dd/mm/yy"
                   />
                   {errors.endDate && (
                     <small className="p-error">{errors.endDate.message}</small>

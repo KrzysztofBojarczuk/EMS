@@ -342,7 +342,7 @@ const LocalReservation = (props: Props) => {
           </IconField>
         </div>
         <DataTable value={reservations}>
-          <Column field="id" header="ID"></Column>
+          <Column field="id" header="Id"></Column>
           <Column
             field="checkInDate"
             header="Check In Date"

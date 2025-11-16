@@ -8,14 +8,16 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class ReservationRepository(AppDbContext dbContext) : IReservationRepository
     {
-        public async Task<ReservationEntity> AddReservationAsync(ReservationEntity reservation)
+        public async Task<ReservationEntity> AddReservationAsync(ReservationEntity entity)
         {
-            reservation.Id = Guid.NewGuid();
-            dbContext.Reservations.Add(reservation);
+            entity.Id = Guid.NewGuid();
+            entity.CheckInDate = entity.CheckInDate.ToLocalTime();
+            entity.CheckOutDate = entity.CheckOutDate.ToLocalTime();
+            dbContext.Reservations.Add(entity);
 
             await dbContext.SaveChangesAsync();
 
-            return reservation;
+            return entity;
         }
 
         public async Task<bool> IsLocalBusyAsync(Guid localId, DateTime? checkIn, DateTime? checkOut)

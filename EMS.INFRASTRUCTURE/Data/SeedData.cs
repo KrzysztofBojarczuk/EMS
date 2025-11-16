@@ -107,8 +107,18 @@ namespace EMS.INFRASTRUCTURE.Data
                     new VehicleEntity { Brand = "Iveco", Model = "Daily", Name = "Van 5", RegistrationNumber = "VAN-005", Mileage = 50000, VehicleType = VehicleType.Van, DateOfProduction = new DateTime(2016, 11, 11), IsAvailable = true, AppUserId = johnUser.Id }
                 };
 
+                var addresses = new List<AddressEntity>
+                {
+                    new AddressEntity { Id = Guid.NewGuid(), City = "New York", Street = "5th Avenue", Number = "101", ZipCode = "10001", AppUserId = johnUser.Id },
+                    new AddressEntity { Id = Guid.NewGuid(), City = "Los Angeles", Street = "Sunset Boulevard", Number = "202", ZipCode = "90001", AppUserId = johnUser.Id },
+                    new AddressEntity { Id = Guid.NewGuid(), City = "Chicago", Street = "Michigan Avenue", Number = "303", ZipCode = "60601", AppUserId = johnUser.Id },
+                    new AddressEntity { Id = Guid.NewGuid(), City = "Houston", Street = "Main Street", Number = "404", ZipCode = "77001", AppUserId = johnUser.Id },
+                    new AddressEntity { Id = Guid.NewGuid(), City = "San Francisco", Street = "Market Street", Number = "505", ZipCode = "94101", AppUserId = johnUser.Id }
+                };
+
                 await context.Employees.AddRangeAsync(employees);
                 await context.Vehicles.AddRangeAsync(vehicles);
+                await context.Address.AddRangeAsync(addresses);
                 await context.SaveChangesAsync(); // Commit changes to the database
             }
         }

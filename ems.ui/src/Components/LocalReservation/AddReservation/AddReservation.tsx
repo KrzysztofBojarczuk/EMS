@@ -59,7 +59,7 @@ const AddReservation: React.FC<Props> = ({
                 onChange={(e) => field.onChange(e.value)}
                 placeholder="Check-in Date & Time"
                 showIcon
-                dateFormat="yy-mm-dd"
+                dateFormat="dd/mm/yy"
                 showTime
                 hourFormat="24"
               />
@@ -69,7 +69,6 @@ const AddReservation: React.FC<Props> = ({
             </div>
           )}
         />
-
         <Controller
           name="checkOutDate"
           control={control}
@@ -81,7 +80,7 @@ const AddReservation: React.FC<Props> = ({
                 onChange={(e) => field.onChange(e.value)}
                 placeholder="Check-out Date & Time"
                 showIcon
-                dateFormat="yy-mm-dd"
+                dateFormat="dd/mm/yy"
                 showTime
                 hourFormat="24"
               />

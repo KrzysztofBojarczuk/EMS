@@ -62,6 +62,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> EmployeeListIds, List<Guid> VehicleIds)
         { 
             entity.Id = Guid.NewGuid(); // Przypisanie nowego identyfikatora
+            entity.StartDate = entity.StartDate.ToLocalTime();
+            entity.EndDate = entity.EndDate.ToLocalTime();
 
             var employeeLists = await dbContext.EmployeeLists.Where(x => EmployeeListIds.Contains(x.Id)).ToListAsync();
 
@@ -77,8 +79,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 item.TaskId = entity.Id;
             }
 
-            entity.StartDate = entity.StartDate.ToLocalTime();
-            entity.EndDate = entity.EndDate.ToLocalTime();
 
             dbContext.Tasks.Add(entity);
 
