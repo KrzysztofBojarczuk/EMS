@@ -12,12 +12,7 @@ namespace EMS.APPLICATION.Features.Reservation.Commands
     {
         public async Task<Result<ReservationEntity>> Handle(AddReservationCommand request, CancellationToken cancellationToken)
         {
-            var reservation = request.Reservation;
-
-            reservation.CheckInDate = reservation.CheckInDate?.ToUniversalTime();
-            reservation.CheckOutDate = reservation.CheckOutDate?.ToUniversalTime();
-
-            var local = await localRepository.GetLocalByIdAsync(reservation.LocalId);
+            var local = await localRepository.GetLocalByIdAsync(request.Reservation.LocalId);
 
             if (local == null)
             {
@@ -29,14 +24,14 @@ namespace EMS.APPLICATION.Features.Reservation.Commands
                 return Result<ReservationEntity>.Failure("Local is under repair.");
             }
 
-            var isBusy = await reservationRepository.IsLocalBusyAsync(reservation.LocalId, reservation.CheckInDate, reservation.CheckOutDate);
+            var isBusy = await reservationRepository.IsLocalBusyAsync(request.Reservation.LocalId, request.Reservation.CheckInDate.ToLocalTime(), request.Reservation.CheckOutDate.ToLocalTime());
 
             if (isBusy)
             {
                 return Result<ReservationEntity>.Failure("Local is already reserved in the given time period.");
             }
 
-            var savedReservation = await reservationRepository.AddReservationAsync(reservation);
+            var savedReservation = await reservationRepository.AddReservationAsync(request.Reservation);
 
             return Result<ReservationEntity>.Success(savedReservation);
         }

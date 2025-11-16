@@ -195,12 +195,14 @@ const ListVehicle = () => {
           onChange={(e) => setDateFrom(e.value as Date)}
           placeholder="Date from"
           showIcon
+          dateFormat="dd/mm/yy"
         />
         <Calendar
           value={dateTo}
           onChange={(e) => setDateTo(e.value as Date)}
           placeholder="Date to"
           showIcon
+          dateFormat="dd/mm/yy"
         />
         <Dropdown
           value={sortOrderDate}

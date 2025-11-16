@@ -273,10 +273,10 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("CheckInDate")
+                    b.Property<DateTime>("CheckInDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("CheckOutDate")
+                    b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("LocalId")
@@ -345,8 +345,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreationDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -438,13 +438,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "ea62e6ba-872c-4202-a813-4d146583689f",
+                            Id = "cfe50ce4-7482-48ba-8c7f-da10c031132e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ae94f7ab-8ea8-4056-9f63-4e43e5bf1d4c",
+                            Id = "68565e9f-7911-4494-8825-5da32f2f2fde",
                             Name = "User",
                             NormalizedName = "USER"
                         });

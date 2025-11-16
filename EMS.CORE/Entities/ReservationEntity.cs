@@ -7,7 +7,7 @@
         public LocalEntity LocalEntity { get; set; }
         public string? AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
-        public DateTime? CheckInDate { get; set; }
-        public DateTime? CheckOutDate { get; set; }
+        public DateTime CheckInDate { get; set; }
+        public DateTime CheckOutDate { get; set; }
     }
 }

@@ -26,7 +26,7 @@ const AddTransaction: React.FC<Props> = ({
   } = useForm({
     defaultValues: {
       name: "",
-      creationDate: new Date(),
+      creationDate: new Date().toISOString().split("T")[0],
       category: CategoryType.Income,
       amount: 0,
     },

@@ -279,7 +279,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreationDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BudgetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -302,8 +302,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LocalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -412,8 +412,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "ae94f7ab-8ea8-4056-9f63-4e43e5bf1d4c", null, "User", "USER" },
-                    { "ea62e6ba-872c-4202-a813-4d146583689f", null, "Admin", "ADMIN" }
+                    { "68565e9f-7911-4494-8825-5da32f2f2fde", null, "User", "USER" },
+                    { "cfe50ce4-7482-48ba-8c7f-da10c031132e", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

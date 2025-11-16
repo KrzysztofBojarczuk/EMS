@@ -30,7 +30,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.CommandsTests
             {
                 Id = Guid.NewGuid(),
                 Name = "Test Transaction",
-                CreationDate = DateTimeOffset.UtcNow,
+                CreationDate = DateTime.UtcNow,
                 Category = CategoryType.Expense,
                 Amount = 250.75m,
                 BudgetId = Guid.NewGuid()

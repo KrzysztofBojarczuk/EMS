@@ -35,11 +35,7 @@ const AddVehicle: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   });
 
   const onSubmit = async (data: VehiclePost) => {
-    const payload = {
-      ...data,
-      dateOfProduction: new Date(data.dateOfProduction).toISOString(),
-    };
-    await PostVehicleService(payload);
+    await PostVehicleService(data);
     onAddSuccess();
     onClose();
     reset();
@@ -149,16 +145,11 @@ const AddVehicle: React.FC<Props> = ({ onClose, onAddSuccess }) => {
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
               <Calendar
-                {...field}
-                dateFormat="yy-mm-dd"
-                showIcon
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
                 placeholder="Date of Production"
-                value={field.value ? new Date(field.value) : undefined}
-                onChange={(e) =>
-                  field.onChange(
-                    e.value ? e.value.toISOString().split("T")[0] : ""
-                  )
-                }
+                showIcon
+                dateFormat="dd/mm/yy"
               />
               {errors.dateOfProduction && (
                 <small className="p-error">

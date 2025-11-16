@@ -160,7 +160,6 @@ const UpdateVehicle: React.FC<Props> = ({
             </div>
           )}
         />
-
         <Controller
           name="dateOfProduction"
           control={control}
@@ -168,16 +167,11 @@ const UpdateVehicle: React.FC<Props> = ({
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
               <Calendar
-                {...field}
-                dateFormat="yy-mm-dd"
-                showIcon
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
                 placeholder="Date of Production"
-                value={field.value ? new Date(field.value) : undefined}
-                onChange={(e) =>
-                  field.onChange(
-                    e.value ? e.value.toISOString().split("T")[0] : ""
-                  )
-                }
+                showIcon
+                dateFormat="dd/mm/yy"
               />
               {errors.dateOfProduction && (
                 <small className="p-error">
@@ -187,7 +181,6 @@ const UpdateVehicle: React.FC<Props> = ({
             </div>
           )}
         />
-
         <div className="field-checkbox">
           <Controller
             name="isAvailable"

@@ -12,6 +12,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<VehicleEntity> AddAVehicleAsync(VehicleEntity entity)
         {
             entity.Id = Guid.NewGuid(); //służy do przypisania nowego, unikalnego identyfikatora
+            entity.DateOfProduction = entity.DateOfProduction.ToLocalTime();
             dbContext.Vehicles.Add(entity);
 
             await dbContext.SaveChangesAsync();
@@ -111,7 +112,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 vehicle.RegistrationNumber = entity.RegistrationNumber;
                 vehicle.Mileage = entity.Mileage;
                 vehicle.VehicleType = entity.VehicleType;
-                vehicle.DateOfProduction = entity.DateOfProduction;
+                vehicle.DateOfProduction = entity.DateOfProduction.ToLocalTime();
                 vehicle.IsAvailable = entity.IsAvailable;
 
                 await dbContext.SaveChangesAsync();
