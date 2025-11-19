@@ -26,7 +26,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if(!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())
+                query = query.Where(x => x.Brand.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Model.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Name.ToLower().Contains(searchTerm.ToLower())
                                       || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
             }
 
