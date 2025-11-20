@@ -169,7 +169,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeesAsync_ReturnsOkResult_WithEmployeesDtosSortedBySalaryAsc()
+        public async Task GetUserEmployeesAsync_ReturnsOkResult_WithEmployeesDtosSortedBySalaryAscending()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -194,6 +194,73 @@ namespace EMS.TESTS.ControllersTests
                 new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000 },
                 new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000 },
                 new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000 }
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesQuery>(x =>
+                x.appUserId == appUserId &&
+                x.pageNumber == pageNumber &&
+                x.pageSize == pageSize &&
+                x.searchTerm == null &&
+                x.sortOrderSalary == sortOrder),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(paginatedResult);
+
+            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeGetDto>>(employeesEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, null, sortOrder);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var value = okResult.Value;
+            var employeeGetProperty = value.GetType().GetProperty("EmployeeGet");
+            var totalItemsProperty = value.GetType().GetProperty("TotalItems");
+            var totalPagesProperty = value.GetType().GetProperty("TotalPages");
+            var pageIndexProperty = value.GetType().GetProperty("PageIndex");
+
+            Assert.IsNotNull(employeeGetProperty);
+            var returnedDtos = employeeGetProperty.GetValue(value) as IEnumerable<EmployeeGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+
+            Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
+            Assert.AreEqual(paginatedResult.PageIndex, pageIndexProperty.GetValue(value));
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesAsync_ReturnsOkResult_WithEmployeesDtosSortedBySalaryDescending()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var sortOrder = "salary_desc";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeesEntities = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 7000 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 1000 }
+            };
+
+            var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count(), pageNumber, pageSize);
+
+            var expectedDtos = new List<EmployeeGetDto>
+            {
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 7000 },
+                new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000 },
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 1000 }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
