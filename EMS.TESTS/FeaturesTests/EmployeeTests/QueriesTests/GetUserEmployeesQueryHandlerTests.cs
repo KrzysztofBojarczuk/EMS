@@ -115,7 +115,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-            var sortOrder = "salary_asc";
+            var sortOrderSalary = "salary_asc";
 
             var expectedEmployees = new List<EmployeeEntity>
             {
@@ -126,10 +126,10 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrderSalary))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrder);
+            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrderSalary);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -138,7 +138,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
             CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrderSalary), Times.Once);
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-            var sortOrder = "salary_desc";
+            var sortOrderSalary = "salary_desc";
 
             var expectedEmployees = new List<EmployeeEntity>
             {
@@ -159,10 +159,10 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrderSalary))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrder);
+            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrderSalary);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -171,7 +171,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
             CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrderSalary), Times.Once);
         }
 
         [TestMethod]
@@ -181,7 +181,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-            var sortOrder = "nonexistent";
+            var sortOrderSalary = "nonexistent";
 
             var expectedEmployees = new List<EmployeeEntity>
             {
@@ -190,12 +190,12 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
             };
 
-            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count, pageNumber, pageSize);
+            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrderSalary))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrder);
+            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrderSalary);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -204,7 +204,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
             CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrderSalary), Times.Once);
         }
     }
 }
