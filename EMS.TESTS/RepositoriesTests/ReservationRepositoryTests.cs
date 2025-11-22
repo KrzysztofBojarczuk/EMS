@@ -81,5 +81,18 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNull(deletedReservation);
             Assert.AreEqual(reservationCountBefore - 1, reservationCountAfter);
         }
+
+        [TestMethod]
+        public async Task DeleteReservationAsync_When_ReservationDoesNotExist_Returns_False()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.DeleteReservationAsync(Guid.NewGuid(), appUserId);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }
