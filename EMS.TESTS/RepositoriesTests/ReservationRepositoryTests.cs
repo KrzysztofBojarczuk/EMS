@@ -94,5 +94,32 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsFalse(result);
         }
+
+        [TestMethod]
+        public async Task GetReservationByIdAsync_When_ReservationExists_Returns_Reservation()
+        {
+            // Arrange
+            var reservation = new ReservationEntity
+            {
+                LocalId = Guid.NewGuid(),
+                AppUserId = "user-id-123",
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(2)
+            };
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetReservationByIdAsync(reservation.Id);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(reservation.Id, result.Id);
+            Assert.AreEqual(reservation.LocalId, result.LocalId);
+            Assert.AreEqual(reservation.CheckInDate, result.CheckInDate);
+            Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
+            Assert.AreEqual(reservation.AppUserId, result.AppUserId);
+        }
     }
 }
