@@ -121,5 +121,15 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
             Assert.AreEqual(reservation.AppUserId, result.AppUserId);
         }
+
+        [TestMethod]
+        public async Task GetReservationByIdAsync_When_ReservationDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetReservationByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
     }
 }

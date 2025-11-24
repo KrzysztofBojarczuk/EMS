@@ -4,7 +4,7 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Budget.Commands
 {
-    public record AddBudgetCommand(BudgetEntity Budget): IRequest<BudgetEntity>;
+    public record AddBudgetCommand(BudgetEntity Budget) : IRequest<BudgetEntity>;
 
     public class AddBudgetCommandHandler(IBudgetRepository budgetRepository, IPublisher publisher) : IRequestHandler<AddBudgetCommand, BudgetEntity>
     {

@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Employee.Queries;
+using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
