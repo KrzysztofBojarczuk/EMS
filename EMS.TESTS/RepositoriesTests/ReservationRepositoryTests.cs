@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
@@ -49,6 +49,19 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, reservationCount);
+        }
+
+        [TestMethod]
+        public async Task IsLocalBusyAsync_When_NoReservations_Returns_False()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+
+            // Act
+            var result = await _repository.IsLocalBusyAsync(localId, DateTime.UtcNow, DateTime.UtcNow.AddDays(1));
+
+            // Assert
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
