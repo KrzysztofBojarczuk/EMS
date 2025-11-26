@@ -52,6 +52,43 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetReservationByIdAsync_When_ReservationExists_Returns_Reservation()
+        {
+            // Arrange
+            var reservation = new ReservationEntity
+            {
+                LocalId = Guid.NewGuid(),
+                AppUserId = "user-id-123",
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(2)
+            };
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetReservationByIdAsync(reservation.Id);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(reservation.Id, result.Id);
+            Assert.AreEqual(reservation.LocalId, result.LocalId);
+            Assert.AreEqual(reservation.CheckInDate, result.CheckInDate);
+            Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
+            Assert.AreEqual(reservation.AppUserId, result.AppUserId);
+        }
+
+        [TestMethod]
+        public async Task GetReservationByIdAsync_When_ReservationDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetReservationByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public async Task IsLocalBusyAsync_When_NoReservations_Returns_False()
         {
             // Arrange
@@ -62,6 +99,30 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public async Task IsLocalBusyAsync_When_CheckIn_Inside_ExistingReservation_Returns_True()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+            var reservation = new ReservationEntity
+            {
+                Id = Guid.NewGuid(),
+                LocalId = localId,
+                AppUserId = "user-id-123",
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(2)
+            };
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.IsLocalBusyAsync(localId, reservation.CheckInDate.AddHours(12), reservation.CheckOutDate.AddDays(1));
+
+            // Assert
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -106,43 +167,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public async Task GetReservationByIdAsync_When_ReservationExists_Returns_Reservation()
-        {
-            // Arrange
-            var reservation = new ReservationEntity
-            {
-                LocalId = Guid.NewGuid(),
-                AppUserId = "user-id-123",
-                CheckInDate = DateTime.UtcNow,
-                CheckOutDate = DateTime.UtcNow.AddDays(2)
-            };
-
-            _context.Reservations.Add(reservation);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetReservationByIdAsync(reservation.Id);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(reservation.Id, result.Id);
-            Assert.AreEqual(reservation.LocalId, result.LocalId);
-            Assert.AreEqual(reservation.CheckInDate, result.CheckInDate);
-            Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
-            Assert.AreEqual(reservation.AppUserId, result.AppUserId);
-        }
-
-        [TestMethod]
-        public async Task GetReservationByIdAsync_When_ReservationDoesNotExist_Returns_Null()
-        {
-            // Act
-            var result = await _repository.GetReservationByIdAsync(Guid.NewGuid());
-
-            // Assert
-            Assert.IsNull(result);
         }
     }
 }

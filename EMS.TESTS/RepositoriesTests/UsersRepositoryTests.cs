@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
@@ -27,65 +27,6 @@ namespace EMS.TESTS.RepositoriesTests
             _context = new AppDbContext(options);
             _userManager = CreateUserManager(_context);
             _repository = new UsersRepository(_context, _userManager);
-        }
-
-        [TestMethod]
-        public async Task DeleteUserAsync_When_UserExists_Returns_True()
-        {
-            // Arrange
-            var user = new AppUserEntity { UserName = "john", Email = "john@example.com" };
- 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            var userCountBefore = await _context.Users.CountAsync();
-
-            // Act
-            var result = await _repository.DeleteUserAsync(user.Id);
-
-            var deletedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-
-            var userCountAfter = await _context.Users.CountAsync();
-
-            // Assert
-            Assert.IsTrue(result);
-            Assert.IsNull(deletedUser);
-            Assert.AreEqual(userCountBefore -1, userCountAfter);
-        }
-
-        [TestMethod]
-        public async Task DeleteUserAsync_When_UserDoesNotExist_Returns_False()
-        {
-            // Arrange
-            var appUserId = "nonexistent";
-
-            // Act
-            var result = await _repository.DeleteUserAsync(appUserId);
-
-            // Assert
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public async Task GetNumberOfUsersAsync_Returns_NumberOfUsers()
-        {
-            // Arrange
-            var users = new List<AppUserEntity>
-            {
-               new AppUserEntity { UserName = "john", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
-               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
-            };
-
-            _context.Users.AddRange(users);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var count = await _repository.GetNumberOfUsersAsync();
-
-            // Assert
-            Assert.IsNotNull(count);
-            Assert.AreEqual(3, count);
         }
 
         [TestMethod]
@@ -158,6 +99,65 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count);
+        }
+
+        [TestMethod]
+        public async Task GetNumberOfUsersAsync_Returns_NumberOfUsers()
+        {
+            // Arrange
+            var users = new List<AppUserEntity>
+            {
+               new AppUserEntity { UserName = "john", Email = "john@example.com" },
+               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
+               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
+            };
+
+            _context.Users.AddRange(users);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var count = await _repository.GetNumberOfUsersAsync();
+
+            // Assert
+            Assert.IsNotNull(count);
+            Assert.AreEqual(3, count);
+        }
+
+        [TestMethod]
+        public async Task DeleteUserAsync_When_UserExists_Returns_True()
+        {
+            // Arrange
+            var user = new AppUserEntity { UserName = "john", Email = "john@example.com" };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var userCountBefore = await _context.Users.CountAsync();
+
+            // Act
+            var result = await _repository.DeleteUserAsync(user.Id);
+
+            var deletedUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            var userCountAfter = await _context.Users.CountAsync();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsNull(deletedUser);
+            Assert.AreEqual(userCountBefore - 1, userCountAfter);
+        }
+
+        [TestMethod]
+        public async Task DeleteUserAsync_When_UserDoesNotExist_Returns_False()
+        {
+            // Arrange
+            var appUserId = "nonexistent";
+
+            // Act
+            var result = await _repository.DeleteUserAsync(appUserId);
+
+            // Assert
+            Assert.IsFalse(result);
         }
 
         private static UserManager<AppUserEntity> CreateUserManager(AppDbContext context)

@@ -1,4 +1,4 @@
-ï»¿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -8,6 +8,35 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class EmployeeRepository(AppDbContext dbContext) : IEmployeeRepository
     {
+        public async Task<EmployeeEntity> AddEmployeeAsync(EmployeeEntity entity)
+        {
+            entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            dbContext.Employees.Add(entity);
+
+            await dbContext.SaveChangesAsync();
+
+            return entity;
+        }
+
+        public async Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds)
+        {
+            entity.Id = Guid.NewGuid();
+            dbContext.EmployeeLists.Add(entity);
+
+            var employees = await dbContext.Employees.Where(e => employeeIds.Contains(e.Id)).ToListAsync();
+
+            entity.EmployeesEntities = employees;
+
+            await dbContext.SaveChangesAsync();
+
+            return entity;
+        }
+
+        public async Task<EmployeeEntity> GetEmployeeByIdAsync(Guid id)
+        {
+            return await dbContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrderSalary)
         {
             var query = dbContext.Employees.Where(x => x.AppUserId == appUserId);
@@ -36,16 +65,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<int> GetUserNumberOfEmployeesAsync(string appUserId)
-        {
-            return await dbContext.Employees.Where(x => x.AppUserId == appUserId).CountAsync();
-        }
-
-        public async Task<int> GetNumberOfEmployeesAsync()
-        {
-            return await dbContext.Employees.CountAsync();
-        }
-
         public async Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Employees.AsQueryable();
@@ -56,75 +75,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);
-        }
-
-        public async Task<EmployeeEntity> GetEmployeeByIdAsync(Guid id)
-        {
-            return await dbContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<EmployeeEntity> AddEmployeeAsync(EmployeeEntity entity)
-        {
-            entity.Id = Guid.NewGuid(); //sÅ‚uÅ¼y do przypisania nowego, unikalnego identyfikatora
-            dbContext.Employees.Add(entity);
-
-            await dbContext.SaveChangesAsync();
-
-            return entity;
-        }
-
-        public async Task<EmployeeEntity> UpdateEmployeeAsync(Guid employeeId, string appUserId, EmployeeEntity entity)
-        {
-            var employee = await dbContext.Employees.FirstOrDefaultAsync(x => x.Id == employeeId && x.AppUserId == appUserId);
-
-            if (employee is not null)
-            {
-                employee.Name = entity.Name;
-                employee.Email = entity.Email;
-                employee.Phone = entity.Phone;
-                employee.Salary = entity.Salary;
-
-                await dbContext.SaveChangesAsync();
-
-                return employee;
-            }
-
-            return entity;
-        }
-
-        public async Task<bool> DeleteEmployeeAsync(Guid employeeId, string appUserId)
-        {
-            var employee = await dbContext.Employees.FirstOrDefaultAsync(x => x.Id == employeeId && x.AppUserId == appUserId);
-
-            if (employee is not null)
-            {
-                dbContext.Employees.Remove(employee);
-
-                return await dbContext.SaveChangesAsync() > 0; //JeÅ›li usuniÄ™cie siÄ™ powiodÅ‚o: SaveChangesAsync() zwrÃ³ci liczbÄ™ wiÄ™kszÄ… od 0, wiÄ™c metoda zwrÃ³ci true.
-            }
-
-            return false;
-        }
-
-        public async Task<EmployeeListsEntity> AddEmployeeListsAsync(EmployeeListsEntity entity, List<Guid> employeeIds)
-        {
-            entity.Id = Guid.NewGuid();
-            dbContext.EmployeeLists.Add(entity);
-
-            var employees = await dbContext.Employees
-                  .Where(e => employeeIds.Contains(e.Id))
-                  .ToListAsync();
-
-            entity.EmployeesEntities = employees;
-
-            await dbContext.SaveChangesAsync();
-
-            return entity;
-        }
-
-        public async Task<bool> EmployeeListExistsAsync(string name, string appUserId)
-        {
-            return await dbContext.EmployeeLists.AnyAsync(x => x.Name.ToLower() == name.ToLower() && x.AppUserId == appUserId);
         }
 
         public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm)
@@ -161,6 +111,54 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task<bool> EmployeeListExistsAsync(string name, string appUserId)
+        {
+            return await dbContext.EmployeeLists.AnyAsync(x => x.Name.ToLower() == name.ToLower() && x.AppUserId == appUserId);
+        }
+
+        public async Task<int> GetUserNumberOfEmployeesAsync(string appUserId)
+        {
+            return await dbContext.Employees.Where(x => x.AppUserId == appUserId).CountAsync();
+        }
+
+        public async Task<int> GetNumberOfEmployeesAsync()
+        {
+            return await dbContext.Employees.CountAsync();
+        }
+
+        public async Task<EmployeeEntity> UpdateEmployeeAsync(Guid employeeId, string appUserId, EmployeeEntity entity)
+        {
+            var employee = await dbContext.Employees.FirstOrDefaultAsync(x => x.Id == employeeId && x.AppUserId == appUserId);
+
+            if (employee is not null)
+            {
+                employee.Name = entity.Name;
+                employee.Email = entity.Email;
+                employee.Phone = entity.Phone;
+                employee.Salary = entity.Salary;
+
+                await dbContext.SaveChangesAsync();
+
+                return employee;
+            }
+
+            return entity;
+        }
+
+        public async Task<bool> DeleteEmployeeAsync(Guid employeeId, string appUserId)
+        {
+            var employee = await dbContext.Employees.FirstOrDefaultAsync(x => x.Id == employeeId && x.AppUserId == appUserId);
+
+            if (employee is not null)
+            {
+                dbContext.Employees.Remove(employee);
+
+                return await dbContext.SaveChangesAsync() > 0; //Jeœli usuniêcie siê powiod³o: SaveChangesAsync() zwróci liczbê wiêksz¹ od 0, wiêc metoda zwróci true.
+            }
+
+            return false;
         }
 
         public async Task<bool> DeleteEmployeeListsAsync(Guid employeeListId, string appUserId)

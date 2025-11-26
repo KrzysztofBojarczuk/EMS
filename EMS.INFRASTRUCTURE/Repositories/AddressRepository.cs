@@ -1,4 +1,4 @@
-Ôªøusing EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -10,33 +10,12 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<AddressEntity> AddAddressAsync(AddressEntity entity)
         {
-            entity.Id = Guid.NewGuid(); //s≈Çu≈ºy do przypisania nowego, unikalnego identyfikatora
+            entity.Id = Guid.NewGuid(); //s≥uøy do przypisania nowego, unikalnego identyfikatora
             dbContext.Address.Add(entity);
 
             await dbContext.SaveChangesAsync();
 
             return entity;
-        }
-
-        public async Task<bool> DeleteAddressAsync(Guid addressId, string appUserId)
-        {
-            var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId && x.AppUserId == appUserId);
-
-            if (address is not null)
-            {
-                var tasksWithAddress = await dbContext.Tasks.Where(x => x.AddressId == addressId).ToListAsync();
-
-                foreach (var task in tasksWithAddress)
-                {
-                    task.AddressId = null;
-                }
-
-                dbContext.Address.Remove(address);
-
-                return await dbContext.SaveChangesAsync() > 0;
-            }
-
-            return false;
         }
 
         public async Task<AddressEntity> GetAddressByIdAsync(Guid id)
@@ -91,6 +70,27 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return entity;
+        }
+
+        public async Task<bool> DeleteAddressAsync(Guid addressId, string appUserId)
+        {
+            var address = await dbContext.Address.FirstOrDefaultAsync(x => x.Id == addressId && x.AppUserId == appUserId);
+
+            if (address is not null)
+            {
+                var tasksWithAddress = await dbContext.Tasks.Where(x => x.AddressId == addressId).ToListAsync();
+
+                foreach (var task in tasksWithAddress)
+                {
+                    task.AddressId = null;
+                }
+
+                dbContext.Address.Remove(address);
+
+                return await dbContext.SaveChangesAsync() > 0;
+            }
+
+            return false;
         }
     }
 }

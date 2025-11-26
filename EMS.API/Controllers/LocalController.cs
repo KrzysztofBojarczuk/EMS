@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Local.Commands;
@@ -15,27 +15,6 @@ namespace EMS.API.Controllers
     [ApiController]
     public class LocalController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
-        [HttpGet()]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserLocalAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
-        {
-            var username = User.GetUsername();
-
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var paginatedLocal = await sender.Send(new GetUserLocalQuery(appUser.Id, pageNumber, pageSize, searchTerm));
-
-            var localGet = mapper.Map<IEnumerable<LocalGetDto>>(paginatedLocal.Items);
-
-            return Ok(new
-            {
-                LocalGet = localGet,
-                paginatedLocal.TotalItems,
-                paginatedLocal.TotalPages,
-                paginatedLocal.PageIndex
-            });
-        }
-
         [HttpPost()]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> AddLocalAsync([FromBody] LocalCreateDto localDto)
@@ -56,6 +35,27 @@ namespace EMS.API.Controllers
             var localGet = mapper.Map<LocalGetDto>(result);
 
             return Ok(localGet);
+        }
+
+        [HttpGet()]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserLocalAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var paginatedLocal = await sender.Send(new GetUserLocalQuery(appUser.Id, pageNumber, pageSize, searchTerm));
+
+            var localGet = mapper.Map<IEnumerable<LocalGetDto>>(paginatedLocal.Items);
+
+            return Ok(new
+            {
+                LocalGet = localGet,
+                paginatedLocal.TotalItems,
+                paginatedLocal.TotalPages,
+                paginatedLocal.PageIndex
+            });
         }
 
         [HttpPut("{localId}")]

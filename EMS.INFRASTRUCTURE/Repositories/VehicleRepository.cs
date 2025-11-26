@@ -1,4 +1,4 @@
-ï»¿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
@@ -11,7 +11,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<VehicleEntity> AddAVehicleAsync(VehicleEntity entity)
         {
-            entity.Id = Guid.NewGuid(); //sÅ‚uÅ¼y do przypisania nowego, unikalnego identyfikatora
+            entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
             entity.DateOfProduction = entity.DateOfProduction.ToLocalTime();
             dbContext.Vehicles.Add(entity);
 
@@ -20,11 +20,16 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
+        public async Task<VehicleEntity> GetVehicleByIdAsync(Guid Id)
+        {
+            return await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == Id);
+        }
+
         public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<VehicleType> vehicleType, DateTime? dateFrom, DateTime? dateTo, string sortOrderDate, string sortOrderMileage)
         {
             var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId);
 
-            if(!string.IsNullOrEmpty(searchTerm))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(x => x.Brand.ToLower().Contains(searchTerm.ToLower())
                                       || x.Model.ToLower().Contains(searchTerm.ToLower())
@@ -32,7 +37,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            if(vehicleType != null && vehicleType.Any())
+            if (vehicleType != null && vehicleType.Any())
             {
                 query = query.Where(x => vehicleType.Contains(x.VehicleType));
             }
@@ -97,11 +102,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<VehicleEntity> GetVehicleByIdAsync(Guid Id)
-        {
-            return await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == Id);
-        }
-
         public async Task<VehicleEntity> UpdateVehicleAsync(Guid vehicleId, string appUserId, VehicleEntity entity)
         {
             var vehicle = await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == vehicleId && x.AppUserId == appUserId);
@@ -132,8 +132,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
             if (vehicle is not null)
             {
                 dbContext.Vehicles.Remove(vehicle);
-                
-                return await dbContext.SaveChangesAsync() > 0;  //JeÅ›li usuniÄ™cie siÄ™ powiodÅ‚o: SaveChangesAsync() zwrÃ³ci liczbÄ™ wiÄ™kszÄ… od 0, wiÄ™c metoda zwrÃ³ci true.
+
+                return await dbContext.SaveChangesAsync() > 0;  //Jeœli usuniêcie siê powiod³o: SaveChangesAsync() zwróci liczbê wiêksz¹ od 0, wiêc metoda zwróci true.
             }
 
             return true;

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Task.Commands;
@@ -16,6 +16,28 @@ namespace EMS.API.Controllers
     [ApiController]
     public class TaskController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
+        [HttpPost()]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddTaskAsync([FromBody] TaskCreateDto taskDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var taskEntity = mapper.Map<TaskEntity>(taskDto);
+
+            taskEntity.AppUserId = appUser.Id;
+
+            var result = await sender.Send(new AddTaskCommand(taskEntity, taskDto.EmployeeListIds, taskDto.VehicleIds));
+
+            var taskGet = mapper.Map<TaskGetDto>(result);
+
+            return Ok(taskGet);
+        }
+
         [HttpGet("User")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserTaskssAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] List<StatusOfTask> statusOfTask = null, [FromQuery] string sortOrderDate = null)
@@ -37,26 +59,21 @@ namespace EMS.API.Controllers
             });
         }
 
-        [HttpPost()]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddTaskAsync([FromBody] TaskCreateDto taskDto)
+        [HttpGet()]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllTaskAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            var paginatedTasks = await sender.Send(new GetAllTasksQuery(pageNumber, pageSize, searchTerm));
 
-            var username = User.GetUsername();
+            var taskGet = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
 
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var taskEntity = mapper.Map<TaskEntity>(taskDto);
-
-            taskEntity.AppUserId = appUser.Id;
-
-            var result = await sender.Send(new AddTaskCommand(taskEntity, taskDto.EmployeeListIds, taskDto.VehicleIds));
-
-            var taskGet = mapper.Map<TaskGetDto>(result);
-
-            return Ok(taskGet);
+            return Ok(new
+            {
+                TaskGet = taskGet,
+                paginatedTasks.TotalItems,
+                paginatedTasks.TotalPages,
+                paginatedTasks.PageIndex
+            });
         }
 
         [HttpPut("{taskId}")]
@@ -103,23 +120,6 @@ namespace EMS.API.Controllers
             var result = await sender.Send(new DeleteTaskCommand(taskId, appUser.Id));
 
             return Ok(result);
-        }
-
-        [HttpGet()]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllTaskAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
-        {
-            var paginatedTasks = await sender.Send(new GetAllTasksQuery(pageNumber, pageSize, searchTerm));
-
-            var taskGet = mapper.Map<IEnumerable<TaskGetDto>>(paginatedTasks.Items);
-
-            return Ok(new
-            {
-                TaskGet = taskGet,
-                paginatedTasks.TotalItems,
-                paginatedTasks.TotalPages,
-                paginatedTasks.PageIndex
-            });
         }
     }
 }

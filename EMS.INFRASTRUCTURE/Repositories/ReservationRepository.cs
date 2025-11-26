@@ -1,4 +1,4 @@
-ï»¿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -20,30 +20,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<bool> IsLocalBusyAsync(Guid localId, DateTime? checkIn, DateTime? checkOut)
-        {
-            return await dbContext.Reservations
-                .Where(x => x.LocalId == localId)
-                .AnyAsync(x =>
-                    (checkIn >= x.CheckInDate && checkIn < x.CheckOutDate) || // zaczyna siÄ™ w trakcie
-                    (checkOut > x.CheckInDate && checkOut <= x.CheckOutDate) || // koÅ„czy siÄ™ w trakcie
-                    (checkIn <= x.CheckInDate && checkOut >= x.CheckOutDate)    // obejmuje caÅ‚Ä… istniejÄ…cÄ… rezerwacj
-                );
-        }
-
-        public async Task<bool> DeleteReservationAsync(Guid reservationId, string appUserId)
-        {
-            var reservation = await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == reservationId && x.AppUserId == appUserId);
-
-            if (reservation is not null)
-            {
-                dbContext.Reservations.Remove(reservation);
-                return await dbContext.SaveChangesAsync() > 0;
-            }
-
-            return false;
-        }
-
         public async Task<ReservationEntity> GetReservationByIdAsync(Guid id)
         {
             return await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == id);
@@ -59,6 +35,30 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return await PaginatedList<ReservationEntity>.CreateAsync(query, pageNumber, pageSize);
+        }
+
+        public async Task<bool> IsLocalBusyAsync(Guid localId, DateTime? checkIn, DateTime? checkOut)
+        {
+            return await dbContext.Reservations
+                .Where(x => x.LocalId == localId)
+                .AnyAsync(x =>
+                    (checkIn >= x.CheckInDate && checkIn < x.CheckOutDate) || // zaczyna siê w trakcie
+                    (checkOut > x.CheckInDate && checkOut <= x.CheckOutDate) || // koñczy siê w trakcie
+                    (checkIn <= x.CheckInDate && checkOut >= x.CheckOutDate)    // obejmuje ca³¹ istniej¹c¹ rezerwacj
+                );
+        }
+
+        public async Task<bool> DeleteReservationAsync(Guid reservationId, string appUserId)
+        {
+            var reservation = await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == reservationId && x.AppUserId == appUserId);
+
+            if (reservation is not null)
+            {
+                dbContext.Reservations.Remove(reservation);
+                return await dbContext.SaveChangesAsync() > 0;
+            }
+
+            return false;
         }
     }
 }

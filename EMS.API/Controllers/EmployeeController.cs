@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Employee.Commands;
@@ -15,6 +15,64 @@ namespace EMS.API.Controllers
     [ApiController]
     public class EmployeeController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
+        [HttpPost()]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddEmployeeAsync([FromBody] EmployeeCreateDto employeeDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var employeeEntity = mapper.Map<EmployeeEntity>(employeeDto);
+
+            employeeEntity.AppUserId = appUser.Id;
+
+            var result = await sender.Send(new AddEmployeeCommand(employeeEntity));
+
+            var employeeGet = mapper.Map<EmployeeGetDto>(result);
+
+            return Ok(employeeGet);
+        }
+
+        [HttpPost("AddEmployeeList")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddEmployeeListAsync([FromBody] EmployeeListsCreateDto employeeListsDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var employeeListsEntity = mapper.Map<EmployeeListsEntity>(employeeListsDto);
+
+            employeeListsEntity.AppUserId = appUser.Id;
+
+            var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity, employeeListsDto.EmployeeIds));
+
+            if (result.IsFailure)
+                return BadRequest(result.Error);
+
+            var employeeListsGet = mapper.Map<EmployeeListsGetDto>(result.Value);
+
+            return Ok(employeeListsGet);
+        }
+
+        [HttpGet("{employeeId}")]
+        [Authorize(Roles = "User, Admin")]
+        public async Task<IActionResult> GetEmployeeByIdAsync([FromRoute] Guid employeeId)
+        {
+            var result = await sender.Send(new GetEmployeeByIdQuery(employeeId));
+
+            var employeeGet = mapper.Map<EmployeeGetDto>(result);
+
+            return Ok(employeeGet);
+        }
+
         [HttpGet("User")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrderSalary = null)
@@ -34,6 +92,53 @@ namespace EMS.API.Controllers
                 paginatedEmployees.TotalPages,
                 paginatedEmployees.PageIndex
             });
+        }
+
+        [HttpGet()]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
+        {
+            var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm));
+
+            var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
+
+            return Ok(new
+            {
+                EmployeeGet = employeeGet,
+                paginatedEmployees.TotalItems,
+                paginatedEmployees.TotalPages,
+                paginatedEmployees.PageIndex
+            });
+        }
+
+        [HttpGet("UserEmployeeList")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserEmployeeListAsync([FromQuery] string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserEmployeeListsQuery(appUser.Id, searchTerm));
+
+            var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
+
+            return Ok(listEmployeeGet);
+        }
+
+        [HttpGet("UserEmployeeListForTask")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserEmployeeListForTaskAsync([FromQuery] string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserEmployeeListsForTaskQuery(appUser.Id, searchTerm));
+
+            var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
+
+            return Ok(listEmployeeGet);
         }
 
         [HttpGet("UserList")]
@@ -64,45 +169,6 @@ namespace EMS.API.Controllers
             return Ok(result);
         }
 
-        [HttpPost()]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddEmployeeAsync([FromBody] EmployeeCreateDto employeeDto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var username = User.GetUsername();
-
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var employeeEntity = mapper.Map<EmployeeEntity>(employeeDto);
-
-            employeeEntity.AppUserId = appUser.Id;
-
-            var result = await sender.Send(new AddEmployeeCommand(employeeEntity));
-
-            var employeeGet = mapper.Map<EmployeeGetDto>(result);
-
-            return Ok(employeeGet);
-        }
-
-        [HttpGet()]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
-        {
-            var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm));
-
-            var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
-
-            return Ok(new
-            {
-                EmployeeGet = employeeGet,
-                paginatedEmployees.TotalItems,
-                paginatedEmployees.TotalPages,
-                paginatedEmployees.PageIndex
-            });
-        }
-
         [HttpGet("GetNumberOfEmployee")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetNumberOfEmployeesAsync()
@@ -110,17 +176,6 @@ namespace EMS.API.Controllers
             var result = await sender.Send(new GetNumberOfEmployeesQuery());
 
             return Ok(result);
-        }
-
-        [HttpGet("{employeeId}")]
-        [Authorize(Roles = "User, Admin")]
-        public async Task<IActionResult> GetEmployeeByIdAsync([FromRoute] Guid employeeId)
-        {
-            var result = await sender.Send(new GetEmployeeByIdQuery(employeeId));
-
-            var employeeGet = mapper.Map<EmployeeGetDto>(result);
-
-            return Ok(employeeGet);
         }
 
         [HttpPut("{employeeId}")]
@@ -154,61 +209,6 @@ namespace EMS.API.Controllers
             var result = await sender.Send(new DeleteEmployeeCommand(employeeId, appUser.Id));
 
             return Ok(result);
-        }
-
-        [HttpGet("UserEmployeeListForTask")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeeListForTaskAsync([FromQuery] string searchTerm = null)
-        {
-            var username = User.GetUsername();
-
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var result = await sender.Send(new GetUserEmployeeListsForTaskQuery(appUser.Id, searchTerm));
-
-            var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
-
-            return Ok(listEmployeeGet);
-        }
-
-        [HttpGet("UserEmployeeList")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeeListAsync([FromQuery] string searchTerm = null)
-        {
-            var username = User.GetUsername();
-
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var result = await sender.Send(new GetUserEmployeeListsQuery(appUser.Id, searchTerm));
-
-            var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
-
-            return Ok(listEmployeeGet);
-        }
-
-        [HttpPost("AddEmployeeList")]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddEmployeeListAsync([FromBody] EmployeeListsCreateDto employeeListsDto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var username = User.GetUsername();
-
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var employeeListsEntity = mapper.Map<EmployeeListsEntity>(employeeListsDto);
-
-            employeeListsEntity.AppUserId = appUser.Id;
-
-            var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity, employeeListsDto.EmployeeIds));
-
-            if (result.IsFailure)
-                return BadRequest(result.Error);
-
-            var employeeListsGet = mapper.Map<EmployeeListsGetDto>(result.Value);
-
-            return Ok(employeeListsGet);
         }
 
         [HttpDelete("EmployeeList/{employeeListId}")]

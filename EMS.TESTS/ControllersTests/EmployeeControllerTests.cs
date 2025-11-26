@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.API.Controllers;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Employee.Commands;
@@ -44,6 +44,192 @@ namespace EMS.TESTS.ControllersTests
             {
                 HttpContext = new DefaultHttpContext { User = user }
             };
+        }
+
+
+        [TestMethod]
+        public async Task AddEmployeeAsync_ReturnsOkResult_WithEmployeeGetDto()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var createDto = new EmployeeCreateDto
+            {
+                Name = "John Doe",
+                Email = "john.doe@example.com",
+                Phone = "123-456-789",
+                Salary = 5000m
+            };
+
+            var employeeEntity = new EmployeeEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = createDto.Name,
+                Email = createDto.Email,
+                Phone = createDto.Phone,
+                Salary = createDto.Salary,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var resultEntity = new EmployeeEntity
+            {
+                Id = employeeEntity.Id,
+                Name = employeeEntity.Name,
+                Email = employeeEntity.Email,
+                Phone = employeeEntity.Phone,
+                Salary = employeeEntity.Salary,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var expectedDto = new EmployeeGetDto
+            {
+                Id = resultEntity.Id,
+                Name = resultEntity.Name,
+                Email = resultEntity.Email,
+                Phone = resultEntity.Phone,
+                Salary = resultEntity.Salary
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockMapper.Setup(x => x.Map<EmployeeEntity>(createDto))
+                .Returns(employeeEntity);
+
+            _mockSender.Setup(x => x.Send(It.IsAny<AddEmployeeCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(resultEntity);
+
+            _mockMapper.Setup(x => x.Map<EmployeeGetDto>(resultEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.AddEmployeeAsync(createDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as EmployeeGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.Name, returnedDto.Name);
+            Assert.AreEqual(expectedDto.Email, returnedDto.Email);
+            Assert.AreEqual(expectedDto.Phone, returnedDto.Phone);
+            Assert.AreEqual(expectedDto.Salary, returnedDto.Salary);
+        }
+
+        [TestMethod]
+        public async Task AddEmployeeListAsync_ReturnsOkResult_WithEmployeeListsGetDto()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var createDto = new EmployeeListsCreateDto
+            {
+                Name = "New Team",
+                EmployeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
+            };
+
+            var employeeListsEntity = new EmployeeListsEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = createDto.Name,
+                AppUserId = appUserId
+            };
+
+            var resultEntity = new EmployeeListsEntity
+            {
+                Id = employeeListsEntity.Id,
+                Name = employeeListsEntity.Name,
+                AppUserId = appUserId
+            };
+
+            var expectedDto = new EmployeeListsGetDto
+            {
+                Id = resultEntity.Id,
+                Name = resultEntity.Name,
+                Employees = new List<EmployeeGetDto>()
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockMapper.Setup(x => x.Map<EmployeeListsEntity>(createDto))
+                .Returns(employeeListsEntity);
+
+            _mockSender.Setup(x => x.Send(It.Is<AddEmployeeListCommand>(x =>
+                x.employeeList == employeeListsEntity &&
+                x.employeeIds.SequenceEqual(createDto.EmployeeIds)),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<EmployeeListsEntity>.Success(resultEntity));
+
+            _mockMapper.Setup(x => x.Map<EmployeeListsGetDto>(resultEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.AddEmployeeListAsync(createDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as EmployeeListsGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.Name, returnedDto.Name);
+        }
+
+        [TestMethod]
+        public async Task AddEmployeeListAsync_ReturnsBadRequest_WhenResultIsFailure()
+        {
+            // Arrange
+            var username = "testuser";
+            var appUserId = "user-id-123";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var createDto = new EmployeeListsCreateDto
+            {
+                Name = "Invalid Team",
+                EmployeeIds = new List<Guid> { Guid.NewGuid() }
+            };
+
+            var employeeListsEntity = new EmployeeListsEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = createDto.Name,
+                AppUserId = appUserId
+            };
+
+            var expectedError = "A list with that name already exists.";
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+               .ReturnsAsync(appUser);
+
+            _mockMapper.Setup(x => x.Map<EmployeeListsEntity>(createDto))
+                .Returns(employeeListsEntity);
+
+            _mockSender.Setup(x => x.Send(It.IsAny<AddEmployeeListCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<EmployeeListsEntity>.Failure(expectedError));
+
+            // Act
+            var result = await _controller.AddEmployeeListAsync(createDto);
+
+            // Assert
+            var badRequestResult = result as BadRequestObjectResult;
+            Assert.IsNotNull(badRequestResult);
+            Assert.AreEqual(400, badRequestResult.StatusCode);
+            Assert.AreEqual(expectedError, badRequestResult.Value);
         }
 
         [TestMethod]
@@ -370,6 +556,254 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeeListAsync_ReturnsOkResult_WithEmployeeListsDtos()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var searchTerm = "dev";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeeListsEntities = new List<EmployeeListsEntity>
+            {
+                new EmployeeListsEntity
+                {
+                     Id = Guid.NewGuid(),
+                     Name = "Dev Team",
+                     AppUserId = appUserId,
+                     EmployeesEntities = new List<EmployeeEntity>
+                     {
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
+                     }
+                },
+                new EmployeeListsEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "QA Team",
+                    AppUserId = appUserId,
+                    EmployeesEntities = new List<EmployeeEntity>
+                    {
+                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie", Email = "Charlie@example.com", Phone = "123-456-789", Salary = 5000 }
+                     }
+                }
+            };
+
+            var expectedDtos = new List<EmployeeListsGetDto>
+            {
+                new EmployeeListsGetDto
+                {
+                    Id = employeeListsEntities[0].Id,
+                    Name = "Dev Team",
+                    Employees = new List<EmployeeGetDto>
+                    {
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
+                    }
+            },
+                 new EmployeeListsGetDto
+                 {
+                     Id = employeeListsEntities[1].Id,
+                     Name = "QA Team",
+                     Employees = new List<EmployeeGetDto>
+                     {
+                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000 }
+                     }
+                  }
+             };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
+
+            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeeListAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+            Assert.AreEqual(expectedDtos[0].Name, returnedDtos.First().Name);
+            Assert.AreEqual(expectedDtos.First().Employees.First().Name, returnedDtos.First().Employees.First().Name);
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListAsync_ReturnsOkResult_NotFound_WithEmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var searchTerm = "nonexistent";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeeListsEntities = new List<EmployeeListsEntity>();
+
+            var expectedDtos = new List<EmployeeListsGetDto>();
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
+
+            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeeListAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListForTaskAsync_ReturnsOkResult_WithEmployeeListsDtos()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var searchTerm = "dev";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeeListsEntities = new List<EmployeeListsEntity>
+            {
+                new EmployeeListsEntity
+                {
+                     Id = Guid.NewGuid(),
+                     Name = "Dev Team",
+                     AppUserId = appUserId,
+                     EmployeesEntities = new List<EmployeeEntity>
+                     {
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 },
+                     }
+                },
+                new EmployeeListsEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "QA Team",
+                    AppUserId = appUserId,
+                    EmployeesEntities = new List<EmployeeEntity>
+                    {
+                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie" }
+                     }
+                }
+            };
+
+            var expectedDtos = new List<EmployeeListsGetDto>
+            {
+                new EmployeeListsGetDto
+                {
+                    Id = employeeListsEntities[0].Id,
+                    Name = "Dev Team",
+                    Employees = new List<EmployeeGetDto>
+                    {
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
+                    }
+            },
+                 new EmployeeListsGetDto
+                 {
+                     Id = employeeListsEntities[1].Id,
+                     Name = "QA Team",
+                     Employees = new List<EmployeeGetDto>
+                     {
+                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000 }
+                     }
+                  }
+             };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsForTaskQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
+
+            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeeListForTaskAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+            Assert.AreEqual(expectedDtos[0].Name, returnedDtos.First().Name);
+            Assert.AreEqual(expectedDtos.First().Employees.First().Name, returnedDtos.First().Employees.First().Name);
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListForTaskAsync_ReturnsOkResult_NotFound_WithEmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+            var searchTerm = "nonexistent";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var employeeListsEntities = new List<EmployeeListsEntity>();
+
+            var expectedDtos = new List<EmployeeListsGetDto>();
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsForTaskQuery>(x =>
+                x.appUserId == appUserId &&
+                x.searchTerm == searchTerm),
+                It.IsAny<CancellationToken>()))
+                .ReturnsAsync(employeeListsEntities);
+
+            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
+                .Returns(expectedDtos);
+
+            // Act
+            var result = await _controller.GetUserEmployeeListForTaskAsync(searchTerm);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
+            Assert.IsNotNull(returnedDtos);
+            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeesForListAsync_ReturnsOkResult_WithEmployeeDtos()
         {
             // Arrange
@@ -453,83 +887,6 @@ namespace EMS.TESTS.ControllersTests
             var returnedDtos = okResult.Value as IEnumerable<EmployeeGetDto>;
             Assert.IsNotNull(returnedDtos);
             Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
-        }
-
-        [TestMethod]
-        public async Task AddEmployeeAsync_ReturnsOkResult_WithEmployeeGetDto()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var username = "testuser";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var createDto = new EmployeeCreateDto
-            {
-                Name = "John Doe",
-                Email = "john.doe@example.com",
-                Phone = "123-456-789",
-                Salary = 5000m
-            };
-
-            var employeeEntity = new EmployeeEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = createDto.Name,
-                Email = createDto.Email,
-                Phone = createDto.Phone,
-                Salary = createDto.Salary,
-                AppUserId = appUser.Id,
-                AppUserEntity = appUser
-            };
-
-            var resultEntity = new EmployeeEntity
-            {
-                Id = employeeEntity.Id,
-                Name = employeeEntity.Name,
-                Email = employeeEntity.Email,
-                Phone = employeeEntity.Phone,
-                Salary = employeeEntity.Salary,
-                AppUserId = appUser.Id,
-                AppUserEntity = appUser
-            };
-
-            var expectedDto = new EmployeeGetDto
-            {
-                Id = resultEntity.Id,
-                Name = resultEntity.Name,
-                Email = resultEntity.Email,
-                Phone = resultEntity.Phone,
-                Salary = resultEntity.Salary
-            };
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
-
-            _mockMapper.Setup(x => x.Map<EmployeeEntity>(createDto))
-                .Returns(employeeEntity);
-
-            _mockSender.Setup(x => x.Send(It.IsAny<AddEmployeeCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(resultEntity);
-
-            _mockMapper.Setup(x => x.Map<EmployeeGetDto>(resultEntity))
-                .Returns(expectedDto);
-
-            // Act
-            var result = await _controller.AddEmployeeAsync(createDto);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var returnedDto = okResult.Value as EmployeeGetDto;
-            Assert.IsNotNull(returnedDto);
-            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
-            Assert.AreEqual(expectedDto.Name, returnedDto.Name);
-            Assert.AreEqual(expectedDto.Email, returnedDto.Email);
-            Assert.AreEqual(expectedDto.Phone, returnedDto.Phone);
-            Assert.AreEqual(expectedDto.Salary, returnedDto.Salary);
         }
 
         [TestMethod]
@@ -662,362 +1019,6 @@ namespace EMS.TESTS.ControllersTests
             Assert.IsNotNull(okResult);
             Assert.AreEqual(200, okResult.StatusCode);
             Assert.AreEqual(expectedResult, okResult.Value);
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeeListForTaskAsync_ReturnsOkResult_WithEmployeeListsDtos()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var username = "testuser";
-            var searchTerm = "dev";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var employeeListsEntities = new List<EmployeeListsEntity>
-            {
-                new EmployeeListsEntity
-                {
-                     Id = Guid.NewGuid(),
-                     Name = "Dev Team",
-                     AppUserId = appUserId,
-                     EmployeesEntities = new List<EmployeeEntity>
-                     {
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 },
-                     }
-                },
-                new EmployeeListsEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "QA Team",
-                    AppUserId = appUserId,
-                    EmployeesEntities = new List<EmployeeEntity>
-                    {
-                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie" }
-                     }
-                }
-            };
-
-            var expectedDtos = new List<EmployeeListsGetDto>
-            {
-                new EmployeeListsGetDto
-                {
-                    Id = employeeListsEntities[0].Id,
-                    Name = "Dev Team",
-                    Employees = new List<EmployeeGetDto>
-                    {
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
-                    }
-            },
-                 new EmployeeListsGetDto
-                 {
-                     Id = employeeListsEntities[1].Id,
-                     Name = "QA Team",
-                     Employees = new List<EmployeeGetDto>
-                     {
-                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000 }
-                     }
-                  }
-             };
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
-
-            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsForTaskQuery>(x =>
-                x.appUserId == appUserId &&
-                x.searchTerm == searchTerm),
-                It.IsAny<CancellationToken>()))
-                .ReturnsAsync(employeeListsEntities);
-
-            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
-                .Returns(expectedDtos);
-
-            // Act
-            var result = await _controller.GetUserEmployeeListForTaskAsync(searchTerm);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
-            Assert.IsNotNull(returnedDtos);
-            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
-            Assert.AreEqual(expectedDtos[0].Name, returnedDtos.First().Name);
-            Assert.AreEqual(expectedDtos.First().Employees.First().Name, returnedDtos.First().Employees.First().Name);
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeeListForTaskAsync_ReturnsOkResult_NotFound_WithEmptyList()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var username = "testuser";
-            var searchTerm = "nonexistent";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var employeeListsEntities = new List<EmployeeListsEntity>();
-
-            var expectedDtos = new List<EmployeeListsGetDto>();
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
-
-            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsForTaskQuery>(x =>
-                x.appUserId == appUserId &&
-                x.searchTerm == searchTerm),
-                It.IsAny<CancellationToken>()))
-                .ReturnsAsync(employeeListsEntities);
-
-            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
-                .Returns(expectedDtos);
-
-            // Act
-            var result = await _controller.GetUserEmployeeListForTaskAsync(searchTerm);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
-            Assert.IsNotNull(returnedDtos);
-            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeeListAsync_ReturnsOkResult_WithEmployeeListsDtos()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var username = "testuser";
-            var searchTerm = "dev";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var employeeListsEntities = new List<EmployeeListsEntity>
-            {
-                new EmployeeListsEntity
-                {
-                     Id = Guid.NewGuid(),
-                     Name = "Dev Team",
-                     AppUserId = appUserId,
-                     EmployeesEntities = new List<EmployeeEntity>
-                     {
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
-                     }
-                },
-                new EmployeeListsEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "QA Team",
-                    AppUserId = appUserId,
-                    EmployeesEntities = new List<EmployeeEntity>
-                    {
-                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie", Email = "Charlie@example.com", Phone = "123-456-789", Salary = 5000 }
-                     }
-                }
-            };
-
-            var expectedDtos = new List<EmployeeListsGetDto>
-            {
-                new EmployeeListsGetDto
-                {
-                    Id = employeeListsEntities[0].Id,
-                    Name = "Dev Team",
-                    Employees = new List<EmployeeGetDto>
-                    {
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000 },
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000 }
-                    }
-            },
-                 new EmployeeListsGetDto
-                 {
-                     Id = employeeListsEntities[1].Id,
-                     Name = "QA Team",
-                     Employees = new List<EmployeeGetDto>
-                     {
-                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000 }
-                     }
-                  }
-             };
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
-
-            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsQuery>(x =>
-                x.appUserId == appUserId &&
-                x.searchTerm == searchTerm),
-                It.IsAny<CancellationToken>()))
-                .ReturnsAsync(employeeListsEntities);
-
-            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
-                .Returns(expectedDtos);
-
-            // Act
-            var result = await _controller.GetUserEmployeeListAsync(searchTerm);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
-            Assert.IsNotNull(returnedDtos);
-            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
-            Assert.AreEqual(expectedDtos[0].Name, returnedDtos.First().Name);
-            Assert.AreEqual(expectedDtos.First().Employees.First().Name, returnedDtos.First().Employees.First().Name);
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeeListAsync_ReturnsOkResult_NotFound_WithEmptyList()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var username = "testuser";
-            var searchTerm = "nonexistent";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var employeeListsEntities = new List<EmployeeListsEntity>();
-
-            var expectedDtos = new List<EmployeeListsGetDto>();
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
-
-            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeeListsQuery>(x =>
-                x.appUserId == appUserId &&
-                x.searchTerm == searchTerm),
-                It.IsAny<CancellationToken>()))
-                .ReturnsAsync(employeeListsEntities);
-
-            _mockMapper.Setup(x => x.Map<IEnumerable<EmployeeListsGetDto>>(employeeListsEntities))
-                .Returns(expectedDtos);
-
-            // Act
-            var result = await _controller.GetUserEmployeeListAsync(searchTerm);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var returnedDtos = okResult.Value as IEnumerable<EmployeeListsGetDto>;
-            Assert.IsNotNull(returnedDtos);
-            Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
-        }
-
-        [TestMethod]
-        public async Task AddEmployeeListAsync_ReturnsOkResult_WithEmployeeListsGetDto()
-        {                       
-            // Arrange
-            var appUserId = "user-id-123";
-            var username = "testuser";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var createDto = new EmployeeListsCreateDto
-            {
-                Name = "New Team",
-                EmployeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
-            };
-
-            var employeeListsEntity = new EmployeeListsEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = createDto.Name,
-                AppUserId = appUserId
-            };
-
-            var resultEntity = new EmployeeListsEntity
-            {
-                Id = employeeListsEntity.Id,
-                Name = employeeListsEntity.Name,
-                AppUserId = appUserId
-            };
-
-            var expectedDto = new EmployeeListsGetDto
-            {
-                Id = resultEntity.Id,
-                Name = resultEntity.Name,
-                Employees = new List<EmployeeGetDto>()
-            };
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
-
-            _mockMapper.Setup(x => x.Map<EmployeeListsEntity>(createDto))
-                .Returns(employeeListsEntity);
-
-            _mockSender.Setup(x => x.Send(It.Is<AddEmployeeListCommand>(x =>
-                x.employeeList == employeeListsEntity &&
-                x.employeeIds.SequenceEqual(createDto.EmployeeIds)),
-                It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<EmployeeListsEntity>.Success(resultEntity));
-
-            _mockMapper.Setup(x => x.Map<EmployeeListsGetDto>(resultEntity))
-                .Returns(expectedDto);
-
-            // Act
-            var result = await _controller.AddEmployeeListAsync(createDto);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var returnedDto = okResult.Value as EmployeeListsGetDto;
-            Assert.IsNotNull(returnedDto);
-            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
-            Assert.AreEqual(expectedDto.Name, returnedDto.Name);
-        }
-
-        [TestMethod]
-        public async Task AddEmployeeListAsync_ReturnsBadRequest_WhenResultIsFailure()
-        {
-            // Arrange
-            var username = "testuser";
-            var appUserId = "user-id-123";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var createDto = new EmployeeListsCreateDto
-            {
-                Name = "Invalid Team",
-                EmployeeIds = new List<Guid> { Guid.NewGuid() }
-            };
-
-            var employeeListsEntity = new EmployeeListsEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = createDto.Name,
-                AppUserId = appUserId
-            };
-
-            var expectedError = "A list with that name already exists.";
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-               .ReturnsAsync(appUser);
-
-            _mockMapper.Setup(x => x.Map<EmployeeListsEntity>(createDto))
-                .Returns(employeeListsEntity);
-
-            _mockSender.Setup(x => x.Send(It.IsAny<AddEmployeeListCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<EmployeeListsEntity>.Failure(expectedError));
-
-            // Act
-            var result = await _controller.AddEmployeeListAsync(createDto);
-
-            // Assert
-            var badRequestResult = result as BadRequestObjectResult;
-            Assert.IsNotNull(badRequestResult);
-            Assert.AreEqual(400, badRequestResult.StatusCode);
-            Assert.AreEqual(expectedError, badRequestResult.Value);
         }
 
         [TestMethod]

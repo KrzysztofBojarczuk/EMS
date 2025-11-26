@@ -1,4 +1,4 @@
-ï»¿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +17,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
+        public async Task<BudgetEntity> GetUserBudgetAsync(string appUserId)
+        {
+            return await dbContext.Budgets.FirstOrDefaultAsync(x => x.AppUserId == appUserId);
+        }
+
         public async Task<bool> DeleteBudgetAsync(Guid budgetId, string appUserId)
         {
             var budget = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == budgetId && x.AppUserId == appUserId);
@@ -25,15 +30,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 dbContext.Budgets.Remove(budget);
 
-                return await dbContext.SaveChangesAsync() > 0; //JeÅ›li usuniÄ™cie siÄ™ powiodÅ‚o: SaveChangesAsync() zwrÃ³ci liczbÄ™ wiÄ™kszÄ… od 0, wiÄ™c metoda zwrÃ³ci true.
+                return await dbContext.SaveChangesAsync() > 0; //Jeœli usuniêcie siê powiod³o: SaveChangesAsync() zwróci liczbê wiêksz¹ od 0, wiêc metoda zwróci true.
             }
 
             return false;
-        }
-
-        public async Task<BudgetEntity> GetUserBudgetAsync(string appUserId)
-        {
-            return await dbContext.Budgets.FirstOrDefaultAsync(x => x.AppUserId == appUserId);
         }
     }
 }

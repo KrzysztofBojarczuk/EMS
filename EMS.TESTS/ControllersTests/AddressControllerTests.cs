@@ -1,17 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using EMS.API.Controllers;
 using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Features.Address.Commands;
 using EMS.APPLICATION.Features.Address.Queries;
 using EMS.CORE.Entities;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 using EMS.INFRASTRUCTURE.Extensions;
-using EMS.APPLICATION.Features.Address.Commands;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Security.Claims;
 
 namespace EMS.TESTS.ControllersTests
 {
@@ -43,6 +43,83 @@ namespace EMS.TESTS.ControllersTests
             {
                 HttpContext = new DefaultHttpContext { User = user }
             };
+        }
+
+        [TestMethod]
+        public async Task AddAddressAsync_ReturnsOkResult_WithAddressGetDto()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var username = "testuser";
+
+            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
+
+            var createDto = new AddressCreateDto
+            {
+                City = "CityX",
+                Street = "StreetX",
+                Number = "1A",
+                ZipCode = "00-001"
+            };
+
+            var addressEntity = new AddressEntity
+            {
+                Id = Guid.NewGuid(),
+                City = createDto.City,
+                Street = createDto.Street,
+                Number = createDto.Number,
+                ZipCode = createDto.ZipCode,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var resultEntity = new AddressEntity
+            {
+                Id = addressEntity.Id,
+                City = addressEntity.City,
+                Street = addressEntity.Street,
+                Number = addressEntity.Number,
+                ZipCode = addressEntity.ZipCode,
+                AppUserId = appUser.Id,
+                AppUserEntity = appUser
+            };
+
+            var expectedDto = new AddressGetDto
+            {
+                Id = resultEntity.Id,
+                City = resultEntity.City,
+                Street = resultEntity.Street,
+                Number = resultEntity.Number,
+                ZipCode = resultEntity.ZipCode
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockMapper.Setup(x => x.Map<AddressEntity>(createDto))
+                .Returns(addressEntity);
+
+            _mockSender.Setup(x => x.Send(It.IsAny<AddAddressCommand>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(resultEntity);
+
+            _mockMapper.Setup(x => x.Map<AddressGetDto>(resultEntity))
+                .Returns(expectedDto);
+
+            // Act
+            var result = await _controller.AddAddressAsync(createDto);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+
+            var returnedDto = okResult.Value as AddressGetDto;
+            Assert.IsNotNull(returnedDto);
+            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
+            Assert.AreEqual(expectedDto.City, returnedDto.City);
+            Assert.AreEqual(expectedDto.Street, returnedDto.Street);
+            Assert.AreEqual(expectedDto.Number, returnedDto.Number);
+            Assert.AreEqual(expectedDto.ZipCode, returnedDto.ZipCode);
         }
 
         [TestMethod]
@@ -250,82 +327,6 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
         }
 
-        [TestMethod]
-        public async Task AddAddressAsync_ReturnsOkResult_WithAddressGetDto()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var username = "testuser";
-
-            var appUser = new AppUserEntity { Id = appUserId, UserName = username };
-
-            var createDto = new AddressCreateDto
-            {
-                City = "CityX",
-                Street = "StreetX",
-                Number = "1A",
-                ZipCode = "00-001"
-            };
-
-            var addressEntity = new AddressEntity
-            {
-                Id = Guid.NewGuid(),
-                City = createDto.City,
-                Street = createDto.Street,
-                Number = createDto.Number,
-                ZipCode = createDto.ZipCode,
-                AppUserId = appUser.Id,
-                AppUserEntity = appUser
-            };
-
-            var resultEntity = new AddressEntity
-            {
-                Id = addressEntity.Id,
-                City = addressEntity.City,
-                Street = addressEntity.Street,
-                Number = addressEntity.Number,
-                ZipCode = addressEntity.ZipCode,
-                AppUserId = appUser.Id,
-                AppUserEntity = appUser
-            };
-
-            var expectedDto = new AddressGetDto
-            {
-                Id = resultEntity.Id,
-                City = resultEntity.City,
-                Street = resultEntity.Street,
-                Number = resultEntity.Number,
-                ZipCode = resultEntity.ZipCode
-            };
-
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
-
-            _mockMapper.Setup(x => x.Map<AddressEntity>(createDto))
-                .Returns(addressEntity);
-
-            _mockSender.Setup(x => x.Send(It.IsAny<AddAddressCommand>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(resultEntity);
-
-            _mockMapper.Setup(x => x.Map<AddressGetDto>(resultEntity))
-                .Returns(expectedDto);
-
-            // Act
-            var result = await _controller.AddAddressAsync(createDto);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-
-            var returnedDto = okResult.Value as AddressGetDto;
-            Assert.IsNotNull(returnedDto);
-            Assert.AreEqual(expectedDto.Id, returnedDto.Id);
-            Assert.AreEqual(expectedDto.City, returnedDto.City);
-            Assert.AreEqual(expectedDto.Street, returnedDto.Street);
-            Assert.AreEqual(expectedDto.Number, returnedDto.Number);
-            Assert.AreEqual(expectedDto.ZipCode, returnedDto.ZipCode);
-        }
 
         [TestMethod]
         public async Task UpdateAddressAsync_ReturnsOkResult_WithUpdatedAddressDto()
