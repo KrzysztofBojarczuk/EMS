@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Address.Commands;
@@ -15,6 +15,28 @@ namespace EMS.API.Controllers
     [ApiController]
     public class AddressController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
     {
+        [HttpPost()]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> AddAddressAsync([FromBody] AddressCreateDto addressDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var addressEntity = mapper.Map<AddressEntity>(addressDto);
+
+            addressEntity.AppUserId = appUser.Id;
+
+            var result = await sender.Send(new AddAddressCommand(addressEntity));
+
+            var addressGet = mapper.Map<AddressGetDto>(result);
+
+            return Ok(addressGet);
+        }
+
         [HttpGet("User")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetUserAddressAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
@@ -47,28 +69,6 @@ namespace EMS.API.Controllers
             var result = await sender.Send(new GetUserAddressForTaskQuery(appUser.Id, searchTerm));
 
             var addressGet = mapper.Map<IEnumerable<AddressGetDto>>(result);
-
-            return Ok(addressGet);
-        }
-
-        [HttpPost()]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddAddressAsync([FromBody] AddressCreateDto addressDto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var username = User.GetUsername();
-
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var addressEntity = mapper.Map<AddressEntity>(addressDto);
-
-            addressEntity.AppUserId = appUser.Id;
-
-            var result = await sender.Send(new AddAddressCommand(addressEntity));
-
-            var addressGet = mapper.Map<AddressGetDto>(result);
 
             return Ok(addressGet);
         }

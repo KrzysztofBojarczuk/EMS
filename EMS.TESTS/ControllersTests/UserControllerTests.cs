@@ -1,4 +1,4 @@
-﻿using EMS.API.Controllers;
+using EMS.API.Controllers;
 using EMS.APPLICATION.Features.Userss.Commands;
 using EMS.APPLICATION.Features.Userss.Queries;
 using EMS.CORE.Entities;
@@ -21,64 +21,6 @@ namespace EMS.TESTS.ControllersTests
         {
             _mockSender = new Mock<ISender>();
             _controller = new UserController(_mockSender.Object);
-        }
-
-        [TestMethod]
-        public async Task DeleteUserAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var expectedResult = true;
-
-            _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == appUserId), It.IsAny<CancellationToken>()))
-                       .ReturnsAsync(expectedResult);
-
-            // Act
-            var result = await _controller.DeleteUserAsync(appUserId);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(expectedResult, okResult.Value);
-        }
-
-        [TestMethod]
-        public async Task DeleteUserAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var expectedResult = false;
-
-            _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == appUserId), It.IsAny<CancellationToken>()))
-                       .ReturnsAsync(expectedResult);
-
-            // Act
-            var result = await _controller.DeleteUserAsync(appUserId);
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(expectedResult, okResult.Value);
-        }
-
-        [TestMethod]
-        public async Task GetNumberOfUsersAsync_ReturnsOkResult_WithNumber()
-        {
-            // Arrange
-            var expectedNumberOfUsers = 42;
-            _mockSender.Setup(x => x.Send(It.IsAny<GetNumberOfUsersQuery>(), It.IsAny<CancellationToken>()))
-                       .ReturnsAsync(expectedNumberOfUsers);
-
-            // Act
-            var result = await _controller.GetNumberOfUsersAsync();
-
-            // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(expectedNumberOfUsers, okResult.Value);
         }
 
         [TestMethod]
@@ -169,6 +111,64 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(paginatedResult.TotalItems, totalItemsProperty.GetValue(value));
             Assert.AreEqual(paginatedResult.TotalPages, totalPagesProperty.GetValue(value));
             Assert.AreEqual(paginatedResult.PageIndex, pageIndexProperty.GetValue(value));
+        }
+
+        [TestMethod]
+        public async Task GetNumberOfUsersAsync_ReturnsOkResult_WithNumber()
+        {
+            // Arrange
+            var expectedNumberOfUsers = 42;
+            _mockSender.Setup(x => x.Send(It.IsAny<GetNumberOfUsersQuery>(), It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(expectedNumberOfUsers);
+
+            // Act
+            var result = await _controller.GetNumberOfUsersAsync();
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(expectedNumberOfUsers, okResult.Value);
+        }
+
+        [TestMethod]
+        public async Task DeleteUserAsync_ReturnsOkResult_WithTrue_When_DeletedSuccessfully()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var expectedResult = true;
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == appUserId), It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.DeleteUserAsync(appUserId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(expectedResult, okResult.Value);
+        }
+
+        [TestMethod]
+        public async Task DeleteUserAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var expectedResult = false;
+
+            _mockSender.Setup(x => x.Send(It.Is<DeleteUserCommand>(x => x.appUserId == appUserId), It.IsAny<CancellationToken>()))
+                       .ReturnsAsync(expectedResult);
+
+            // Act
+            var result = await _controller.DeleteUserAsync(appUserId);
+
+            // Assert
+            var okResult = result as OkObjectResult;
+            Assert.IsNotNull(okResult);
+            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.AreEqual(expectedResult, okResult.Value);
         }
     }
 }

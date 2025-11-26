@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Userss.Commands;
+using EMS.APPLICATION.Features.Userss.Commands;
 using EMS.APPLICATION.Features.Userss.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -25,20 +25,20 @@ namespace EMS.API.Controllers
             });
         }
 
-        [HttpDelete("{appUserId}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteUserAsync([FromRoute] string appUserId)
-        {
-            var result = await sender.Send(new DeleteUserCommand(appUserId));
-
-            return Ok(result);
-        }
-
         [HttpGet("GetNumberOfUsers")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetNumberOfUsersAsync()
         {
             var result = await sender.Send(new GetNumberOfUsersQuery());
+
+            return Ok(result);
+        }
+
+        [HttpDelete("{appUserId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUserAsync([FromRoute] string appUserId)
+        {
+            var result = await sender.Send(new DeleteUserCommand(appUserId));
 
             return Ok(result);
         }

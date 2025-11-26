@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +21,35 @@ namespace EMS.TESTS.RepositoriesTests
 
             _context = new AppDbContext(options);
             _repository = new LocalRepository(_context);
+        }
+
+        [TestMethod]
+        public async Task AddLocalAsync_Returns_Local()
+        {
+            // Arrange
+            var local = new LocalEntity
+            {
+                Description = "Test",
+                LocalNumber = 1,
+                Surface = 100.0,
+                NeedsRepair = false,
+                AppUserId = "user-id-123"
+            };
+
+            // Act
+            var result = await _repository.AddLocalAsync(local);
+
+            var localCount = await _context.Locals.CountAsync();
+
+            // Assert 
+            Assert.IsNotNull(result);
+            Assert.AreEqual(local.Description, result.Description);
+            Assert.AreEqual(local.LocalNumber, result.LocalNumber);
+            Assert.AreEqual(local.Surface, result.Surface);
+            Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
+            Assert.AreEqual(local.AppUserId, result.AppUserId);
+            Assert.AreNotEqual(Guid.Empty, result.Id);
+            Assert.AreEqual(1, localCount);
         }
 
         [TestMethod]
@@ -136,35 +165,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsNull(result);
-        }
-
-        [TestMethod]
-        public async Task AddLocalAsync_Returns_Local()
-        {
-            // Arrange
-            var local = new LocalEntity
-            {
-                Description = "Test",
-                LocalNumber = 1,
-                Surface = 100.0,
-                NeedsRepair = false,
-                AppUserId = "user-id-123"
-            };
-
-            // Act
-            var result = await _repository.AddLocalAsync(local);
-
-            var localCount = await _context.Locals.CountAsync();
-
-            // Assert 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(local.Description, result.Description);
-            Assert.AreEqual(local.LocalNumber, result.LocalNumber);
-            Assert.AreEqual(local.Surface, result.Surface);
-            Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
-            Assert.AreEqual(local.AppUserId, result.AppUserId);
-            Assert.AreNotEqual(Guid.Empty, result.Id);
-            Assert.AreEqual(1, localCount);
         }
 
         [TestMethod]

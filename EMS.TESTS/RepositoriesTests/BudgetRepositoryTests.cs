@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
@@ -48,6 +48,41 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserBudgetAsync_When_BudgetExists_Returns_Budget()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var budget = new BudgetEntity
+            {
+                Id = Guid.NewGuid(),
+                Budget = 3000.00m,
+                AppUserId = appUserId
+            };
+
+            _context.Budgets.Add(budget);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserBudgetAsync(appUserId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(budget.Id, result.Id);
+            Assert.AreEqual(budget.Budget, result.Budget);
+            Assert.AreEqual(budget.AppUserId, result.AppUserId);
+        }
+
+        [TestMethod]
+        public async Task GetUserBudgetAsync_When_BudgetDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetUserBudgetAsync("nonexistent_user");
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public async Task DeleteBudgetAsync_When_BudgetExists_Returns_True()
         {
             // Arrange
@@ -87,41 +122,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public async Task GetUserBudgetAsync_When_BudgetExists_Returns_Budget()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var budget = new BudgetEntity
-            {
-                Id = Guid.NewGuid(),
-                Budget = 3000.00m,
-                AppUserId = appUserId
-            };
-
-            _context.Budgets.Add(budget);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetUserBudgetAsync(appUserId);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(budget.Id, result.Id);
-            Assert.AreEqual(budget.Budget, result.Budget);
-            Assert.AreEqual(budget.AppUserId, result.AppUserId);
-        }
-
-        [TestMethod]
-        public async Task GetUserBudgetAsync_When_BudgetDoesNotExist_Returns_Null()
-        {
-            // Act
-            var result = await _repository.GetUserBudgetAsync("nonexistent_user");
-
-            // Assert
-            Assert.IsNull(result);
         }
     }
 }

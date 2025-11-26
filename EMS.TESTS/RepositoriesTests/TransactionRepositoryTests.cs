@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
@@ -53,56 +53,6 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(transaction.BudgetId, result.BudgetId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, transactionCount);
-        }
-
-        [TestMethod]
-        public async Task DeleteTransactionsAsync_When_TransactionExists_Returns_True()
-        {
-            // Arrange
-            var budget = new BudgetEntity
-            {
-                Id = Guid.NewGuid(),
-                Budget = 1000m,
-                AppUserId = "user-id-123"
-            };
-
-            _context.Budgets.Add(budget);
-
-            var transaction = new TransactionEntity
-            {
-                Name = "Invoice",
-                CreationDate = DateTime.UtcNow,
-                Category = CategoryType.Expense,
-                Amount = 250.75m,
-                BudgetId = budget.Id 
-            };
-
-            _context.Transactions.Add(transaction);
-            await _context.SaveChangesAsync();
-
-            var transactionCountBefore = await _context.Transactions.CountAsync();
-
-            // Act
-            var result = await _repository.DeleteTransactionsAsync(transaction.Id);
-
-            var deletedTransaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == transaction.Id);
-
-            var transactionCountAfter = await _context.Transactions.CountAsync();
-
-            // Assert
-            Assert.IsTrue(result);
-            Assert.IsNull(deletedTransaction);
-            Assert.AreEqual(transactionCountBefore - 1, transactionCountAfter);
-        }
-
-        [TestMethod]
-        public async Task DeleteTransactionsAsync_When_TransactionDoesNotExist_Returns_False()
-        {
-            // Act
-            var result = await _repository.DeleteTransactionsAsync(Guid.NewGuid());
-
-            // Assert
-            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -204,6 +154,56 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Count());
             Assert.AreEqual(transactions[2].Name, result.First().Name);
+        }
+
+        [TestMethod]
+        public async Task DeleteTransactionsAsync_When_TransactionExists_Returns_True()
+        {
+            // Arrange
+            var budget = new BudgetEntity
+            {
+                Id = Guid.NewGuid(),
+                Budget = 1000m,
+                AppUserId = "user-id-123"
+            };
+
+            _context.Budgets.Add(budget);
+
+            var transaction = new TransactionEntity
+            {
+                Name = "Invoice",
+                CreationDate = DateTime.UtcNow,
+                Category = CategoryType.Expense,
+                Amount = 250.75m,
+                BudgetId = budget.Id
+            };
+
+            _context.Transactions.Add(transaction);
+            await _context.SaveChangesAsync();
+
+            var transactionCountBefore = await _context.Transactions.CountAsync();
+
+            // Act
+            var result = await _repository.DeleteTransactionsAsync(transaction.Id);
+
+            var deletedTransaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == transaction.Id);
+
+            var transactionCountAfter = await _context.Transactions.CountAsync();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsNull(deletedTransaction);
+            Assert.AreEqual(transactionCountBefore - 1, transactionCountAfter);
+        }
+
+        [TestMethod]
+        public async Task DeleteTransactionsAsync_When_TransactionDoesNotExist_Returns_False()
+        {
+            // Act
+            var result = await _repository.DeleteTransactionsAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }

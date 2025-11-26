@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
@@ -51,59 +51,6 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(address.AppUserId, result.AppUserId);
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, addressCount);
-        }
-
-        [TestMethod]
-        public async Task DeleteAddressAsync_When_AddressExists_Returns_True()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-
-            var addresses = new List<AddressEntity>
-            {
-                new AddressEntity { AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" }
-            };
-
-            var tasks = new List<TaskEntity>
-            {
-                new TaskEntity { Name = "Test Task 1", Description = "Test Description", AppUserId = "user1", AddressId = addresses[0].Id },
-                new TaskEntity { Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addresses[1].Id }
-            };
-
-            _context.Tasks.AddRange(tasks);
-            _context.Address.AddRange(addresses);
-            await _context.SaveChangesAsync();
-
-            var addressCountBefore = await _context.Address.CountAsync();
-
-            // Act
-            var result = await _repository.DeleteAddressAsync(addresses[0].Id, appUserId);
-
-            var deletedAddress = await _context.Address.FirstOrDefaultAsync(x => x.Id == addresses[0].Id);
-
-            var noTaskReferencesDeletedAddress = tasks.All(x => x.AddressId != addresses[0].Id);
-
-            var addressCountAfter = await _context.Address.CountAsync();
-
-            // Assert
-            Assert.IsTrue(result);
-            Assert.IsNull(deletedAddress);
-            Assert.IsTrue(noTaskReferencesDeletedAddress);
-            Assert.AreEqual(addressCountBefore - 1, addressCountAfter);
-        }
-
-        [TestMethod]
-        public async Task DeleteAddressAsync_When_AddressDoesNotExist_Returns_False()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-
-            // Act
-            var result = await _repository.DeleteAddressAsync(Guid.NewGuid(), appUserId);
-
-            // Assert
-            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -359,6 +306,59 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(updatedAddress.Street, result.Street);
             Assert.AreEqual(updatedAddress.Number, result.Number);
             Assert.AreEqual(updatedAddress.ZipCode, result.ZipCode);
+        }
+
+        [TestMethod]
+        public async Task DeleteAddressAsync_When_AddressExists_Returns_True()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var addresses = new List<AddressEntity>
+            {
+                new AddressEntity { AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
+                new AddressEntity { AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" }
+            };
+
+            var tasks = new List<TaskEntity>
+            {
+                new TaskEntity { Name = "Test Task 1", Description = "Test Description", AppUserId = "user1", AddressId = addresses[0].Id },
+                new TaskEntity { Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addresses[1].Id }
+            };
+
+            _context.Tasks.AddRange(tasks);
+            _context.Address.AddRange(addresses);
+            await _context.SaveChangesAsync();
+
+            var addressCountBefore = await _context.Address.CountAsync();
+
+            // Act
+            var result = await _repository.DeleteAddressAsync(addresses[0].Id, appUserId);
+
+            var deletedAddress = await _context.Address.FirstOrDefaultAsync(x => x.Id == addresses[0].Id);
+
+            var noTaskReferencesDeletedAddress = tasks.All(x => x.AddressId != addresses[0].Id);
+
+            var addressCountAfter = await _context.Address.CountAsync();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsNull(deletedAddress);
+            Assert.IsTrue(noTaskReferencesDeletedAddress);
+            Assert.AreEqual(addressCountBefore - 1, addressCountAfter);
+        }
+
+        [TestMethod]
+        public async Task DeleteAddressAsync_When_AddressDoesNotExist_Returns_False()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.DeleteAddressAsync(Guid.NewGuid(), appUserId);
+
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }

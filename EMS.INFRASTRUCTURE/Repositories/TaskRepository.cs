@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Data;
@@ -9,6 +9,38 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class TaskRepository(AppDbContext dbContext) : ITaskRepository
     {
+        public async Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> EmployeeListIds, List<Guid> VehicleIds)
+        {
+            entity.Id = Guid.NewGuid(); // Przypisanie nowego identyfikatora
+            entity.StartDate = entity.StartDate.ToLocalTime();
+            entity.EndDate = entity.EndDate.ToLocalTime();
+
+            var employeeLists = await dbContext.EmployeeLists.Where(x => EmployeeListIds.Contains(x.Id)).ToListAsync();
+
+            foreach (var item in employeeLists)
+            {
+                item.TaskId = entity.Id;
+            }
+
+            var vehicles = await dbContext.Vehicles.Where(x => VehicleIds.Contains(x.Id)).ToListAsync();
+
+            foreach (var item in vehicles)
+            {
+                item.TaskId = entity.Id;
+            }
+
+
+            dbContext.Tasks.Add(entity);
+
+            await dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<TaskEntity> GetTaskByIdAsync(Guid id)
+        {
+            return await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<StatusOfTask> statusOfTask, string sortOrderDate)
         {
             var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities).Include(x => x.VehicleEntities)
@@ -54,63 +86,33 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<TaskEntity> GetTaskByIdAsync(Guid id)
+        public async Task<PaginatedList<TaskEntity>> GetAllTasksAsync(int pageNumber, int pageSize, string searchTerm)
         {
-            return await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
-        }
+            var query = dbContext.Tasks.AsQueryable();
 
-        public async Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> EmployeeListIds, List<Guid> VehicleIds)
-        { 
-            entity.Id = Guid.NewGuid(); // Przypisanie nowego identyfikatora
-            entity.StartDate = entity.StartDate.ToLocalTime();
-            entity.EndDate = entity.EndDate.ToLocalTime();
-
-            var employeeLists = await dbContext.EmployeeLists.Where(x => EmployeeListIds.Contains(x.Id)).ToListAsync();
-
-            foreach (var item in employeeLists)
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                item.TaskId = entity.Id;
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            var vehicles = await dbContext.Vehicles.Where(x => VehicleIds.Contains(x.Id)).ToListAsync();
-
-            foreach (var item in vehicles)
-            {
-                item.TaskId = entity.Id;
-            }
-
-
-            dbContext.Tasks.Add(entity);
-
-            await dbContext.SaveChangesAsync();
-            return entity;
+            return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<bool> DeleteTaskAsync(Guid taskId, string appUserId)
+        public async Task<TaskEntity> UpdateTaskAsync(Guid id, string appUserId, TaskEntity entity)
         {
-            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == taskId && x.AppUserId == appUserId);
+            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == appUserId);
 
             if (task is not null)
             {
-                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+                task.Name = entity.Name;
+                task.Description = entity.Description;
 
-                foreach (var item in employeeListsEntities)
-                {
-                    item.TaskId = null;
-                }
+                await dbContext.SaveChangesAsync();
 
-                var vehiclesEntities = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
-
-                foreach (var item in vehiclesEntities)
-                {
-                    item.TaskId = null;
-                }
-
-                dbContext.Tasks.Remove(task);
-                return await dbContext.SaveChangesAsync() > 0;
+                return task;
             }
 
-            return false;
+            return entity;
         }
 
         public async Task<bool> UpdateTaskStatusAsync(Guid taskId, string appUserId, StatusOfTask newStatus)
@@ -141,33 +143,31 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return false;
         }
 
-        public async Task<TaskEntity> UpdateTaskAsync(Guid id, string appUserId, TaskEntity entity)
+        public async Task<bool> DeleteTaskAsync(Guid taskId, string appUserId)
         {
-            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == appUserId);
+            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == taskId && x.AppUserId == appUserId);
 
             if (task is not null)
             {
-                task.Name = entity.Name;
-                task.Description = entity.Description;
+                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
-                await dbContext.SaveChangesAsync();
+                foreach (var item in employeeListsEntities)
+                {
+                    item.TaskId = null;
+                }
 
-                return task;
+                var vehiclesEntities = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+
+                foreach (var item in vehiclesEntities)
+                {
+                    item.TaskId = null;
+                }
+
+                dbContext.Tasks.Remove(task);
+                return await dbContext.SaveChangesAsync() > 0;
             }
 
-            return entity;
-        }
-
-        public async Task<PaginatedList<TaskEntity>> GetAllTasksAsync(int pageNumber, int pageSize, string searchTerm)
-        {
-            var query = dbContext.Tasks.AsQueryable();
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
-            }
-
-            return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
+            return false;
         }
     }
 }
