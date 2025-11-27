@@ -130,7 +130,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var localId = Guid.NewGuid();
-            var existing = new ReservationEntity
+            var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
                 LocalId = localId,
@@ -138,11 +138,12 @@ namespace EMS.TESTS.RepositoriesTests
                 CheckInDate = DateTime.UtcNow.AddDays(1),
                 CheckOutDate = DateTime.UtcNow.AddDays(3)
             };
-            _context.Reservations.Add(existing);
+
+            _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.IsLocalBusyAsync(localId, existing.CheckInDate.AddDays(-1), existing.CheckInDate.AddHours(12));
+            var result = await _repository.IsLocalBusyAsync(localId, reservation.CheckInDate.AddDays(-1), reservation.CheckInDate.AddHours(12));
 
             // Assert
             Assert.IsTrue(result);
