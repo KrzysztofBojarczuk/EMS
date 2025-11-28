@@ -150,6 +150,29 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task IsLocalBusyAsync_When_NewRange_Covers_ExistingReservation_Returns_True()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+            var reservation = new ReservationEntity
+            {
+                Id = Guid.NewGuid(),
+                LocalId = localId,
+                AppUserId = "user",
+                CheckInDate = DateTime.UtcNow.AddDays(2),
+                CheckOutDate = DateTime.UtcNow.AddDays(5)
+            };
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            var result = await _repository.IsLocalBusyAsync(localId, reservation.CheckInDate.AddDays(-1), reservation.CheckOutDate.AddDays(1));
+
+            // Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
         public async Task DeleteReservationAsync_When_ReservationExists_Returns_True()
         {
             // Arrange
