@@ -166,6 +166,7 @@ namespace EMS.TESTS.RepositoriesTests
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 
+            // Act
             var result = await _repository.IsLocalBusyAsync(localId, reservation.CheckInDate.AddDays(-1), reservation.CheckOutDate.AddDays(1));
 
             // Assert
