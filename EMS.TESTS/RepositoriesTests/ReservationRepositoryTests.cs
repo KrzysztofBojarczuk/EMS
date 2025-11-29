@@ -134,7 +134,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = Guid.NewGuid(),
                 LocalId = localId,
-                AppUserId = "user",
+                AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow.AddDays(1),
                 CheckOutDate = DateTime.UtcNow.AddDays(3)
             };
@@ -158,7 +158,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = Guid.NewGuid(),
                 LocalId = localId,
-                AppUserId = "user",
+                AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow.AddDays(2),
                 CheckOutDate = DateTime.UtcNow.AddDays(5)
             };
