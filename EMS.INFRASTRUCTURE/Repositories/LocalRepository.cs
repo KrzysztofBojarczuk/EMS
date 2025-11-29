@@ -23,7 +23,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(x => x.LocalNumber.ToString().Contains(searchTerm) || x.Description.ToLower().Contains(searchTerm.ToLower()));
+                query = query.Where(x => x.Description.ToLower().Contains(searchTerm.ToLower()) || x.LocalNumber.ToString().Contains(searchTerm) || x.Surface.ToString().Contains(searchTerm));
             }
 
             return await PaginatedList<LocalEntity>.CreateAsync(query, pageNumber, pageSize);

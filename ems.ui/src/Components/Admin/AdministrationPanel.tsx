@@ -19,6 +19,8 @@ import {
   statusOfTaskBodyTemplate,
 } from "../Utils/TaskTemplates";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 
 const AdministrationPanel: React.FC = (): JSX.Element => {
   const [numberUser, setNumberUsers] = useState<number>(0);
@@ -152,11 +154,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   return (
     <div className="card m-4">
       <Panel ref={userPanelRef} header="Users" toggleable collapsed>
-        <InputText
-          value={searchUserTerm}
-          onChange={(e) => setSearchUserTerm(e.target.value)}
-          placeholder="Search Users"
-        />
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText
+            value={searchUserTerm}
+            onChange={(e) => setSearchUserTerm(e.target.value)}
+            placeholder="Search"
+          />
+        </IconField>
         <DataTable value={users}>
           <Column field="id" header="Id" />
           <Column field="userName" header="User name" />
@@ -183,11 +188,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       </Panel>
 
       <Panel ref={employeePanelRef} header="Employees" toggleable collapsed>
-        <InputText
-          value={searchEmployeeTerm}
-          onChange={(e) => setSearchEmployeeTerm(e.target.value)}
-          placeholder="Search Employees"
-        />
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText
+            value={searchEmployeeTerm}
+            onChange={(e) => setSearchEmployeeTerm(e.target.value)}
+            placeholder="Search"
+          />
+        </IconField>
         <DataTable value={employees}>
           <Column field="id" header="Id" />
           <Column field="name" header="Name" />
@@ -204,11 +212,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       </Panel>
 
       <Panel ref={taskPanelRef} header="Tasks" toggleable collapsed>
-        <InputText
-          value={searchTaskTerm}
-          onChange={(e) => setSearchTaskTerm(e.target.value)}
-          placeholder="Search Tasks"
-        />
+        <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
+          <InputText
+            value={searchTaskTerm}
+            onChange={(e) => setSearchTaskTerm(e.target.value)}
+            placeholder="Search"
+          />
+        </IconField>
         <DataTable value={tasks}>
           <Column field="id" header="Id"></Column>
           <Column field="name" header="Name"></Column>

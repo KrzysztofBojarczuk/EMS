@@ -28,6 +28,7 @@ import AddLocal from "../AddLocal/AddLocal";
 import AddReservation from "../AddReservation/AddReservation";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateLocal from "../UpdateLocal/UpdateLocal";
+import { Dropdown } from "primereact/dropdown";
 
 type Props = {};
 
@@ -69,6 +70,22 @@ const LocalReservation = (props: Props) => {
 
   const localPanelRef = useRef<Panel>(null);
   const reservationPanelRef = useRef<Panel>(null);
+  const [sortOrderDate, setSortOrderDateReservation] = useState<string | null>(
+    null
+  );
+
+  const sortDateOptions = [
+    { label: "None", value: null },
+    { label: "Check-In ↑", value: "start_asc" },
+    { label: "Check-In ↓", value: "start_desc" },
+    { label: "Check-Out ↑", value: "end_asc" },
+    { label: "Check-Out ↓", value: "end_desc" },
+  ];
+
+  const resetReservationFilters = () => {
+    setSearchReservationTerm("");
+    setSortOrderDateReservation(null);
+  };
 
   const allowExpansion = (rowData: LocalGet) => {
     return rowData.id!.length > 0;
@@ -100,7 +117,8 @@ const LocalReservation = (props: Props) => {
     const data = await UserGetReservationService(
       page,
       size,
-      searchReservationTerm
+      searchReservationTerm,
+      sortOrderDate
     );
     setReservations(data.reservationGet);
     setTotalReservations(data.totalItems);
@@ -108,7 +126,7 @@ const LocalReservation = (props: Props) => {
 
   useEffect(() => {
     goToPageReservation(1, rowsReservation);
-  }, [searchReservationTerm]);
+  }, [searchReservationTerm, sortOrderDate]);
 
   const onPageChangeLocals = (event: PaginatorPageChangeEvent) => {
     setFirstLocal(event.first);
@@ -242,7 +260,7 @@ const LocalReservation = (props: Props) => {
             <InputText
               value={searchLocalTerm}
               onChange={(e) => setSearchLocalTerm(e.target.value)}
-              placeholder="Search Locals"
+              placeholder="Search"
             />
           </IconField>
           <Button label="Add Local" onClick={() => setVisibleLocal(true)} />
@@ -337,9 +355,21 @@ const LocalReservation = (props: Props) => {
             <InputText
               value={searchReservationTerm}
               onChange={(e) => setSearchReservationTerm(e.target.value)}
-              placeholder="Search Reservation"
+              placeholder="Search"
             />
           </IconField>
+          <Dropdown
+            value={sortOrderDate}
+            options={sortDateOptions}
+            onChange={(e) => setSortOrderDateReservation(e.value)}
+            placeholder="Sort by Date"
+            showClear
+          />
+          <Button
+            label="Reset Filters"
+            icon="pi pi-refresh"
+            onClick={resetReservationFilters}
+          />
         </div>
         <DataTable value={reservations}>
           <Column field="id" header="Id"></Column>

@@ -199,10 +199,11 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     <div className="xl:m-4 lg:m-4 md:m-2">
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
         <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
           <InputText
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search Name"
+            placeholder="Search"
           />
         </IconField>
         <Dropdown
@@ -280,10 +281,11 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       </Dialog>
       <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
         <IconField iconPosition="left">
+          <InputIcon className="pi pi-search"> </InputIcon>
           <InputText
             value={searchTermList}
             onChange={(e) => setSearchTermList(e.target.value)}
-            placeholder="Search Name"
+            placeholder="Search"
           />
         </IconField>
         <Button

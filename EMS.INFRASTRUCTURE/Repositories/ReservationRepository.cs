@@ -25,13 +25,39 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
+        public async Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrderDate)
         {
             var query = dbContext.Reservations.Where(x => x.AppUserId == appUserId);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(x => x.Id.ToString().ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(sortOrderDate))
+            {
+                switch (sortOrderDate)
+                {
+                    case "start_asc":
+                        query = query.OrderBy(x => x.CheckInDate);
+                        break;
+                    case "start_desc":
+                        query = query.OrderByDescending(x => x.CheckInDate);
+                        break;
+                    case "end_asc":
+                        query = query.OrderBy(x => x.CheckOutDate);
+                        break;
+                    case "end_desc":
+                        query = query.OrderByDescending(x => x.CheckOutDate);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.CheckOutDate);
+                        break;
+                }
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.CheckOutDate);
             }
 
             return await PaginatedList<ReservationEntity>.CreateAsync(query, pageNumber, pageSize);
