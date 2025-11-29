@@ -52,6 +52,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var budget = new BudgetEntity
             {
                 Id = Guid.NewGuid(),
@@ -87,6 +88,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var budget = new BudgetEntity
             {
                 Budget = 2500.00m,

@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Employee.Queries;
+using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,6 +24,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         {
             // Arrange
             var employeeId = Guid.NewGuid();
+
             var expectedEmployee = new EmployeeEntity
             {
                 Id = employeeId,
@@ -54,8 +55,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Arrange
             var employeeId = Guid.NewGuid();
 
-           _mockEmployeeRepository.Setup(x => x.GetEmployeeByIdAsync(employeeId))
-                .ReturnsAsync((EmployeeEntity)null);
+            _mockEmployeeRepository.Setup(x => x.GetEmployeeByIdAsync(employeeId))
+                 .ReturnsAsync((EmployeeEntity)null);
 
             var query = new GetEmployeeByIdQuery(employeeId);
 

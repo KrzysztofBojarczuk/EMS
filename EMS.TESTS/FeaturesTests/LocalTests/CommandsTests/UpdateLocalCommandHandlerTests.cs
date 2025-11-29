@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Local.Commands;
+using EMS.APPLICATION.Features.Local.Commands;
 using EMS.CORE.Entities;
 using EMS.INFRASTRUCTURE.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,6 +25,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.CommandsTests
             // Arrange
             var localId = Guid.NewGuid();
             var appUserId = "user-id-123";
+
             var updatedLocal = new LocalEntity
             {
                 Description = "Local 1",
@@ -38,10 +39,10 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.CommandsTests
                 .ReturnsAsync(updatedLocal);
 
             var command = new UpdateLocalCommand(localId, appUserId, updatedLocal);
-            
+
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
-            
+
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(updatedLocal, result);

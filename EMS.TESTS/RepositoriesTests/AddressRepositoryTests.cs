@@ -58,6 +58,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
+
             var address = new AddressEntity
             {
                 Id = addressId,
@@ -249,6 +250,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var address = new AddressEntity
             {
                 City = "Test City",
@@ -288,6 +290,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var nonExistentId = Guid.NewGuid();
             var appUserId = "user-id-123";
+
             var updatedAddress = new AddressEntity
             {
                 City = "Test New City",

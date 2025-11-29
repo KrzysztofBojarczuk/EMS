@@ -106,6 +106,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var localId = Guid.NewGuid();
+
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
@@ -130,6 +131,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var localId = Guid.NewGuid();
+
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
@@ -154,6 +156,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var localId = Guid.NewGuid();
+
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
@@ -178,6 +181,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var reservation = new ReservationEntity
             {
                 LocalId = Guid.NewGuid(),
