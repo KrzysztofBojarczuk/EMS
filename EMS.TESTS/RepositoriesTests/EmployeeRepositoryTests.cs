@@ -598,6 +598,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var existingList = new EmployeeListsEntity
             {
                 Id = Guid.NewGuid(),
@@ -626,6 +627,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var existingList = new EmployeeListsEntity
             {
                 Id = Guid.NewGuid(),
@@ -700,6 +702,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var employee = new EmployeeEntity
             {
                 Name = "Tomasz Wójcik",
@@ -739,6 +742,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var nonExistentId = Guid.NewGuid();
             var appUserId = "user-id-123";
+
             var updatedEmployee = new EmployeeEntity
             {
                 Name = "Tomasz Nowy",
@@ -764,6 +768,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var employee = new EmployeeEntity
             {
                 Name = "Anna Kowalska",

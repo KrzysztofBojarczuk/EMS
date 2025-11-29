@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Budget.Queries;
 using EMS.CORE.Interfaces;
 using MediatR;
@@ -26,6 +26,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var expectedBudget = new BudgetEntity
             {
                 AppUserId = appUserId,

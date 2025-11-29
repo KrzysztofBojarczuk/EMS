@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Address.Commands;
+using EMS.APPLICATION.Features.Address.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,6 +25,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             // Arrange
             var addressId = Guid.NewGuid();
             var appUserId = "user-id-123";
+
             var updatedAddress = new AddressEntity
             {
                 City = "Updated City",

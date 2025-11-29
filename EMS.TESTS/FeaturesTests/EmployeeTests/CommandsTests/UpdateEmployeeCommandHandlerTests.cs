@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Employee.Commands;
+using EMS.APPLICATION.Features.Employee.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,6 +25,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             //Arrange
             var employeeId = Guid.NewGuid();
             var appUserId = "user-id-123";
+
             var updatedEmployee = new EmployeeEntity
             {
                 Name = "Test User",

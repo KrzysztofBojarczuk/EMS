@@ -172,6 +172,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var local = new LocalEntity
             {
                 Description = "Test",
@@ -211,6 +212,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var nonExistentId = Guid.NewGuid();
             var appUserId = "user-id-123";
+
             var updatedLocal = new LocalEntity
             {
                 Description = "Test New",
@@ -236,6 +238,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
+
             var local = new LocalEntity
             {
                 Description = "Test",

@@ -118,6 +118,7 @@ namespace EMS.TESTS.ControllersTests
         {
             // Arrange
             var expectedNumberOfUsers = 42;
+
             _mockSender.Setup(x => x.Send(It.IsAny<GetNumberOfUsersQuery>(), It.IsAny<CancellationToken>()))
                        .ReturnsAsync(expectedNumberOfUsers);
 
