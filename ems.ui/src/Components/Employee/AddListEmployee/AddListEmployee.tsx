@@ -10,6 +10,7 @@ import {
   PostListEmployeesService,
 } from "../../../Services/EmployeeService";
 import { EmployeeListPost } from "../../../Models/EmployeeList";
+import { IconField } from "primereact/iconfield";
 
 type Props = {
   onClose: () => void;
@@ -92,11 +93,14 @@ const AddListEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                 </div>
               )}
             />
-            <InputText
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search"
-            />
+            <IconField iconPosition="left">
+              <InputIcon className="pi pi-search"> </InputIcon>
+              <InputText
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search"
+              />
+            </IconField>
             {employees.map((item) => {
               return (
                 <div key={item.id} className="flex align-items-center">

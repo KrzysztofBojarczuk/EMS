@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Reservation.Commands;
@@ -42,13 +42,13 @@ namespace EMS.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserReservationAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetUserReservationAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrderDate = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var paginatedReservation = await sender.Send(new GetUserReservationQuery(appUser.Id, pageNumber, pageSize, searchTerm));
+            var paginatedReservation = await sender.Send(new GetUserReservationQuery(appUser.Id, pageNumber, pageSize, searchTerm, sortOrderDate));
 
             var reservationGet = mapper.Map<IEnumerable<ReservationGetDto>>(paginatedReservation.Items);
 
