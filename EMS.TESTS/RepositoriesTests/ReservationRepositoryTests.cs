@@ -177,6 +177,31 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task IsLocalBusyAsync_When_NewRange_DoesNotOverlap_Returns_False()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+
+            var reservation = new ReservationEntity
+            {
+                Id = Guid.NewGuid(),
+                LocalId = localId,
+                AppUserId = "user-id-123",
+                CheckInDate = DateTime.UtcNow.AddDays(1),
+                CheckOutDate = DateTime.UtcNow.AddDays(2)
+            };
+
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.IsLocalBusyAsync(localId, reservation.CheckInDate.AddDays(-2), reservation.CheckInDate);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
         public async Task DeleteReservationAsync_When_ReservationExists_Returns_True()
         {
             // Arrange
