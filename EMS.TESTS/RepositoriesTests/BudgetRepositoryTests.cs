@@ -91,6 +91,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var budget = new BudgetEntity
             {
+                Id = Guid.NewGuid(),
                 Budget = 2500.00m,
                 AppUserId = appUserId
             };

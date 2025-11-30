@@ -175,6 +175,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var local = new LocalEntity
             {
+                Id = Guid.NewGuid(),
                 Description = "Test",
                 LocalNumber = 1,
                 Surface = 100.0,
@@ -215,6 +216,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var updatedLocal = new LocalEntity
             {
+                Id = Guid.NewGuid(),
                 Description = "Test New",
                 LocalNumber = 2,
                 Surface = 200.0,
@@ -241,6 +243,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var local = new LocalEntity
             {
+                Id = Guid.NewGuid(),
                 Description = "Test",
                 LocalNumber = 1,
                 Surface = 100.0,

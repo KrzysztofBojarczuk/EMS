@@ -171,6 +171,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transaction = new TransactionEntity
             {
+                Id = Guid.NewGuid(),
                 Name = "Invoice",
                 CreationDate = DateTime.UtcNow,
                 Category = CategoryType.Expense,
