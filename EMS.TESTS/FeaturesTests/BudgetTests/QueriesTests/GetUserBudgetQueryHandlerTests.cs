@@ -29,6 +29,7 @@ namespace EMS.TESTS.FeaturesTests.BudgetTests.QueriesTests
 
             var expectedBudget = new BudgetEntity
             {
+                Id = Guid.NewGuid(),
                 AppUserId = appUserId,
                 Budget = 5000.00m,
             };
