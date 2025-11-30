@@ -55,8 +55,11 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetReservationByIdAsync_When_ReservationExists_Returns_Reservation()
         {
             // Arrange
+            var reservationId = Guid.NewGuid();
+
             var reservation = new ReservationEntity
             {
+                Id = reservationId,
                 LocalId = Guid.NewGuid(),
                 AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow,
@@ -67,11 +70,11 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetReservationByIdAsync(reservation.Id);
+            var result = await _repository.GetReservationByIdAsync(reservationId);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(reservation.Id, result.Id);
+            Assert.AreEqual(reservationId, result.Id);
             Assert.AreEqual(reservation.LocalId, result.LocalId);
             Assert.AreEqual(reservation.CheckInDate, result.CheckInDate);
             Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);

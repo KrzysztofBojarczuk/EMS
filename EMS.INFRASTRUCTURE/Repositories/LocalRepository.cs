@@ -17,6 +17,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
+        public async Task<LocalEntity> GetLocalByIdAsync(Guid id)
+        {
+            return await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<PaginatedList<LocalEntity>> GetUserLocalAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Locals.Include(x => x.ReservationsEntities).Where(x => x.AppUserId == appUserId);
@@ -27,11 +32,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return await PaginatedList<LocalEntity>.CreateAsync(query, pageNumber, pageSize);
-        }
-
-        public async Task<LocalEntity> GetLocalByIdAsync(Guid id)
-        {
-            return await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<LocalEntity> UpdateLocalAsync(Guid localId, string appUserId, LocalEntity entity)

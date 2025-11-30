@@ -80,6 +80,9 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(addressId, result.Id);
             Assert.AreEqual(address.City, result.City);
             Assert.AreEqual(address.Street, result.Street);
+            Assert.AreEqual(address.Number, result.Number);
+            Assert.AreEqual(address.ZipCode, result.ZipCode);
+            Assert.AreEqual(address.AppUserId, result.AppUserId);
         }
 
         [TestMethod]

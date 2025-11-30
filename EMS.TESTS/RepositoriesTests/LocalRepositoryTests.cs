@@ -53,6 +53,48 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetLocalByIdAsync_When_LocalExists_Returns_Local()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+
+            var local = new LocalEntity
+            {
+                Id = localId,
+                Description = "Test",
+                LocalNumber = 1,
+                Surface = 100.0,
+                NeedsRepair = false,
+                AppUserId = "user-id-123"
+            };
+
+            _context.Locals.Add(local);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetLocalByIdAsync(localId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(localId, result.Id);
+            Assert.AreEqual(local.Description, result.Description);
+            Assert.AreEqual(local.LocalNumber, result.LocalNumber);
+            Assert.AreEqual(local.Surface, result.Surface);
+            Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
+            Assert.AreEqual(local.AppUserId, result.AppUserId);
+        }
+
+        [TestMethod]
+        public async Task GetLocalByIdAsync_When_LocalDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetLocalByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public async Task GetUserLocalAsync_Returns_AllLocals()
         {
             // Arrange
@@ -60,9 +102,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var locals = new List<LocalEntity>
             {
-                new LocalEntity { Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
             };
 
             _context.Locals.AddRange(locals);
@@ -85,11 +127,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             var locals = new List<LocalEntity>
             {
-                new LocalEntity { Description = "Local 1 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 2 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 3", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 4", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 5", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 1 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 2 Test", LocalNumber = 4, Surface = 250.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 3", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 4", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 5", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId },
             };
 
             _context.Locals.AddRange(locals);
@@ -113,9 +155,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var locals = new List<LocalEntity>
             {
-                new LocalEntity { Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
             };
 
             _context.Locals.AddRange(locals);
@@ -129,43 +171,6 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(0, result.Items.Count());
         }
 
-        [TestMethod]
-        public async Task GetLocalByIdAsync_When_LocalExists_Returns_Local()
-        {
-            // Arrange
-            var local = new LocalEntity
-            {
-                Description = "Test",
-                LocalNumber = 1,
-                Surface = 100.0,
-                NeedsRepair = false,
-                AppUserId = "user-id-123"
-            };
-
-            _context.Locals.Add(local);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetLocalByIdAsync(local.Id);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(local.Description, result.Description);
-            Assert.AreEqual(local.LocalNumber, result.LocalNumber);
-            Assert.AreEqual(local.Surface, result.Surface);
-            Assert.AreEqual(local.NeedsRepair, result.NeedsRepair);
-            Assert.AreEqual(local.AppUserId, result.AppUserId);
-        }
-
-        [TestMethod]
-        public async Task GetLocalByIdAsync_When_LocalDoesNotExist_Returns_Null()
-        {
-            // Act
-            var result = await _repository.GetLocalByIdAsync(Guid.NewGuid());
-
-            // Assert
-            Assert.IsNull(result);
-        }
 
         [TestMethod]
         public async Task UpdateLocalAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Local()

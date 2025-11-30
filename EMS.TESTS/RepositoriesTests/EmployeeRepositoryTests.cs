@@ -86,9 +86,11 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetEmployeeByIdAsync_Returns_Employee()
         {
             // Arrange
+            var employeeId = Guid.NewGuid();
+
             var employee = new EmployeeEntity
             {
-                Id = Guid.NewGuid(),
+                Id = employeeId,
                 Name = "Anna Nowak",
                 Email = "anna@example.com",
                 Phone = "123-456-789",
@@ -100,12 +102,16 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetEmployeeByIdAsync(employee.Id);
+            var result = await _repository.GetEmployeeByIdAsync(employeeId);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(employee.Id, result.Id);
+            Assert.AreEqual(employeeId, result.Id);
             Assert.AreEqual(employee.Name, result.Name);
+            Assert.AreEqual(employee.Email, result.Email);
+            Assert.AreEqual(employee.Phone, result.Phone);
+            Assert.AreEqual(employee.Salary, result.Salary);
+            Assert.AreEqual(employee.AppUserId, result.AppUserId);
         }
 
         [TestMethod]
