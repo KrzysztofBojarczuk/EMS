@@ -58,8 +58,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId = "user-id-123";
 
-            var employee1 = new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId };
-            var employee2 = new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 7000, AppUserId = appUserId };
+            var employee1 = new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId };
+            var employee2 = new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 7000, AppUserId = appUserId };
 
             _context.Employees.AddRange(employee1, employee2);
             await _context.SaveChangesAsync();
@@ -83,252 +83,12 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeesAsync_Returns_AllEmployees()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Jan", Email = "jan@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Adam", Email = "adam@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, null);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Items.Count());
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeesAsync_BySearchTerm_Returns_Employees()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var searchTerm = "Tomasz";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, searchTerm, null);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Items.Count());
-            Assert.AreEqual(employees[2].Name, result.Items.First().Name);
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeesAsync_When_EmployeesDoesNotExist_Returns_EmptyList()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var searchTerm = "nonexistent";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, searchTerm, null);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count());
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeesAsync_SortedBySalaryAscending_Returns_SortedEmployees()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var sortOrderSalary = "salary_asc";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
-            var sorted = result.Items.ToList();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Name, sorted[2].Name);
-            Assert.AreEqual(employees[1].Name, sorted[1].Name);
-            Assert.AreEqual(employees[2].Name, sorted[0].Name);
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeesAsync_SortedBySalaryDescending_Returns_SortedEmployees()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var sortOrderSalary = "salary_desc";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
-            var sorted = result.Items.ToList();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Name, sorted[0].Name);
-            Assert.AreEqual(employees[2].Name, sorted[1].Name);
-            Assert.AreEqual(employees[1].Name, sorted[2].Name);
-        }
-
-        [TestMethod]
-        public async Task GetUserEmployeesAsync_When_SortedDoesNotExist_Returns_SortedEmployees()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var sortOrderSalary = "nonexistent";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
-            var sorted = result.Items.ToList();
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Name, sorted[0].Name);
-            Assert.AreEqual(employees[2].Name, sorted[1].Name);
-            Assert.AreEqual(employees[1].Name, sorted[2].Name);
-        }
-
-        [TestMethod]
-        public async Task GetEmployeesAsync_Returns_AllEmployees()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Jan", Email = "jan@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Adam", Email = "adam@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, null);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(5, result.Items.Count());
-        }
-
-        [TestMethod]
-        public async Task GetEmployeesAsync_BySearchTerm_Returns_Employees()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var searchTerm = "Tomasz";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Items.Count());
-            Assert.AreEqual(employees[2].Name, result.Items.First().Name);
-        }
-
-        [TestMethod]
-        public async Task GetEmployeesAsync_When_EmployeesDoesNotExist_Returns_EmptyList()
-        {
-            // Arrange
-            var appUserId = "user-id-123";
-            var searchTerm = "nonexistent";
-
-            var employees = new List<EmployeeEntity>
-            {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
-            };
-
-            _context.Employees.AddRange(employees);
-            await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.AreEqual(0, result.Items.Count());
-        }
-
-        [TestMethod]
         public async Task GetEmployeeByIdAsync_Returns_Employee()
         {
             // Arrange
             var employee = new EmployeeEntity
             {
+                Id = Guid.NewGuid(),
                 Name = "Anna Nowak",
                 Email = "anna@example.com",
                 Phone = "123-456-789",
@@ -359,15 +119,256 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeesAsync_Returns_AllEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Jan", Email = "jan@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Adam", Email = "adam@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.Items.Count());
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesAsync_BySearchTerm_Returns_Employees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "Tomasz";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, searchTerm, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Items.Count());
+            Assert.AreEqual(employees[2].Name, result.Items.First().Name);
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesAsync_When_EmployeesDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, searchTerm, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesAsync_SortedBySalaryAscending_Returns_SortedEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var sortOrderSalary = "salary_asc";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
+            var sorted = result.Items.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, sorted.Count());
+            Assert.AreEqual(employees[0].Name, sorted[2].Name);
+            Assert.AreEqual(employees[1].Name, sorted[1].Name);
+            Assert.AreEqual(employees[2].Name, sorted[0].Name);
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesAsync_SortedBySalaryDescending_Returns_SortedEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var sortOrderSalary = "salary_desc";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
+                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
+            var sorted = result.Items.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, sorted.Count());
+            Assert.AreEqual(employees[0].Name, sorted[0].Name);
+            Assert.AreEqual(employees[2].Name, sorted[1].Name);
+            Assert.AreEqual(employees[1].Name, sorted[2].Name);
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesAsync_When_SortedDoesNotExist_Returns_SortedEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var sortOrderSalary = "nonexistent";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrderSalary);
+            var sorted = result.Items.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, sorted.Count());
+            Assert.AreEqual(employees[0].Name, sorted[0].Name);
+            Assert.AreEqual(employees[2].Name, sorted[1].Name);
+            Assert.AreEqual(employees[1].Name, sorted[2].Name);
+        }
+
+        [TestMethod]
+        public async Task GetEmployeesAsync_Returns_AllEmployees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Jan", Email = "jan@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Adam", Email = "adam@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetEmployeesAsync(1, 10, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(5, result.Items.Count());
+        }
+
+        [TestMethod]
+        public async Task GetEmployeesAsync_BySearchTerm_Returns_Employees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "Tomasz";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Items.Count());
+            Assert.AreEqual(employees[2].Name, result.Items.First().Name);
+        }
+
+        [TestMethod]
+        public async Task GetEmployeesAsync_When_EmployeesDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(),Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(),Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(),Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeeListsAsync_Returns_AllEmployeeList()
         {
             // Arrange
             var appUserId = "user-id-123";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "Truck Drivers", AppUserId = appUserId }
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Dev Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Truck Drivers", AppUserId = appUserId }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -389,9 +390,9 @@ namespace EMS.TESTS.RepositoriesTests
             var searchTerm = "dev";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "Other", AppUserId = "user-id-999" }
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Dev Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Other", AppUserId = "user-id-999" }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -414,9 +415,9 @@ namespace EMS.TESTS.RepositoriesTests
             var searchTerm = "nonexistent";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "Other", AppUserId = "user-id-999" }
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Dev Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Other", AppUserId = "user-id-999" }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -437,10 +438,10 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Name = "No Task", AppUserId = appUserId, TaskId = null },
-                new EmployeeListsEntity { Name = "Bulding a house", AppUserId = appUserId, TaskId = null },
-                new EmployeeListsEntity { Name = "With Task", AppUserId = appUserId, TaskId = Guid.NewGuid() },
-                new EmployeeListsEntity { Name = "Buy a car", AppUserId = "user-id-1234", TaskId = Guid.NewGuid() }
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "No Task", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Bulding a house", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "With Task", AppUserId = appUserId, TaskId = Guid.NewGuid() },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Buy a car", AppUserId = "user-id-1234", TaskId = Guid.NewGuid() }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -463,10 +464,10 @@ namespace EMS.TESTS.RepositoriesTests
             var searchTerm = "team";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId, TaskId = null },
-                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId, TaskId = null},
-                new EmployeeListsEntity { Name = "Truck drivers", AppUserId = appUserId, TaskId = null },
-                new EmployeeListsEntity { Name = "Other", AppUserId = appUserId, TaskId = null }
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Dev Team", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "QA Team", AppUserId = appUserId, TaskId = null},
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Truck drivers", AppUserId = appUserId, TaskId = null },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Other", AppUserId = appUserId, TaskId = null }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -490,10 +491,10 @@ namespace EMS.TESTS.RepositoriesTests
             var searchTerm = "nonexistent";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "Truck drivers", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "Other", AppUserId = "user-id-999" }
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Dev Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Truck drivers", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Other", AppUserId = "user-id-999" }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
@@ -516,11 +517,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = listId },
-                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = "user-id-999", EmployeeListId =  null  }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = listId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = "user-id-999", EmployeeListId =  null  }
             };
 
             _context.Employees.AddRange(employees);
@@ -544,12 +545,12 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "John2", Email = "john2@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = listId },
-                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = "user-id-999", EmployeeListId =  null  }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John2", Email = "john2@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = listId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = "user-id-999", EmployeeListId =  null  }
             };
 
             _context.Employees.AddRange(employees);
@@ -574,12 +575,12 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "Tom",  Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
-                new EmployeeEntity { Name = "John2", Email = "john2@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = listId },
-                new EmployeeEntity { Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = "user-id-999", EmployeeListId =  null  }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom",  Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John2", Email = "john2@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = listId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = "user-id-999", EmployeeListId =  null  }
             };
 
             _context.Employees.AddRange(employees);
@@ -660,9 +661,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId1 },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId1 },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId2 }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId1 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId1 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId2 }
             };
 
             _context.Employees.AddRange(employees);
@@ -682,9 +683,9 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -815,17 +816,17 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Name = "Dev Team", AppUserId = appUserId,  },
-                new EmployeeListsEntity { Name = "QA Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Name = "Truck drivers", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Dev Team", AppUserId = appUserId,  },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Truck drivers", AppUserId = appUserId },
             };
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[0].Id },
-                new EmployeeEntity { Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[0].Id },
-                new EmployeeEntity { Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[1].Id },
-                new EmployeeEntity { Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = employeeList[2].Id },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[0].Id },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[0].Id },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John1", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId, EmployeeListId = employeeList[1].Id },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000,  AppUserId = appUserId, EmployeeListId = employeeList[2].Id },
             };
 
             _context.EmployeeLists.AddRange(employeeList);

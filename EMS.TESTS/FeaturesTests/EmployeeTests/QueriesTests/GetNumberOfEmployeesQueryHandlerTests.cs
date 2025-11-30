@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Employee.Queries;
+using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -23,6 +23,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         {
             // Arrange
             var expectedCount = 5;
+
             _mockEmployeeRepository.Setup(x => x.GetNumberOfEmployeesAsync())
                 .ReturnsAsync(expectedCount);
 
