@@ -187,7 +187,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Act
             var result = await _repository.DeleteTransactionsAsync(transaction.Id);
 
-            var deletedTransaction = await _context.Transactions.FirstOrDefaultAsync(t => t.Id == transaction.Id);
+            var deletedTransaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == transaction.Id);
 
             var transactionCountAfter = await _context.Transactions.CountAsync();
 

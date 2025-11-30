@@ -212,6 +212,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var reservation = new ReservationEntity
             {
+                Id = Guid.NewGuid(),
                 LocalId = Guid.NewGuid(),
                 AppUserId = appUserId,
                 CheckInDate = DateTime.UtcNow,
