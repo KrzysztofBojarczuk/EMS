@@ -327,7 +327,6 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDtos.Count(), returnedDtos.Count());
         }
 
-
         [TestMethod]
         public async Task UpdateAddressAsync_ReturnsOkResult_WithUpdatedAddressDto()
         {
