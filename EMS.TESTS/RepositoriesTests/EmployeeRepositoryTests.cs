@@ -772,6 +772,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employee = new EmployeeEntity
             {
+                Id = Guid.NewGuid(),
                 Name = "Anna Kowalska",
                 Email = "anna.k@example.com",
                 Phone = "123-456-789",
