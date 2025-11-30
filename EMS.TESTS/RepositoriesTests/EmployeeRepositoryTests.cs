@@ -816,9 +816,9 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
 
             var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Id = Guid.NewGuid(),Name = "Dev Team", AppUserId = appUserId,  },
-                new EmployeeListsEntity { Id = Guid.NewGuid(),Name = "QA Team", AppUserId = appUserId },
-                new EmployeeListsEntity { Id = Guid.NewGuid(),Name = "Truck drivers", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Dev Team", AppUserId = appUserId,  },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "QA Team", AppUserId = appUserId },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "Truck drivers", AppUserId = appUserId },
             };
 
             var employees = new List<EmployeeEntity>
