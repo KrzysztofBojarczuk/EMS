@@ -119,7 +119,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserLocalAsync_BySearchTerm_Returns_AllLocals()
+        public async Task GetUserLocalAsync_BySearchTerm_Returns_Locals()
         {
             // Arrange
             var appUserId = "user-id-123";
