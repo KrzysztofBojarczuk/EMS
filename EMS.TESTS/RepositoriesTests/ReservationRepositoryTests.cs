@@ -116,6 +116,31 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserReservationsAsync_When_ReservationDoesNotExist_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "nonexistent";
+
+            var reservations = new List<ReservationEntity>
+            {
+                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2) },
+                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4) },
+                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6) }
+            };
+
+            _context.Reservations.AddRange(reservations);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, searchTerm, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task IsLocalBusyAsync_When_NoReservations_Returns_False()
         {
             // Arrange
