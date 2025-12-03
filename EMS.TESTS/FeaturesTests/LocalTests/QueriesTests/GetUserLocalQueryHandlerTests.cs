@@ -58,13 +58,13 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.QueriesTests
             var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-            var searchTerm = "Local";
+            var searchTerm = "test";
 
             var expectedLocals = new List<LocalEntity>
             {
-                new LocalEntity { Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
+                new LocalEntity { Description = "Local 1 Test", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 2 Test", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
+                new LocalEntity { Description = "Local 3 Test", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<LocalEntity>(expectedLocals, expectedLocals.Count(), pageNumber, pageSize);

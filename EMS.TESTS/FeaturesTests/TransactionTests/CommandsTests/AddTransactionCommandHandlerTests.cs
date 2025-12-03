@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Transaction.Commands;
+using EMS.APPLICATION.Features.Transaction.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
@@ -29,7 +29,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.CommandsTests
             var expectedTransaction = new TransactionEntity
             {
                 Id = Guid.NewGuid(),
-                Name = "Test Transaction",
+                Name = "Test",
                 CreationDate = DateTime.UtcNow,
                 Category = CategoryType.Expense,
                 Amount = 250.75m,

@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Local.Commands;
+using EMS.APPLICATION.Features.Local.Commands;
 using EMS.CORE.Entities;
 using EMS.INFRASTRUCTURE.Repositories;
 using MediatR;
@@ -27,7 +27,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.CommandsTests
             // Arrange
             var expectedLocal = new LocalEntity
             {
-                Description = "Local 1",
+                Description = "Test",
                 LocalNumber = 1,
                 Surface = 250.0,
                 NeedsRepair = false,
