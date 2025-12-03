@@ -26,9 +26,9 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             var budgetId = Guid.NewGuid();
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow, Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId }
             };
 
             _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, null))
@@ -55,8 +55,8 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
 
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1 Test", CreationDate = DateTime.UtcNow, Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1 Test", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
             };
 
             _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null))
@@ -104,8 +104,8 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
 
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow, Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
             };
 
             _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, category))
