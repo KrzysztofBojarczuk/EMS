@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Userss.Queries;
+using EMS.APPLICATION.Features.Userss.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using EMS.INFRASTRUCTURE.Extensions;
@@ -28,9 +28,9 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             var expectedUsers = new List<AppUserEntity>
             {
-               new AppUserEntity { UserName = "John", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" },
-               new AppUserEntity { UserName = "Tom", Email = "johnny@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
             };
 
             var paginatedList = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
@@ -56,12 +56,12 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             // Arrange
             var pageNumber = 1;
             var pageSize = 10;
-            var searchTerm = "John";
+            var searchTerm = "test";
 
             var expectedUsers = new List<AppUserEntity>
             {
-               new AppUserEntity { UserName = "John", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
+                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com" },
+                new AppUserEntity { UserName = "User 2 Test", Email = "user2@example.com" }
             };
 
             var paginatedList = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);

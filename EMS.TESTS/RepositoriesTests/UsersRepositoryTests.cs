@@ -35,10 +35,10 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var users = new List<AppUserEntity>
             {
-               new AppUserEntity { UserName = "john", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
-               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" },
-               new AppUserEntity { UserName = "Tom", Email = "tom@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" },
+                new AppUserEntity { UserName = "User 4", Email = "user4@example.com" }
             };
 
             _context.Users.AddRange(users);
@@ -56,13 +56,13 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetAllUsersAsync_BySearchTerm_Returns_Users()
         {
             // Arrange
-            var searchTerm = "john";
+            var searchTerm = "test";
 
             var users = new List<AppUserEntity>
             {
-               new AppUserEntity { UserName = "john", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
-               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
+                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com" },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
             };
 
             _context.Users.AddRange(users);
@@ -85,9 +85,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var users = new List<AppUserEntity>
             {
-               new AppUserEntity { UserName = "john", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
-               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
             };
 
             _context.Users.AddRange(users);
@@ -107,9 +107,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var users = new List<AppUserEntity>
             {
-               new AppUserEntity { UserName = "john", Email = "john@example.com" },
-               new AppUserEntity { UserName = "Alice", Email = "alice@example.com" },
-               new AppUserEntity { UserName = "Chris", Email = "chris@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
             };
 
             _context.Users.AddRange(users);
@@ -127,7 +127,7 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteUserAsync_When_UserExists_Returns_True()
         {
             // Arrange
-            var user = new AppUserEntity { UserName = "john", Email = "john@example.com" };
+            var user = new AppUserEntity { UserName = "test", Email = "test@example.com" };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

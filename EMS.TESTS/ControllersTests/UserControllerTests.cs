@@ -29,12 +29,12 @@ namespace EMS.TESTS.ControllersTests
             // Arrange
             var pageNumber = 1;
             var pageSize = 10;
-            var searchTerm = "John";
+            var searchTerm = "test";
 
             var expectedUsers = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "John", Email = "john@example.com" },
-                new AppUserEntity { UserName = "Johnny", Email = "johnny@example.com" }
+                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com" },
+                new AppUserEntity { UserName = "User 2 Test", Email = "user2@example.com" }
             };
 
             var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
