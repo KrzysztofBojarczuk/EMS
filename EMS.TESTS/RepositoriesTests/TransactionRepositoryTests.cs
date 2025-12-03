@@ -63,10 +63,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow, Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Expense, Amount = 800, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreationDate = DateTime.UtcNow.AddMinutes(-4), Category = CategoryType.Expense, Amount = 800, BudgetId = budgetId }
             };
 
             _context.Transactions.AddRange(transactions);
@@ -116,9 +116,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow, Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId }
              };
 
             _context.Transactions.AddRange(transactions);
@@ -140,9 +140,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow, Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId },
              };
 
             _context.Transactions.AddRange(transactions);
