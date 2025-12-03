@@ -1,9 +1,10 @@
-﻿namespace EMS.CORE.Entities
+namespace EMS.CORE.Entities
 {
     public class ReservationEntity
     {
         public Guid Id { get; set; }
         public Guid LocalId { get; set; }
+        public string Description { get; set; } = null!;
         public LocalEntity LocalEntity { get; set; }
         public string? AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
