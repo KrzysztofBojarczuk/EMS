@@ -31,7 +31,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(x => x.Id.ToString().ToLower().Contains(searchTerm.ToLower()));
+                query = query.Where(x => x.Id.ToString().ToLower().Contains(searchTerm.ToLower())
+                                      || x.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(sortOrderDate))

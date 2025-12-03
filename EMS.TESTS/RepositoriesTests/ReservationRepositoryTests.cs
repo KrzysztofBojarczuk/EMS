@@ -31,6 +31,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 LocalId = Guid.NewGuid(),
+                Description = "Test Reservation",
                 AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2)
@@ -61,6 +62,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = reservationId,
                 LocalId = Guid.NewGuid(),
+                Description = "Test Reservation",
                 AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2)
@@ -99,9 +101,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var reservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2) },
-                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4) },
-                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6) }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Test Reservation", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Test Reservation", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Test Reservation", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6) }
             };
 
             _context.Reservations.AddRange(reservations);
@@ -124,9 +126,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var reservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2) },
-                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4) },
-                new ReservationEntity { Id = Guid.NewGuid(), AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6) }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Test Reservation", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Test Reservation", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Test Reservation", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6) }
             };
 
             _context.Reservations.AddRange(reservations);
@@ -163,6 +165,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = Guid.NewGuid(),
                 LocalId = localId,
+                Description = "Test Reservation",
                 AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2)
@@ -188,6 +191,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = Guid.NewGuid(),
                 LocalId = localId,
+                Description = "Test Reservation",
                 AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow.AddDays(1),
                 CheckOutDate = DateTime.UtcNow.AddDays(3)
@@ -213,6 +217,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = Guid.NewGuid(),
                 LocalId = localId,
+                Description = "Test Reservation",
                 AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow.AddDays(2),
                 CheckOutDate = DateTime.UtcNow.AddDays(5)
@@ -238,6 +243,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = Guid.NewGuid(),
                 LocalId = localId,
+                Description = "Test Reservation",
                 AppUserId = "user-id-123",
                 CheckInDate = DateTime.UtcNow.AddDays(1),
                 CheckOutDate = DateTime.UtcNow.AddDays(2)
@@ -263,6 +269,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 Id = Guid.NewGuid(),
                 LocalId = Guid.NewGuid(),
+                Description = "Test Reservation",
                 AppUserId = appUserId,
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2)

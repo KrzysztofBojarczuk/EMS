@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251115170544_InitialCreate")]
+    [Migration("20251202061859_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -282,6 +282,10 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("LocalId")
                         .HasColumnType("uniqueidentifier");
 
@@ -441,13 +445,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cfe50ce4-7482-48ba-8c7f-da10c031132e",
+                            Id = "8ba3eb08-f02a-480a-8f4e-78b3455735a6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "68565e9f-7911-4494-8825-5da32f2f2fde",
+                            Id = "28ba79f7-4478-4991-b30d-145b055940eb",
                             Name = "User",
                             NormalizedName = "USER"
                         });

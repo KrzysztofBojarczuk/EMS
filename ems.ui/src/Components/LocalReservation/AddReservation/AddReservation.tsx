@@ -5,6 +5,7 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { ReservationPost } from "../../../Models/Reservation";
 import { PostReservationService } from "../../../Services/LocalReservationService";
+import { InputText } from "primereact/inputtext";
 
 type Props = {
   selectedLocalId: string;
@@ -27,6 +28,7 @@ const AddReservation: React.FC<Props> = ({
   } = useForm<ReservationPost>({
     defaultValues: {
       localId: selectedLocalId,
+      description: "",
       checkInDate: undefined,
       checkOutDate: undefined,
     },
@@ -48,6 +50,19 @@ const AddReservation: React.FC<Props> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-column px-8 py-5 gap-4">
+        <Controller
+          name="description"
+          control={control}
+          rules={{ required: "Description is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputText {...field} placeholder="Enter description" />
+              {errors.description && (
+                <small className="p-error">{errors.description.message}</small>
+              )}
+            </div>
+          )}
+        />
         <Controller
           name="checkInDate"
           control={control}

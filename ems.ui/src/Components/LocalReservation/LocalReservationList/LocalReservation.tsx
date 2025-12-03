@@ -373,6 +373,7 @@ const LocalReservation = (props: Props) => {
         </div>
         <DataTable value={reservations}>
           <Column field="id" header="Id"></Column>
+          <Column field="description" header="Description"></Column>
           <Column
             field="checkInDate"
             header="Check In Date"
