@@ -118,6 +118,32 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserReservationsAsync_BySearchTerm_Returns_Reservations()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "test";
+
+            var reservations = new List<ReservationEntity>
+            {
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1 Test", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6) }
+            };
+
+            _context.Reservations.AddRange(reservations);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, searchTerm, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Items.Count());
+            Assert.AreEqual(reservations[0].Description, result.Items.First().Description);
+        }
+
+        [TestMethod]
         public async Task GetUserReservationsAsync_When_ReservationDoesNotExist_Returns_EmptyList()
         {
             // Arrange
