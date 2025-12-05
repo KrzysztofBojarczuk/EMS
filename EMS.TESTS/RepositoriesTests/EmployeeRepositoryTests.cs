@@ -159,9 +159,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -185,9 +185,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -210,9 +210,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -225,9 +225,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Name, sorted[2].Name);
-            Assert.AreEqual(employees[1].Name, sorted[1].Name);
-            Assert.AreEqual(employees[2].Name, sorted[0].Name);
+            Assert.AreEqual(employees[0].Id, sorted[2].Id);
+            Assert.AreEqual(employees[1].Id, sorted[1].Id);
+            Assert.AreEqual(employees[2].Id, sorted[0].Id);
         }
 
         [TestMethod]
@@ -239,9 +239,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
-                new EmployeeEntity {  Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -254,9 +254,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Name, sorted[0].Name);
-            Assert.AreEqual(employees[2].Name, sorted[1].Name);
-            Assert.AreEqual(employees[1].Name, sorted[2].Name);
+            Assert.AreEqual(employees[0].Id, sorted[0].Id);
+            Assert.AreEqual(employees[2].Id, sorted[1].Id);
+            Assert.AreEqual(employees[1].Id, sorted[2].Id);
         }
 
         [TestMethod]
@@ -283,9 +283,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Name, sorted[0].Name);
-            Assert.AreEqual(employees[2].Name, sorted[1].Name);
-            Assert.AreEqual(employees[1].Name, sorted[2].Name);
+            Assert.AreEqual(employees[0].Id, sorted[0].Id);
+            Assert.AreEqual(employees[2].Id, sorted[1].Id);
+            Assert.AreEqual(employees[1].Id, sorted[2].Id);
         }
 
         [TestMethod]
