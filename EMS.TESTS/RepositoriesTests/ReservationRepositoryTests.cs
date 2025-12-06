@@ -169,7 +169,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserReservationsAsync_SortedByStartDateAscending_Returns_SortedReservations()
+        public async Task GetUserReservationsAsync_SortedByCheckInDateAscending_Returns_SortedReservations()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -198,7 +198,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserReservationsAsync_SortedByStartDateDescending_Returns_SortedReservations()
+        public async Task GetUserReservationsAsync_SortedByCheckInDateDescending_Returns_SortedReservations()
         {
             // Arrange
             var appUserId = "user-id-123";
