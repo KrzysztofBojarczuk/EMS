@@ -256,6 +256,35 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserReservationsAsync_SortedByCheckOutDateDescending_Returns_SortedReservations()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var sortOrderDate = "end_desc";
+
+            var reservations = new List<ReservationEntity>
+            {
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(2) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(2), CheckOutDate = DateTime.UtcNow.AddDays(4) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(6) }
+            };
+
+            _context.Reservations.AddRange(reservations);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrderDate);
+            var sorted = result.Items.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, sorted.Count());
+            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
+            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
+            Assert.AreEqual(reservations[0].Id, sorted[2].Id);
+        }
+
+        [TestMethod]
         public async Task IsLocalBusyAsync_When_NoReservations_Returns_False()
         {
             // Arrange
