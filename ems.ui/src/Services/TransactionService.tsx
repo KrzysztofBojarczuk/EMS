@@ -1,11 +1,23 @@
 import axios from "axios";
 import { BudgetGet, BudgetPost } from "../Models/Budget";
 import { TransactionGet, TransactionPost } from "../Models/Transaction";
-import { UserGetBudgetService } from "./BudgetService";
+import { GetUserBudgetService } from "./BudgetService";
 
 const api = "https://localhost:7256/api/";
 
-export const UserGetTransactionService = async (
+export const PostTransactionService = async (
+  budgetId: string,
+  transactionPost: TransactionPost
+) => {
+  await GetUserBudgetService();
+  const response = await axios.post<TransactionPost>(
+    `${api}Transaction/${budgetId}`,
+    transactionPost
+  );
+  return response.data;
+};
+
+export const GetUserTransactionByBudgetIdService = async (
   budgetId: string,
   searchTerm?: string,
   category?: string[]
@@ -17,18 +29,6 @@ export const UserGetTransactionService = async (
   }`;
 
   const response = await axios.get<TransactionGet[]>(url);
-  return response.data;
-};
-
-export const PostTransactionService = async (
-  budgetId: string,
-  transactionPost: TransactionPost
-) => {
-  await UserGetBudgetService();
-  const response = await axios.post<TransactionPost>(
-    `${api}Transaction/${budgetId}`,
-    transactionPost
-  );
   return response.data;
 };
 

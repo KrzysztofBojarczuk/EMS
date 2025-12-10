@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Budget.Commands;
@@ -17,7 +17,7 @@ namespace EMS.API.Controllers
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddUserBudgetAsync([FromBody] BudgetCreateDto createDto)
+        public async Task<IActionResult> AddBudgetAsync([FromBody] BudgetCreateDto createDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

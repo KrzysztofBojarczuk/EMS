@@ -12,7 +12,7 @@ export const PostVehicleService = async (vehiclePost: VehiclePost) => {
   return response.data;
 };
 
-export const UserGetVehicleService = async (
+export const GetUserVehicleService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
@@ -46,7 +46,7 @@ export const UserGetVehicleService = async (
   return response.data;
 };
 
-export const UserGetVehicleForTaskService = async (searchTerm?: string) => {
+export const GetUserVehicleForTaskService = async (searchTerm?: string) => {
   const response = await axios.get<VehicleGet[]>(
     api + "Vehicle/UserVehiclesForTask",
     {
@@ -54,11 +54,6 @@ export const UserGetVehicleForTaskService = async (searchTerm?: string) => {
     }
   );
 
-  return response.data;
-};
-
-export const DeleteVehicleService = async (id: string) => {
-  const response = await axios.delete(`${api}Vehicle/${id}`);
   return response.data;
 };
 
@@ -70,5 +65,10 @@ export const UpdateVehicleService = async (
     `${api}Vehicle/${id}`,
     vehiclePost
   );
+  return response.data;
+};
+
+export const DeleteVehicleService = async (id: string) => {
+  const response = await axios.delete(`${api}Vehicle/${id}`);
   return response.data;
 };

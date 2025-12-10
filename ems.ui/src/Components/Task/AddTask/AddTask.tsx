@@ -11,10 +11,10 @@ import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
 import { MultiSelect } from "primereact/multiselect";
 import { AddressGet } from "../../../Models/Address";
 import { EmployeeListGet } from "../../../Models/EmployeeList";
-import { UserGetListForTaskEmployeesService } from "../../../Services/EmployeeService";
-import { UserGetAddressForTaskService } from "../../../Services/AddressService";
+import { GetUserListForTaskEmployeesService } from "../../../Services/EmployeeService";
+import { GetUserAddressForTaskService } from "../../../Services/AddressService";
 import { PostTaskService } from "../../../Services/TaskService";
-import { UserGetVehicleForTaskService } from "../../../Services/VehicleService";
+import { GetUserVehicleForTaskService } from "../../../Services/VehicleService";
 import { VehicleGet } from "../../../Models/Vehicle";
 
 type Props = {
@@ -51,12 +51,12 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   // };
 
   const fetchEmployeesList = async () => {
-    const data = await UserGetListForTaskEmployeesService(searchTermList);
+    const data = await GetUserListForTaskEmployeesService(searchTermList);
     setEmployeesList(data);
   };
 
   const fetchVehicles = async () => {
-    const data = await UserGetVehicleForTaskService(vehicleSearchTerm);
+    const data = await GetUserVehicleForTaskService(vehicleSearchTerm);
     setVehicles(data);
   };
 
@@ -69,7 +69,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   }, [searchTermList]);
 
   const fetchAddresses = async () => {
-    const data = await UserGetAddressForTaskService();
+    const data = await GetUserAddressForTaskService();
     setAddresses(data);
   };
 

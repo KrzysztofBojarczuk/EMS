@@ -17,8 +17,8 @@ import { EmployeeListGet } from "../../../Models/EmployeeList";
 import {
   DeleteEmployeesListService,
   DeleteEmployeesService,
-  UserGetEmployeesService,
-  UserGetListEmployeesService,
+  GetUserEmployeesService,
+  GetUserListEmployeesService,
 } from "../../../Services/EmployeeService";
 import AddEmployee from "../AddEmployee/AddEmployee";
 import AddListEmployee from "../AddListEmployee/AddListEmployee";
@@ -68,7 +68,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   };
 
   const fetchEmployees = async (page: number, size: number) => {
-    const data = await UserGetEmployeesService(
+    const data = await GetUserEmployeesService(
       page,
       size,
       searchTerm,
@@ -89,7 +89,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   }, [searchTerm, sortOrderSalary]);
 
   const fetchEmployeesList = async () => {
-    const data = await UserGetListEmployeesService(searchTermList);
+    const data = await GetUserListEmployeesService(searchTermList);
 
     setEmployeesList(data);
   };
@@ -270,7 +270,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         style={{ border: "none" }}
       />
       <Dialog
-        header="Create List Employees"
+        header="Add List Employees"
         visible={visibleListEmploeyee}
         onHide={() => setVisibleListEmploeyee(false)}
       >
@@ -289,7 +289,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           />
         </IconField>
         <Button
-          label="Create List Employees"
+          label="Add List Employees"
           onClick={() => setVisibleListEmploeyee(true)}
         />
       </div>
@@ -322,8 +322,8 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       </DataTable>
       <ConfirmationDialog
         visible={confirmListEmployeeVisible}
-        header="Confirm Deletion of List Employee"
-        message="Are you sure you want to delete this List employee?"
+        header="Confirm Deletion of List Employees"
+        message="Are you sure you want to delete this List employees?"
         onConfirm={handleConfirmDeleteListEmployee}
         onCancel={() => setConfirmListEmployeeVisible(false)}
       />

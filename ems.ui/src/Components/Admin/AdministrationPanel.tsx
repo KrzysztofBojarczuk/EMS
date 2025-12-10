@@ -8,11 +8,11 @@ import { TaskGet } from "../../Models/Task";
 import { UserGet } from "../../Models/User";
 import {
   GetNumberOfUsersService,
-  UserDeleteService,
-  UserGetService,
+  DeleteUserService,
+  GetAllUsersService,
 } from "../../Services/UserService";
-import { GetEmployeesService } from "../../Services/EmployeeService";
-import { GetTaskService } from "../../Services/TaskService";
+import { GetAllEmployeesService } from "../../Services/EmployeeService";
+import { GetAllTaskService } from "../../Services/TaskService";
 import { Column } from "primereact/column";
 import {
   dateBodyTemplate,
@@ -62,7 +62,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   }, []);
 
   const fetchUsers = async (page: number, size: number) => {
-    const data = await UserGetService(page, size, searchUserTerm);
+    const data = await GetAllUsersService(page, size, searchUserTerm);
     setUsers(data.userGet);
     setTotalUsers(data.totalItems);
   };
@@ -78,7 +78,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   }, [searchUserTerm]);
 
   const fetchEmployees = async (page: number, size: number) => {
-    const data = await GetEmployeesService(page, size, searchEmployeeTerm);
+    const data = await GetAllEmployeesService(page, size, searchEmployeeTerm);
     setEmployees(data.employeeGet);
     setTotalEmployees(data.totalItems);
   };
@@ -94,7 +94,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   }, [searchEmployeeTerm]);
 
   const fetchTasks = async (page: number, size: number) => {
-    const data = await GetTaskService(page, size, searchTaskTerm);
+    const data = await GetAllTaskService(page, size, searchTaskTerm);
     setTasks(data.taskGet);
     setTotalTasks(data.totalItems);
   };
@@ -116,7 +116,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
 
   const handleConfirmDeleteUser = async () => {
     if (deleteUserId) {
-      await UserDeleteService(deleteUserId);
+      await DeleteUserService(deleteUserId);
 
       const totalAfterDelete = totalUsers - 1;
       const maxPage = Math.ceil(totalAfterDelete / rowsUser);

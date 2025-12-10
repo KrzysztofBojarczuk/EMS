@@ -20,7 +20,7 @@ import { SplitButton } from "primereact/splitbutton";
 import { Paginator } from "primereact/paginator";
 import {
   DeleteTaskService,
-  UserGetTaskService,
+  GetUserTaskService,
   UpdateTaskStatusService,
 } from "../../../Services/TaskService";
 import { StatusOfTask } from "../../../Enum/StatusOfTask";
@@ -85,7 +85,7 @@ const ListTask = (props: Props) => {
   };
 
   const fetchTasks = async (page: number, size: number) => {
-    const data = await UserGetTaskService(
+    const data = await GetUserTaskService(
       page,
       size,
       searchTerm,

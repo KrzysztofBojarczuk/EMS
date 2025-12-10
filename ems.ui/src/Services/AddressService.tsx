@@ -7,7 +7,12 @@ import {
 
 const api = "https://localhost:7256/api/";
 
-export const UserGetAddressService = async (
+export const PostAddressService = async (addressPost: AddressPost) => {
+  const response = await axios.post<AddressPost>(api + "Address", addressPost);
+  return response.data;
+};
+
+export const GetUserAddressService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string
@@ -22,12 +27,7 @@ export const UserGetAddressService = async (
   return response.data;
 };
 
-export const PostAddressService = async (addressPost: AddressPost) => {
-  const response = await axios.post<AddressPost>(api + "Address", addressPost);
-  return response.data;
-};
-
-export const UserGetAddressForTaskService = async (searchTerm?: string) => {
+export const GetUserAddressForTaskService = async (searchTerm?: string) => {
   const response = await axios.get<AddressGet[]>(
     api + "Address/UserAddressesForTask",
     {
@@ -35,11 +35,6 @@ export const UserGetAddressForTaskService = async (searchTerm?: string) => {
     }
   );
 
-  return response.data;
-};
-
-export const DeleteAddressService = async (id: string) => {
-  const response = await axios.delete(`${api}Address/${id}`);
   return response.data;
 };
 
@@ -51,5 +46,10 @@ export const UpdateAddressService = async (
     `${api}Address/${id}`,
     addressPost
   );
+  return response.data;
+};
+
+export const DeleteAddressService = async (id: string) => {
+  const response = await axios.delete(`${api}Address/${id}`);
   return response.data;
 };
