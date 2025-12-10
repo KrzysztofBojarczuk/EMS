@@ -22,7 +22,7 @@ export const PostReservationService = async (
   return response.data;
 };
 
-export const UserGetLocalService = async (
+export const GetUserLocalService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string
@@ -34,7 +34,7 @@ export const UserGetLocalService = async (
   return response.data;
 };
 
-export const UserGetReservationService = async (
+export const GetUserReservationService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,

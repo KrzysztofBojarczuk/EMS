@@ -3,7 +3,7 @@ import { PaginatedUserResponse, UserGet } from "../Models/User";
 
 const api = "https://localhost:7256/api/";
 
-export const UserGetService = async (
+export const GetAllUsersService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string
@@ -17,12 +17,12 @@ export const UserGetService = async (
   return response.data;
 };
 
-export const UserDeleteService = async (id: string) => {
-  const response = await axios.delete(`${api}user/${id}`);
+export const GetNumberOfUsersService = async () => {
+  const response = await axios.get<number>(api + "user/GetNumberOfUsers");
   return response.data;
 };
 
-export const GetNumberOfUsersService = async () => {
-  const response = await axios.get<number>(api + "user/GetNumberOfUsers");
+export const DeleteUserService = async (id: string) => {
+  const response = await axios.delete(`${api}user/${id}`);
   return response.data;
 };

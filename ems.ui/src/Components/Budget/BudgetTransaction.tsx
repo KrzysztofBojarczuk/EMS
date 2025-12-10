@@ -14,12 +14,12 @@ import { BudgetGet, BudgetPost } from "../../Models/Budget";
 import { TransactionGet } from "../../Models/Transaction";
 import {
   DeleteBudgetService,
-  UserGetBudgetService,
+  GetUserBudgetService,
   PostBudgetService,
 } from "../../Services/BudgetService";
 import {
   DeleteTransactionService,
-  UserGetTransactionService,
+  GetUserTransactionByBudgetIdService,
 } from "../../Services/TransactionService";
 import { CategoryType } from "../../Enum/CategoryType";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
@@ -44,13 +44,13 @@ const BudgetTransaction = ({}: Props) => {
   ];
 
   const fetchBudgetUser = async () => {
-    const data = await UserGetBudgetService();
+    const data = await GetUserBudgetService();
     setBudgetUser(data);
   };
 
   const fetchTransaction = async () => {
     if (budgetUser) {
-      const data = await UserGetTransactionService(
+      const data = await GetUserTransactionByBudgetIdService(
         budgetUser.id,
         searchTerm,
         category

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.API.Controllers;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Budget.Commands;
@@ -93,7 +93,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDto);
 
             // Act
-            var result = await _controller.AddUserBudgetAsync(createDto);
+            var result = await _controller.AddBudgetAsync(createDto);
 
             // Assert
             var okResult = result as OkObjectResult;

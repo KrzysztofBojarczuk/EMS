@@ -4,19 +4,12 @@ import { StatusOfTask } from "../Enum/StatusOfTask";
 
 const api = "https://localhost:7256/api/";
 
-export const GetTaskService = async (
-  pageNumber: number,
-  pageSize: number,
-  searchTerm?: string
-) => {
-  const response = await axios.get<PaginatedTaskResponse>(api + "Task", {
-    params: { pageNumber, pageSize, searchTerm },
-  });
-
+export const PostTaskService = async (taskPost: TaskPost) => {
+  const response = await axios.post<TaskPost>(api + "Task/", taskPost);
   return response.data;
 };
 
-export const UserGetTaskService = async (
+export const GetUserTaskService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
@@ -44,13 +37,15 @@ export const UserGetTaskService = async (
   return response.data;
 };
 
-export const PostTaskService = async (taskPost: TaskPost) => {
-  const response = await axios.post<TaskPost>(api + "Task/", taskPost);
-  return response.data;
-};
+export const GetAllTaskService = async (
+  pageNumber: number,
+  pageSize: number,
+  searchTerm?: string
+) => {
+  const response = await axios.get<PaginatedTaskResponse>(api + "Task", {
+    params: { pageNumber, pageSize, searchTerm },
+  });
 
-export const DeleteTaskService = async (id: string) => {
-  const response = await axios.delete(`${api}Task/${id}`);
   return response.data;
 };
 
@@ -65,5 +60,10 @@ export const UpdateTaskStatusService = async (id: string, status: number) => {
       "Content-Type": "application/json",
     },
   });
+  return response.data;
+};
+
+export const DeleteTaskService = async (id: string) => {
+  const response = await axios.delete(`${api}Task/${id}`);
   return response.data;
 };
