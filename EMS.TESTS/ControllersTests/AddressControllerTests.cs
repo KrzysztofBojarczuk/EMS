@@ -163,7 +163,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserAddressAsync(pageNumber, pageSize, searchTerm);
+            var result = await _controller.GetUserAddressesAsync(pageNumber, pageSize, searchTerm);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -218,7 +218,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserAddressAsync(pageNumber, pageSize, searchTerm);
+            var result = await _controller.GetUserAddressesAsync(pageNumber, pageSize, searchTerm);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -276,7 +276,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserAddressForTaskAsync(searchTerm);
+            var result = await _controller.GetUserAddressesForTaskAsync(searchTerm);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -315,7 +315,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserAddressForTaskAsync(searchTerm);
+            var result = await _controller.GetUserAddressesForTaskAsync(searchTerm);
 
             // Assert
             var okResult = result as OkObjectResult;
