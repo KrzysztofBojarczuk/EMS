@@ -9,7 +9,7 @@ export const PostTaskService = async (taskPost: TaskPost) => {
   return response.data;
 };
 
-export const GetUserTaskService = async (
+export const GetUserTasksService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
@@ -37,7 +37,7 @@ export const GetUserTaskService = async (
   return response.data;
 };
 
-export const GetAllTaskService = async (
+export const GetAllTasksService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string

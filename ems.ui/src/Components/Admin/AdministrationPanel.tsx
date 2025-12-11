@@ -12,7 +12,7 @@ import {
   GetAllUsersService,
 } from "../../Services/UserService";
 import { GetAllEmployeesService } from "../../Services/EmployeeService";
-import { GetAllTaskService } from "../../Services/TaskService";
+import { GetAllTasksService } from "../../Services/TaskService";
 import { Column } from "primereact/column";
 import {
   dateBodyTemplate,
@@ -94,7 +94,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   }, [searchEmployeeTerm]);
 
   const fetchTasks = async (page: number, size: number) => {
-    const data = await GetAllTaskService(page, size, searchTaskTerm);
+    const data = await GetAllTasksService(page, size, searchTaskTerm);
     setTasks(data.taskGet);
     setTotalTasks(data.totalItems);
   };

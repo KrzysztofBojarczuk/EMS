@@ -17,7 +17,7 @@ export const PostTransactionService = async (
   return response.data;
 };
 
-export const GetUserTransactionByBudgetIdService = async (
+export const GetUserTransactionsByBudgetIdService = async (
   budgetId: string,
   searchTerm?: string,
   category?: string[]

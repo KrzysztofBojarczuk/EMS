@@ -9,7 +9,7 @@ import { MultiSelect } from "primereact/multiselect";
 import { AddressGet } from "../../../Models/Address";
 import { EmployeeListGet } from "../../../Models/EmployeeList";
 import { GetUserListForTaskEmployeesService } from "../../../Services/EmployeeService";
-import { GetUserAddressForTaskService } from "../../../Services/AddressService";
+import { GetUserAddressesForTaskService } from "../../../Services/AddressService";
 import { PostTaskService } from "../../../Services/TaskService";
 import { GetUserVehicleForTaskService } from "../../../Services/VehicleService";
 import { VehicleGet } from "../../../Models/Vehicle";
@@ -66,7 +66,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
   }, [searchTermList]);
 
   const fetchAddresses = async () => {
-    const data = await GetUserAddressForTaskService();
+    const data = await GetUserAddressesForTaskService();
     setAddresses(data);
   };
 

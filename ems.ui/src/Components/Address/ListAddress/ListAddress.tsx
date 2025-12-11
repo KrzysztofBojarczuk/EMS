@@ -10,7 +10,7 @@ import { InputIcon } from "primereact/inputicon";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import {
   DeleteAddressService,
-  GetUserAddressService,
+  GetUserAddressesService,
 } from "../../../Services/AddressService";
 import AddAddress from "../AddAddress/AddAddress";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
@@ -34,7 +34,7 @@ const ListAddress = (props: Props) => {
   const [totalAddress, setTotalAddresses] = useState(0);
 
   const fetchAddresses = async (page: number, size: number) => {
-    const data = await GetUserAddressService(page, size, searchTerm);
+    const data = await GetUserAddressesService(page, size, searchTerm);
     setAddresses(data.addressGet);
     setTotalAddresses(data.totalItems);
   };
