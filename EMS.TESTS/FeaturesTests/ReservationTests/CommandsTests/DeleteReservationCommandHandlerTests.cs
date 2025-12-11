@@ -38,5 +38,26 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             Assert.IsTrue(result);
             _mockReservationRepository.Verify(x => x.DeleteReservationAsync(reservationId, appUserId), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_ShouldReturnFalse_When_ReservationDeletionFails()
+        {
+            // Arrange
+            var reservationId = Guid.NewGuid();
+            var expectedResult = false;
+            var appUserId = "user-id-123";
+
+            _mockReservationRepository.Setup(x => x.DeleteReservationAsync(reservationId, appUserId))
+                .ReturnsAsync(expectedResult);
+
+            var command = new DeleteReservationCommand(reservationId, appUserId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
+            _mockReservationRepository.Verify(x => x.DeleteReservationAsync(reservationId, appUserId), Times.Once);
+        }
     }
 }

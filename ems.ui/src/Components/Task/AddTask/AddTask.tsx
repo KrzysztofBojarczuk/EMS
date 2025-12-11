@@ -4,10 +4,7 @@ import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { AutoComplete } from "primereact/autocomplete";
-
 import { Calendar } from "primereact/calendar";
-import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
-
 import { MultiSelect } from "primereact/multiselect";
 import { AddressGet } from "../../../Models/Address";
 import { EmployeeListGet } from "../../../Models/EmployeeList";
@@ -101,7 +98,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     },
   });
 
-  const search = async (event: any) => {
+  const searchAddress = async (event: any) => {
     const query = event.query;
     const filtered = addresses.filter((item) =>
       `${item.city}, ${item.street}, ${item.zipCode}`
@@ -113,9 +110,9 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     );
   };
 
-  const handleAddressChange = (e: any) => {
+  const handleAddressChange = (event: any) => {
     const selected = addresses.find(
-      (item) => `${item.city}, ${item.street}, ${item.zipCode}` === e.value
+      (item) => `${item.city}, ${item.street}, ${item.zipCode}` === event.value
     );
 
     if (selected) {
@@ -131,7 +128,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
       setFormValue("address.number", "");
       setFormValue("address.zipCode", "");
     }
-    setValue(e.value);
+    setValue(event.value);
   };
 
   const onSubmit = async (data: any) => {
@@ -290,7 +287,7 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
             <AutoComplete
               value={value}
               suggestions={items}
-              completeMethod={search}
+              completeMethod={searchAddress}
               onChange={handleAddressChange}
               placeholder="Search for an address"
               dropdown
