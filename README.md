@@ -17,9 +17,8 @@ Employees and Lists Employee:
 ![8](https://github.com/user-attachments/assets/a5b28c37-0f75-42d8-b591-07f4b0bacf93)
 ![8](https://github.com/user-attachments/assets/e5dcb42a-6715-4830-add6-623a9ef0e360)
 ![10](https://github.com/user-attachments/assets/1f6b9ac7-40cd-472d-b46a-8a213a1bda1a)
-
-![11](https://github.com/user-attachments/assets/6fc3b990-c40a-4945-b1ae-e6b5c52a66eb)
-![12](https://github.com/user-attachments/assets/e232709b-b22c-4cb6-a4f9-87e19364183f)
+![11](https://github.com/user-attachments/assets/5010f437-8355-4db0-bf1b-15b869c822a8)
+![12](https://github.com/user-attachments/assets/9fe6422a-50f1-472c-892f-452dd431c130)
 ![13](https://github.com/user-attachments/assets/fe2f20c3-bdfd-41cb-b122-6e4196fd4d42)
 ![14](https://github.com/user-attachments/assets/b4968f21-56b2-4818-831f-b77c0c61d342)
 ![15](https://github.com/user-attachments/assets/c9f90b17-b20c-45a9-8656-6ca19ae405d4)
