@@ -45,7 +45,7 @@ namespace EMS.API.Controllers
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var paginatedLocal = await sender.Send(new GetUserLocalQuery(appUser.Id, pageNumber, pageSize, searchTerm));
+            var paginatedLocal = await sender.Send(new GetUserLocalsQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
             var localGet = mapper.Map<IEnumerable<LocalGetDto>>(paginatedLocal.Items);
 
