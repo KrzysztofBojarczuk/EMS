@@ -34,7 +34,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, null))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionByBudgetIdQuery(budgetId, null, null);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, null, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -62,7 +62,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionByBudgetIdQuery(budgetId, searchTerm, null);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, searchTerm, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -84,7 +84,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null))
                 .ReturnsAsync(new List<TransactionEntity>());
 
-            var query = new GetTransactionByBudgetIdQuery(budgetId, searchTerm, null);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, searchTerm, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -111,7 +111,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, category))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionByBudgetIdQuery(budgetId, null, category);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, null, category);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);

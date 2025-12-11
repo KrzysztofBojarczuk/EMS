@@ -48,7 +48,7 @@ namespace EMS.API.Controllers
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var paginatedReservation = await sender.Send(new GetUserReservationQuery(appUser.Id, pageNumber, pageSize, searchTerm, sortOrderDate));
+            var paginatedReservation = await sender.Send(new GetUserReservationsQuery(appUser.Id, pageNumber, pageSize, searchTerm, sortOrderDate));
 
             var reservationGet = mapper.Map<IEnumerable<ReservationGetDto>>(paginatedReservation.Items);
 

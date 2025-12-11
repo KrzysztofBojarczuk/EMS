@@ -8,15 +8,15 @@ using Moq;
 namespace EMS.TESTS.FeaturesTests.LocalTests.QueriesTests
 {
     [TestClass]
-    public class GetUserLocalQueryHandlerTests
+    public class GetUserLocalsQueryHandlerTests
     {
         private Mock<ILocalRepository> _mockLocalRepository;
-        private GetUserLocalQueryHandler _handler;
+        private GetUserLocalsQueryHandler _handler;
 
-        public GetUserLocalQueryHandlerTests()
+        public GetUserLocalsQueryHandlerTests()
         {
             _mockLocalRepository = new Mock<ILocalRepository>();
-            _handler = new GetUserLocalQueryHandler(_mockLocalRepository.Object);
+            _handler = new GetUserLocalsQueryHandler(_mockLocalRepository.Object);
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.QueriesTests
             _mockLocalRepository.Setup(x => x.GetUserLocalAsync(appUserId, pageNumber, pageSize, null))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserLocalQuery(appUserId, pageNumber, pageSize, null);
+            var query = new GetUserLocalsQuery(appUserId, pageNumber, pageSize, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -72,7 +72,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.QueriesTests
             _mockLocalRepository.Setup(x => x.GetUserLocalAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserLocalQuery(appUserId, pageNumber, pageSize, searchTerm);
+            var query = new GetUserLocalsQuery(appUserId, pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);

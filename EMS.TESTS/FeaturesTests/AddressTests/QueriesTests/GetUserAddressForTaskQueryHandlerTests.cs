@@ -10,13 +10,13 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
     public class GetUserAddressForTaskQueryHandlerTests
     {
         private Mock<IAddressRepository> _mockAddressRepository;
-        private GetUserAddressForTaskQueryHandler _handler;
+        private GetUserAddressesForTaskQueryHandler _handler;
 
         [TestInitialize]
         public void Setup()
         {
             _mockAddressRepository = new Mock<IAddressRepository>();
-            _handler = new GetUserAddressForTaskQueryHandler(_mockAddressRepository.Object);
+            _handler = new GetUserAddressesForTaskQueryHandler(_mockAddressRepository.Object);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, null))
                 .ReturnsAsync(expectedAddresses);
 
-            var query = new GetUserAddressForTaskQuery(appUserId, null);
+            var query = new GetUserAddressesForTaskQuery(appUserId, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -63,7 +63,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm))
                 .ReturnsAsync(expectedAddresses);
 
-            var query = new GetUserAddressForTaskQuery(appUserId, searchTerm);
+            var query = new GetUserAddressesForTaskQuery(appUserId, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -85,7 +85,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm))
                .ReturnsAsync(new List<AddressEntity>());
 
-            var query = new GetUserAddressForTaskQuery(appUserId, searchTerm);
+            var query = new GetUserAddressesForTaskQuery(appUserId, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);

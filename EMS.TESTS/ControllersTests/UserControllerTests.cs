@@ -39,7 +39,7 @@ namespace EMS.TESTS.ControllersTests
 
             var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetAllUserQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetAllUsersQuery>(x =>
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
                 x.searchTerm == searchTerm),
@@ -82,7 +82,7 @@ namespace EMS.TESTS.ControllersTests
 
             var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, 0, pageNumber, pageSize);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetAllUserQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetAllUsersQuery>(x =>
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
                 x.searchTerm == searchTerm),
