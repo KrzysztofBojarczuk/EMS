@@ -66,7 +66,7 @@ namespace EMS.API.Controllers
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserAddressForTaskQuery(appUser.Id, searchTerm));
+            var result = await sender.Send(new GetUserAddressesForTaskQuery(appUser.Id, searchTerm));
 
             var addressGet = mapper.Map<IEnumerable<AddressGetDto>>(result);
 

@@ -11,12 +11,12 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
     public class GetAllUserQueryHandlerTests
     {
         private Mock<IUserRepository> _mockUserRepository;
-        private GetAllUserQueryHandler _handler;
+        private GetAllUsersQueryHandler _handler;
 
         public GetAllUserQueryHandlerTests()
         {
             _mockUserRepository = new Mock<IUserRepository>();
-            _handler = new GetAllUserQueryHandler(_mockUserRepository.Object);
+            _handler = new GetAllUsersQueryHandler(_mockUserRepository.Object);
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, null))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetAllUserQuery(pageNumber, pageSize, null);
+            var query = new GetAllUsersQuery(pageNumber, pageSize, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -69,7 +69,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
+            var query = new GetAllUsersQuery(pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -94,7 +94,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetAllUserQuery(pageNumber, pageSize, searchTerm);
+            var query = new GetAllUsersQuery(pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);

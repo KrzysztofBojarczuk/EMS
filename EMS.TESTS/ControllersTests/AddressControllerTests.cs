@@ -266,7 +266,7 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressForTaskQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressesForTaskQuery>(x =>
                 x.appUserId == appUserId &&
                 x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
@@ -305,7 +305,7 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressForTaskQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressesForTaskQuery>(x =>
                 x.appUserId == appUserId &&
                 x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))

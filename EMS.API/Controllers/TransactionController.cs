@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Transaction.Commands;
 using EMS.APPLICATION.Features.Transaction.Queries;
@@ -37,7 +37,7 @@ namespace EMS.API.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> GetTransactionsByBudgetId([FromRoute] Guid budgetId, [FromQuery] string? searchTerm = null, [FromQuery] List<CategoryType>? category = null)
         {
-            var result = await sender.Send(new GetTransactionByBudgetIdQuery(budgetId, searchTerm, category));
+            var result = await sender.Send(new GetTransactionsByBudgetIdQuery(budgetId, searchTerm, category));
 
             var budgetDtos = mapper.Map<IEnumerable<TransactionGetDto>>(result);
 

@@ -11,13 +11,13 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
     public class GetUserAddressQueryHandlerTests
     {
         private Mock<IAddressRepository> _mockAddressRepository;
-        private GetUserAddressQueryHandler _handler;
+        private GetUserAddressesQueryHandler _handler;
 
         [TestInitialize]
         public void Setup()
         {
             _mockAddressRepository = new Mock<IAddressRepository>();
-            _handler = new GetUserAddressQueryHandler(_mockAddressRepository.Object);
+            _handler = new GetUserAddressesQueryHandler(_mockAddressRepository.Object);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, null))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize, null);
+            var query = new GetUserAddressesQuery(appUserId, pageNumber, pageSize, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -72,7 +72,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize, searchTerm);
+            var query = new GetUserAddressesQuery(appUserId, pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -98,7 +98,7 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             _mockAddressRepository.Setup(x => x.GetUserAddressesAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserAddressQuery(appUserId, pageNumber, pageSize, searchTerm);
+            var query = new GetUserAddressesQuery(appUserId, pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
