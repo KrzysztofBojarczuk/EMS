@@ -11,12 +11,12 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
     public class GetTransactionByBudgetIdQueryHandlerTests
     {
         private Mock<ITransactionRepository> _mockTransactionRepository;
-        private GetTransactionByIdBudgetIdQueryHandler _handler;
+        private GetTransactionsByIdBudgetIdQueryHandler _handler;
 
         public GetTransactionByBudgetIdQueryHandlerTests()
         {
             _mockTransactionRepository = new Mock<ITransactionRepository>();
-            _handler = new GetTransactionByIdBudgetIdQueryHandler(_mockTransactionRepository.Object);
+            _handler = new GetTransactionsByIdBudgetIdQueryHandler(_mockTransactionRepository.Object);
         }
 
         [TestMethod]

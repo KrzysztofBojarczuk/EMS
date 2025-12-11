@@ -45,7 +45,7 @@ namespace EMS.API.Controllers
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var paginatedAddresses = await sender.Send(new GetUserAddressQuery(appUser.Id, pageNumber, pageSize, searchTerm));
+            var paginatedAddresses = await sender.Send(new GetUserAddressesQuery(appUser.Id, pageNumber, pageSize, searchTerm));
 
             var addressGet = mapper.Map<IEnumerable<AddressGetDto>>(paginatedAddresses.Items);
 

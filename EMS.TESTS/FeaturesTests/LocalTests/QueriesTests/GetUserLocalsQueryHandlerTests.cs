@@ -98,7 +98,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.QueriesTests
             _mockLocalRepository.Setup(x => x.GetUserLocalAsync(appUserId, pageNumber, pageSize, searchTerm))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetUserLocalQuery(appUserId, pageNumber, pageSize, searchTerm);
+            var query = new GetUserLocalsQuery(appUserId, pageNumber, pageSize, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
