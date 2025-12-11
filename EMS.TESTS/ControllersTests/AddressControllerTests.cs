@@ -151,7 +151,7 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressesQuery>(x =>
                 x.appUserId == appUserId &&
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
@@ -206,7 +206,7 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetUserAddressesQuery>(x =>
                 x.appUserId == appUserId &&
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
