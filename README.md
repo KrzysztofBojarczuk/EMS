@@ -25,10 +25,10 @@ Employees and Lists Employee:
 ![16](https://github.com/user-attachments/assets/61f71e67-138e-4ee3-ab40-8f1640cac953)
 
 Vehicles
-![17](https://github.com/user-attachments/assets/7f9396b8-9521-40fe-a7eb-914d811f7415)
-![18](https://github.com/user-attachments/assets/7af1bf54-5984-4cdc-91ab-f8e3915ec17c)
-![19](https://github.com/user-attachments/assets/1acd012c-de01-4f69-a171-5b9430afdd38)
-![20](https://github.com/user-attachments/assets/0c3a5815-d38e-4cba-8ba1-1db5b5ee314e)
+![17](https://github.com/user-attachments/assets/a2d8f140-bd23-485d-bac6-44f658b64e71)
+![18](https://github.com/user-attachments/assets/618d4191-bf36-48bd-b115-0549342a5fec)
+![19](https://github.com/user-attachments/assets/1a23d1cb-649a-4701-b212-ca209cf5f3b7)
+![20](https://github.com/user-attachments/assets/88d9c2ff-c653-454d-a2f4-9dc6576ef209)
 
 Budget:
 ![21](https://github.com/user-attachments/assets/ac707a17-e8eb-4a2e-8798-8a96707de288)
