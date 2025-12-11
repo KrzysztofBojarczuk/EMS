@@ -12,7 +12,7 @@ export const PostVehicleService = async (vehiclePost: VehiclePost) => {
   return response.data;
 };
 
-export const GetUserVehicleService = async (
+export const GetUserVehiclesService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,

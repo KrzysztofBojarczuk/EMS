@@ -20,8 +20,8 @@ import { ReservationGet } from "../../../Models/Reservation";
 import {
   DeleteLocalService,
   DeleteReservationService,
-  GetUserLocalService,
-  GetUserReservationService,
+  GetUserLocalsService,
+  GetUserReservationsService,
 } from "../../../Services/LocalReservationService";
 import { formatDateTime } from "../../Utils/DateUtils";
 import AddLocal from "../AddLocal/AddLocal";
@@ -92,7 +92,7 @@ const LocalReservation = (props: Props) => {
   };
 
   const fetchLocal = async (page: number, size: number) => {
-    const data = await GetUserLocalService(page, size, searchLocalTerm);
+    const data = await GetUserLocalsService(page, size, searchLocalTerm);
     setLocals(data.localGet);
     setTotalLocals(data.totalItems);
   };
@@ -114,7 +114,7 @@ const LocalReservation = (props: Props) => {
   }, [searchLocalTerm]);
 
   const fetchReservations = async (page: number, size: number) => {
-    const data = await GetUserReservationService(
+    const data = await GetUserReservationsService(
       page,
       size,
       searchReservationTerm,

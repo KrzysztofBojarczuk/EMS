@@ -39,7 +39,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("User")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserAddressAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetUserAddressesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 
@@ -60,7 +60,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserAddressesForTask")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserAddressForTaskAsync([FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetUserAddressesForTaskAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 

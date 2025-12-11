@@ -19,7 +19,7 @@ import {
 } from "../../Services/BudgetService";
 import {
   DeleteTransactionService,
-  GetUserTransactionByBudgetIdService,
+  GetUserTransactionsByBudgetIdService,
 } from "../../Services/TransactionService";
 import { CategoryType } from "../../Enum/CategoryType";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
@@ -50,7 +50,7 @@ const BudgetTransaction = ({}: Props) => {
 
   const fetchTransaction = async () => {
     if (budgetUser) {
-      const data = await GetUserTransactionByBudgetIdService(
+      const data = await GetUserTransactionsByBudgetIdService(
         budgetUser.id,
         searchTerm,
         category

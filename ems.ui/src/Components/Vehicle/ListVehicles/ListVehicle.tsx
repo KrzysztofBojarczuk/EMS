@@ -2,7 +2,7 @@ import React, { JSX, useEffect, useState } from "react";
 import { VehicleGet } from "../../../Models/Vehicle";
 import {
   DeleteVehicleService,
-  GetUserVehicleService,
+  GetUserVehiclesService,
 } from "../../../Services/VehicleService";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { IconField } from "primereact/iconfield";
@@ -84,7 +84,7 @@ const ListVehicle = () => {
   }));
 
   const fetchVehicle = async (page: number, size: number) => {
-    const data = await GetUserVehicleService(
+    const data = await GetUserVehiclesService(
       page,
       size,
       searchVehicleTerm,
