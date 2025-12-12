@@ -6,9 +6,10 @@ After login user has acces to his resources:
 ![1](https://github.com/user-attachments/assets/b0bc9fd4-e8b0-4f4f-aa11-fd4995ba9401)
 
 Tasks:
-![2](https://github.com/user-attachments/assets/348e46f5-9459-4419-ad6c-1a337279aef3)
-![3](https://github.com/user-attachments/assets/eef18245-1dcf-4e7f-a405-5ad80b9115d9)
-![4](https://github.com/user-attachments/assets/28345f05-f203-42e1-a262-cb19d8ec4e25)
+
+![2](https://github.com/user-attachments/assets/c89b07eb-5041-4e22-8676-74c144d4c746)
+![3](https://github.com/user-attachments/assets/64ccb341-2462-4e10-b377-9f874ac45629)
+![4](https://github.com/user-attachments/assets/3c51ffb6-d539-46b3-8f39-bbce159b7e16)
 ![5](https://github.com/user-attachments/assets/5c51978e-7c23-47aa-a776-01dcda9348da)
 ![6](https://github.com/user-attachments/assets/e7b47091-e827-4768-9907-380f5df11c82)
 ![7](https://github.com/user-attachments/assets/16a59eb3-c3e8-4d09-b477-1da94a258d26)
