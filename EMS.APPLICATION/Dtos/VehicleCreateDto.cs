@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Enums;
+using EMS.CORE.Enums;
 
 namespace EMS.APPLICATION.Dtos
 {
@@ -11,6 +11,9 @@ namespace EMS.APPLICATION.Dtos
         public decimal Mileage { get; set; }
         public VehicleType VehicleType { get; set; }
         public DateTime DateOfProduction { get; set; }
+        public DateTime InsuranceOcValidUntil { get; set; }
+        public decimal InsuranceOcCost { get; set; }
+        public DateTime TechnicalInspectionValidUntil { get; set; }
         public bool IsAvailable { get; set; } = true;
     }
 }

@@ -72,6 +72,7 @@ const UpdateLocal: React.FC<UpdateLocalProps> = ({
               <InputNumber
                 value={field.value ?? 0}
                 onValueChange={(e) => field.onChange(e.value)}
+                useGrouping={false}
                 placeholder="Enter local number"
               />
               {errors.localNumber && (
@@ -89,6 +90,7 @@ const UpdateLocal: React.FC<UpdateLocalProps> = ({
               <InputNumber
                 value={field.value ?? 0}
                 onValueChange={(e) => field.onChange(e.value)}
+                useGrouping={false}
                 placeholder="Enter surface"
               />
               {errors.surface && (
@@ -97,7 +99,6 @@ const UpdateLocal: React.FC<UpdateLocalProps> = ({
             </div>
           )}
         />
-
         <div className="field-checkbox">
           <Controller
             name="needsRepair"

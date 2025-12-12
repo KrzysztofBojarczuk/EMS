@@ -21,6 +21,8 @@ import {
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
+import { formatCurrency } from "../Utils/Currency";
+import { formatDate } from "../Utils/DateUtils";
 
 const AdministrationPanel: React.FC = (): JSX.Element => {
   const [numberUser, setNumberUsers] = useState<number>(0);
@@ -200,6 +202,23 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           <Column field="id" header="Id" />
           <Column field="name" header="Name" />
           <Column field="email" header="Email" />
+          <Column field="phone" header="Phone"></Column>
+          <Column
+            field="salary"
+            header="Salary"
+            body={(rowData) => formatCurrency(rowData.salary)}
+          ></Column>
+          <Column field="age" header="Age"></Column>
+          <Column
+            field="employmentDate"
+            header="Employment Date"
+            body={(rowData) => formatDate(rowData.employmentDate)}
+          ></Column>
+          <Column
+            field="medicalCheckValidUntil"
+            header="Medical Check"
+            body={(rowData) => formatDate(rowData.medicalCheckValidUntil)}
+          ></Column>
         </DataTable>
         <Paginator
           first={firstEmployee}
@@ -226,15 +245,15 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           <Column
             field="startDate"
             dataType="date"
-            body={(rowData) => dateBodyTemplate(rowData, "startDate")}
             header="Start Date"
+            body={(rowData) => dateBodyTemplate(rowData, "startDate")}
           ></Column>
 
           <Column
             field="endDate"
             dataType="date"
-            body={(rowData) => dateBodyTemplate(rowData, "endDate")}
             header="End Date"
+            body={(rowData) => dateBodyTemplate(rowData, "endDate")}
           ></Column>
           <Column
             field="status"

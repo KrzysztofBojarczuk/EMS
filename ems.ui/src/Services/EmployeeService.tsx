@@ -25,12 +25,12 @@ export const GetUserEmployeesService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
-  sortOrderSalary?: string | null
+  sortOrder?: string | null
 ) => {
   const response = await axios.get<PaginatedEmployeeResponse>(
     api + "Employee/User",
     {
-      params: { pageNumber, pageSize, searchTerm, sortOrderSalary },
+      params: { pageNumber, pageSize, searchTerm, sortOrder },
     }
   );
 

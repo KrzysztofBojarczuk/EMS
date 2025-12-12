@@ -72,11 +72,11 @@ const AddReservation: React.FC<Props> = ({
               <Calendar
                 value={field.value ? new Date(field.value) : null}
                 onChange={(e) => field.onChange(e.value)}
-                placeholder="Check-in Date & Time"
                 showIcon
                 dateFormat="dd/mm/yy"
                 showTime
                 hourFormat="24"
+                placeholder="Check-in Date & Time"
               />
               {errors.checkInDate && (
                 <small className="p-error">{errors.checkInDate.message}</small>
@@ -93,11 +93,11 @@ const AddReservation: React.FC<Props> = ({
               <Calendar
                 value={field.value ? new Date(field.value) : null}
                 onChange={(e) => field.onChange(e.value)}
-                placeholder="Check-out Date & Time"
                 showIcon
                 dateFormat="dd/mm/yy"
                 showTime
                 hourFormat="24"
+                placeholder="Check-out Date & Time"
               />
               {errors.checkOutDate && (
                 <small className="p-error">{errors.checkOutDate.message}</small>

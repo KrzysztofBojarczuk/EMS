@@ -172,9 +172,9 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                 <div className="inline-flex flex-column gap-2">
                   <InputTextarea
                     {...field}
-                    placeholder="Description"
                     rows={5}
                     cols={30}
+                    placeholder="Description"
                   />
                   {errors.description && (
                     <small className="p-error">
@@ -202,8 +202,8 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                     onFilter={(e) => setSearchTermList(e.filter)}
                     optionLabel="name"
                     optionValue="id"
-                    placeholder="Select List Employees"
                     filter
+                    placeholder="Select List Employees"
                   />
                   {errors.employeeListIds && (
                     <small className="p-error">
@@ -228,8 +228,8 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   onFilter={(e) => setVehicleSearchTerm(e.filter)}
                   optionLabel="name"
                   optionValue="id"
-                  placeholder="Select Vehicles"
                   filter
+                  placeholder="Select Vehicles"
                   itemTemplate={(option) => (
                     <div>
                       <strong>
@@ -249,9 +249,9 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   <Calendar
                     value={field.value ? new Date(field.value) : null}
                     onChange={(e) => field.onChange(e.value)}
-                    placeholder="Select Start Date"
-                    showIcon
                     dateFormat="dd/mm/yy"
+                    showIcon
+                    placeholder="Select Start Date"
                   />
                   {errors.startDate && (
                     <small className="p-error">
@@ -270,9 +270,9 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                   <Calendar
                     value={field.value ? new Date(field.value) : null}
                     onChange={(e) => field.onChange(e.value)}
-                    placeholder="Select End Date"
-                    showIcon
                     dateFormat="dd/mm/yy"
+                    showIcon
+                    placeholder="Select End Date"
                   />
                   {errors.endDate && (
                     <small className="p-error">{errors.endDate.message}</small>
@@ -289,8 +289,8 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               suggestions={items}
               completeMethod={searchAddress}
               onChange={handleAddressChange}
-              placeholder="Search for an address"
               dropdown
+              placeholder="Search for an address"
             />
             <Controller
               name="address.city"

@@ -25,6 +25,8 @@ import AddListEmployee from "../AddListEmployee/AddListEmployee";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateEmployee from "../UpdateEmployee/UpdateEmployee";
 import { Dropdown } from "primereact/dropdown";
+import { formatDate } from "../../Utils/DateUtils";
+import { formatCurrency } from "../../Utils/Currency";
 
 interface Props {}
 
@@ -54,17 +56,29 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
-  const [sortOrderSalary, setSortOrderSalary] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<string | null>(null);
 
-  const sortSalaryOptions = [
+  const sortOptions = [
     { label: "None", value: null },
-    { label: "Salary ↑", value: "salary_asc" },
-    { label: "Salary ↓", value: "salary_desc" },
+    { label: "Salary ↑ (Lowest first)", value: "salary_asc" },
+    { label: "Salary ↓ (Highest first)", value: "salary_desc" },
+    { label: "Age ↑ (Youngest first)", value: "age_asc" },
+    { label: "Age ↓ (Oldest first)", value: "age_desc" },
+    { label: "Employment Date ↑ (Oldest first)", value: "employmentDate_asc" },
+    { label: "Employment Date ↓ (Newest first)", value: "employmentDate_desc" },
+    {
+      label: "Medical Check ↑ (Oldest first)",
+      value: "medicalCheckValidUntil_asc",
+    },
+    {
+      label: "Medical Check ↓ (Newest first)",
+      value: "medicalCheckValidUntil_desc",
+    },
   ];
 
   const resetFilters = () => {
     setSearchTerm("");
-    setSortOrderSalary(null);
+    setSortOrder(null);
   };
 
   const fetchEmployees = async (page: number, size: number) => {
@@ -72,7 +86,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       page,
       size,
       searchTerm,
-      sortOrderSalary
+      sortOrder
     );
     setEmployees(data.employeeGet);
     setTotalEmployees(data.totalItems);
@@ -86,7 +100,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
 
   useEffect(() => {
     goToPage(1, rowsEmployee);
-  }, [searchTerm, sortOrderSalary]);
+  }, [searchTerm, sortOrder]);
 
   const fetchEmployeesList = async () => {
     const data = await GetUserListEmployeesService(searchTermList);
@@ -207,10 +221,10 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           />
         </IconField>
         <Dropdown
-          value={sortOrderSalary}
-          options={sortSalaryOptions}
-          onChange={(e) => setSortOrderSalary(e.value)}
-          placeholder="Sort by Salary"
+          value={sortOrder}
+          options={sortOptions}
+          onChange={(e) => setSortOrder(e.value)}
+          placeholder="Sorting"
           showClear
         />
         <Button
@@ -238,7 +252,22 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         <Column field="name" header="Name"></Column>
         <Column field="email" header="Email"></Column>
         <Column field="phone" header="Phone"></Column>
-        <Column field="salary" header="Salary"></Column>
+        <Column
+          field="salary"
+          header="Salary"
+          body={(rowData) => formatCurrency(rowData.salary)}
+        ></Column>
+        <Column field="age" header="Age"></Column>
+        <Column
+          field="employmentDate"
+          header="Employment Date"
+          body={(rowData) => formatDate(rowData.employmentDate)}
+        ></Column>
+        <Column
+          field="medicalCheckValidUntil"
+          header="Medical Check"
+          body={(rowData) => formatDate(rowData.medicalCheckValidUntil)}
+        ></Column>
         <Column
           header="Action"
           body={(rowData) => (

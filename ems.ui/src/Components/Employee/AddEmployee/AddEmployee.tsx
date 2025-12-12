@@ -6,6 +6,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { EmployeePost } from "../../../Models/Employee";
 import { PostEmployeesService } from "../../../Services/EmployeeService";
+import { Calendar } from "primereact/calendar";
 
 type Props = {
   onClose: () => void;
@@ -24,6 +25,9 @@ const AddEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
       email: "",
       phone: "",
       salary: 0,
+      age: 0,
+      employmentDate: "",
+      medicalCheckValidUntil: "",
     },
   });
 
@@ -95,11 +99,73 @@ const AddEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
                 mode="currency"
                 currency="EUR"
                 locale="de-DE"
-                placeholder="Salary"
                 onValueChange={(e) => field.onChange(e.value)}
+                placeholder="Salary"
               />
               {errors.salary && (
                 <small className="p-error">{errors.salary.message}</small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="age"
+          control={control}
+          rules={{
+            required: "Age is required",
+            min: { value: 1, message: "Age cannot be negative" },
+          }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputNumber
+                placeholder="Age"
+                onValueChange={(e) => field.onChange(e.value)}
+                useGrouping={false}
+              />
+              {errors.age && (
+                <small className="p-error">{errors.age.message}</small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="employmentDate"
+          control={control}
+          rules={{ required: "Employment date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                dateFormat="dd/mm/yy"
+                showIcon
+                placeholder="Employment Date"
+              />
+              {errors.employmentDate && (
+                <small className="p-error">
+                  {errors.employmentDate.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="medicalCheckValidUntil"
+          control={control}
+          rules={{ required: "Medical check date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                dateFormat="dd/mm/yy"
+                showIcon
+                placeholder="Medical Check Valid Until"
+              />
+              {errors.medicalCheckValidUntil && (
+                <small className="p-error">
+                  {errors.medicalCheckValidUntil.message}
+                </small>
               )}
             </div>
           )}

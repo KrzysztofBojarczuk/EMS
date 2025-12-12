@@ -19,11 +19,11 @@ export const GetUserVehiclesService = async (
   vehicleType?: string[],
   dateFrom?: Date | null,
   dateTo?: Date | null,
-  sortOrderDate?: string | null,
-  sortOrderMileage?: string | null
+  sortOrder?: string | null
 ) => {
   const params = new URLSearchParams();
 
+  console.log(sortOrder);
   params.append("pageNumber", pageNumber.toString());
   params.append("pageSize", pageSize.toString());
 
@@ -36,8 +36,7 @@ export const GetUserVehiclesService = async (
   if (dateFrom) params.append("dateFrom", dateFrom.toISOString());
   if (dateTo) params.append("dateTo", dateTo.toISOString());
 
-  if (sortOrderDate) params.append("sortOrderDate", sortOrderDate);
-  if (sortOrderMileage) params.append("sortOrderMileage", sortOrderMileage);
+  if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedVehicleResponse>(
     `${api}Vehicle/User?${params.toString()}`
