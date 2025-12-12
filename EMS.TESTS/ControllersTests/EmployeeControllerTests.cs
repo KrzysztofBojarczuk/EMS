@@ -376,7 +376,7 @@ namespace EMS.TESTS.ControllersTests
             var username = "testuser";
             var pageNumber = 1;
             var pageSize = 10;
-            var sortOrderSalary = "salary_asc";
+            var sortOrder = "salary_asc";
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
@@ -404,7 +404,7 @@ namespace EMS.TESTS.ControllersTests
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
                 x.searchTerm == null &&
-                x.sortOrder == sortOrderSalary),
+                x.sortOrder == sortOrder),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -412,7 +412,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, null, sortOrderSalary);
+            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, null, sortOrder);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -443,7 +443,7 @@ namespace EMS.TESTS.ControllersTests
             var username = "testuser";
             var pageNumber = 1;
             var pageSize = 10;
-            var sortOrderSalary = "salary_desc";
+            var sortOrder = "salary_desc";
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
@@ -471,7 +471,7 @@ namespace EMS.TESTS.ControllersTests
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
                 x.searchTerm == null &&
-                x.sortOrder == sortOrderSalary),
+                x.sortOrder == sortOrder),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -479,7 +479,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, null, sortOrderSalary);
+            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, null, sortOrder);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -510,7 +510,7 @@ namespace EMS.TESTS.ControllersTests
             var username = "testuser";
             var pageNumber = 1;
             var pageSize = 10;
-            var sortOrderSalary = "nonexistent";
+            var sortOrder = "nonexistent";
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
@@ -538,7 +538,7 @@ namespace EMS.TESTS.ControllersTests
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
                 x.searchTerm == null &&
-                x.sortOrder == sortOrderSalary),
+                x.sortOrder == sortOrder),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -546,7 +546,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, null, sortOrderSalary);
+            var result = await _controller.GetUserEmployeesAsync(pageNumber, pageSize, null, sortOrder);
 
             // Assert
             var okResult = result as OkObjectResult;
