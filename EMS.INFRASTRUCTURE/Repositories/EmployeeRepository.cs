@@ -11,6 +11,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<EmployeeEntity> AddEmployeeAsync(EmployeeEntity entity)
         {
             entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            entity.EmploymentDate = entity.EmploymentDate.ToLocalTime();
+            entity.MedicalCheckValidUntil = entity.MedicalCheckValidUntil.ToLocalTime();
             dbContext.Employees.Add(entity);
 
             await dbContext.SaveChangesAsync();
@@ -37,7 +39,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Employees.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrderSalary)
+        public async Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrder)
         {
             var query = dbContext.Employees.Where(x => x.AppUserId == appUserId);
 
@@ -46,15 +48,33 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            if (!string.IsNullOrEmpty(sortOrderSalary))
+            if (!string.IsNullOrEmpty(sortOrder))
             {
-                switch (sortOrderSalary)
+                switch (sortOrder)
                 {
                     case "salary_asc":
                         query = query.OrderBy(x => x.Salary);
                         break;
                     case "salary_desc":
                         query = query.OrderByDescending(x => x.Salary);
+                        break;
+                    case "age_asc":
+                        query = query.OrderBy(x => x.Age);
+                        break;
+                    case "age_desc":
+                        query = query.OrderByDescending(x => x.Age);
+                        break;
+                    case "employmentDate_asc":
+                        query = query.OrderBy(x => x.EmploymentDate);
+                        break;
+                    case "employmentDate_desc":
+                        query = query.OrderByDescending(x => x.EmploymentDate);
+                        break;
+                    case "medicalCheckValidUntil_asc":
+                        query = query.OrderBy(x => x.MedicalCheckValidUntil);
+                        break;
+                    case "medicalCheckValidUntil_desc":
+                        query = query.OrderByDescending(x => x.MedicalCheckValidUntil);
                         break;
                     default:
                         query = query.OrderByDescending(x => x.Salary);
@@ -138,6 +158,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 employee.Email = entity.Email;
                 employee.Phone = entity.Phone;
                 employee.Salary = entity.Salary;
+                employee.Age = entity.Age;
+                employee.EmploymentDate = entity.EmploymentDate.ToLocalTime();
+                employee.MedicalCheckValidUntil = entity.MedicalCheckValidUntil.ToLocalTime();
 
                 await dbContext.SaveChangesAsync();
 

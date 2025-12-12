@@ -34,6 +34,9 @@ const UpdateVehicle: React.FC<Props> = ({
       mileage: vehicle.mileage,
       vehicleType: vehicle.vehicleType,
       dateOfProduction: vehicle.dateOfProduction,
+      insuranceOcValidUntil: vehicle.insuranceOcValidUntil,
+      insuranceOcCost: vehicle.insuranceOcCost,
+      technicalInspectionValidUntil: vehicle.technicalInspectionValidUntil,
       isAvailable: vehicle.isAvailable,
     },
   });
@@ -47,6 +50,9 @@ const UpdateVehicle: React.FC<Props> = ({
       mileage: vehicle.mileage,
       vehicleType: vehicle.vehicleType,
       dateOfProduction: vehicle.dateOfProduction,
+      insuranceOcValidUntil: vehicle.insuranceOcValidUntil,
+      insuranceOcCost: vehicle.insuranceOcCost,
+      technicalInspectionValidUntil: vehicle.technicalInspectionValidUntil,
       isAvailable: vehicle.isAvailable,
     });
   }, [vehicle, reset]);
@@ -73,7 +79,6 @@ const UpdateVehicle: React.FC<Props> = ({
             </div>
           )}
         />
-
         <Controller
           name="model"
           control={control}
@@ -87,7 +92,6 @@ const UpdateVehicle: React.FC<Props> = ({
             </div>
           )}
         />
-
         <Controller
           name="name"
           control={control}
@@ -101,7 +105,6 @@ const UpdateVehicle: React.FC<Props> = ({
             </div>
           )}
         />
-
         <Controller
           name="registrationNumber"
           control={control}
@@ -117,7 +120,6 @@ const UpdateVehicle: React.FC<Props> = ({
             </div>
           )}
         />
-
         <Controller
           name="mileage"
           control={control}
@@ -139,7 +141,6 @@ const UpdateVehicle: React.FC<Props> = ({
             </div>
           )}
         />
-
         <Controller
           name="vehicleType"
           control={control}
@@ -176,6 +177,74 @@ const UpdateVehicle: React.FC<Props> = ({
               {errors.dateOfProduction && (
                 <small className="p-error">
                   {errors.dateOfProduction.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="insuranceOcValidUntil"
+          control={control}
+          rules={{ required: "Insurance OC date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                placeholder="Insurance OC Valid Until"
+                dateFormat="dd/mm/yy"
+                showIcon
+              />
+              {errors.insuranceOcValidUntil && (
+                <small className="p-error">
+                  {errors.insuranceOcValidUntil.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="insuranceOcCost"
+          control={control}
+          rules={{
+            required: "Insurance OC cost is required",
+            min: { value: 0, message: "Insurance cost cannot be negative" },
+          }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputNumber
+                mode="currency"
+                currency="EUR"
+                locale="de-DE"
+                placeholder="Insurance OC Cost"
+                useGrouping={false}
+                value={field.value}
+                onValueChange={(e) => field.onChange(e.value)}
+              />
+              {errors.insuranceOcCost && (
+                <small className="p-error">
+                  {errors.insuranceOcCost.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="technicalInspectionValidUntil"
+          control={control}
+          rules={{ required: "Technical inspection date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                placeholder="Technical Inspection Valid Until"
+                dateFormat="dd/mm/yy"
+                showIcon
+              />
+              {errors.technicalInspectionValidUntil && (
+                <small className="p-error">
+                  {errors.technicalInspectionValidUntil.message}
                 </small>
               )}
             </div>

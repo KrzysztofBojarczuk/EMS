@@ -86,7 +86,7 @@ const UpdateAddress: React.FC<UpdateAddressProps> = ({
           rules={{ required: "Zip Code is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputMask {...field} mask="99-999" />
+              <InputMask {...field} mask="99-999" placeholder="Zip-Code" />
               {errors.zipCode && (
                 <small className="p-error">{errors.zipCode.message}</small>
               )}

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251202061859_InitialCreate")]
+    [Migration("20251211134335_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -150,6 +150,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("AppUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -160,6 +163,12 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
                     b.Property<Guid?>("EmployeeListId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EmploymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("MedicalCheckValidUntil")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -383,6 +392,12 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Property<DateTime>("DateOfProduction")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("InsuranceOcCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("InsuranceOcValidUntil")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
@@ -403,6 +418,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
                     b.Property<Guid?>("TaskId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TechnicalInspectionValidUntil")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("VehicleType")
                         .HasColumnType("int");
@@ -445,13 +463,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8ba3eb08-f02a-480a-8f4e-78b3455735a6",
+                            Id = "0e635acd-d58a-44e4-b480-dccda55bb16d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "28ba79f7-4478-4991-b30d-145b055940eb",
+                            Id = "62473ebf-d847-4c2a-af37-086a0e409b8b",
                             Name = "User",
                             NormalizedName = "USER"
                         });

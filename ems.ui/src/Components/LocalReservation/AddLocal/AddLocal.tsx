@@ -70,6 +70,7 @@ const AddLocal: React.FC<Props> = ({ onClose, onAddSuccess }) => {
             <div className="inline-flex flex-column gap-2">
               <InputNumber
                 onValueChange={(e) => field.onChange(e.value)}
+                useGrouping={false}
                 placeholder="Enter local number"
               />
               {errors.localNumber && (
@@ -86,6 +87,7 @@ const AddLocal: React.FC<Props> = ({ onClose, onAddSuccess }) => {
             <div className="inline-flex flex-column gap-2">
               <InputNumber
                 onValueChange={(e) => field.onChange(e.value)}
+                useGrouping={false}
                 placeholder="Enter surface"
               />
               {errors.surface && (

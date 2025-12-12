@@ -25,6 +25,7 @@ import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import { Dialog } from "primereact/dialog";
 import AddVehicle from "../AddVehicle/AddVehicle";
 import UpdateVehicle from "../UpdateVehicle/UpdateVehicle";
+import { formatCurrency } from "../../Utils/Currency";
 
 interface VehicleTypeOption {
   name: string;
@@ -38,8 +39,7 @@ const ListVehicle = () => {
   const [vehicleType, seVehicleType] = useState<string[]>([]);
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
-  const [sortOrderDate, setSortOrderDate] = useState<string | null>(null);
-  const [sortOrderMileage, setSortOrderMileage] = useState<string | null>(null);
+  const [sortOrder, setSortOrder] = useState<string | null>(null);
 
   const [firstVehicle, setFirstVehicle] = useState(0);
   const [rowsVehicle, setRowsVehicle] = useState(10);
@@ -58,22 +58,26 @@ const ListVehicle = () => {
   const resetFilters = () => {
     setDateFrom(null);
     setDateTo(null);
-    setSortOrderDate(null);
-    setSortOrderMileage(null);
+    setSortOrder(null);
     setSearchVehicleTerm("");
     seVehicleType([]);
   };
 
-  const sortDateOptions = [
-    { label: "None", value: null },
-    { label: "Date ↑ (Oldest first)", value: "date_asc" },
-    { label: "Date ↓ (Newest first)", value: "date_desc" },
-  ];
-
-  const sortMileageOptions = [
+  const sortOptions = [
     { label: "None", value: null },
     { label: "Mileage ↑ (Lowest first)", value: "mileage_asc" },
     { label: "Mileage ↓ (Highest first)", value: "mileage_desc" },
+    { label: "Date Production↑ (Oldest first)", value: "date_asc" },
+    { label: "Date Production↓ (Newest first)", value: "date_desc" },
+    { label: "OC Validity ↑ (Oldest first)", value: "insurance_oc_asc" },
+    { label: "OC Validity ↓ (Newest first)", value: "insurance_oc_desc" },
+    { label: "Technical Inspection ↑ (Oldest first)", value: "inspection_asc" },
+    {
+      label: "Technical Inspection ↓ (Newest first)",
+      value: "inspection_desc",
+    },
+    { label: "Insurance Cost ↑ (Lowest first)", value: "insurance_cost_asc" },
+    { label: "Insurance Cost ↓ (Highest first)", value: "insurance_cost_desc" },
   ];
 
   const vehicleTypeOptions: VehicleTypeOption[] = Object.entries(
@@ -91,8 +95,7 @@ const ListVehicle = () => {
       vehicleType,
       dateFrom,
       dateTo,
-      sortOrderDate,
-      sortOrderMileage
+      sortOrder
     );
     setVehicles(data.vehicleGet);
     setTotalVehicles(data.totalItems);
@@ -106,14 +109,7 @@ const ListVehicle = () => {
 
   useEffect(() => {
     goToPageVehicle(1, rowsVehicle);
-  }, [
-    searchVehicleTerm,
-    vehicleType,
-    dateFrom,
-    dateTo,
-    sortOrderDate,
-    sortOrderMileage,
-  ]);
+  }, [searchVehicleTerm, vehicleType, dateFrom, dateTo, sortOrder]);
 
   const onPageChangeVehicles = (event: PaginatorPageChangeEvent) => {
     setFirstVehicle(event.first);
@@ -184,31 +180,25 @@ const ListVehicle = () => {
           multiple
           className="mr-4"
         />
-        <Dropdown
-          value={sortOrderMileage}
-          options={sortMileageOptions}
-          onChange={(e) => setSortOrderMileage(e.value)}
-          placeholder="Sort by Mileage"
-        />
         <Calendar
           value={dateFrom}
           onChange={(e) => setDateFrom(e.value as Date)}
-          placeholder="Date from"
+          placeholder="Date production from"
           showIcon
           dateFormat="dd/mm/yy"
         />
         <Calendar
           value={dateTo}
           onChange={(e) => setDateTo(e.value as Date)}
-          placeholder="Date to"
+          placeholder="Date production to"
           showIcon
           dateFormat="dd/mm/yy"
         />
         <Dropdown
-          value={sortOrderDate}
-          options={sortDateOptions}
-          onChange={(e) => setSortOrderDate(e.value)}
-          placeholder="Sort by Date"
+          value={sortOrder}
+          options={sortOptions}
+          onChange={(e) => setSortOrder(e.value)}
+          placeholder="Sorting"
         />
         <Button
           label="Reset Filters"
@@ -247,10 +237,29 @@ const ListVehicle = () => {
         ></Column>
         <Column
           field="dateOfProduction"
-          body={(rowData) => dateBodyTemplate(rowData, "dateOfProduction")}
           header="Date Of Production"
+          body={(rowData) => dateBodyTemplate(rowData, "dateOfProduction")}
         ></Column>
-        <Column field="isAvailable" header="Availability"></Column>
+        <Column
+          field="insuranceOcValidUntil"
+          header="OC Valid Until"
+          body={(rowData) => formatDate(rowData.insuranceOcValidUntil)}
+        ></Column>
+        <Column
+          field="insuranceOcCost"
+          header="OC Cost"
+          body={(rowData) => formatCurrency(rowData.insuranceOcCost)}
+        ></Column>
+        <Column
+          field="technicalInspectionValidUntil"
+          header="Technical Inspection"
+          body={(rowData) => formatDate(rowData.technicalInspectionValidUntil)}
+        ></Column>
+        <Column
+          field="isAvailable"
+          header="Availability"
+          body={(rowData) => (rowData.isAvailable ? "Yes" : "No")}
+        ></Column>
         <Column
           header="Action"
           body={(rowData) => (

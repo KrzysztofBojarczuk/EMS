@@ -27,9 +27,9 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
 
             var expectedEmployees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000, Age = 25, EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, Age = 20, EmploymentDate = new DateTime(2022, 3, 3), MedicalCheckValidUntil = new DateTime(2025, 3, 3) },
             };
 
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, null))
@@ -56,8 +56,8 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
 
             var expectedEmployees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000, AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000, Age = 25, EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) },
             };
 
             _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm))

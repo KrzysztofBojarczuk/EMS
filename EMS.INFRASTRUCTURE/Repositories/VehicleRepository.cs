@@ -13,6 +13,8 @@ namespace EMS.INFRASTRUCTURE.Repositories
         {
             entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
             entity.DateOfProduction = entity.DateOfProduction.ToLocalTime();
+            entity.InsuranceOcValidUntil = entity.InsuranceOcValidUntil.ToLocalTime();
+            entity.TechnicalInspectionValidUntil = entity.TechnicalInspectionValidUntil.ToLocalTime();
             dbContext.Vehicles.Add(entity);
 
             await dbContext.SaveChangesAsync();
@@ -25,7 +27,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Vehicles.FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<VehicleType> vehicleType, DateTime? dateFrom, DateTime? dateTo, string sortOrderDate, string sortOrderMileage)
+        public async Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<VehicleType> vehicleType, DateTime? dateFrom, DateTime? dateTo, string sortOrder)
         {
             var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId);
 
@@ -47,9 +49,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => x.DateOfProduction >= dateFrom.Value && x.DateOfProduction <= dateTo.Value);
             }
 
-            if (!string.IsNullOrEmpty(sortOrderMileage))
+            if (!string.IsNullOrEmpty(sortOrder))
             {
-                switch (sortOrderMileage)
+                switch (sortOrder)
                 {
                     case "mileage_asc":
                         query = query.OrderBy(x => x.Mileage);
@@ -57,31 +59,32 @@ namespace EMS.INFRASTRUCTURE.Repositories
                     case "mileage_desc":
                         query = query.OrderByDescending(x => x.Mileage);
                         break;
-                    default:
-                        query = query.OrderByDescending(x => x.Mileage);
-                        break;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(sortOrderDate))
-            {
-                switch (sortOrderDate)
-                {
                     case "date_asc":
-                        query = query.Expression.Type == typeof(IOrderedQueryable<VehicleEntity>)
-                            ? ((IOrderedQueryable<VehicleEntity>)query).ThenBy(x => x.DateOfProduction)
-                            : query.OrderBy(x => x.DateOfProduction);
+                        query = query.OrderBy(x => x.DateOfProduction);
                         break;
-
                     case "date_desc":
-                        query = query.Expression.Type == typeof(IOrderedQueryable<VehicleEntity>)
-                            ? ((IOrderedQueryable<VehicleEntity>)query).ThenByDescending(x => x.DateOfProduction)
-                            : query.OrderByDescending(x => x.DateOfProduction);
+                        query = query.OrderByDescending(x => x.DateOfProduction);
+                        break;
+                    case "insurance_oc_asc":
+                        query = query.OrderBy(x => x.InsuranceOcValidUntil);
+                        break;
+                    case "insurance_oc_desc":
+                        query = query.OrderByDescending(x => x.InsuranceOcValidUntil);
+                        break;
+                    case "inspection_asc":
+                        query = query.OrderBy(x => x.TechnicalInspectionValidUntil);
+                        break;
+                    case "inspection_desc":
+                        query = query.OrderByDescending(x => x.TechnicalInspectionValidUntil);
+                        break;
+                    case "insurance_cost_asc":
+                        query = query.OrderBy(x => x.InsuranceOcCost);
+                        break;
+                    case "insurance_cost_desc":
+                        query = query.OrderByDescending(x => x.InsuranceOcCost);
                         break;
                     default:
-                        query = query.Expression.Type == typeof(IOrderedQueryable<VehicleEntity>)
-                             ? ((IOrderedQueryable<VehicleEntity>)query).ThenByDescending(x => x.DateOfProduction)
-                             : query.OrderByDescending(x => x.DateOfProduction);
+                        query = query.OrderByDescending(x => x.DateOfProduction);
                         break;
                 }
             }
@@ -115,6 +118,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 vehicle.Mileage = entity.Mileage;
                 vehicle.VehicleType = entity.VehicleType;
                 vehicle.DateOfProduction = entity.DateOfProduction.ToLocalTime();
+                vehicle.InsuranceOcValidUntil = entity.InsuranceOcValidUntil.ToLocalTime();
+                vehicle.InsuranceOcCost = entity.InsuranceOcCost;
+                vehicle.TechnicalInspectionValidUntil = entity.TechnicalInspectionValidUntil.ToLocalTime();
                 vehicle.IsAvailable = entity.IsAvailable;
 
                 await dbContext.SaveChangesAsync();

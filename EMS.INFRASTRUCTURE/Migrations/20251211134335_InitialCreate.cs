@@ -360,6 +360,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     Mileage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     VehicleType = table.Column<int>(type: "int", nullable: false),
                     DateOfProduction = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InsuranceOcValidUntil = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    InsuranceOcCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TechnicalInspectionValidUntil = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     TaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -389,6 +392,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Age = table.Column<int>(type: "int", nullable: true),
+                    EmploymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MedicalCheckValidUntil = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EmployeeListId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -413,8 +419,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "28ba79f7-4478-4991-b30d-145b055940eb", null, "User", "USER" },
-                    { "8ba3eb08-f02a-480a-8f4e-78b3455735a6", null, "Admin", "ADMIN" }
+                    { "0e635acd-d58a-44e4-b480-dccda55bb16d", null, "Admin", "ADMIN" },
+                    { "62473ebf-d847-4c2a-af37-086a0e409b8b", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

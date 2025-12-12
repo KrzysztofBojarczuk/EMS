@@ -4,6 +4,9 @@ export interface EmployeeGet {
   email: string;
   phone: string;
   salary: number;
+  age: number;
+  employmentDate: string;
+  medicalCheckValidUntil: string;
 }
 
 export interface EmployeePost {
@@ -11,6 +14,9 @@ export interface EmployeePost {
   email: string;
   phone: string;
   salary: number;
+  age: number;
+  employmentDate: string;
+  medicalCheckValidUntil: string;
 }
 
 export interface PaginatedEmployeeResponse {

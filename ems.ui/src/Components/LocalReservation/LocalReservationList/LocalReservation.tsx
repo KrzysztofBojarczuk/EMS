@@ -76,10 +76,10 @@ const LocalReservation = (props: Props) => {
 
   const sortDateOptions = [
     { label: "None", value: null },
-    { label: "Check-In ↑", value: "start_asc" },
-    { label: "Check-In ↓", value: "start_desc" },
-    { label: "Check-Out ↑", value: "end_asc" },
-    { label: "Check-Out ↓", value: "end_desc" },
+    { label: "Check-In ↑ (Earliest first)", value: "start_asc" },
+    { label: "Check-In ↓ (Latest first)", value: "start_desc" },
+    { label: "Check-Out ↑ (Earliest first)", value: "end_asc" },
+    { label: "Check-Out ↓ (Latest first)", value: "end_desc" },
   ];
 
   const resetReservationFilters = () => {
@@ -289,7 +289,11 @@ const LocalReservation = (props: Props) => {
           <Column field="description" header="Description"></Column>
           <Column field="localNumber" header="Local Number"></Column>
           <Column field="surface" header="Surface"></Column>
-          <Column field="needsRepair" header="Needs Repair"></Column>
+          <Column
+            field="needsRepair"
+            header="Needs Repair"
+            body={(rowData) => (rowData.needsRepair ? "Yes" : "No")}
+          ></Column>
           <Column
             header="Action"
             body={(rowData) => (

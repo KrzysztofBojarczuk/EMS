@@ -61,10 +61,10 @@ const ListTask = (props: Props) => {
 
   const sortDateOptions = [
     { label: "None", value: null },
-    { label: "Start Date ↑", value: "start_asc" },
-    { label: "Start Date ↓", value: "start_desc" },
-    { label: "End Date ↑", value: "end_asc" },
-    { label: "End Date ↓", value: "end_desc" },
+    { label: "Start Date ↑ (Oldest first)", value: "start_asc" },
+    { label: "Start Date ↓ (Newest first)", value: "start_desc" },
+    { label: "End Date ↑ (Oldest first)", value: "end_asc" },
+    { label: "End Date ↓ (Newest first)", value: "end_desc" },
   ];
 
   const taskTypeOptions: TaskTypeOption[] = Object.entries(
@@ -302,13 +302,13 @@ const ListTask = (props: Props) => {
         <Column field="name" header="Name"></Column>
         <Column
           field="startDate"
-          body={(rowData) => dateBodyTemplate(rowData, "startDate")}
           header="Start Date"
+          body={(rowData) => dateBodyTemplate(rowData, "startDate")}
         ></Column>
         <Column
           field="endDate"
-          body={(rowData) => dateBodyTemplate(rowData, "endDate")}
           header="End Date"
+          body={(rowData) => dateBodyTemplate(rowData, "endDate")}
         ></Column>
         <Column
           field="status"

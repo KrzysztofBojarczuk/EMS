@@ -6,6 +6,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Button } from "primereact/button";
 import { EmployeeGet, EmployeePost } from "../../../Models/Employee";
 import { UpdateEmployeesService } from "../../../Services/EmployeeService";
+import { Calendar } from "primereact/calendar";
 
 interface UpdateEmployeeProps {
   employee: EmployeeGet;
@@ -29,6 +30,9 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
       email: employee.email,
       phone: employee.phone,
       salary: employee.salary,
+      age: employee.age,
+      employmentDate: employee.employmentDate,
+      medicalCheckValidUntil: employee.medicalCheckValidUntil,
     },
   });
 
@@ -44,6 +48,9 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
       email: employee.email,
       phone: employee.phone,
       salary: employee.salary,
+      age: employee.age,
+      employmentDate: employee.employmentDate,
+      medicalCheckValidUntil: employee.medicalCheckValidUntil,
     });
   }, [employee, reset]);
 
@@ -108,12 +115,73 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
                 mode="currency"
                 currency="EUR"
                 locale="de-DE"
-                placeholder="Salary"
-                value={field.value}
                 onValueChange={(e) => field.onChange(e.value)}
+                placeholder="Salary"
               />
               {errors.salary && (
                 <small className="p-error">{errors.salary.message}</small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="age"
+          control={control}
+          rules={{
+            required: "Age is required",
+            min: { value: 0, message: "Age cannot be negative" },
+          }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputNumber
+                useGrouping={false}
+                onValueChange={(e) => field.onChange(e.value)}
+                placeholder="Age"
+              />
+              {errors.age && (
+                <small className="p-error">{errors.age.message}</small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="employmentDate"
+          control={control}
+          rules={{ required: "Employment date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                dateFormat="dd/mm/yy"
+                showIcon
+                placeholder="Employment Date"
+              />
+              {errors.employmentDate && (
+                <small className="p-error">
+                  {errors.employmentDate.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="medicalCheckValidUntil"
+          control={control}
+          rules={{ required: "Medical check date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                dateFormat="dd/mm/yy"
+                showIcon
+                placeholder="Medical Check Valid Until"
+              />
+              {errors.medicalCheckValidUntil && (
+                <small className="p-error">
+                  {errors.medicalCheckValidUntil.message}
+                </small>
               )}
             </div>
           )}

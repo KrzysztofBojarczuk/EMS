@@ -9,6 +9,9 @@ export interface VehicleGet {
   mileage: number;
   vehicleType: VehicleType;
   dateOfProduction: string;
+  insuranceOcValidUntil: string;
+  insuranceOcCost: number;
+  technicalInspectionValidUntil: string;
   isAvailable: boolean;
 }
 
@@ -20,6 +23,9 @@ export interface VehiclePost {
   mileage: number;
   vehicleType: VehicleType;
   dateOfProduction: string;
+  insuranceOcValidUntil: string;
+  insuranceOcCost: number;
+  technicalInspectionValidUntil: string;
   isAvailable?: boolean;
 }
 

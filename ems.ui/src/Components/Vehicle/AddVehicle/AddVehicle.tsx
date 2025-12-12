@@ -9,6 +9,7 @@ import { VehiclePost } from "../../../Models/Vehicle";
 import { PostVehicleService } from "../../../Services/VehicleService";
 import { VehicleType } from "../../../Enum/VehicleType";
 import { Checkbox } from "primereact/checkbox";
+import { number } from "yup";
 
 type Props = {
   onClose: () => void;
@@ -30,6 +31,9 @@ const AddVehicle: React.FC<Props> = ({ onClose, onAddSuccess }) => {
       mileage: 0,
       vehicleType: VehicleType.Car,
       dateOfProduction: "",
+      insuranceOcValidUntil: "",
+      insuranceOcCost: 0,
+      technicalInspectionValidUntil: "",
       isAvailable: true,
     },
   });
@@ -108,9 +112,9 @@ const AddVehicle: React.FC<Props> = ({ onClose, onAddSuccess }) => {
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
               <InputNumber
+                onValueChange={(e) => field.onChange(e.value)}
                 placeholder="Mileage"
                 useGrouping={false}
-                onValueChange={(e) => field.onChange(e.value)}
               />
               {errors.mileage && (
                 <small className="p-error">{errors.mileage.message}</small>
@@ -154,6 +158,73 @@ const AddVehicle: React.FC<Props> = ({ onClose, onAddSuccess }) => {
               {errors.dateOfProduction && (
                 <small className="p-error">
                   {errors.dateOfProduction.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="insuranceOcValidUntil"
+          control={control}
+          rules={{ required: "Insurance OC date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                placeholder="Insurance OC Valid Until"
+                dateFormat="dd/mm/yy"
+                showIcon
+              />
+              {errors.insuranceOcValidUntil && (
+                <small className="p-error">
+                  {errors.insuranceOcValidUntil.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="insuranceOcCost"
+          control={control}
+          rules={{
+            required: "Insurance OC cost is required",
+            min: { value: 0, message: "Insurance cost cannot be negative" },
+          }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <InputNumber
+                mode="currency"
+                currency="EUR"
+                locale="de-DE"
+                onValueChange={(e) => field.onChange(e.value)}
+                placeholder="Insurance OC Cost"
+                useGrouping={false}
+              />
+              {errors.insuranceOcCost && (
+                <small className="p-error">
+                  {errors.insuranceOcCost.message}
+                </small>
+              )}
+            </div>
+          )}
+        />
+        <Controller
+          name="technicalInspectionValidUntil"
+          control={control}
+          rules={{ required: "Technical inspection date is required" }}
+          render={({ field }) => (
+            <div className="inline-flex flex-column gap-2">
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                placeholder="Technical Inspection Valid Until"
+                dateFormat="dd/mm/yy"
+                showIcon
+              />
+              {errors.technicalInspectionValidUntil && (
+                <small className="p-error">
+                  {errors.technicalInspectionValidUntil.message}
                 </small>
               )}
             </div>
