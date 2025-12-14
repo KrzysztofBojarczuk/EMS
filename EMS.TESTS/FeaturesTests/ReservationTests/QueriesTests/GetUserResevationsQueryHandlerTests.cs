@@ -83,5 +83,30 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
             CollectionAssert.AreEqual(expectedReservations, result.Items.ToList());
             _mockReservationRepository.Verify(x => x.GetUserReservationsAsync(appUserId, pageNumber, pageSize, searchTerm, null), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_EmptyList_When_Resevations_NotFound()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var searchTerm = "nonexistent";
+
+            var paginatedList = new PaginatedList<ReservationEntity>(new List<ReservationEntity>(), 0, pageNumber, pageSize);
+
+            _mockReservationRepository.Setup(x => x.GetUserReservationsAsync(appUserId, pageNumber, pageSize, searchTerm, null))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserReservationsQuery(appUserId, pageNumber, pageSize, searchTerm, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+            _mockReservationRepository.Verify(x => x.GetUserReservationsAsync(appUserId, pageNumber, pageSize, searchTerm, null), Times.Once);
+        }
     }
 }
