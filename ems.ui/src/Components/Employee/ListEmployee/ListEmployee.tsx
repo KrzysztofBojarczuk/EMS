@@ -56,7 +56,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
-  const [sortOrder, setSortOrder] = useState<string | null>(null);
+  const [sortOrder, setSortOrderEmployee] = useState<string | null>(null);
 
   const sortOptions = [
     { label: "None", value: null },
@@ -78,7 +78,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
 
   const resetFilters = () => {
     setSearchTerm("");
-    setSortOrder(null);
+    setSortOrderEmployee(null);
   };
 
   const fetchEmployees = async (page: number, size: number) => {
@@ -223,7 +223,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         <Dropdown
           value={sortOrder}
           options={sortOptions}
-          onChange={(e) => setSortOrder(e.value)}
+          onChange={(e) => setSortOrderEmployee(e.value)}
           placeholder="Sorting"
           showClear
         />

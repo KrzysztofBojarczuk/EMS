@@ -25,7 +25,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrderDate)
+        public async Task<PaginatedList<ReservationEntity>> GetUserReservationsAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrder)
         {
             var query = dbContext.Reservations.Where(x => x.AppUserId == appUserId);
 
@@ -35,9 +35,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                                       || x.Description.ToLower().Contains(searchTerm.ToLower()));
             }
 
-            if (!string.IsNullOrEmpty(sortOrderDate))
+            if (!string.IsNullOrEmpty(sortOrder))
             {
-                switch (sortOrderDate)
+                switch (sortOrder)
                 {
                     case "start_asc":
                         query = query.OrderBy(x => x.CheckInDate);

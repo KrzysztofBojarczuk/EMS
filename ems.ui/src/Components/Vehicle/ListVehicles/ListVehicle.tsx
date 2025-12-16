@@ -39,7 +39,7 @@ const ListVehicle = () => {
   const [vehicleType, seVehicleType] = useState<string[]>([]);
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
-  const [sortOrder, setSortOrder] = useState<string | null>(null);
+  const [sortOrder, setSortOrderVehicle] = useState<string | null>(null);
 
   const [firstVehicle, setFirstVehicle] = useState(0);
   const [rowsVehicle, setRowsVehicle] = useState(10);
@@ -58,7 +58,7 @@ const ListVehicle = () => {
   const resetFilters = () => {
     setDateFrom(null);
     setDateTo(null);
-    setSortOrder(null);
+    setSortOrderVehicle(null);
     setSearchVehicleTerm("");
     seVehicleType([]);
   };
@@ -197,7 +197,7 @@ const ListVehicle = () => {
         <Dropdown
           value={sortOrder}
           options={sortOptions}
-          onChange={(e) => setSortOrder(e.value)}
+          onChange={(e) => setSortOrderVehicle(e.value)}
           placeholder="Sorting"
         />
         <Button

@@ -42,13 +42,13 @@ namespace EMS.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserReservationAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrderDate = null)
+        public async Task<IActionResult> GetUserReservationAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrder = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var paginatedReservation = await sender.Send(new GetUserReservationsQuery(appUser.Id, pageNumber, pageSize, searchTerm, sortOrderDate));
+            var paginatedReservation = await sender.Send(new GetUserReservationsQuery(appUser.Id, pageNumber, pageSize, searchTerm, sortOrder));
 
             var reservationGet = mapper.Map<IEnumerable<ReservationGetDto>>(paginatedReservation.Items);
 

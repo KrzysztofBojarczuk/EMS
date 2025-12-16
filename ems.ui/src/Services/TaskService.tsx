@@ -14,7 +14,7 @@ export const GetUserTasksService = async (
   pageSize: number,
   searchTerm?: string,
   statusOfTask?: string[],
-  sortOrderDate?: string | null
+  sortOrder?: string | null
 ): Promise<PaginatedTaskResponse> => {
   const params = new URLSearchParams();
 
@@ -28,7 +28,7 @@ export const GetUserTasksService = async (
       params.append("statusOfTask", status.toString())
     );
 
-  if (sortOrderDate) params.append("sortOrderDate", sortOrderDate);
+  if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedTaskResponse>(
     `${api}Task/User?${params.toString()}`
