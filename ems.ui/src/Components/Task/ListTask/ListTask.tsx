@@ -57,7 +57,7 @@ const ListTask = (props: Props) => {
   >(undefined);
 
   const [statusOfTask, setStatusOfTask] = useState<string[]>([]);
-  const [sortOrderDate, setSortOrderDate] = useState<string | null>(null);
+  const [sortOrderDate, setSortOrderTask] = useState<string | null>(null);
 
   const sortDateOptions = [
     { label: "None", value: null },
@@ -81,7 +81,7 @@ const ListTask = (props: Props) => {
   const resetFilters = () => {
     setSearchTerm("");
     setStatusOfTask([]);
-    setSortOrderDate(null);
+    setSortOrderTask(null);
   };
 
   const fetchTasks = async (page: number, size: number) => {
@@ -265,7 +265,7 @@ const ListTask = (props: Props) => {
         <Dropdown
           value={sortOrderDate}
           options={sortDateOptions}
-          onChange={(e) => setSortOrderDate(e.value)}
+          onChange={(e) => setSortOrderTask(e.value)}
           placeholder="Sort by Date"
           showClear
         />
