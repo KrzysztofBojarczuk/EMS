@@ -57,7 +57,7 @@ const ListTask = (props: Props) => {
   >(undefined);
 
   const [statusOfTask, setStatusOfTask] = useState<string[]>([]);
-  const [sortOrderDate, setSortOrderTask] = useState<string | null>(null);
+  const [sortOrder, setSortOrderTask] = useState<string | null>(null);
 
   const sortDateOptions = [
     { label: "None", value: null },
@@ -90,7 +90,7 @@ const ListTask = (props: Props) => {
       size,
       searchTerm,
       statusOfTask,
-      sortOrderDate
+      sortOrder
     );
     setTasks(data.taskGet);
     setTotalTasks(data.totalItems);
@@ -104,7 +104,7 @@ const ListTask = (props: Props) => {
 
   useEffect(() => {
     goToPage(1, rowsTask);
-  }, [searchTerm, statusOfTask, sortOrderDate]);
+  }, [searchTerm, statusOfTask, sortOrder]);
 
   const allowExpansion = (rowData: TaskGet) => {
     return rowData.id!.length > 0;
@@ -263,7 +263,7 @@ const ListTask = (props: Props) => {
           className="mr-4"
         />
         <Dropdown
-          value={sortOrderDate}
+          value={sortOrder}
           options={sortDateOptions}
           onChange={(e) => setSortOrderTask(e.value)}
           placeholder="Sort by Date"
