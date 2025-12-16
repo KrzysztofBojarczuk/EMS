@@ -215,7 +215,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrderDate);
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
             var sorted = result.Items.ToList();
 
             // Assert
