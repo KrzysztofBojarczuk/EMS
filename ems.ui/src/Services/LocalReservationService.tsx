@@ -38,7 +38,7 @@ export const GetUserReservationsService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
-  sortOrderDate?: string | null
+  sortOrder?: string | null
 ) => {
   const params = new URLSearchParams();
 
@@ -46,7 +46,7 @@ export const GetUserReservationsService = async (
   params.append("pageSize", pageSize.toString());
 
   if (searchTerm) params.append("searchTerm", searchTerm);
-  if (sortOrderDate) params.append("sortOrderDate", sortOrderDate);
+  if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedReservationResponse>(
     `${api}Reservation?${params.toString()}`

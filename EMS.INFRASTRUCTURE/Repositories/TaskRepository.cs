@@ -41,7 +41,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<StatusOfTask> statusOfTask, string sortOrderDate)
+        public async Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<StatusOfTask> statusOfTask, string sortOrder)
         {
             var query = dbContext.Tasks.Include(x => x.AddressEntity).Include(x => x.EmployeeListsEntities).ThenInclude(x => x.EmployeesEntities).Include(x => x.VehicleEntities)
                                        .Where(x => x.AppUserId == appUserId);
@@ -57,9 +57,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => statusOfTask.Contains(x.Status));
             }
 
-            if (!string.IsNullOrEmpty(sortOrderDate))
+            if (!string.IsNullOrEmpty(sortOrder))
             {
-                switch (sortOrderDate)
+                switch (sortOrder)
                 {
                     case "start_asc":
                         query = query.OrderBy(x => x.StartDate);

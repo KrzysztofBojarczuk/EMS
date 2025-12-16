@@ -173,7 +173,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var sortOrderDate = "start_asc";
+            var sortOrder = "start_asc";
 
             var reservations = new List<ReservationEntity>
             {
@@ -186,7 +186,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrderDate);
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
             var sorted = result.Items.ToList();
 
             // Assert
@@ -202,7 +202,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var sortOrderDate = "start_desc";
+            var sortOrder = "start_desc";
 
             var reservations = new List<ReservationEntity>
             {
@@ -231,7 +231,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var sortOrderDate = "end_asc";
+            var sortOrder = "end_asc";
 
             var reservations = new List<ReservationEntity>
             {
@@ -244,7 +244,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrderDate);
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
             var sorted = result.Items.ToList();
 
             // Assert
@@ -260,7 +260,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var sortOrderDate = "end_desc";
+            var sortOrder = "end_desc";
 
             var reservations = new List<ReservationEntity>
             {
@@ -273,7 +273,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrderDate);
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
             var sorted = result.Items.ToList();
 
             // Assert
@@ -289,7 +289,7 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var sortOrderDate = "nonexistent";
+            var sortOrder = "nonexistent";
 
             var reservations = new List<ReservationEntity>
             {
@@ -302,7 +302,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrderDate);
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
             var sorted = result.Items.ToList();
 
             // Assert

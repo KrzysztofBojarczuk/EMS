@@ -70,9 +70,7 @@ const LocalReservation = (props: Props) => {
 
   const localPanelRef = useRef<Panel>(null);
   const reservationPanelRef = useRef<Panel>(null);
-  const [sortOrderDate, setSortOrderDateReservation] = useState<string | null>(
-    null
-  );
+  const [sortOrder, setSortOrderReservation] = useState<string | null>(null);
 
   const sortDateOptions = [
     { label: "None", value: null },
@@ -84,7 +82,7 @@ const LocalReservation = (props: Props) => {
 
   const resetReservationFilters = () => {
     setSearchReservationTerm("");
-    setSortOrderDateReservation(null);
+    setSortOrderReservation(null);
   };
 
   const allowExpansion = (rowData: LocalGet) => {
@@ -118,7 +116,7 @@ const LocalReservation = (props: Props) => {
       page,
       size,
       searchReservationTerm,
-      sortOrderDate
+      sortOrder
     );
     setReservations(data.reservationGet);
     setTotalReservations(data.totalItems);
@@ -126,7 +124,7 @@ const LocalReservation = (props: Props) => {
 
   useEffect(() => {
     goToPageReservation(1, rowsReservation);
-  }, [searchReservationTerm, sortOrderDate]);
+  }, [searchReservationTerm, sortOrder]);
 
   const onPageChangeLocals = (event: PaginatorPageChangeEvent) => {
     setFirstLocal(event.first);
@@ -363,9 +361,9 @@ const LocalReservation = (props: Props) => {
             />
           </IconField>
           <Dropdown
-            value={sortOrderDate}
+            value={sortOrder}
             options={sortDateOptions}
-            onChange={(e) => setSortOrderDateReservation(e.value)}
+            onChange={(e) => setSortOrderReservation(e.value)}
             placeholder="Sort by Date"
             showClear
           />
