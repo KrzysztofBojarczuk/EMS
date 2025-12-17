@@ -174,5 +174,38 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
             CollectionAssert.AreEqual(expectedReservations, result.Items.ToList());
             _mockReservationRepository.Verify(x => x.GetUserReservationsAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_SortedByCheckOutDateAscending_Reservations()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var sortOrder = "end_asc";
+
+            var expectedReservations = new List<ReservationEntity>
+            {
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "R3", AppUserId = appUserId, CheckOutDate = DateTime.UtcNow.AddDays(1) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "R2", AppUserId = appUserId, CheckOutDate = DateTime.UtcNow.AddDays(3) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "R1", AppUserId = appUserId, CheckOutDate = DateTime.UtcNow.AddDays(5) }
+            };
+
+            var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
+
+            _mockReservationRepository.Setup(x => x.GetUserReservationsAsync(appUserId, pageNumber, pageSize, null, sortOrder))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserReservationsQuery(appUserId, pageNumber, pageSize, null, sortOrder);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedReservations.Count(), result.Items.Count());
+            CollectionAssert.AreEqual(expectedReservations, result.Items.ToList());
+            _mockReservationRepository.Verify(x => x.GetUserReservationsAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
+        }
     }
 }
