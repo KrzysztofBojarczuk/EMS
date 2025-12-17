@@ -186,9 +186,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", AppUserId = appUserId, CheckOutDate = DateTime.UtcNow.AddDays(1) },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", AppUserId = appUserId, CheckOutDate = DateTime.UtcNow.AddDays(3) },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", AppUserId = appUserId, CheckOutDate = DateTime.UtcNow.AddDays(5) }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4) },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", AppUserId = appUserId, CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6) }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
