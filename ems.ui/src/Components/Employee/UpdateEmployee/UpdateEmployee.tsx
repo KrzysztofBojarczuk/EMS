@@ -128,7 +128,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
         <Controller
           name="dateOfBirth"
           control={control}
-          rules={{ required: "Date Of Birth date is required" }}
+          rules={{ required: "Date Of Birth is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
               <Calendar
