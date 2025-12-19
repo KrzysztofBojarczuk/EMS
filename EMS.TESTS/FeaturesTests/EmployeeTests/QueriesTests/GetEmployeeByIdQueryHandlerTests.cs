@@ -32,7 +32,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 Email = "jane.doe@example.com",
                 Phone = "123-456-789",
                 Salary = 5000,
-                Age = 30,
+                DateOfBirth = new DateTime(1990, 1, 1),
                 EmploymentDate = new DateTime(2022, 1, 1),
                 MedicalCheckValidUntil = new DateTime(2025, 1, 1)
             };

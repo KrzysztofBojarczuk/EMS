@@ -392,7 +392,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmploymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MedicalCheckValidUntil = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -419,8 +419,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0e635acd-d58a-44e4-b480-dccda55bb16d", null, "Admin", "ADMIN" },
-                    { "62473ebf-d847-4c2a-af37-086a0e409b8b", null, "User", "USER" }
+                    { "20c0556a-ad24-4974-9d09-8765312c3a7a", null, "User", "USER" },
+                    { "f8e7327e-3e14-4945-adf8-d344ac62c8a2", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

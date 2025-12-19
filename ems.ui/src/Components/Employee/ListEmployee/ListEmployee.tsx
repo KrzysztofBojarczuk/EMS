@@ -25,7 +25,7 @@ import AddListEmployee from "../AddListEmployee/AddListEmployee";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateEmployee from "../UpdateEmployee/UpdateEmployee";
 import { Dropdown } from "primereact/dropdown";
-import { formatDate } from "../../Utils/DateUtils";
+import { calculateAge, formatDate } from "../../Utils/DateUtils";
 import { formatCurrency } from "../../Utils/Currency";
 
 interface Props {}
@@ -62,8 +62,8 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     { label: "None", value: null },
     { label: "Salary ↑ (Lowest first)", value: "salary_asc" },
     { label: "Salary ↓ (Highest first)", value: "salary_desc" },
-    { label: "Age ↑ (Youngest first)", value: "age_asc" },
-    { label: "Age ↓ (Oldest first)", value: "age_desc" },
+    { label: "Date Of Birth ↑ (Youngest first)", value: "birthDate_asc" },
+    { label: "Date Of Birth ↓ (Oldest first)", value: "birthDate_desc" },
     { label: "Employment Date ↑ (Oldest first)", value: "employmentDate_asc" },
     { label: "Employment Date ↓ (Newest first)", value: "employmentDate_desc" },
     {
@@ -257,7 +257,15 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
           header="Salary"
           body={(rowData) => formatCurrency(rowData.salary)}
         ></Column>
-        <Column field="age" header="Age"></Column>
+        <Column
+          header="Age"
+          body={(rowData: EmployeeGet) => calculateAge(rowData.dateOfBirth)}
+        ></Column>
+        <Column
+          field="dateOfBirth"
+          header="Date Of Birth"
+          body={(rowData) => formatDate(rowData.dateOfBirth)}
+        ></Column>
         <Column
           field="employmentDate"
           header="Employment Date"

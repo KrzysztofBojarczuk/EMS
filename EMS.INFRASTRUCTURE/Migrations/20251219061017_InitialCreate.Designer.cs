@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251211134335_InitialCreate")]
+    [Migration("20251219061017_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -150,12 +150,12 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("AppUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -463,13 +463,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0e635acd-d58a-44e4-b480-dccda55bb16d",
+                            Id = "f8e7327e-3e14-4945-adf8-d344ac62c8a2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "62473ebf-d847-4c2a-af37-086a0e409b8b",
+                            Id = "20c0556a-ad24-4974-9d09-8765312c3a7a",
                             Name = "User",
                             NormalizedName = "USER"
                         });

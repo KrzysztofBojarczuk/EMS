@@ -31,7 +31,7 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
                 Email = "test@example.com",
                 Phone = "123456789",
                 Salary = 50000m,
-                Age = 30,
+                DateOfBirth = new DateTime(1990, 1, 1),
                 EmploymentDate = new DateTime(2022, 1, 1),
                 MedicalCheckValidUntil = new DateTime(2025, 1, 1),
                 AppUserId = "user-id-123"

@@ -61,7 +61,7 @@ namespace EMS.TESTS.ControllersTests
                 Email = "john.doe@example.com",
                 Phone = "123-456-789",
                 Salary = 5000m,
-                Age = 30,
+                DateOfBirth = new DateTime(1990, 1, 1),
                 EmploymentDate = new DateTime(2022, 1, 1),
                 MedicalCheckValidUntil = new DateTime(2025, 1, 1)
             };
@@ -73,7 +73,7 @@ namespace EMS.TESTS.ControllersTests
                 Email = createDto.Email,
                 Phone = createDto.Phone,
                 Salary = createDto.Salary,
-                Age = createDto.Age,
+                DateOfBirth = createDto.DateOfBirth,
                 EmploymentDate = createDto.EmploymentDate,
                 MedicalCheckValidUntil = createDto.MedicalCheckValidUntil,
                 AppUserId = appUser.Id,
@@ -87,7 +87,7 @@ namespace EMS.TESTS.ControllersTests
                 Email = employeeEntity.Email,
                 Phone = employeeEntity.Phone,
                 Salary = employeeEntity.Salary,
-                Age = employeeEntity.Age,
+                DateOfBirth = createDto.DateOfBirth,
                 EmploymentDate = employeeEntity.EmploymentDate,
                 MedicalCheckValidUntil = employeeEntity.MedicalCheckValidUntil,
                 AppUserId = appUser.Id,
@@ -101,7 +101,7 @@ namespace EMS.TESTS.ControllersTests
                 Email = resultEntity.Email,
                 Phone = resultEntity.Phone,
                 Salary = resultEntity.Salary,
-                Age = resultEntity.Age,
+                DateOfBirth = resultEntity.DateOfBirth,
                 EmploymentDate = resultEntity.EmploymentDate,
                 MedicalCheckValidUntil = resultEntity.MedicalCheckValidUntil
             };
@@ -133,7 +133,7 @@ namespace EMS.TESTS.ControllersTests
             Assert.AreEqual(expectedDto.Email, returnedDto.Email);
             Assert.AreEqual(expectedDto.Phone, returnedDto.Phone);
             Assert.AreEqual(expectedDto.Salary, returnedDto.Salary);
-            Assert.AreEqual(expectedDto.Age, returnedDto.Age);
+            Assert.AreEqual(expectedDto.DateOfBirth, returnedDto.DateOfBirth);
             Assert.AreEqual(expectedDto.EmploymentDate, returnedDto.EmploymentDate);
             Assert.AreEqual(expectedDto.MedicalCheckValidUntil, returnedDto.MedicalCheckValidUntil);
         }
@@ -260,16 +260,16 @@ namespace EMS.TESTS.ControllersTests
 
             var employeesEntities = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 50, EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
             };
 
             var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count(), pageNumber, pageSize);
 
             var expectedDtos = new List<EmployeeGetDto>
             {
-                new EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 50, EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
+                new EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -382,18 +382,18 @@ namespace EMS.TESTS.ControllersTests
 
             var employeesEntities = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, Age = 28, EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
             };
 
             var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count(), pageNumber, pageSize);
 
             var expectedDtos = new List<EmployeeGetDto>
             {
-                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, Age = 28, EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -449,18 +449,18 @@ namespace EMS.TESTS.ControllersTests
 
             var employeesEntities = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, Age = 28, EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
             };
 
             var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count(), pageNumber, pageSize);
 
             var expectedDtos = new List<EmployeeGetDto>
             {
-                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, Age = 28, EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 7000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -516,18 +516,18 @@ namespace EMS.TESTS.ControllersTests
 
             var employeesEntities = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 7000, Age = 28, EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 1000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 7000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
             };
 
             var paginatedResult = new PaginatedList<EmployeeEntity>(employeesEntities, employeesEntities.Count(), pageNumber, pageSize);
 
             var expectedDtos = new List<EmployeeGetDto>
             {
-                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 7000, Age = 28, EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) },
-                new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 1000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 7000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2020, 3, 15), MedicalCheckValidUntil = new DateTime(2026, 3, 15) },
+                new  EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                new  EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna3", Email = "anna3@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -588,8 +588,8 @@ namespace EMS.TESTS.ControllersTests
                      AppUserId = appUserId,
                      EmployeesEntities = new List<EmployeeEntity>
                      {
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                         new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
                      }
                 },
                 new EmployeeListsEntity
@@ -599,7 +599,7 @@ namespace EMS.TESTS.ControllersTests
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie", Email = "Charlie@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
+                        new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie", Email = "Charlie@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
                     }
                 }
             };
@@ -612,8 +612,8 @@ namespace EMS.TESTS.ControllersTests
                     Name = "Dev Team",
                     Employees = new List<EmployeeGetDto>
                     {
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
                     }
                 },
                  new EmployeeListsGetDto
@@ -622,7 +622,7 @@ namespace EMS.TESTS.ControllersTests
                      Name = "QA Team",
                      Employees = new List<EmployeeGetDto>
                      {
-                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
+                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
                      }
                   }
              };
@@ -712,8 +712,8 @@ namespace EMS.TESTS.ControllersTests
                      AppUserId = appUserId,
                       EmployeesEntities = new List<EmployeeEntity>
                       {
-                          new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                          new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
+                          new EmployeeEntity { Id = Guid.NewGuid(), Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                          new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
                       }
                 },
                 new EmployeeListsEntity
@@ -723,7 +723,7 @@ namespace EMS.TESTS.ControllersTests
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                       new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie", Email = "Charlie@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
+                       new EmployeeEntity { Id = Guid.NewGuid(), Name = "Charlie", Email = "Charlie@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
                     }
                 }
             };
@@ -736,8 +736,8 @@ namespace EMS.TESTS.ControllersTests
                     Name = "Dev Team",
                     Employees = new List<EmployeeGetDto>
                     {
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
-                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, Age = 25, EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.First().Id, Name = "Alice", Email = "alice@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) },
+                        new EmployeeGetDto { Id = employeeListsEntities[0].EmployeesEntities.Last().Id, Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2018, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) }
                     }
                  },
                  new EmployeeListsGetDto
@@ -746,7 +746,7 @@ namespace EMS.TESTS.ControllersTests
                      Name = "QA Team",
                      Employees = new List<EmployeeGetDto>
                      {
-                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
+                         new EmployeeGetDto { Id = employeeListsEntities[1].EmployeesEntities.First().Id, Name = "Charlie", Email = "charlie@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2019, 5, 10), MedicalCheckValidUntil = new DateTime(2025, 5, 10) }
                      }
                   }
              };
@@ -829,14 +829,14 @@ namespace EMS.TESTS.ControllersTests
 
             var employeesEntities = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 50, EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
             };
 
             var expectedDtos = new List<EmployeeGetDto>
             {
-                new EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, Age = 30, EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
-                new EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, Age = 50, EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
+                new EmployeeGetDto { Id = employeesEntities[0].Id, Name = "Anna1", Email = "anna1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1) },
+                new EmployeeGetDto { Id = employeesEntities[1].Id, Name = "Anna2", Email = "anna2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -922,7 +922,7 @@ namespace EMS.TESTS.ControllersTests
                 Email = "updated.john.doe@example.com",
                 Phone = "123-456-789",
                 Salary = 6000m,
-                Age = 30,
+                DateOfBirth = new DateTime(1990, 1, 1),
                 EmploymentDate = new DateTime(2022, 1, 1),
                 MedicalCheckValidUntil = new DateTime(2025, 1, 1)
             };
@@ -934,7 +934,7 @@ namespace EMS.TESTS.ControllersTests
                 Email = updateDto.Email,
                 Phone = updateDto.Phone,
                 Salary = updateDto.Salary,
-                Age = updateDto.Age,
+                DateOfBirth = updateDto.DateOfBirth,
                 EmploymentDate = updateDto.EmploymentDate,
                 MedicalCheckValidUntil = updateDto.MedicalCheckValidUntil
             };
@@ -955,7 +955,7 @@ namespace EMS.TESTS.ControllersTests
                 Email = updateDto.Email,
                 Phone = updateDto.Phone,
                 Salary = updateDto.Salary,
-                Age = updateDto.Age,
+                DateOfBirth = updateDto.DateOfBirth,
                 EmploymentDate = updateDto.EmploymentDate,
                 MedicalCheckValidUntil = updateDto.MedicalCheckValidUntil
             };
