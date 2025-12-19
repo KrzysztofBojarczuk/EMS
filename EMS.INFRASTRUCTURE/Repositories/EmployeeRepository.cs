@@ -11,6 +11,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<EmployeeEntity> AddEmployeeAsync(EmployeeEntity entity)
         {
             entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            entity.DateOfBirth = entity.DateOfBirth.ToLocalTime();
             entity.EmploymentDate = entity.EmploymentDate.ToLocalTime();
             entity.MedicalCheckValidUntil = entity.MedicalCheckValidUntil.ToLocalTime();
             dbContext.Employees.Add(entity);
