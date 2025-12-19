@@ -30,7 +30,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
       email: employee.email,
       phone: employee.phone,
       salary: employee.salary,
-      age: employee.age,
+      dateOfBirth: employee.dateOfBirth,
       employmentDate: employee.employmentDate,
       medicalCheckValidUntil: employee.medicalCheckValidUntil,
     },
@@ -48,7 +48,7 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
       email: employee.email,
       phone: employee.phone,
       salary: employee.salary,
-      age: employee.age,
+      dateOfBirth: employee.dateOfBirth,
       employmentDate: employee.employmentDate,
       medicalCheckValidUntil: employee.medicalCheckValidUntil,
     });
@@ -125,21 +125,20 @@ const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
           )}
         />
         <Controller
-          name="age"
+          name="dateOfBirth"
           control={control}
-          rules={{
-            required: "Age is required",
-            min: { value: 0, message: "Age cannot be negative" },
-          }}
+          rules={{ required: "Date Of Birth date is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputNumber
-                useGrouping={false}
-                onValueChange={(e) => field.onChange(e.value)}
-                placeholder="Age"
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                dateFormat="dd/mm/yy"
+                showIcon
+                placeholder="Date Of Birth"
               />
-              {errors.age && (
-                <small className="p-error">{errors.age.message}</small>
+              {errors.dateOfBirth && (
+                <small className="p-error">{errors.dateOfBirth.message}</small>
               )}
             </div>
           )}

@@ -25,7 +25,7 @@ const AddEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
       email: "",
       phone: "",
       salary: 0,
-      age: 0,
+      dateOfBirth: "",
       employmentDate: "",
       medicalCheckValidUntil: "",
     },
@@ -109,21 +109,20 @@ const AddEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
           )}
         />
         <Controller
-          name="age"
+          name="dateOfBirth"
           control={control}
-          rules={{
-            required: "Age is required",
-            min: { value: 1, message: "Age cannot be negative" },
-          }}
+          rules={{ required: "Date Of Birth date is required" }}
           render={({ field }) => (
             <div className="inline-flex flex-column gap-2">
-              <InputNumber
-                placeholder="Age"
-                onValueChange={(e) => field.onChange(e.value)}
-                useGrouping={false}
+              <Calendar
+                value={field.value ? new Date(field.value) : null}
+                onChange={(e) => field.onChange(e.value)}
+                dateFormat="dd/mm/yy"
+                showIcon
+                placeholder="Date Of Birth"
               />
-              {errors.age && (
-                <small className="p-error">{errors.age.message}</small>
+              {errors.dateOfBirth && (
+                <small className="p-error">{errors.dateOfBirth.message}</small>
               )}
             </div>
           )}

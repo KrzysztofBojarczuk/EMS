@@ -58,11 +58,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
                     case "salary_desc":
                         query = query.OrderByDescending(x => x.Salary);
                         break;
-                    case "age_asc":
-                        query = query.OrderBy(x => x.Age);
+                    case "birthDate_asc":
+                        query = query.OrderBy(x => x.DateOfBirth);
                         break;
-                    case "age_desc":
-                        query = query.OrderByDescending(x => x.Age);
+                    case "birthDate_desc":
+                        query = query.OrderByDescending(x => x.DateOfBirth);
                         break;
                     case "employmentDate_asc":
                         query = query.OrderBy(x => x.EmploymentDate);
@@ -158,7 +158,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 employee.Email = entity.Email;
                 employee.Phone = entity.Phone;
                 employee.Salary = entity.Salary;
-                employee.Age = entity.Age;
+                employee.DateOfBirth = entity.DateOfBirth.ToLocalTime();
                 employee.EmploymentDate = entity.EmploymentDate.ToLocalTime();
                 employee.MedicalCheckValidUntil = entity.MedicalCheckValidUntil.ToLocalTime();
 
