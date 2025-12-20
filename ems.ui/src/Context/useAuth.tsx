@@ -77,10 +77,10 @@ export const UserProvider = ({ children }: Props) => {
       const token = localStorage.getItem("token");
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 
-      if (userObj.roles.includes("Admin")) {
-        navigate("/Admin");
-      } else if (userObj.roles.includes("User")) {
+      if (userObj.roles.includes("User")) {
         navigate("/Task");
+      } else if (userObj.roles.includes("Admin")) {
+        navigate("/Admin");
       } else {
         navigate("/");
       }
