@@ -9,16 +9,21 @@ import { EmployeeListGet, EmployeeListPost } from "../Models/EmployeeList";
 const api = "https://localhost:7256/api/";
 
 export const PostEmployeesService = async (employeePost: EmployeePost) => {
-  return await axios.post<EmployeePost>(api + "Employee", employeePost);
+  const response = await axios.post<EmployeePost>(
+    api + "Employee",
+    employeePost
+  );
+  return response.data;
 };
 
 export const PostListEmployeesService = async (
   employeeListPost: EmployeeListPost
 ) => {
-  return await axios.post<EmployeeListPost>(
+  const response = await axios.post<EmployeeListPost>(
     api + "Employee/AddEmployeeList",
     employeeListPost
   );
+  return response.data;
 };
 
 export const GetUserEmployeesService = async (

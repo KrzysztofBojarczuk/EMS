@@ -5,7 +5,7 @@ import { StatusOfTask } from "../Enum/StatusOfTask";
 const api = "https://localhost:7256/api/";
 
 export const PostTaskService = async (taskPost: TaskPost) => {
-  const response = await axios.post<TaskPost>(api + "Task/", taskPost);
+  const response = await axios.post<TaskPost>(api + "Task", taskPost);
   return response.data;
 };
 
