@@ -27,11 +27,13 @@ export const UserProvider = ({ children }: Props) => {
   useEffect(() => {
     const user = localStorage.getItem("user");
     const token = localStorage.getItem("token");
+
     if (user && token) {
       setUser(JSON.parse(user));
       setToken(token);
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     }
+
     setIsReady(true);
   }, []);
 
@@ -48,7 +50,9 @@ export const UserProvider = ({ children }: Props) => {
           email: res?.data.email,
           roles: res?.data.roles,
         };
+
         localStorage.setItem("user", JSON.stringify(userObj));
+
         setToken(res?.data.token!);
         setUser(userObj!);
         navigate("/login");
@@ -65,12 +69,21 @@ export const UserProvider = ({ children }: Props) => {
         email: res?.data.email,
         roles: res?.data.roles,
       };
+
       localStorage.setItem("user", JSON.stringify(userObj));
+
       setToken(res?.data.token!);
       setUser(userObj!);
       const token = localStorage.getItem("token");
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      navigate("/Employee");
+
+      if (userObj.roles.includes("Admin")) {
+        navigate("/Admin");
+      } else if (userObj.roles.includes("User")) {
+        navigate("/Task");
+      } else {
+        navigate("/");
+      }
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
         throw new Error("Invalid username or password");
