@@ -192,9 +192,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
             Assert.AreEqual(reservations[0].Id, sorted[2].Id);
+            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
+            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
         }
 
         [TestMethod]
@@ -221,9 +221,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
             Assert.AreEqual(reservations[0].Id, sorted[2].Id);
+            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
+            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
         }
 
         [TestMethod]
@@ -250,9 +250,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
             Assert.AreEqual(reservations[0].Id, sorted[2].Id);
+            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
+            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
         }
 
         [TestMethod]
@@ -279,9 +279,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
             Assert.AreEqual(reservations[0].Id, sorted[2].Id);
+            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
+            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
         }
 
         [TestMethod]
@@ -308,8 +308,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[1].Id, sorted[0].Id);
             Assert.AreEqual(reservations[0].Id, sorted[1].Id);
+            Assert.AreEqual(reservations[1].Id, sorted[0].Id);
             Assert.AreEqual(reservations[2].Id, sorted[2].Id);
         }
 
