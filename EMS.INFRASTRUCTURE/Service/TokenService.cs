@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -22,10 +22,10 @@ namespace EMS.INFRASTRUCTURE.Service
         public string CreateToken(AppUserEntity user, IList<string> roles)
         {
             var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
-        };
+            {
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.UserName)
+            };
 
             foreach (var role in roles)
             {
