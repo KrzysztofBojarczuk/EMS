@@ -78,7 +78,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                         query = query.OrderByDescending(x => x.MedicalCheckValidUntil);
                         break;
                     default:
-                        query = query.OrderByDescending(x => x.Salary);
+                        query = query.OrderByDescending(x => x.EmploymentDate);
                         break;
                 }
             }

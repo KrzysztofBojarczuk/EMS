@@ -175,6 +175,39 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_SortedByDateOfBirthAscending_Employees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var sortOrder = "birthDate_asc";
+
+            var expectedEmployees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2022, 3, 3), MedicalCheckValidUntil = new DateTime(2025, 3, 3), AppUserId = appUserId },
+            };
+
+            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
+
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrder);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
+            CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_Employees_When_SortOrderDoesNotExist()
         {
             // Arrange
@@ -185,9 +218,9 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var expectedEmployees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "john@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Johnny", Email = "johnny@example.com", Phone = "123-456-789", Salary = 5000,  DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2), AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2022, 3, 3), MedicalCheckValidUntil = new DateTime(2025, 3, 3), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 3, 3), MedicalCheckValidUntil = new DateTime(2025, 3, 3), AppUserId = appUserId },
             };
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);

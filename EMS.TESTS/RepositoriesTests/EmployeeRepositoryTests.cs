@@ -470,9 +470,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var employees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Grzegorz", Email = "grzegorz@example.com", Phone = "123-456-789", Salary = 3000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Janusz", Email = "janusz@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tomasz", Email = "tomasz@example.com", Phone = "123-456-789", Salary = 2000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -485,9 +485,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[0].Id);
-            Assert.AreEqual(employees[1].Id, sorted[2].Id);
-            Assert.AreEqual(employees[2].Id, sorted[1].Id);
+            Assert.AreEqual(employees[0].Id, sorted[2].Id);
+            Assert.AreEqual(employees[1].Id, sorted[1].Id);
+            Assert.AreEqual(employees[2].Id, sorted[0].Id);
         }
 
         [TestMethod]
