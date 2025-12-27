@@ -19,6 +19,6 @@ namespace EMS.CORE.Entities
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
         public Guid? TaskId { get; set; }
-        public TaskEntity TaskEntities { get; set; }
+        public TaskEntity TaskEntities { get; set; } = null!;
     }
 }

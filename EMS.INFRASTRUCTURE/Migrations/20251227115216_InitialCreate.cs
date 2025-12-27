@@ -300,11 +300,11 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LocalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LocalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -419,8 +419,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "20c0556a-ad24-4974-9d09-8765312c3a7a", null, "User", "USER" },
-                    { "f8e7327e-3e14-4945-adf8-d344ac62c8a2", null, "Admin", "ADMIN" }
+                    { "39d181b4-79c0-4eee-b48b-8e4aecc40f8e", null, "Admin", "ADMIN" },
+                    { "c33585fe-5c2c-4569-ad3f-acb1f7a8e624", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
