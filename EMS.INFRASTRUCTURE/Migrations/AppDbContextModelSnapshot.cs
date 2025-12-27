@@ -460,13 +460,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f8e7327e-3e14-4945-adf8-d344ac62c8a2",
+                            Id = "39d181b4-79c0-4eee-b48b-8e4aecc40f8e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "20c0556a-ad24-4974-9d09-8765312c3a7a",
+                            Id = "c33585fe-5c2c-4569-ad3f-acb1f7a8e624",
                             Name = "User",
                             NormalizedName = "USER"
                         });
