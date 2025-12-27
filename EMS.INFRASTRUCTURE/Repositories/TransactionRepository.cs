@@ -39,12 +39,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         private async Task UpdateBudgetAsync(Guid budgetId)
         {
-            var transactions = await dbContext.Transactions
-                .Where(t => t.BudgetId == budgetId)
-                .ToListAsync();
+            var transactions = await dbContext.Transactions.Where(x => x.BudgetId == budgetId).ToListAsync();
 
-            var income = transactions.Where(x => x.Category == CategoryType.Income).Sum(t => t.Amount);
-            var expenses = transactions.Where(x => x.Category == CategoryType.Expense).Sum(t => t.Amount);
+            var income = transactions.Where(x => x.Category == CategoryType.Income).Sum(x => x.Amount);
+            var expenses = transactions.Where(x => x.Category == CategoryType.Expense).Sum(x => x.Amount);
 
             var newBudget = income - expenses;
 
