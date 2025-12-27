@@ -55,6 +55,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 await dbContext.SaveChangesAsync();
             }
         }
+
         public async Task<bool> DeleteTransactionsAsync(Guid transactionId)
         {
             var transaction = await dbContext.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId);
