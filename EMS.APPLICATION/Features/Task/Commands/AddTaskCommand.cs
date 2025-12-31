@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Entities;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
 
@@ -6,7 +6,7 @@ namespace EMS.APPLICATION.Features.Task.Commands
 {
     public record AddTaskCommand(TaskEntity Task, List<Guid> EmployeeListIds, List<Guid> VehicleIds) : IRequest<TaskEntity>;
 
-    public class AddTaskCommandHandler(ITaskRepository taskRepository, IPublisher mediator) : IRequestHandler<AddTaskCommand, TaskEntity>
+    public class AddTaskCommandHandler(ITaskRepository taskRepository) : IRequestHandler<AddTaskCommand, TaskEntity>
     {
         public async Task<TaskEntity> Handle(AddTaskCommand request, CancellationToken cancellationToken)
         {

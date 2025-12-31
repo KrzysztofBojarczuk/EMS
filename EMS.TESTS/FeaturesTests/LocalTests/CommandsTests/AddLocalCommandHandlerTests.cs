@@ -1,7 +1,6 @@
 using EMS.APPLICATION.Features.Local.Commands;
 using EMS.CORE.Entities;
 using EMS.INFRASTRUCTURE.Repositories;
-using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -17,8 +16,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.CommandsTests
         public void Setup()
         {
             _mockLocalRepository = new Mock<ILocalRepository>();
-            var mockMediator = new Mock<IPublisher>();
-            _handler = new AddLocalCommandHandler(_mockLocalRepository.Object, mockMediator.Object);
+            _handler = new AddLocalCommandHandler(_mockLocalRepository.Object);
         }
 
         [TestMethod]

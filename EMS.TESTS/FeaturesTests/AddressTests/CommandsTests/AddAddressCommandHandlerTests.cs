@@ -1,7 +1,6 @@
-﻿using EMS.APPLICATION.Features.Address.Commands;
+using EMS.APPLICATION.Features.Address.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
-using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -17,8 +16,7 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         public void Setup()
         {
             _mockAddressRepository = new Mock<IAddressRepository>();
-            var mockMediator = new Mock<IPublisher>();
-            _handler = new AddAddressCommandHandler(_mockAddressRepository.Object, mockMediator.Object);
+            _handler = new AddAddressCommandHandler(_mockAddressRepository.Object);
         }
 
         [TestMethod]
