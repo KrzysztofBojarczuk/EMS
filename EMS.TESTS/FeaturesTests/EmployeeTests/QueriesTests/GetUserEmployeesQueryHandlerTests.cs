@@ -340,6 +340,39 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         }
 
         [TestMethod]
+        public async Task Handle_Returns_SortedByMedicalCheckValidUntilDescending_Employees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+            var sortOrder = "medicalCheckValidUntil_desc";
+
+            var expectedEmployees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "John", Email = "John@example.com", Phone = "123-456-789", Salary = 3000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Bob", Email = "bob@example.com", Phone = "123-456-789", Salary = 2000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Tom", Email = "tom@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId },
+            };
+
+            var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
+
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserEmployeesQuery(appUserId, pageNumber, pageSize, null, sortOrder);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
+            CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesAsync(appUserId, pageNumber, pageSize, null, sortOrder), Times.Once);
+        }
+
+        [TestMethod]
         public async Task Handle_Returns_Employees_When_SortOrderDoesNotExist()
         {
             // Arrange
