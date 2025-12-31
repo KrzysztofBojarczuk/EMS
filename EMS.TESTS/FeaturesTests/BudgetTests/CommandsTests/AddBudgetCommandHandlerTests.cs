@@ -1,7 +1,6 @@
-﻿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Budget.Commands;
 using EMS.CORE.Interfaces;
-using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -17,8 +16,7 @@ namespace EMS.TESTS.Features.BudgetTests.CommandsTests
         public void Setup()
         {
             _mockBudgetRepository = new Mock<IBudgetRepository>();
-            var mockPublisher = new Mock<IPublisher>();
-            _handler = new AddBudgetCommandHandler(_mockBudgetRepository.Object, mockPublisher.Object);
+            _handler = new AddBudgetCommandHandler(_mockBudgetRepository.Object);
         }
 
         [TestMethod]

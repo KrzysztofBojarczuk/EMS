@@ -2,7 +2,6 @@ using EMS.APPLICATION.Features.Transaction.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
-using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -18,8 +17,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.CommandsTests
         public void Setup()
         {
             _mockTransactionRepository = new Mock<ITransactionRepository>();
-            var mockMediator = new Mock<IPublisher>();
-            _handler = new AddTransactioCommandHandler(_mockTransactionRepository.Object, mockMediator.Object);
+            _handler = new AddTransactioCommandHandler(_mockTransactionRepository.Object);
         }
 
         [TestMethod]

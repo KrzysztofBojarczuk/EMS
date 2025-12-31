@@ -1,7 +1,6 @@
 using EMS.APPLICATION.Features.Employee.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
-using MediatR;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -17,8 +16,7 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
         public void Setup()
         {
             _mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            var mockMediator = new Mock<IPublisher>();
-            _handler = new AddEmployeeCommandHandler(_mockEmployeeRepository.Object, mockMediator.Object);
+            _handler = new AddEmployeeCommandHandler(_mockEmployeeRepository.Object);
         }
 
         [TestMethod]
