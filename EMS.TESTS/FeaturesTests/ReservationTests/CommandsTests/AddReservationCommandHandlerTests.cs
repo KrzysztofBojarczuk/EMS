@@ -52,6 +52,7 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual(expectedFailureMessage, result.Error);
             _mockLocalRepository.Verify(x => x.GetLocalByIdAsync(localId), Times.Once);
+            _mockReservationRepository.Verify(x => x.IsLocalBusyAsync(It.IsAny<Guid>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Never);
             _mockReservationRepository.Verify(x => x.AddReservationAsync(It.IsAny<ReservationEntity>()), Times.Never);
         }
     }
