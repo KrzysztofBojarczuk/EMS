@@ -47,6 +47,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual(expectedFailureMessage, result.Error);
             _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.AddEmployeeListsAsync(It.IsAny<EmployeeListsEntity>(), It.IsAny<List<Guid>>()), Times.Never);
         }
 
         [TestMethod]
