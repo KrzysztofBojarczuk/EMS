@@ -20,38 +20,6 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
         }
 
         [TestMethod]
-        public async Task Handle_AddEmployeeList_And_Returns_EmployeeList_Successful_Result()
-        {
-            // Arrange
-            var expectedEmployeeList = new EmployeeListsEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = "Test List",
-                AppUserId = "user-id-123"
-            };
-
-            var employeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
-
-            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId))
-                .ReturnsAsync(false);
-
-            _mockEmployeeRepository.Setup(x => x.AddEmployeeListsAsync(expectedEmployeeList, employeeIds))
-                .ReturnsAsync(expectedEmployeeList);
-
-            var command = new AddEmployeeListCommand(expectedEmployeeList, employeeIds);
-
-            // Act
-            var result = await _handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.IsSuccess);
-            Assert.AreEqual(expectedEmployeeList, result.Value);
-            _mockEmployeeRepository.Verify(x => x.AddEmployeeListsAsync(expectedEmployeeList, employeeIds), Times.Once);
-            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
-        }
-
-        [TestMethod]
         public async Task Handle_AddEmployeeList_When_ListAlreadyExists_Returns_Failure()
         {
             // Arrange
@@ -79,6 +47,38 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual(expectedFailureMessage, result.Error);
             _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task Handle_AddEmployeeList_And_Returns_EmployeeList_Successful_Result()
+        {
+            // Arrange
+            var expectedEmployeeList = new EmployeeListsEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test List",
+                AppUserId = "user-id-123"
+            };
+
+            var employeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+
+            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId))
+                .ReturnsAsync(false);
+
+            _mockEmployeeRepository.Setup(x => x.AddEmployeeListsAsync(expectedEmployeeList, employeeIds))
+                .ReturnsAsync(expectedEmployeeList);
+
+            var command = new AddEmployeeListCommand(expectedEmployeeList, employeeIds);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(expectedEmployeeList, result.Value);
+            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.AddEmployeeListsAsync(expectedEmployeeList, employeeIds), Times.Once);
         }
     }
 }
