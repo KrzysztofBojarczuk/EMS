@@ -28,7 +28,7 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             // Arrange
             var localId = Guid.NewGuid();
 
-            var expectedEeservation = new ReservationEntity
+            var expectedReservation = new ReservationEntity
             {
                 Description = "Test",
                 CheckInDate = DateTime.UtcNow,
@@ -42,7 +42,7 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             _mockLocalRepository.Setup(x => x.GetLocalByIdAsync(localId))
                 .ReturnsAsync((LocalEntity)null);
 
-            var command = new AddReservationCommand(expectedEeservation);
+            var command = new AddReservationCommand(expectedReservation);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
