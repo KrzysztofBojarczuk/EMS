@@ -26,7 +26,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             var expectedEmployeeList = new EmployeeListsEntity
             {
                 Id = Guid.NewGuid(),
-                Name = "Duplicate List",
+                Name = "EmployeeList",
                 AppUserId = "user-id-123"
             };
 
@@ -57,7 +57,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             var expectedEmployeeList = new EmployeeListsEntity
             {
                 Id = Guid.NewGuid(),
-                Name = "Test List",
+                Name = "EmployeeList",
                 AppUserId = "user-id-123"
             };
 

@@ -25,9 +25,9 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
             // Arrange
             var expectedAddress = new AddressEntity
             {
-                City = "Test City",
-                Street = "Test Street",
-                Number = "123",
+                City = "Address",
+                Street = "Address",
+                Number = "1",
                 ZipCode = "00-001",
                 AppUserId = "user-id-123"
             };

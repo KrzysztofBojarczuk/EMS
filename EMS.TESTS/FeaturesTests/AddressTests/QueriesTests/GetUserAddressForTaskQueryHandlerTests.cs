@@ -27,9 +27,9 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
 
             var expectedAddresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), City = "City A", Street = "Test Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
-                new AddressEntity { Id = Guid.NewGuid(), City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId },
-                new AddressEntity { Id = Guid.NewGuid(), City = "City C", Street = "Street Koszalin", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 1", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 2", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 3", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId }
             };
 
             _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, null))
@@ -52,12 +52,12 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "Street";
+            var searchTerm = "test";
 
             var expectedAddresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), City = "City A", Street = "Test Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
-                new AddressEntity { Id = Guid.NewGuid(), City = "City B", Street = "Street Avenue", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 2 Test", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId }
             };
 
             _mockAddressRepository.Setup(x => x.GetUserAddressesForTaskAsync(appUserId, searchTerm))

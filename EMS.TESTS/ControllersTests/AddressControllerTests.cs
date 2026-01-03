@@ -56,9 +56,9 @@ namespace EMS.TESTS.ControllersTests
 
             var createDto = new AddressCreateDto
             {
-                City = "CityX",
-                Street = "StreetX",
-                Number = "1A",
+                City = "Address",
+                Street = "Address",
+                Number = "1",
                 ZipCode = "00-001"
             };
 
@@ -130,22 +130,22 @@ namespace EMS.TESTS.ControllersTests
             var username = "testuser";
             var pageNumber = 1;
             var pageSize = 10;
-            var searchTerm = "Main";
+            var searchTerm = "test";
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var addressEntities = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), City = "MainCity1", Street = "Street1", Number = "1", ZipCode = "00-000" },
-                new AddressEntity { Id = Guid.NewGuid(), City = "MainCity2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 2 Test", Street = "Address", Number = "1", ZipCode = "00-001" }
              };
 
             var paginatedResult = new PaginatedList<AddressEntity>(addressEntities, addressEntities.Count(), pageNumber, pageSize);
 
             var expectedDtos = new List<AddressGetDto>
             {
-                new AddressGetDto { Id = addressEntities[0].Id, City = "MainCity1", Street = "Street1", Number = "1", ZipCode = "00-000" },
-                new AddressGetDto { Id = addressEntities[1].Id, City = "MainCity2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+                new AddressGetDto { Id = addressEntities[0].Id, City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressGetDto { Id = addressEntities[1].Id, City = "Address 2 Test", Street = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -247,20 +247,20 @@ namespace EMS.TESTS.ControllersTests
             // Arrange
             var appUserId = "user-id-123";
             var username = "testuser";
-            var searchTerm = "City";
+            var searchTerm = "test";
 
             var appUser = new AppUserEntity { Id = appUserId, UserName = username };
 
             var addressEntities = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), City = "City1", Street = "Street1", Number = "1", ZipCode = "00-000" },
-                new AddressEntity { Id = Guid.NewGuid(), City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 2 Test", Street = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             var expectedDtos = new List<AddressGetDto>
             {
-                   new AddressGetDto { Id = addressEntities[0].Id, City = "City1", Street = "Street1", Number = "1", ZipCode = "00-000" },
-                   new AddressGetDto { Id = addressEntities[1].Id, City = "City2", Street = "Street2", Number = "2", ZipCode = "11-111" }
+                   new AddressGetDto { Id = addressEntities[0].Id, City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001" },
+                   new AddressGetDto { Id = addressEntities[1].Id, City = "Address 2 Test", Street = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
@@ -342,10 +342,10 @@ namespace EMS.TESTS.ControllersTests
 
             var updateDto = new AddressCreateDto
             {
-                City = "UpdatedCity",
-                Street = "UpdatedStreet",
-                Number = "99A",
-                ZipCode = "99-999"
+                City = "Address",
+                Street = "Address",
+                Number = "1",
+                ZipCode = "00-001"
             };
 
             var addressEntity = new AddressEntity

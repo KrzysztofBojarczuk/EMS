@@ -30,7 +30,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var reservation = new ReservationEntity
             {
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2),
                 LocalId = Guid.NewGuid(),
@@ -61,7 +61,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 Id = reservationId,
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2),
                 LocalId = Guid.NewGuid(),
@@ -335,7 +335,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2),
                 LocalId = localId,
@@ -361,7 +361,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow.AddDays(1),
                 CheckOutDate = DateTime.UtcNow.AddDays(3),
                 LocalId = localId,
@@ -387,7 +387,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow.AddDays(2),
                 CheckOutDate = DateTime.UtcNow.AddDays(5),
                 LocalId = localId,
@@ -413,7 +413,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow.AddDays(1),
                 CheckOutDate = DateTime.UtcNow.AddDays(2),
                 LocalId = localId,
@@ -439,7 +439,7 @@ namespace EMS.TESTS.RepositoriesTests
             var reservation = new ReservationEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2),
                 LocalId = Guid.NewGuid(),

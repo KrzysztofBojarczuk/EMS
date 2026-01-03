@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Features.Employee.Queries;
+using EMS.APPLICATION.Features.Employee.Queries;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,32 +29,32 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 new EmployeeListsEntity
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Dev Team",
+                    Name = "EmployeeList 1",
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                        new EmployeeEntity { Name = "Alice" },
-                        new EmployeeEntity { Name = "Bob" }
+                        new EmployeeEntity { Name = "Employee 1" },
+                        new EmployeeEntity { Name = "Employee 2" }
                     }
                 },
                 new EmployeeListsEntity
                 {
                     Id = Guid.NewGuid(),
-                    Name = "QA and Dev Team",
+                    Name = "EmployeeList 2",
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                        new EmployeeEntity { Name = "Charlie" }
+                        new EmployeeEntity { Name = "Employee 3" }
                     }
                 },
                 new EmployeeListsEntity
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Truck drivers",
+                    Name = "EmployeeList 3",
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                        new EmployeeEntity { Name = "John" }
+                        new EmployeeEntity { Name = "Employee 4" }
                     }
                 }
             };
@@ -79,29 +79,29 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "dev";
+            var searchTerm = "test";
 
             var expectedEmployeeLists = new List<EmployeeListsEntity>
             {
                 new EmployeeListsEntity
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Dev Team",
+                    Name = "EmployeeList 1 Test",
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                        new EmployeeEntity { Name = "Alice" },
-                        new EmployeeEntity { Name = "Bob" }
+                        new EmployeeEntity { Name = "Employee 1" },
+                        new EmployeeEntity { Name = "Employee 2" }
                     }
                 },
                 new EmployeeListsEntity
                 {
                     Id = Guid.NewGuid(),
-                    Name = "QA and Dev Team",
+                    Name = "EmployeeList 2 Test",
                     AppUserId = appUserId,
                     EmployeesEntities = new List<EmployeeEntity>
                     {
-                        new EmployeeEntity { Name = "Charlie" }
+                        new EmployeeEntity { Name = "Employee 3" }
                     }
                 }
             };
