@@ -30,9 +30,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var address = new AddressEntity
             {
-                City = "Test City",
-                Street = "Test Street",
-                Number = "123",
+                City = "Address",
+                Street = "Address",
+                Number = "1",
                 ZipCode = "00-001",
                 AppUserId = "user-id-123"
             };
@@ -62,9 +62,9 @@ namespace EMS.TESTS.RepositoriesTests
             var address = new AddressEntity
             {
                 Id = addressId,
-                City = "Test City",
-                Street = "Test Street",
-                Number = "123",
+                City = "Address",
+                Street = "Address",
+                Number = "1",
                 ZipCode = "00-001",
                 AppUserId = "user-id-123"
             };
@@ -103,10 +103,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Obama Street", City = "Chicago", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 1", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 2", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 3", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 4", City = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _context.Address.AddRange(addresses);
@@ -125,13 +125,13 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "main";
+            var searchTerm = "test";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 1 Test", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 2", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 3", City = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _context.Address.AddRange(addresses);
@@ -155,9 +155,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 1", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 2", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 3", City = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _context.Address.AddRange(addresses);
@@ -179,10 +179,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Koszalin", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 1", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 2", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 3", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 4", City = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _context.Address.AddRange(addresses);
@@ -201,14 +201,14 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "main";
+            var searchTerm = "test";
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Koszalin", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 1 Test", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 2 Test", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 3", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 4", City = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _context.Address.AddRange(addresses);
@@ -232,9 +232,9 @@ namespace EMS.TESTS.RepositoriesTests
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Avenu Street", City = "Los Angeles", Number = "99", ZipCode = "90001" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 1", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 2", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address 3", City = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             _context.Address.AddRange(addresses);
@@ -257,9 +257,9 @@ namespace EMS.TESTS.RepositoriesTests
             var address = new AddressEntity
             {
                 Id = Guid.NewGuid(),
-                City = "Test City",
-                Street = "Test Street",
-                Number = "123",
+                City = "Address",
+                Street = "Address",
+                Number = "1",
                 ZipCode = "00-001",
                 AppUserId = appUserId
             };
@@ -269,10 +269,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var updatedAddress = new AddressEntity
             {
-                City = "Test New City",
-                Street = "Test New Street",
-                Number = "321",
-                ZipCode = "00-123",
+                City = "Test New",
+                Street = "Test New",
+                Number = "1",
+                ZipCode = "00-001",
                 AppUserId = appUserId
             };
 
@@ -298,10 +298,10 @@ namespace EMS.TESTS.RepositoriesTests
             var updatedAddress = new AddressEntity
             {
                 Id = Guid.NewGuid(),
-                City = "Test New City",
-                Street = "Test New Street",
-                Number = "321",
-                ZipCode = "00-123",
+                City = "Addresss",
+                Street = "Address",
+                Number = "1",
+                ZipCode = "00-001",
                 AppUserId = appUserId
             };
 
@@ -324,14 +324,14 @@ namespace EMS.TESTS.RepositoriesTests
 
             var addresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Main Street", City = "New York", Number = "10A", ZipCode = "10001" },
-                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Second Avenue", City = "Chicago", Number = "22B", ZipCode = "60601" }
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address", City = "Address", Number = "1", ZipCode = "00-001" },
+                new AddressEntity { Id = Guid.NewGuid(), AppUserId = appUserId, Street = "Address", City = "Address", Number = "1", ZipCode = "00-001" }
             };
 
             var tasks = new List<TaskEntity>
             {
-                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 1", Description = "Test Description", AppUserId = "user1", AddressId = addresses[0].Id },
-                new TaskEntity { Id = Guid.NewGuid(), Name = "Test Task 2", Description = "Test Description", AppUserId = "user1", AddressId = addresses[1].Id }
+                new TaskEntity { Id = Guid.NewGuid(), Name = "Task", Description = "Task", AppUserId = "user1", AddressId = addresses[0].Id },
+                new TaskEntity { Id = Guid.NewGuid(), Name = "Task", Description = "Task", AppUserId = "user1", AddressId = addresses[1].Id }
             };
 
             _context.Tasks.AddRange(tasks);

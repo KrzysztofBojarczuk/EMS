@@ -30,9 +30,9 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
 
             var expectedAddresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), City = "City A", Street = "Main Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
-                new AddressEntity { Id = Guid.NewGuid(), City = "City B", Street = "Second Street", Number = "2", ZipCode = "00-002", AppUserId = appUserId },
-                new AddressEntity { Id = Guid.NewGuid(), City = "City C", Street = "Street Koszalin", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 1", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 2", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 3", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<AddressEntity>(expectedAddresses, expectedAddresses.Count(), pageNumber, pageSize);
@@ -59,12 +59,12 @@ namespace EMS.TESTS.FeaturesTests.AddressTests.QueriesTests
             var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-            var searchTerm = "Street";
+            var searchTerm = "test";
 
             var expectedAddresses = new List<AddressEntity>
             {
-                new AddressEntity { Id = Guid.NewGuid(), City = "City A", Street = "Main Street", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
-                new AddressEntity { Id = Guid.NewGuid(), City = "City B", Street = "Second Street", Number = "2", ZipCode = "00-002", AppUserId = appUserId }
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 2 Test", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<AddressEntity>(expectedAddresses, expectedAddresses.Count(), pageNumber, pageSize);

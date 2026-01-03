@@ -28,9 +28,9 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
 
             var updatedEmployee = new EmployeeEntity
             {
-                Name = "Test User",
-                Email = "test@example.com",
-                Phone = "123456789",
+                Name = "Employee",
+                Email = "employee@example.com",
+                Phone = "123-456-789",
                 Salary = 60000m,
                 DateOfBirth = new DateTime(1990, 1, 1),
                 EmploymentDate = new DateTime(2022, 1, 1),

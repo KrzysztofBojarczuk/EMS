@@ -25,9 +25,9 @@ namespace EMS.TESTS.Features.EmployeeTests.CommandsTests
             // Arrange
             var expectedEmployee = new EmployeeEntity
             {
-                Name = "John",
-                Email = "john@example.com",
-                Phone = "123456789",
+                Name = "Employee",
+                Email = "employee@example.com",
+                Phone = "123-456-789",
                 Salary = 50000m,
                 DateOfBirth = new DateTime(1990, 1, 1),
                 EmploymentDate = new DateTime(2022, 1, 1),

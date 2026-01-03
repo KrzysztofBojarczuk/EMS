@@ -28,7 +28,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.CommandsTests
 
             var updatedLocal = new LocalEntity
             {
-                Description = "Test",
+                Description = "Local",
                 LocalNumber = 1,
                 Surface = 250.0,
                 NeedsRepair = false,

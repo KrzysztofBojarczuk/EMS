@@ -28,8 +28,8 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var expectedEmployee = new EmployeeEntity
             {
                 Id = employeeId,
-                Name = "Jane Doe",
-                Email = "jane.doe@example.com",
+                Name = "Employee",
+                Email = "employee@example.com",
                 Phone = "123-456-789",
                 Salary = 5000,
                 DateOfBirth = new DateTime(1990, 1, 1),

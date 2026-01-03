@@ -25,7 +25,7 @@ namespace EMS.TESTS.FeaturesTests.LocalTests.CommandsTests
             // Arrange
             var expectedLocal = new LocalEntity
             {
-                Description = "Test",
+                Description = "Local",
                 LocalNumber = 1,
                 Surface = 250.0,
                 NeedsRepair = false,

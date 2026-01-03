@@ -27,7 +27,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.CommandsTests
             var expectedTransaction = new TransactionEntity
             {
                 Id = Guid.NewGuid(),
-                Name = "Test",
+                Name = "Transaction",
                 CreationDate = DateTime.UtcNow,
                 Category = CategoryType.Expense,
                 Amount = 250.75m,

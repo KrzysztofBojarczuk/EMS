@@ -32,7 +32,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var transaction = new TransactionEntity
             {
-                Name = "Test",
+                Name = "Transaction",
                 CreationDate = DateTime.UtcNow,
                 Category = CategoryType.Expense,
                 Amount = 250.75m,

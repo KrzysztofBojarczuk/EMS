@@ -30,7 +30,7 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
 
             var expectedReservation = new ReservationEntity
             {
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2),
                 LocalId = localId,
@@ -64,7 +64,7 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
 
             var expectedReservation = new ReservationEntity
             {
-                Description = "Test",
+                Description = "Reservation",
                 CheckInDate = DateTime.UtcNow,
                 CheckOutDate = DateTime.UtcNow.AddDays(2),
                 LocalId = localId,

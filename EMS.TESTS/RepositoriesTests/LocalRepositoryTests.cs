@@ -29,7 +29,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var local = new LocalEntity
             {
-                Description = "Test",
+                Description = "Local",
                 LocalNumber = 1,
                 Surface = 100.0,
                 NeedsRepair = false,
@@ -61,7 +61,7 @@ namespace EMS.TESTS.RepositoriesTests
             var local = new LocalEntity
             {
                 Id = localId,
-                Description = "Test",
+                Description = "Local",
                 LocalNumber = 1,
                 Surface = 100.0,
                 NeedsRepair = false,
@@ -181,7 +181,7 @@ namespace EMS.TESTS.RepositoriesTests
             var local = new LocalEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Local",
                 LocalNumber = 1,
                 Surface = 100.0,
                 NeedsRepair = true,
@@ -222,7 +222,7 @@ namespace EMS.TESTS.RepositoriesTests
             var updatedLocal = new LocalEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Local",
                 LocalNumber = 2,
                 Surface = 200.0,
                 NeedsRepair = false,
@@ -249,7 +249,7 @@ namespace EMS.TESTS.RepositoriesTests
             var local = new LocalEntity
             {
                 Id = Guid.NewGuid(),
-                Description = "Test",
+                Description = "Local",
                 LocalNumber = 1,
                 Surface = 100.0,
                 NeedsRepair = false,

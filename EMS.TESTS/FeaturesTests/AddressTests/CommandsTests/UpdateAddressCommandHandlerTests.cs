@@ -28,10 +28,10 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
 
             var updatedAddress = new AddressEntity
             {
-                City = "Updated City",
-                Street = "Updated Street",
-                Number = "456",
-                ZipCode = "11-111",
+                City = "Address",
+                Street = "Address",
+                Number = "1",
+                ZipCode = "00-001",
                 AppUserId = appUserId
             };
 
