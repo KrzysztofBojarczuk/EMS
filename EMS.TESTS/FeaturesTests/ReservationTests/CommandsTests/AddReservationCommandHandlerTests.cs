@@ -95,5 +95,48 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             _mockReservationRepository.Verify(x => x.IsLocalBusyAsync(It.IsAny<Guid>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Never);
             _mockReservationRepository.Verify(x => x.AddReservationAsync(It.IsAny<ReservationEntity>()), Times.Never);
         }
+
+        [TestMethod]
+        public async Task Handle_AddReservation_When_LocalIsBusy_Returns_Failure()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+
+            var reservation = new ReservationEntity
+            {
+                Description = "Reservation",
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(2),
+                LocalId = localId,
+                AppUserId = "user-id-123"
+            };
+
+            var local = new LocalEntity
+            {
+                Id = localId,
+                NeedsRepair = false
+            };
+
+            var expectedFailureMessage = "Local is already reserved in the given time period.";
+
+            _mockLocalRepository.Setup(x => x.GetLocalByIdAsync(localId))
+                .ReturnsAsync(local);
+
+            _mockReservationRepository.Setup(x => x.IsLocalBusyAsync(localId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .ReturnsAsync(true);
+
+            var command = new AddReservationCommand(reservation);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsSuccess);
+            Assert.AreEqual(expectedFailureMessage, result.Error);
+            _mockLocalRepository.Verify(x => x.GetLocalByIdAsync(localId), Times.Once);
+            _mockReservationRepository.Verify(x => x.IsLocalBusyAsync(localId, It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Once);
+            _mockReservationRepository.Verify(x => x.AddReservationAsync(It.IsAny<ReservationEntity>()), Times.Never);
+        }
     }
 }
