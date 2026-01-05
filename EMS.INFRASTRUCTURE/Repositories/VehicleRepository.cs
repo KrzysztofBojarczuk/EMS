@@ -9,7 +9,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 {
     public class VehicleRepository(AppDbContext dbContext) : IVehicleRepository
     {
-        public async Task<VehicleEntity> AddAVehicleAsync(VehicleEntity entity)
+        public async Task<VehicleEntity> AddVehicleAsync(VehicleEntity entity)
         {
             entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
             entity.DateOfProduction = entity.DateOfProduction.ToLocalTime();
