@@ -138,5 +138,49 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             _mockReservationRepository.Verify(x => x.IsLocalBusyAsync(localId, It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Once);
             _mockReservationRepository.Verify(x => x.AddReservationAsync(It.IsAny<ReservationEntity>()), Times.Never);
         }
+
+        [TestMethod]
+        public async Task Handle_AddReservation_And_Returns_Reservation_Successful_Result()
+        {
+            // Arrange
+            var localId = Guid.NewGuid();
+
+            var expectedReservation = new ReservationEntity
+            {
+                Description = "Reservation",
+                CheckInDate = DateTime.UtcNow,
+                CheckOutDate = DateTime.UtcNow.AddDays(2),
+                LocalId = localId,
+                AppUserId = "user-id-123"
+            };
+
+            var local = new LocalEntity
+            {
+                Id = localId,
+                NeedsRepair = false
+            };
+
+            _mockLocalRepository.Setup(x => x.GetLocalByIdAsync(localId))
+                    .ReturnsAsync(local);
+
+            _mockReservationRepository.Setup(x => x.IsLocalBusyAsync(localId, It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                    .ReturnsAsync(false);
+
+            _mockReservationRepository.Setup(x => x.AddReservationAsync(expectedReservation))
+                    .ReturnsAsync(expectedReservation);
+
+            var command = new AddReservationCommand(expectedReservation);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.IsSuccess);
+            Assert.AreEqual(expectedReservation, result.Value);
+            _mockLocalRepository.Verify(x => x.GetLocalByIdAsync(localId), Times.Once);
+            _mockReservationRepository.Verify(x => x.IsLocalBusyAsync(localId, It.IsAny<DateTime>(), It.IsAny<DateTime>()), Times.Once);
+            _mockReservationRepository.Verify(x => x.AddReservationAsync(expectedReservation), Times.Once);
+        }
     }
 }
