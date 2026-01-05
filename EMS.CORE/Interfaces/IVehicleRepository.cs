@@ -6,7 +6,7 @@ namespace EMS.CORE.Interfaces
 {
     public interface IVehicleRepository
     {
-        Task<VehicleEntity> AddAVehicleAsync(VehicleEntity entity);
+        Task<VehicleEntity> AddVehicleAsync(VehicleEntity entity);
         Task<VehicleEntity> GetVehicleByIdAsync(Guid vehicleId);
         Task<PaginatedList<VehicleEntity>> GetUserVehiclesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<VehicleType> vehicleType, DateTime? dateFrom, DateTime? dateTo, string sortOrder);
         Task<IEnumerable<VehicleEntity>> GetUserVehiclesForTaskAsync(string appUserId, string searchTerm);

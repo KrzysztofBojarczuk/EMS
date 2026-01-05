@@ -10,7 +10,7 @@ namespace EMS.APPLICATION.Features.Vehicle.Commands
     {
         public async Task<VehicleEntity> Handle(AddVehicleCommand request, CancellationToken cancellationToken)
         {
-            return await vehicleRepository.AddAVehicleAsync(request.vehicle);
+            return await vehicleRepository.AddVehicleAsync(request.vehicle);
         }
     }
 }
