@@ -67,5 +67,50 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, vehicleCount);
         }
+
+        [TestMethod]
+        public async Task GetVehicleByIdAsync_When_VehicleExists_Returns_Vehicle()
+        {
+            // Arrange
+            var vehicleId = Guid.NewGuid();
+
+            var vehicle = new VehicleEntity
+            {
+                Id = vehicleId,
+                Brand = "Vehicle",
+                Model = "Vehicle",
+                Name = "Vehicle",
+                RegistrationNumber = "ABC1111",
+                Mileage = 1000,
+                VehicleType = VehicleType.Car,
+                DateOfProduction = new DateTime(2020, 1, 1),
+                InsuranceOcValidUntil = new DateTime(2020, 1, 1),
+                InsuranceOcCost = 1000,
+                TechnicalInspectionValidUntil = new DateTime(2020, 1, 1),
+                IsAvailable = true,
+                AppUserId = "user-id-123",
+            };
+
+            _context.Vehicles.Add(vehicle);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetVehicleByIdAsync(vehicleId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(vehicle.Brand, result.Brand);
+            Assert.AreEqual(vehicle.Model, result.Model);
+            Assert.AreEqual(vehicle.Name, result.Name);
+            Assert.AreEqual(vehicle.RegistrationNumber, result.RegistrationNumber);
+            Assert.AreEqual(vehicle.Mileage, result.Mileage);
+            Assert.AreEqual(vehicle.VehicleType, result.VehicleType);
+            Assert.AreEqual(vehicle.DateOfProduction, result.DateOfProduction);
+            Assert.AreEqual(vehicle.InsuranceOcValidUntil, result.InsuranceOcValidUntil);
+            Assert.AreEqual(vehicle.InsuranceOcCost, result.InsuranceOcCost);
+            Assert.AreEqual(vehicle.TechnicalInspectionValidUntil, result.TechnicalInspectionValidUntil);
+            Assert.AreEqual(vehicle.IsAvailable, result.IsAvailable);
+            Assert.AreEqual(vehicle.AppUserId, result.AppUserId);
+        }
     }
 }
