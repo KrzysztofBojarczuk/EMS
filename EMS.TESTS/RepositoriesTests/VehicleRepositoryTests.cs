@@ -112,5 +112,15 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(vehicle.IsAvailable, result.IsAvailable);
             Assert.AreEqual(vehicle.AppUserId, result.AppUserId);
         }
+
+        [TestMethod]
+        public async Task GetVehicleByIdAsync_When_VehicleDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetVehicleByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
     }
 }
