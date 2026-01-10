@@ -146,5 +146,31 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Items.Count());
         }
+
+        [TestMethod]
+        public async Task GetUserVehiclesAsync_BySearchTerm_Returns_Vehicles()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "test";
+
+            var vehicles = new List<VehicleEntity>
+            {
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1),  InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1),  InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1),  InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+            };
+
+            _context.Vehicles.AddRange(vehicles);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, searchTerm, null, null, null, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Items.Count());
+            Assert.AreEqual(vehicles[0].Brand, result.Items.First().Brand);
+        }
     }
 }
