@@ -199,11 +199,11 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserVehiclesAsync_ByVehicleFilter_Returns_Vehicles()
+        public async Task GetUserVehiclesAsync_ByVehicleType_Returns_Vehicles()
         {
             // Arrange
             var appUserId = "user-id-123";
-            var category = new List<VehicleType> { VehicleType.Truck };
+            var vehicleType = new List<VehicleType> { VehicleType.Truck };
 
             var vehicles = new List<VehicleEntity>
             {
@@ -216,7 +216,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, category, null, null, null);
+            var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, vehicleType, null, null, null);
 
             // Assert
             Assert.IsNotNull(result);
