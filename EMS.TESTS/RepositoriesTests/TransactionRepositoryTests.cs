@@ -133,11 +133,11 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetTransactionsByBudgetIdAsync_ByCategoryFilter_Returns_Transactions()
+        public async Task GetTransactionsByBudgetIdAsync_ByCategoryType_Returns_Transactions()
         {
             // Arrange
             var budgetId = Guid.NewGuid();
-            var category = new List<CategoryType> { CategoryType.Expense };
+            var categoryType = new List<CategoryType> { CategoryType.Expense };
 
             var transactions = new List<TransactionEntity>
             {
@@ -150,7 +150,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, category);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, categoryType);
 
             // Assert
             Assert.IsNotNull(result);
