@@ -48,6 +48,8 @@ Addresses:
 ![30](https://github.com/user-attachments/assets/4143966b-cc08-4beb-95a1-90bf3a70892b)
 
 Admin dashboard:
-![31](https://github.com/user-attachments/assets/36acc275-b980-4fac-bf5f-9aea1a73d687)
-![32](https://github.com/user-attachments/assets/5796e9b4-4225-44b5-8085-04acb93bf663)
-![32](https://github.com/user-attachments/assets/781fea7a-7f60-4614-81eb-47ecc47ca333)
+![31](https://github.com/user-attachments/assets/d942c497-ddc6-42db-b641-d55cc4bd8861)
+![31](https://github.com/user-attachments/assets/e3c032fc-9b10-45ab-b80d-565f3385e05a)
+![31](https://github.com/user-attachments/assets/c8bf3875-46e7-445d-9f2a-23ca0f43b0a0)
+![31](https://github.com/user-attachments/assets/d33d5ead-4c36-479f-a404-5b19e713e4db)
+![31](https://github.com/user-attachments/assets/dcf38961-00f4-4bdc-b6fd-c73503e8c8a3)
