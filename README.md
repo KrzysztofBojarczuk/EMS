@@ -52,4 +52,4 @@ Admin dashboard:
 ![31](https://github.com/user-attachments/assets/e3c032fc-9b10-45ab-b80d-565f3385e05a)
 ![31](https://github.com/user-attachments/assets/c8bf3875-46e7-445d-9f2a-23ca0f43b0a0)
 ![31](https://github.com/user-attachments/assets/d33d5ead-4c36-479f-a404-5b19e713e4db)
-![31](https://github.com/user-attachments/assets/dcf38961-00f4-4bdc-b6fd-c73503e8c8a3)
+![31](https://github.com/user-attachments/assets/63aa1a60-9ed3-422d-bff0-55c00137704e)
