@@ -1,6 +1,10 @@
 import React, { JSX, useEffect, useRef, useState } from "react";
 import { InputText } from "primereact/inputtext";
-import { DataTable } from "primereact/datatable";
+import {
+  DataTable,
+  DataTableExpandedRows,
+  DataTableValueArray,
+} from "primereact/datatable";
 import { Panel } from "primereact/panel";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { EmployeeGet } from "../../Models/Employee";
@@ -23,16 +27,27 @@ import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { formatCurrency } from "../Utils/Currency";
 import { formatDate } from "../Utils/DateUtils";
+import { LogGet } from "../../Models/Logs";
+import { GetLogsService } from "../../Services/LogsService";
+import { Calendar } from "primereact/calendar";
+import { Dropdown } from "primereact/dropdown";
+import { Button } from "primereact/button";
 
 const AdministrationPanel: React.FC = (): JSX.Element => {
   const [numberUser, setNumberUsers] = useState<number>(0);
   const [users, setUsers] = useState<UserGet[]>([]);
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
   const [tasks, setTasks] = useState<TaskGet[]>([]);
+  const [logs, setLogs] = useState<LogGet[]>([]);
 
   const [searchUserTerm, setSearchUserTerm] = useState("");
   const [searchEmployeeTerm, setSearchEmployeeTerm] = useState("");
   const [searchTaskTerm, setSearchTaskTerm] = useState("");
+  const [searchLogTerm, setSearchLogTerm] = useState("");
+
+  const [dateFrom, setDateFrom] = useState<Date | null>(null);
+  const [dateTo, setDateTo] = useState<Date | null>(null);
+  const [sortOrder, setSortOrderLog] = useState<string | null>(null);
 
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
 
@@ -50,9 +65,30 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   const [rowsUser, setRowsUser] = useState(10);
   const [totalUsers, setTotalUsers] = useState(0);
 
+  const [firstLog, setFirstLog] = useState(0);
+  const [rowsLog, setRowsLog] = useState(10);
+  const [totalLog, setTotalLog] = useState(0);
+
   const userPanelRef = useRef<Panel>(null);
   const employeePanelRef = useRef<Panel>(null);
   const taskPanelRef = useRef<Panel>(null);
+
+  const [expandedRows, setExpandedRows] = useState<
+    DataTableExpandedRows | DataTableValueArray | undefined
+  >(undefined);
+
+  const resetFilters = () => {
+    setDateFrom(null);
+    setDateTo(null);
+    setSortOrderLog(null);
+    setSearchLogTerm("");
+  };
+
+  const sortOptions = [
+    { label: "None", value: null },
+    { label: "Date ↑ (Oldest first)", value: "creatdate_asc" },
+    { label: "Date ↓ (Newest first)", value: "creatdate_desc" },
+  ];
 
   const fetchNumberUsers = async () => {
     const data = await GetNumberOfUsersService();
@@ -111,6 +147,29 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     goToPageTasks(1, rowsTask);
   }, [searchTaskTerm]);
 
+  const fetchLogs = async (page: number, size: number) => {
+    const data = await GetLogsService(
+      page,
+      size,
+      searchLogTerm,
+      dateFrom,
+      dateTo,
+      sortOrder
+    );
+    setLogs(data.logs);
+    setTotalLog(data.totalItems);
+  };
+
+  const goToPageLogs = (page: number, rows: number) => {
+    const newFirst = (page - 1) * rows;
+    setFirstLog(newFirst);
+    fetchLogs(page, rows);
+  };
+
+  useEffect(() => {
+    goToPageLogs(1, rowsLog);
+  }, [searchLogTerm, dateFrom, dateTo, sortOrder]);
+
   const showUserDeleteConfirmation = (id: string) => {
     setDeleteUserId(id);
     setConfirmUserVisible(true);
@@ -135,6 +194,12 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     setDeleteUserId(null);
   };
 
+  const onPageChangeLogs = (event: PaginatorPageChangeEvent) => {
+    setFirstLog(event.first);
+    setRowsLog(event.rows);
+    fetchLogs(event.page + 1, event.rows);
+  };
+
   const onPageChangeEmployees = (event: PaginatorPageChangeEvent) => {
     setFirstEmployee(event.first);
     setRowsEmployee(event.rows);
@@ -153,8 +218,21 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     fetchUsers(event.page + 1, event.rows);
   };
 
+  const allowExpansion = (rowData: TaskGet) => {
+    return rowData.id!.length > 0;
+  };
+
+  const rowExpansionTemplate = (log: LogGet) => {
+    return (
+      <div style={{ padding: "1rem" }}>
+        <h5>Request Data</h5>
+        <p>{log.requestData}</p>
+      </div>
+    );
+  };
+
   return (
-    <div className="card m-4">
+    <div className="xl:m-4 lg:m-4 md:m-2">
       <Panel ref={userPanelRef} header="Users" toggleable collapsed>
         <IconField iconPosition="left">
           <InputIcon className="pi pi-search"> </InputIcon>
@@ -266,6 +344,72 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           rows={rowsTask}
           totalRecords={totalTasks}
           onPageChange={onPageChangeTasks}
+          rowsPerPageOptions={[5, 10, 20, 30]}
+          style={{ border: "none" }}
+        />
+      </Panel>
+
+      <Panel ref={userPanelRef} header="Logs" toggleable collapsed>
+        <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search" />
+            <InputText
+              value={searchLogTerm}
+              onChange={(e) => setSearchLogTerm(e.target.value)}
+              placeholder="Search"
+            />
+          </IconField>
+          <Calendar
+            value={dateFrom}
+            onChange={(e) => setDateFrom(e.value as Date)}
+            placeholder="Date created from"
+            showIcon
+            dateFormat="dd/mm/yy"
+          />
+          <Calendar
+            value={dateTo}
+            onChange={(e) => setDateTo(e.value as Date)}
+            placeholder="Date created to"
+            showIcon
+            dateFormat="dd/mm/yy"
+          />
+          <Dropdown
+            value={sortOrder}
+            options={sortOptions}
+            onChange={(e) => setSortOrderLog(e.value)}
+            placeholder="Sorting"
+          />
+          <Button
+            label="Reset Filters"
+            icon="pi pi-refresh"
+            onClick={resetFilters}
+          />
+        </div>
+        <DataTable
+          value={logs}
+          expandedRows={expandedRows}
+          onRowToggle={(e) => setExpandedRows(e.data)}
+          rowExpansionTemplate={rowExpansionTemplate}
+          dataKey="id"
+          tableStyle={{ minWidth: "50rem" }}
+        >
+          <Column expander={allowExpansion} style={{ width: "5rem" }} />
+          <Column field="id" header="Id"></Column>
+          <Column field="username" header="Username" />
+          <Column field="action" header="Action" />
+          <Column field="status" header="Status" />
+          <Column field="ipAddress" header="IP Address" />
+          <Column
+            field="createdAt"
+            header="Created At"
+            body={(rowData) => formatDate(rowData.createdAt)}
+          />
+        </DataTable>
+        <Paginator
+          first={firstLog}
+          rows={rowsLog}
+          totalRecords={totalLog}
+          onPageChange={onPageChangeLogs}
           rowsPerPageOptions={[5, 10, 20, 30]}
           style={{ border: "none" }}
         />

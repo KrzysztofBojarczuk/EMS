@@ -1,8 +1,10 @@
 using EMS.API;
 using EMS.APPLICATION.AutoMapper;
+using EMS.APPLICATION.Behaviors;
 using EMS.CORE.Entities;
 using EMS.CORE.Options;
 using EMS.INFRASTRUCTURE.Data;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -92,6 +94,9 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAppDI(builder.Configuration);
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(Logging<,>));
 
 var app = builder.Build();
 

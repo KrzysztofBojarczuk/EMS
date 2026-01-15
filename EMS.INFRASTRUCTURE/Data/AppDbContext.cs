@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using EMS.CORE.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -25,6 +25,8 @@ namespace EMS.INFRASTRUCTURE.Data
         public DbSet<LocalEntity> Locals { get; set; }
         public DbSet<ReservationEntity> Reservations { get; set; }
         public DbSet<VehicleEntity> Vehicles { get; set; }
+        public DbSet<LogEntity> Logs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ReservationEntity>()
@@ -48,7 +50,7 @@ namespace EMS.INFRASTRUCTURE.Data
             builder.Entity<AppUserEntity>()
                 .HasMany(x => x.TaskEntity)
                 .WithOne(x => x.AppUserEntity)
-                .HasForeignKey( x => x.AppUserId)
+                .HasForeignKey(x => x.AppUserId)
                 .IsRequired();
 
             builder.Entity<AppUserEntity>()

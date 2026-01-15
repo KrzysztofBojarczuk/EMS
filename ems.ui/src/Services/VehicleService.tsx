@@ -23,7 +23,6 @@ export const GetUserVehiclesService = async (
 ) => {
   const params = new URLSearchParams();
 
-  console.log(sortOrder);
   params.append("pageNumber", pageNumber.toString());
   params.append("pageSize", pageSize.toString());
 

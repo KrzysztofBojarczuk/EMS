@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251227115216_InitialCreate")]
+    [Migration("20260114172004_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -246,6 +246,44 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.ToTable("Locals");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.LogEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestData")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -463,13 +501,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "39d181b4-79c0-4eee-b48b-8e4aecc40f8e",
+                            Id = "d049fdba-8d05-454b-a3b4-72cf761707bd",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c33585fe-5c2c-4569-ad3f-acb1f7a8e624",
+                            Id = "d2309a07-6bc0-4c28-abaf-5cdd80ba06e5",
                             Name = "User",
                             NormalizedName = "USER"
                         });
