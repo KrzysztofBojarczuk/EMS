@@ -32,9 +32,9 @@ Vehicles
 ![20](https://github.com/user-attachments/assets/88d9c2ff-c653-454d-a2f4-9dc6576ef209)
 
 Budget:
-![21](https://github.com/user-attachments/assets/ac707a17-e8eb-4a2e-8798-8a96707de288)
-![22](https://github.com/user-attachments/assets/8c1c893a-f630-49ec-9a51-5dd5c493f737)
-![23](https://github.com/user-attachments/assets/ff233909-fe56-4baa-bea9-5de64a148e82)
+![21](https://github.com/user-attachments/assets/1b145521-010f-464c-a318-334ac84402b5)
+![22](https://github.com/user-attachments/assets/6dd89d3e-0806-484f-9529-d45d0b47a662)
+![23](https://github.com/user-attachments/assets/38bff481-89fb-410a-a199-3f96e71493c5)
 
 Locals and Reservations:
 ![24](https://github.com/user-attachments/assets/a61cabb8-b830-4eea-99ba-ce59a6e7a416)
