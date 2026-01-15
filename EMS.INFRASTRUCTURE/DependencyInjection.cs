@@ -1,11 +1,11 @@
-﻿using EMS.CORE.Options;
-using EMS.INFRASTRUCTURE.Data;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using EMS.CORE.Interfaces;
+using EMS.CORE.Options;
+using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Repositories;
 using EMS.INFRASTRUCTURE.Service;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace EMS.INFRASTRUCTURE
 {
@@ -28,6 +28,7 @@ namespace EMS.INFRASTRUCTURE
             services.AddScoped<ILocalRepository, LocalRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<ILogsRepository, LogRepository>();
 
             return services;
         }

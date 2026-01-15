@@ -53,6 +53,25 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RequestData = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserAgent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -419,8 +438,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "39d181b4-79c0-4eee-b48b-8e4aecc40f8e", null, "Admin", "ADMIN" },
-                    { "c33585fe-5c2c-4569-ad3f-acb1f7a8e624", null, "User", "USER" }
+                    { "d049fdba-8d05-454b-a3b4-72cf761707bd", null, "Admin", "ADMIN" },
+                    { "d2309a07-6bc0-4c28-abaf-5cdd80ba06e5", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -559,6 +578,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "PlannedExpenses");
