@@ -247,6 +247,21 @@ const BudgetTransaction = ({}: Props) => {
                 />
               </div>
               <div className="grid gap-3 my-4">
+                <Calendar
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.value as Date)}
+                  placeholder="Date from"
+                  dateFormat="dd/mm/yy"
+                />
+
+                <Calendar
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.value as Date)}
+                  placeholder="Date to"
+                  dateFormat="dd/mm/yy"
+                />
+              </div>
+              <div className="grid gap-3 my-4">
                 <InputText
                   type="number"
                   placeholder="Amount from"
@@ -264,21 +279,6 @@ const BudgetTransaction = ({}: Props) => {
                   onChange={(e) =>
                     setAmountTo(e.target.value ? Number(e.target.value) : null)
                   }
-                />
-              </div>
-              <div className="grid gap-3 my-4">
-                <Calendar
-                  value={dateFrom}
-                  onChange={(e) => setDateFrom(e.value as Date)}
-                  placeholder="Date from"
-                  dateFormat="dd/mm/yy"
-                />
-
-                <Calendar
-                  value={dateTo}
-                  onChange={(e) => setDateTo(e.value as Date)}
-                  placeholder="Date to"
-                  dateFormat="dd/mm/yy"
                 />
               </div>
               <div className="grid gap-3 my-4">
