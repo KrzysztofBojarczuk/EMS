@@ -86,13 +86,47 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm)
+        public async Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm, string sortOrder)
         {
             var query = dbContext.Employees.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(sortOrder))
+            {
+                switch (sortOrder)
+                {
+                    case "salary_asc":
+                        query = query.OrderBy(x => x.Salary);
+                        break;
+                    case "salary_desc":
+                        query = query.OrderByDescending(x => x.Salary);
+                        break;
+                    case "birthDate_asc":
+                        query = query.OrderBy(x => x.DateOfBirth);
+                        break;
+                    case "birthDate_desc":
+                        query = query.OrderByDescending(x => x.DateOfBirth);
+                        break;
+                    case "employmentDate_asc":
+                        query = query.OrderBy(x => x.EmploymentDate);
+                        break;
+                    case "employmentDate_desc":
+                        query = query.OrderByDescending(x => x.EmploymentDate);
+                        break;
+                    case "medicalCheckValidUntil_asc":
+                        query = query.OrderBy(x => x.MedicalCheckValidUntil);
+                        break;
+                    case "medicalCheckValidUntil_desc":
+                        query = query.OrderByDescending(x => x.MedicalCheckValidUntil);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.EmploymentDate);
+                        break;
+                }
             }
 
             return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);

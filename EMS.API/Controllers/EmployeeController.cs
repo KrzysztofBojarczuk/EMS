@@ -96,9 +96,9 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetAllEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrder = null)
         {
-            var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm));
+            var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm, sortOrder));
 
             var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(paginatedEmployees.Items);
 

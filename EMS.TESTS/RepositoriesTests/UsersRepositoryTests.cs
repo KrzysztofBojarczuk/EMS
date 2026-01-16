@@ -35,17 +35,17 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var users = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
-                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
-                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" },
-                new AppUserEntity { UserName = "User 4", Email = "user4@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 4", Email = "user4@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };
 
             _context.Users.AddRange(users);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetAllUsersAsync(1, 10, null);
+            var result = await _repository.GetAllUsersAsync(1, 10, null, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -60,16 +60,16 @@ namespace EMS.TESTS.RepositoriesTests
 
             var users = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com" },
-                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
-                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
+                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com",CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };
 
             _context.Users.AddRange(users);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetAllUsersAsync(1, 10, searchTerm);
+            var result = await _repository.GetAllUsersAsync(1, 10, searchTerm, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -85,16 +85,16 @@ namespace EMS.TESTS.RepositoriesTests
 
             var users = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
-                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
-                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };
 
             _context.Users.AddRange(users);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetAllUsersAsync(1, 10, searchTerm);
+            var result = await _repository.GetAllUsersAsync(1, 10, searchTerm, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -107,9 +107,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var users = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
-                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
-                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };
 
             _context.Users.AddRange(users);
@@ -127,7 +127,7 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task DeleteUserAsync_When_UserExists_Returns_True()
         {
             // Arrange
-            var user = new AppUserEntity { UserName = "test", Email = "test@example.com" };
+            var user = new AppUserEntity { UserName = "test", Email = "test@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

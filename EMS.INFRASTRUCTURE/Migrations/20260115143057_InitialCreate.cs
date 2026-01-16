@@ -32,6 +32,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -438,8 +439,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "d049fdba-8d05-454b-a3b4-72cf761707bd", null, "Admin", "ADMIN" },
-                    { "d2309a07-6bc0-4c28-abaf-5cdd80ba06e5", null, "User", "USER" }
+                    { "8b59f942-a5e3-4111-b7a1-51a9b8a75d0e", null, "Admin", "ADMIN" },
+                    { "a0a9b018-06a6-4b64-9ece-48123d458367", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(

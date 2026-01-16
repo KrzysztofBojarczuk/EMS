@@ -29,6 +29,7 @@ import AddReservation from "../AddReservation/AddReservation";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateLocal from "../UpdateLocal/UpdateLocal";
 import { Dropdown } from "primereact/dropdown";
+import { sortOptionsReservations } from "../../Utils/SortOptions";
 
 type Props = {};
 
@@ -71,14 +72,6 @@ const LocalReservation = (props: Props) => {
   const localPanelRef = useRef<Panel>(null);
   const reservationPanelRef = useRef<Panel>(null);
   const [sortOrder, setSortOrderReservation] = useState<string | null>(null);
-
-  const sortDateOptions = [
-    { label: "None", value: null },
-    { label: "Check-In ↑ (Earliest first)", value: "start_asc" },
-    { label: "Check-In ↓ (Latest first)", value: "start_desc" },
-    { label: "Check-Out ↑ (Earliest first)", value: "end_asc" },
-    { label: "Check-Out ↓ (Latest first)", value: "end_desc" },
-  ];
 
   const resetReservationFilters = () => {
     setSearchReservationTerm("");
@@ -362,7 +355,7 @@ const LocalReservation = (props: Props) => {
           </IconField>
           <Dropdown
             value={sortOrder}
-            options={sortDateOptions}
+            options={sortOptionsReservations}
             onChange={(e) => setSortOrderReservation(e.value)}
             placeholder="Sort by Date"
             showClear

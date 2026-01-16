@@ -11,6 +11,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<TransactionEntity> AddTransactionAsync(TransactionEntity entity)
         {
             entity.Id = Guid.NewGuid();
+            entity.CreationDate = DateTime.UtcNow;
             dbContext.Add(entity);
 
             await dbContext.SaveChangesAsync();
@@ -20,7 +21,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
-        public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, string searchTerm, List<CategoryType> category)
+        public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, string searchTerm, List<CategoryType> category, DateTime? dateFrom, DateTime? dateTo, decimal? amountFrom, decimal? amountTo, string sortOrder)
         {
             var query = dbContext.Transactions.Where(x => x.BudgetId == id);
 
@@ -34,7 +35,45 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => category.Contains(x.Category));
             }
 
-            return await query.OrderByDescending(x => x.CreationDate).ToListAsync();
+            if (dateFrom.HasValue && dateTo.HasValue)
+            {
+                query = query.Where(x => x.CreationDate >= dateFrom.Value && x.CreationDate <= dateTo.Value);
+            }
+
+            if (amountFrom.HasValue && amountTo.HasValue)
+            {
+                query = query.Where(x => x.Amount >= amountFrom.Value && x.Amount <= amountTo.Value);
+            }
+
+            Console.WriteLine($"SortOrder: {sortOrder}");
+
+            if (!string.IsNullOrEmpty(sortOrder))
+            {
+                switch (sortOrder)
+                {
+                    case "amount_asc":
+                        query = query.OrderBy(x => x.Amount);
+                        break;
+                    case "amount_desc":
+                        query = query.OrderByDescending(x => x.Amount);
+                        break;
+                    case "createdate_asc":
+                        query = query.OrderBy(x => x.CreationDate);
+                        break;
+                    case "createdate_desc":
+                        query = query.OrderByDescending(x => x.CreationDate);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.CreationDate);
+                        break;
+                }
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.CreationDate);
+            }
+
+            return await query.ToListAsync();
         }
 
         private async Task UpdateBudgetAsync(Guid budgetId)

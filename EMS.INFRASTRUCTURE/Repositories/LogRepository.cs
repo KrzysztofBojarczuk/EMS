@@ -10,7 +10,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task AddAsync(LogEntity entity)
         {
             entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            entity.CreatedAt = entity.CreatedAt.ToLocalTime();
             dbContext.Logs.Add(entity);
+
             await dbContext.SaveChangesAsync();
         }
 
@@ -36,10 +38,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 switch (sortOrder.ToLower())
                 {
-                    case "creatdate_asc":
+                    case "createdate_asc":
                         query = query.OrderBy(x => x.CreatedAt);
                         break;
-                    case "creatdate_desc":
+                    case "createdate_desc":
                         query = query.OrderByDescending(x => x.CreatedAt);
                         break;
                     default:

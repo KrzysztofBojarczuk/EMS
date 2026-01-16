@@ -26,15 +26,15 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             var budgetId = Guid.NewGuid();
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId }
             };
 
-            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, null))
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, null))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionsByBudgetIdQuery(budgetId, null, null);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, null, null, null, null, null, null, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -43,7 +43,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedTransactions.Count(), result.Count());
             CollectionAssert.AreEqual(expectedTransactions, result.ToList());
-            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, null), Times.Once);
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, null), Times.Once);
         }
 
         [TestMethod]
@@ -55,14 +55,14 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
 
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1 Test", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1 Test", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
             };
 
-            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null))
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null, null, null, null, null, null))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionsByBudgetIdQuery(budgetId, searchTerm, null);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, searchTerm, null, null, null, null, null, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -71,7 +71,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedTransactions.Count(), result.Count());
             CollectionAssert.AreEqual(expectedTransactions, result.ToList());
-            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null), Times.Once);
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null, null, null, null, null, null), Times.Once);
         }
 
         [TestMethod]
@@ -81,10 +81,10 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             var budgetId = Guid.NewGuid();
             var searchTerm = "nonexistent";
 
-            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null))
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null, null, null, null, null, null))
                 .ReturnsAsync(new List<TransactionEntity>());
 
-            var query = new GetTransactionsByBudgetIdQuery(budgetId, searchTerm, null);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, searchTerm, null, null, null, null, null, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -92,7 +92,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
-            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null), Times.Once);
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null, null, null, null, null, null), Times.Once);
         }
 
         [TestMethod]
@@ -104,14 +104,14 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
 
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
             };
 
-            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, categoryType))
+            _mockTransactionRepository.Setup(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, categoryType, null, null, null, null, null))
                 .ReturnsAsync(expectedTransactions);
 
-            var query = new GetTransactionsByBudgetIdQuery(budgetId, null, categoryType);
+            var query = new GetTransactionsByBudgetIdQuery(budgetId, null, categoryType, null, null, null, null, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -120,7 +120,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedTransactions.Count(), result.Count());
             CollectionAssert.AreEqual(expectedTransactions, result.ToList());
-            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, categoryType), Times.Once);
+            _mockTransactionRepository.Verify(x => x.GetTransactionsByBudgetIdAsync(budgetId, null, categoryType, null, null, null, null, null), Times.Once);
         }
     }
 }

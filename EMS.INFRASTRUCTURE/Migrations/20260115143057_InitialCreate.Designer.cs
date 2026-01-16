@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260114172004_InitialCreate")]
+    [Migration("20260115143057_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -90,6 +90,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -501,13 +504,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d049fdba-8d05-454b-a3b4-72cf761707bd",
+                            Id = "8b59f942-a5e3-4111-b7a1-51a9b8a75d0e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d2309a07-6bc0-4c28-abaf-5cdd80ba06e5",
+                            Id = "a0a9b018-06a6-4b64-9ece-48123d458367",
                             Name = "User",
                             NormalizedName = "USER"
                         });

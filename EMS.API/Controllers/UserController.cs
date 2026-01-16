@@ -12,9 +12,9 @@ namespace EMS.API.Controllers
     {
         [HttpGet("GetAllUser")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllUserAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetAllUserAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrder = null)
         {
-            var result = await sender.Send(new GetAllUsersQuery(pageNumber, pageSize, searchTerm));
+            var result = await sender.Send(new GetAllUsersQuery(pageNumber, pageSize, searchTerm, sortOrder));
 
             return Ok(new
             {

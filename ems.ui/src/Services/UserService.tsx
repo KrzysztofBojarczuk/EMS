@@ -6,14 +6,22 @@ const api = "https://localhost:7256/api/";
 export const GetAllUsersService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm?: string
+  searchTerm?: string,
+  sortOrder?: string | null
 ) => {
+  const params = new URLSearchParams();
+
+  params.append("pageNumber", pageNumber.toString());
+  params.append("pageSize", pageSize.toString());
+
+  if (searchTerm?.trim()) params.append("searchTerm", searchTerm.trim());
+
+  if (sortOrder) params.append("sortOrder", sortOrder);
+
   const response = await axios.get<PaginatedUserResponse>(
-    api + "user/GetAllUser",
-    {
-      params: { pageNumber, pageSize, searchTerm },
-    }
+    `${api}User/GetAllUser?${params.toString()}`
   );
+
   return response.data;
 };
 

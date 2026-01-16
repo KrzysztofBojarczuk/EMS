@@ -21,17 +21,27 @@ import { Column } from "primereact/column";
 import {
   dateBodyTemplate,
   statusOfTaskBodyTemplate,
+  taskTypeOptions,
+  taskTypeToText,
 } from "../Utils/TaskTemplates";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { formatCurrency } from "../Utils/Currency";
-import { formatDate } from "../Utils/DateUtils";
+import { calculateAge, formatDate, formatDateTime } from "../Utils/DateUtils";
 import { LogGet } from "../../Models/Logs";
 import { GetLogsService } from "../../Services/LogsService";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
+import { StatusOfTask } from "../../Enum/StatusOfTask";
+import { SelectButton } from "primereact/selectbutton";
+import {
+  sortOptionsEmployees,
+  sortOptionsLogs,
+  sortOptionsTasks,
+  sortOptionsUsers,
+} from "../Utils/SortOptions";
 
 const AdministrationPanel: React.FC = (): JSX.Element => {
   const [numberUser, setNumberUsers] = useState<number>(0);
@@ -47,8 +57,13 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
 
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
-  const [sortOrder, setSortOrderLog] = useState<string | null>(null);
-
+  const [sortOrderLogs, setSortOrderLog] = useState<string | null>(null);
+  const [sortOrderEmployee, setSortOrderEmployee] = useState<string | null>(
+    null
+  );
+  const [sortOrderTask, setSortOrderTask] = useState<string | null>(null);
+  const [sortOrderUser, setSortOrderUser] = useState<string | null>(null);
+  const [statusOfTask, setStatusOfTask] = useState<string[]>([]);
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
 
   const [confirmUserVisible, setConfirmUserVisible] = useState(false);
@@ -77,18 +92,32 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
     DataTableExpandedRows | DataTableValueArray | undefined
   >(undefined);
 
-  const resetFilters = () => {
+  const selectButtonStatusTask = (selectedCategories: string[]) => {
+    setStatusOfTask(selectedCategories);
+  };
+
+  const resetFiltersUser = () => {
+    setSearchUserTerm("");
+    setSortOrderUser(null);
+  };
+
+  const resetFiltersTask = () => {
+    setSearchTaskTerm("");
+    setStatusOfTask([]);
+    setSortOrderTask(null);
+  };
+
+  const resetFiltersEmployee = () => {
+    setSearchEmployeeTerm("");
+    setSortOrderEmployee(null);
+  };
+
+  const resetFiltersLogs = () => {
     setDateFrom(null);
     setDateTo(null);
     setSortOrderLog(null);
     setSearchLogTerm("");
   };
-
-  const sortOptions = [
-    { label: "None", value: null },
-    { label: "Date ↑ (Oldest first)", value: "creatdate_asc" },
-    { label: "Date ↓ (Newest first)", value: "creatdate_desc" },
-  ];
 
   const fetchNumberUsers = async () => {
     const data = await GetNumberOfUsersService();
@@ -100,7 +129,12 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   }, []);
 
   const fetchUsers = async (page: number, size: number) => {
-    const data = await GetAllUsersService(page, size, searchUserTerm);
+    const data = await GetAllUsersService(
+      page,
+      size,
+      searchUserTerm,
+      sortOrderUser
+    );
     setUsers(data.userGet);
     setTotalUsers(data.totalItems);
   };
@@ -113,10 +147,15 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     goToPageUser(1, rowsUser);
-  }, [searchUserTerm]);
+  }, [searchUserTerm, sortOrderUser]);
 
   const fetchEmployees = async (page: number, size: number) => {
-    const data = await GetAllEmployeesService(page, size, searchEmployeeTerm);
+    const data = await GetAllEmployeesService(
+      page,
+      size,
+      searchEmployeeTerm,
+      sortOrderEmployee
+    );
     setEmployees(data.employeeGet);
     setTotalEmployees(data.totalItems);
   };
@@ -129,10 +168,16 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     goToPageEmployees(1, rowsEmployee);
-  }, [searchEmployeeTerm]);
+  }, [searchEmployeeTerm, sortOrderEmployee]);
 
   const fetchTasks = async (page: number, size: number) => {
-    const data = await GetAllTasksService(page, size, searchTaskTerm);
+    const data = await GetAllTasksService(
+      page,
+      size,
+      searchTaskTerm,
+      statusOfTask,
+      sortOrderTask
+    );
     setTasks(data.taskGet);
     setTotalTasks(data.totalItems);
   };
@@ -145,7 +190,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     goToPageTasks(1, rowsTask);
-  }, [searchTaskTerm]);
+  }, [searchTaskTerm, statusOfTask, sortOrderTask]);
 
   const fetchLogs = async (page: number, size: number) => {
     const data = await GetLogsService(
@@ -154,7 +199,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       searchLogTerm,
       dateFrom,
       dateTo,
-      sortOrder
+      sortOrderLogs
     );
     setLogs(data.logs);
     setTotalLog(data.totalItems);
@@ -168,7 +213,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     goToPageLogs(1, rowsLog);
-  }, [searchLogTerm, dateFrom, dateTo, sortOrder]);
+  }, [searchLogTerm, dateFrom, dateTo, sortOrderLogs]);
 
   const showUserDeleteConfirmation = (id: string) => {
     setDeleteUserId(id);
@@ -234,18 +279,37 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   return (
     <div className="xl:m-4 lg:m-4 md:m-2">
       <Panel ref={userPanelRef} header="Users" toggleable collapsed>
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search"> </InputIcon>
-          <InputText
-            value={searchUserTerm}
-            onChange={(e) => setSearchUserTerm(e.target.value)}
-            placeholder="Search"
+        <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search"> </InputIcon>
+            <InputText
+              value={searchUserTerm}
+              onChange={(e) => setSearchUserTerm(e.target.value)}
+              placeholder="Search"
+            />
+          </IconField>
+          <Dropdown
+            value={sortOrderUser}
+            options={sortOptionsUsers}
+            onChange={(e) => setSortOrderUser(e.value)}
+            placeholder="Sorting"
+            showClear
           />
-        </IconField>
+          <Button
+            label="Reset Filters"
+            icon="pi pi-refresh"
+            onClick={resetFiltersUser}
+          />
+        </div>
         <DataTable value={users}>
           <Column field="id" header="Id" />
           <Column field="userName" header="User name" />
           <Column field="email" header="Email" />
+          <Column
+            field="createdAt"
+            header="Created At"
+            body={(rowData) => formatDateTime(rowData.createdAt)}
+          />
           <Column
             header="Action"
             body={(rowData) => (
@@ -266,16 +330,29 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           style={{ border: "none" }}
         />
       </Panel>
-
       <Panel ref={employeePanelRef} header="Employees" toggleable collapsed>
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search"> </InputIcon>
-          <InputText
-            value={searchEmployeeTerm}
-            onChange={(e) => setSearchEmployeeTerm(e.target.value)}
-            placeholder="Search"
+        <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search"> </InputIcon>
+            <InputText
+              value={searchEmployeeTerm}
+              onChange={(e) => setSearchEmployeeTerm(e.target.value)}
+              placeholder="Search"
+            />
+          </IconField>
+          <Dropdown
+            value={sortOrderEmployee}
+            options={sortOptionsEmployees}
+            onChange={(e) => setSortOrderEmployee(e.value)}
+            placeholder="Sorting"
+            showClear
           />
-        </IconField>
+          <Button
+            label="Reset Filters"
+            icon="pi pi-refresh"
+            onClick={resetFiltersEmployee}
+          />
+        </div>
         <DataTable value={employees}>
           <Column field="id" header="Id" />
           <Column field="name" header="Name" />
@@ -286,7 +363,15 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
             header="Salary"
             body={(rowData) => formatCurrency(rowData.salary)}
           ></Column>
-          <Column field="age" header="Age"></Column>
+          <Column
+            header="Age"
+            body={(rowData: EmployeeGet) => calculateAge(rowData.dateOfBirth)}
+          ></Column>
+          <Column
+            field="dateOfBirth"
+            header="Date Of Birth"
+            body={(rowData) => formatDate(rowData.dateOfBirth)}
+          ></Column>
           <Column
             field="employmentDate"
             header="Employment Date"
@@ -307,16 +392,37 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           style={{ border: "none" }}
         />
       </Panel>
-
       <Panel ref={taskPanelRef} header="Tasks" toggleable collapsed>
-        <IconField iconPosition="left">
-          <InputIcon className="pi pi-search"> </InputIcon>
-          <InputText
-            value={searchTaskTerm}
-            onChange={(e) => setSearchTaskTerm(e.target.value)}
-            placeholder="Search"
+        <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search"> </InputIcon>
+            <InputText
+              value={searchTaskTerm}
+              onChange={(e) => setSearchTaskTerm(e.target.value)}
+              placeholder="Search"
+            />
+          </IconField>
+          <SelectButton
+            value={statusOfTask}
+            onChange={(e) => selectButtonStatusTask(e.value)}
+            optionLabel="name"
+            options={taskTypeOptions}
+            multiple
+            className="mr-4"
           />
-        </IconField>
+          <Dropdown
+            value={sortOrderTask}
+            options={sortOptionsTasks}
+            onChange={(e) => setSortOrderTask(e.value)}
+            placeholder="Sorting"
+            showClear
+          />
+          <Button
+            label="Reset Filters"
+            icon="pi pi-refresh"
+            onClick={resetFiltersTask}
+          />
+        </div>
         <DataTable value={tasks}>
           <Column field="id" header="Id"></Column>
           <Column field="name" header="Name"></Column>
@@ -348,7 +454,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           style={{ border: "none" }}
         />
       </Panel>
-
       <Panel ref={userPanelRef} header="Logs" toggleable collapsed>
         <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
           <IconField iconPosition="left">
@@ -374,15 +479,15 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
             dateFormat="dd/mm/yy"
           />
           <Dropdown
-            value={sortOrder}
-            options={sortOptions}
+            value={sortOrderLogs}
+            options={sortOptionsLogs}
             onChange={(e) => setSortOrderLog(e.value)}
             placeholder="Sorting"
           />
           <Button
             label="Reset Filters"
             icon="pi pi-refresh"
-            onClick={resetFilters}
+            onClick={resetFiltersLogs}
           />
         </div>
         <DataTable
@@ -402,7 +507,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           <Column
             field="createdAt"
             header="Created At"
-            body={(rowData) => formatDate(rowData.createdAt)}
+            body={(rowData) => formatDateTime(rowData.createdAt)}
           />
         </DataTable>
         <Paginator
@@ -414,7 +519,6 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
           style={{ border: "none" }}
         />
       </Panel>
-
       <ConfirmationDialog
         visible={confirmUserVisible}
         header="Confirm User Deletion"

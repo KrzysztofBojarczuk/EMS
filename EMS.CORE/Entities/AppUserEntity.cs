@@ -1,10 +1,11 @@
-﻿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using Microsoft.AspNetCore.Identity;
 
 namespace EMS.CORE.Entities
 {
     public class AppUserEntity : IdentityUser
     {
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public ICollection<TaskEntity> TaskEntity { get; set; } = new List<TaskEntity>();
         public ICollection<EmployeeEntity> EmployeeEntities { get; set; } = new List<EmployeeEntity>();
         public ICollection<AddressEntity> AddressEntities { get; set; } = new List<AddressEntity>();

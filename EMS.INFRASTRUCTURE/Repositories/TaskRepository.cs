@@ -86,13 +86,44 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<PaginatedList<TaskEntity>> GetAllTasksAsync(int pageNumber, int pageSize, string searchTerm)
+        public async Task<PaginatedList<TaskEntity>> GetAllTasksAsync(int pageNumber, int pageSize, string searchTerm, List<StatusOfTask> statusOfTask, string sortOrder)
         {
             var query = dbContext.Tasks.AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            if (statusOfTask != null && statusOfTask.Any())
+            {
+                query = query.Where(x => statusOfTask.Contains(x.Status));
+            }
+
+            if (!string.IsNullOrEmpty(sortOrder))
+            {
+                switch (sortOrder)
+                {
+                    case "start_asc":
+                        query = query.OrderBy(x => x.StartDate);
+                        break;
+                    case "start_desc":
+                        query = query.OrderByDescending(x => x.StartDate);
+                        break;
+                    case "end_asc":
+                        query = query.OrderBy(x => x.EndDate);
+                        break;
+                    case "end_desc":
+                        query = query.OrderByDescending(x => x.EndDate);
+                        break;
+                    default:
+                        query = query.OrderByDescending(x => x.EndDate);
+                        break;
+                }
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.EndDate);
             }
 
             return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
