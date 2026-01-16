@@ -27,6 +27,7 @@ import UpdateEmployee from "../UpdateEmployee/UpdateEmployee";
 import { Dropdown } from "primereact/dropdown";
 import { calculateAge, formatDate } from "../../Utils/DateUtils";
 import { formatCurrency } from "../../Utils/Currency";
+import { sortOptionsEmployees } from "../../Utils/SortOptions";
 
 interface Props {}
 
@@ -57,24 +58,6 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
   >(undefined);
 
   const [sortOrder, setSortOrderEmployee] = useState<string | null>(null);
-
-  const sortOptions = [
-    { label: "None", value: null },
-    { label: "Salary ↑ (Lowest first)", value: "salary_asc" },
-    { label: "Salary ↓ (Highest first)", value: "salary_desc" },
-    { label: "Date Of Birth ↑ (Youngest first)", value: "birthDate_asc" },
-    { label: "Date Of Birth ↓ (Oldest first)", value: "birthDate_desc" },
-    { label: "Employment Date ↑ (Oldest first)", value: "employmentDate_asc" },
-    { label: "Employment Date ↓ (Newest first)", value: "employmentDate_desc" },
-    {
-      label: "Medical Check ↑ (Oldest first)",
-      value: "medicalCheckValidUntil_asc",
-    },
-    {
-      label: "Medical Check ↓ (Newest first)",
-      value: "medicalCheckValidUntil_desc",
-    },
-  ];
 
   const resetFilters = () => {
     setSearchTerm("");
@@ -222,7 +205,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
         </IconField>
         <Dropdown
           value={sortOrder}
-          options={sortOptions}
+          options={sortOptionsEmployees}
           onChange={(e) => setSortOrderEmployee(e.value)}
           placeholder="Sorting"
           showClear

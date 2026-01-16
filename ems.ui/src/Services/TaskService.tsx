@@ -40,11 +40,27 @@ export const GetUserTasksService = async (
 export const GetAllTasksService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm?: string
+  searchTerm?: string,
+  statusOfTask?: string[],
+  sortOrder?: string | null
 ) => {
-  const response = await axios.get<PaginatedTaskResponse>(api + "Task", {
-    params: { pageNumber, pageSize, searchTerm },
-  });
+  const params = new URLSearchParams();
+
+  params.append("pageNumber", pageNumber.toString());
+  params.append("pageSize", pageSize.toString());
+
+  if (searchTerm?.trim()) params.append("searchTerm", searchTerm.trim());
+
+  if (statusOfTask && statusOfTask.length > 0)
+    statusOfTask.forEach((status) =>
+      params.append("statusOfTask", status.toString())
+    );
+
+  if (sortOrder) params.append("sortOrder", sortOrder);
+
+  const response = await axios.get<PaginatedTaskResponse>(
+    `${api}Task?${params.toString()}`
+  );
 
   return response.data;
 };

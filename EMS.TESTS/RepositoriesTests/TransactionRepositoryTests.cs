@@ -63,17 +63,17 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreationDate = DateTime.UtcNow.AddMinutes(-4), Category = CategoryType.Expense, Amount = 800, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Expense, Amount = 800, BudgetId = budgetId }
             };
 
             _context.Transactions.AddRange(transactions);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -89,17 +89,17 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1 Test", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2 Test", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreationDate = DateTime.UtcNow.AddMinutes(-4), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1 Test", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2 Test", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId }
              };
 
             _context.Transactions.AddRange(transactions);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null, null, null, null, null, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -116,16 +116,16 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId }
              };
 
             _context.Transactions.AddRange(transactions);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, searchTerm, null, null, null, null, null, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -141,16 +141,16 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = DateTime.UtcNow.AddMinutes(-1), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = DateTime.UtcNow.AddMinutes(-2), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = DateTime.UtcNow.AddMinutes(-3), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 1000, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Expense, Amount = 200, BudgetId = budgetId },
              };
 
             _context.Transactions.AddRange(transactions);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, categoryType);
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, categoryType, null, null, null, null, null);
 
             // Assert
             Assert.IsNotNull(result);

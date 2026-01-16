@@ -20,15 +20,36 @@ export const PostTransactionService = async (
 export const GetUserTransactionsByBudgetIdService = async (
   budgetId: string,
   searchTerm?: string,
-  category?: string[]
+  category?: string[],
+  dateFrom?: Date | null,
+  dateTo?: Date | null,
+  amountFrom?: number | null,
+  amountTo?: number | null,
+  sortOrder?: string | null
 ) => {
-  const url = `${api}Transaction/${budgetId}?searchTerm=${searchTerm}${
-    category && category.length > 0
-      ? `&${category.map((cat) => `category=${cat}`).join("&")}`
-      : ""
-  }`;
+  const params = new URLSearchParams();
 
-  const response = await axios.get<TransactionGet[]>(url);
+  if (searchTerm) params.append("searchTerm", searchTerm);
+
+  if (category && category.length > 0) {
+    category.forEach((cat) => params.append("category", cat));
+  }
+
+  if (dateFrom && dateTo) {
+    params.append("dateFrom", dateFrom.toISOString());
+    params.append("dateTo", dateTo.toISOString());
+  }
+
+  if (amountFrom != null && amountTo != null) {
+    params.append("amountFrom", amountFrom.toString());
+    params.append("amountTo", amountTo.toString());
+  }
+
+  if (sortOrder) params.append("sortOrder", sortOrder);
+
+  const response = await axios.get<TransactionGet[]>(
+    `${api}Transaction/${budgetId}?${params.toString()}`
+  );
   return response.data;
 };
 

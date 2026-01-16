@@ -28,17 +28,17 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             var expectedUsers = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1", Email = "user1@example.com" },
-                new AppUserEntity { UserName = "User 2", Email = "user2@example.com" },
-                new AppUserEntity { UserName = "User 3", Email = "user3@example.com" }
+                new AppUserEntity { UserName = "User 1", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 2", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 3", Email = "user3@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };
 
             var paginatedList = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
-            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, null))
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, null, null))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetAllUsersQuery(pageNumber, pageSize, null);
+            var query = new GetAllUsersQuery(pageNumber, pageSize, null, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -47,7 +47,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedUsers.Count(), result.Items.Count());
             CollectionAssert.AreEqual(expectedUsers, result.Items.ToList());
-            _mockUserRepository.Verify(x => x.GetAllUsersAsync(pageNumber, pageSize, null), Times.Once);
+            _mockUserRepository.Verify(x => x.GetAllUsersAsync(pageNumber, pageSize, null, null), Times.Once);
         }
 
         [TestMethod]
@@ -60,16 +60,16 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             var expectedUsers = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com" },
-                new AppUserEntity { UserName = "User 2 Test", Email = "user2@example.com" }
+                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 2 Test", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };
 
             var paginatedList = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
 
-            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm, null))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetAllUsersQuery(pageNumber, pageSize, searchTerm);
+            var query = new GetAllUsersQuery(pageNumber, pageSize, searchTerm, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -78,7 +78,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedUsers.Count(), result.Items.Count());
             CollectionAssert.AreEqual(expectedUsers, result.Items.ToList());
-            _mockUserRepository.Verify(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm), Times.Once);
+            _mockUserRepository.Verify(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm, null), Times.Once);
         }
 
         [TestMethod]
@@ -91,10 +91,10 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
 
             var paginatedList = new PaginatedList<AppUserEntity>(new List<AppUserEntity>(), 0, pageNumber, pageSize);
 
-            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm))
+            _mockUserRepository.Setup(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm, null))
                 .ReturnsAsync(paginatedList);
 
-            var query = new GetAllUsersQuery(pageNumber, pageSize, searchTerm);
+            var query = new GetAllUsersQuery(pageNumber, pageSize, searchTerm, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -102,7 +102,7 @@ namespace EMS.TESTS.Features.AccountTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count());
-            _mockUserRepository.Verify(x => x.GetAllUsersAsync(query.pageNumber, query.pageSize, query.searchTerm), Times.Once);
+            _mockUserRepository.Verify(x => x.GetAllUsersAsync(pageNumber, pageSize, searchTerm, null), Times.Once);
         }
     }
 }

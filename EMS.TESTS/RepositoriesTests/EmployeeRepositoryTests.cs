@@ -509,7 +509,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, null);
+            var result = await _repository.GetEmployeesAsync(1, 10, null, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -534,7 +534,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm);
+            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -560,7 +560,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm);
+            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm, null);
 
             // Assert
             Assert.IsNotNull(result);

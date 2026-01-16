@@ -35,3 +35,10 @@ export const dateBodyTemplate = (
 ) => {
   return formatDate(rowData[field]);
 };
+
+export const taskTypeOptions = Object.entries(taskTypeToText).map(
+  ([key, value]) => ({
+    name: value,
+    value: Number(key) as StatusOfTask,
+  })
+);

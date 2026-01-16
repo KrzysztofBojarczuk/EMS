@@ -70,7 +70,7 @@ namespace EMS.INFRASTRUCTURE.Data
             }
 
             // Add employees if not exist
-            if (!context.Employees.Any())
+            if (!context.Employees.Any() && !context.Vehicles.Any() && !context.Address.Any() && !context.Tasks.Any())
             {
                 var johnUser = await userManager.FindByEmailAsync(johnEmail); // Retrieve John user
 
@@ -116,9 +116,19 @@ namespace EMS.INFRASTRUCTURE.Data
                     new AddressEntity { Id = Guid.NewGuid(), City = "San Francisco", Street = "Market Street", Number = "505", ZipCode = "94-101", AppUserId = johnUser.Id }
                 };
 
+                var tasks = new List<TaskEntity>
+                {
+                    new TaskEntity { Id = Guid.NewGuid(), Name = "Task 1", Description = "Task 1", StartDate = new DateTime(2020, 1, 11), EndDate = new DateTime(2025, 6, 16), Status = StatusOfTask.Active, AppUserId = johnUser.Id, AppUserEntity = johnUser, AddressId = addresses[0].Id },
+                    new TaskEntity { Id = Guid.NewGuid(), Name = "Task 2", Description = "Task 2", StartDate = new DateTime(2021, 2, 12), EndDate = new DateTime(2026, 7, 17), Status = StatusOfTask.Active, AppUserId = johnUser.Id, AppUserEntity = johnUser, AddressId = addresses[0].Id },
+                    new TaskEntity { Id = Guid.NewGuid(), Name = "Task 3", Description = "Task 3", StartDate = new DateTime(2022, 3, 13), EndDate = new DateTime(2027, 8, 18), Status = StatusOfTask.Active, AppUserId = johnUser.Id, AppUserEntity = johnUser, AddressId = addresses[0].Id },
+                    new TaskEntity { Id = Guid.NewGuid(), Name = "Task 4", Description = "Task 4", StartDate = new DateTime(2023, 4, 14), EndDate = new DateTime(2028, 9, 19), Status = StatusOfTask.Done, AppUserId = johnUser.Id, AppUserEntity = johnUser, AddressId = addresses[0].Id },
+                    new TaskEntity { Id = Guid.NewGuid(), Name = "Task 5", Description = "Task 5", StartDate = new DateTime(2024, 5, 15), EndDate = new DateTime(2029, 10, 11), Status = StatusOfTask.Archive, AppUserId = johnUser.Id, AppUserEntity = johnUser, AddressId = addresses[0].Id },
+                };
+
                 await context.Employees.AddRangeAsync(employees);
                 await context.Vehicles.AddRangeAsync(vehicles);
                 await context.Address.AddRangeAsync(addresses);
+                await context.Tasks.AddRangeAsync(tasks);
                 await context.SaveChangesAsync(); // Commit changes to the database
             }
         }

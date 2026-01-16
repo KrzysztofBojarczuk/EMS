@@ -28,6 +28,7 @@ export interface UserGet {
   lockoutEnabled: boolean;
   accessFailedCount: number;
   active: boolean;
+  createdAt: string;
 }
 
 export interface PaginatedUserResponse {

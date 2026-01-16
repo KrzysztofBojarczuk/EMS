@@ -27,6 +27,7 @@ import { StatusOfTask } from "../../../Enum/StatusOfTask";
 import {
   dateBodyTemplate,
   statusOfTaskBodyTemplate,
+  taskTypeOptions,
   taskTypeToText,
 } from "../../Utils/TaskTemplates";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
@@ -35,11 +36,6 @@ import { SelectButton } from "primereact/selectbutton";
 import { Checkbox } from "primereact/checkbox";
 
 type Props = {};
-
-interface TaskTypeOption {
-  name: string;
-  value: StatusOfTask;
-}
 
 const ListTask = (props: Props) => {
   const [tasks, setTasks] = useState<TaskGet[]>([]);
@@ -59,20 +55,13 @@ const ListTask = (props: Props) => {
   const [statusOfTask, setStatusOfTask] = useState<string[]>([]);
   const [sortOrder, setSortOrderTask] = useState<string | null>(null);
 
-  const sortDateOptions = [
+  const sortOptionsTasks = [
     { label: "None", value: null },
     { label: "Start Date ↑ (Oldest first)", value: "start_asc" },
     { label: "Start Date ↓ (Newest first)", value: "start_desc" },
     { label: "End Date ↑ (Oldest first)", value: "end_asc" },
     { label: "End Date ↓ (Newest first)", value: "end_desc" },
   ];
-
-  const taskTypeOptions: TaskTypeOption[] = Object.entries(
-    taskTypeToText as Record<StatusOfTask, string>
-  ).map(([key, value]) => ({
-    name: value as string,
-    value: Number(key) as StatusOfTask,
-  }));
 
   const selectButtonStatusTask = (selectedCategories: string[]) => {
     setStatusOfTask(selectedCategories);
@@ -264,7 +253,7 @@ const ListTask = (props: Props) => {
         />
         <Dropdown
           value={sortOrder}
-          options={sortDateOptions}
+          options={sortOptionsTasks}
           onChange={(e) => setSortOrderTask(e.value)}
           placeholder="Sort by Date"
           showClear

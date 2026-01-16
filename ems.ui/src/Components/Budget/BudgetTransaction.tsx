@@ -24,6 +24,10 @@ import {
 import { CategoryType } from "../../Enum/CategoryType";
 import ConfirmationDialog from "../Confirmation/ConfirmationDialog";
 import AddTransaction from "./AddTransaction/AddTransaction";
+import { Dropdown } from "primereact/dropdown";
+import { sortOptionsTransactions } from "../Utils/SortOptions";
+import { Calendar } from "primereact/calendar";
+import { formatDate, formatDateTime } from "../Utils/DateUtils";
 
 type Props = {};
 
@@ -38,10 +42,28 @@ const BudgetTransaction = ({}: Props) => {
   const [value, setValue] = useState(null);
   const [isDialogVisible, setIsDialogVisible] = useState<boolean>(false);
 
+  const [dateFrom, setDateFrom] = useState<Date | null>(null);
+  const [dateTo, setDateTo] = useState<Date | null>(null);
+  const [amountFrom, setAmountFrom] = useState<number | null>(null);
+  const [amountTo, setAmountTo] = useState<number | null>(null);
+  const [sortOrderTransaction, setSortOrderTransaction] = useState<
+    string | null
+  >(null);
+
   const items = [
     { name: "Income", value: 1 },
     { name: "Expense", value: 2 },
   ];
+
+  const resetFilters = () => {
+    setSearchTerm("");
+    setCategory([]);
+    setDateFrom(null);
+    setDateTo(null);
+    setAmountFrom(null);
+    setAmountTo(null);
+    setSortOrderTransaction(null);
+  };
 
   const fetchBudgetUser = async () => {
     const data = await GetUserBudgetService();
@@ -53,7 +75,12 @@ const BudgetTransaction = ({}: Props) => {
       const data = await GetUserTransactionsByBudgetIdService(
         budgetUser.id,
         searchTerm,
-        category
+        category,
+        dateFrom,
+        dateTo,
+        amountFrom,
+        amountTo,
+        sortOrderTransaction
       );
       setTransaction(data);
       setConfirmVisible(false);
@@ -66,7 +93,16 @@ const BudgetTransaction = ({}: Props) => {
 
   useEffect(() => {
     fetchTransaction();
-  }, [budgetUser, searchTerm, category]);
+  }, [
+    budgetUser,
+    searchTerm,
+    category,
+    dateFrom,
+    dateTo,
+    amountFrom,
+    amountTo,
+    sortOrderTransaction,
+  ]);
 
   const handleSubmitAddBudget = async () => {
     const newBudget: BudgetPost = {
@@ -166,6 +202,7 @@ const BudgetTransaction = ({}: Props) => {
                   onClick={() => showDeleteConfirmation(transaction.id)}
                 ></i>
               </span>
+              <p>{formatDateTime(transaction.creationDate)}</p>
             </div>
           </div>
         </div>
@@ -192,13 +229,12 @@ const BudgetTransaction = ({}: Props) => {
           </div>
           <TabView>
             <TabPanel header="Transaction">
-              <div className="flex justify-content-center xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3">
+              <div className="grid gap-3 my-4">
                 <IconField iconPosition="left">
-                  <InputIcon className="pi pi-search"> </InputIcon>
+                  <InputIcon className="pi pi-search" />
                   <InputText
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="mr-4"
                     placeholder="Search"
                   />
                 </IconField>
@@ -208,32 +244,81 @@ const BudgetTransaction = ({}: Props) => {
                   optionLabel="name"
                   options={items}
                   multiple
-                  className="mr-4"
+                />
+              </div>
+              <div className="grid gap-3 my-4">
+                <InputText
+                  type="number"
+                  placeholder="Amount from"
+                  value={amountFrom != null ? amountFrom.toString() : ""}
+                  onChange={(e) =>
+                    setAmountFrom(
+                      e.target.value ? Number(e.target.value) : null
+                    )
+                  }
+                />
+                <InputText
+                  type="number"
+                  placeholder="Amount to"
+                  value={amountTo != null ? amountTo.toString() : ""}
+                  onChange={(e) =>
+                    setAmountTo(e.target.value ? Number(e.target.value) : null)
+                  }
+                />
+              </div>
+              <div className="grid gap-3 my-4">
+                <Calendar
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.value as Date)}
+                  placeholder="Date from"
+                  dateFormat="dd/mm/yy"
+                />
+
+                <Calendar
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.value as Date)}
+                  placeholder="Date to"
+                  dateFormat="dd/mm/yy"
+                />
+              </div>
+              <div className="grid gap-3 my-4">
+                <Dropdown
+                  value={sortOrderTransaction}
+                  options={sortOptionsTransactions}
+                  onChange={(e) => setSortOrderTransaction(e.value)}
+                  placeholder="Sorting"
+                />
+
+                <Button
+                  label="Reset Filters"
+                  icon="pi pi-refresh"
+                  onClick={resetFilters}
                 />
                 <Button
                   label="Add Transaction"
                   onClick={() => setVisible(true)}
                 />
-                <Dialog
-                  header="Add Transaction"
-                  visible={visible}
-                  onHide={() => setVisible(false)}
-                >
-                  <AddTransaction
-                    budgetId={budgetUser.id}
-                    onClose={() => setVisible(false)}
-                    onAddSuccess={() => {
-                      fetchTransaction();
-                      fetchBudgetUser();
-                    }}
-                  />
-                </Dialog>
               </div>
+
+              <Dialog
+                header="Add Transaction"
+                visible={visible}
+                onHide={() => setVisible(false)}
+              >
+                <AddTransaction
+                  budgetId={budgetUser.id}
+                  onClose={() => setVisible(false)}
+                  onAddSuccess={() => {
+                    fetchTransaction();
+                    fetchBudgetUser();
+                  }}
+                />
+              </Dialog>
               <DataView
                 value={transaction}
                 listTemplate={listTemplate}
                 paginator
-                rows={5}
+                rows={20}
               />
             </TabPanel>
             <TabPanel header="Planned Expense">

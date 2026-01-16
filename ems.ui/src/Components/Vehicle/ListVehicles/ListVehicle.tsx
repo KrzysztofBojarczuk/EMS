@@ -26,6 +26,7 @@ import { Dialog } from "primereact/dialog";
 import AddVehicle from "../AddVehicle/AddVehicle";
 import UpdateVehicle from "../UpdateVehicle/UpdateVehicle";
 import { formatCurrency } from "../../Utils/Currency";
+import { sortOptionsVehicles } from "../../Utils/SortOptions";
 
 interface VehicleTypeOption {
   name: string;
@@ -62,23 +63,6 @@ const ListVehicle = () => {
     setSearchVehicleTerm("");
     seVehicleType([]);
   };
-
-  const sortOptions = [
-    { label: "None", value: null },
-    { label: "Mileage ↑ (Lowest first)", value: "mileage_asc" },
-    { label: "Mileage ↓ (Highest first)", value: "mileage_desc" },
-    { label: "Date Production ↑ (Oldest first)", value: "date_asc" },
-    { label: "Date Production ↓ (Newest first)", value: "date_desc" },
-    { label: "OC Validity ↑ (Oldest first)", value: "insurance_oc_asc" },
-    { label: "OC Validity ↓ (Newest first)", value: "insurance_oc_desc" },
-    { label: "Technical Inspection ↑ (Oldest first)", value: "inspection_asc" },
-    {
-      label: "Technical Inspection ↓ (Newest first)",
-      value: "inspection_desc",
-    },
-    { label: "Insurance Cost ↑ (Lowest first)", value: "insurance_cost_asc" },
-    { label: "Insurance Cost ↓ (Highest first)", value: "insurance_cost_desc" },
-  ];
 
   const vehicleTypeOptions: VehicleTypeOption[] = Object.entries(
     vehicleTypeToText as Record<VehicleType, string>
@@ -196,7 +180,7 @@ const ListVehicle = () => {
         />
         <Dropdown
           value={sortOrder}
-          options={sortOptions}
+          options={sortOptionsVehicles}
           onChange={(e) => setSortOrderVehicle(e.value)}
           placeholder="Sorting"
         />

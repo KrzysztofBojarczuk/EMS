@@ -45,12 +45,13 @@ export const GetUserEmployeesService = async (
 export const GetAllEmployeesService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm?: string
+  searchTerm?: string,
+  sortOrder?: string | null
 ) => {
   const response = await axios.get<PaginatedEmployeeResponse>(
     api + "Employee",
     {
-      params: { pageNumber, pageSize, searchTerm },
+      params: { pageNumber, pageSize, searchTerm, sortOrder },
     }
   );
 

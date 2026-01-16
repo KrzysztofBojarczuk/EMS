@@ -33,8 +33,8 @@ namespace EMS.TESTS.ControllersTests
 
             var expectedUsers = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com" },
-                new AppUserEntity { UserName = "User 2 Test", Email = "user2@example.com" }
+                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 2 Test", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };
 
             var paginatedResult = new PaginatedList<AppUserEntity>(expectedUsers, expectedUsers.Count(), pageNumber, pageSize);
@@ -42,7 +42,8 @@ namespace EMS.TESTS.ControllersTests
             _mockSender.Setup(x => x.Send(It.Is<GetAllUsersQuery>(x =>
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
-                x.searchTerm == searchTerm),
+                x.searchTerm == searchTerm &&
+                x.sortOrder == null),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
@@ -85,7 +86,8 @@ namespace EMS.TESTS.ControllersTests
             _mockSender.Setup(x => x.Send(It.Is<GetAllUsersQuery>(x =>
                 x.pageNumber == pageNumber &&
                 x.pageSize == pageSize &&
-                x.searchTerm == searchTerm),
+                x.searchTerm == searchTerm &&
+                x.sortOrder == null),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(paginatedResult);
 
