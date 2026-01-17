@@ -14,7 +14,7 @@ export const GetUserTasksService = async (
   pageSize: number,
   searchTerm?: string,
   statusOfTask?: string[],
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ): Promise<PaginatedTaskResponse> => {
   const params = new URLSearchParams();
 
@@ -25,15 +25,14 @@ export const GetUserTasksService = async (
 
   if (statusOfTask && statusOfTask.length > 0)
     statusOfTask.forEach((status) =>
-      params.append("statusOfTask", status.toString())
+      params.append("statusOfTask", status.toString()),
     );
 
   if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedTaskResponse>(
-    `${api}Task/User?${params.toString()}`
+    `${api}Task/User?${params.toString()}`,
   );
-
   return response.data;
 };
 
@@ -42,7 +41,7 @@ export const GetAllTasksService = async (
   pageSize: number,
   searchTerm?: string,
   statusOfTask?: string[],
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ) => {
   const params = new URLSearchParams();
 
@@ -53,15 +52,14 @@ export const GetAllTasksService = async (
 
   if (statusOfTask && statusOfTask.length > 0)
     statusOfTask.forEach((status) =>
-      params.append("statusOfTask", status.toString())
+      params.append("statusOfTask", status.toString()),
     );
 
   if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedTaskResponse>(
-    `${api}Task?${params.toString()}`
+    `${api}Task?${params.toString()}`,
   );
-
   return response.data;
 };
 

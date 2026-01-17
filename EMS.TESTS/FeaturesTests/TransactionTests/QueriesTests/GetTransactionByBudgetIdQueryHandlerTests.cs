@@ -26,7 +26,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
             var budgetId = Guid.NewGuid();
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 20, BudgetId = budgetId },
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId }
             };
@@ -104,7 +104,7 @@ namespace EMS.TESTS.FeaturesTests.TransactionTests.QueriesTests
 
             var expectedTransactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 20, BudgetId = budgetId },
                 new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 50, BudgetId = budgetId },
             };
 

@@ -13,11 +13,11 @@ export const PostLocalService = async (localPost: LocalPost) => {
 };
 
 export const PostReservationService = async (
-  reservationPost: ReservationPost
+  reservationPost: ReservationPost,
 ) => {
   const response = await axios.post<ReservationPost>(
     api + "Reservation",
-    reservationPost
+    reservationPost,
   );
   return response.data;
 };
@@ -25,12 +25,11 @@ export const PostReservationService = async (
 export const GetUserLocalsService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm?: string
+  searchTerm?: string,
 ) => {
   const response = await axios.get<PaginatedLocalResponse>(api + "Local", {
     params: { pageNumber, pageSize, searchTerm },
   });
-
   return response.data;
 };
 
@@ -38,7 +37,7 @@ export const GetUserReservationsService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ) => {
   const response = await axios.get<PaginatedReservationResponse>(
     api + "Reservation",
@@ -49,9 +48,8 @@ export const GetUserReservationsService = async (
         searchTerm,
         sortOrder,
       },
-    }
+    },
   );
-
   return response.data;
 };
 

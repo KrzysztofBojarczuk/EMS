@@ -7,7 +7,7 @@ export const GetAllUsersService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ) => {
   const params = new URLSearchParams();
 
@@ -19,9 +19,8 @@ export const GetAllUsersService = async (
   if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedUserResponse>(
-    `${api}User/GetAllUser?${params.toString()}`
+    `${api}User/GetAllUser?${params.toString()}`,
   );
-
   return response.data;
 };
 

@@ -11,17 +11,17 @@ const api = "https://localhost:7256/api/";
 export const PostEmployeesService = async (employeePost: EmployeePost) => {
   const response = await axios.post<EmployeePost>(
     api + "Employee",
-    employeePost
+    employeePost,
   );
   return response.data;
 };
 
 export const PostListEmployeesService = async (
-  employeeListPost: EmployeeListPost
+  employeeListPost: EmployeeListPost,
 ) => {
   const response = await axios.post<EmployeeListPost>(
     api + "Employee/AddEmployeeList",
-    employeeListPost
+    employeeListPost,
   );
   return response.data;
 };
@@ -30,15 +30,14 @@ export const GetUserEmployeesService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ) => {
   const response = await axios.get<PaginatedEmployeeResponse>(
     api + "Employee/User",
     {
       params: { pageNumber, pageSize, searchTerm, sortOrder },
-    }
+    },
   );
-
   return response.data;
 };
 
@@ -46,15 +45,14 @@ export const GetAllEmployeesService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ) => {
   const response = await axios.get<PaginatedEmployeeResponse>(
     api + "Employee",
     {
       params: { pageNumber, pageSize, searchTerm, sortOrder },
-    }
+    },
   );
-
   return response.data;
 };
 
@@ -63,22 +61,20 @@ export const GetUserListEmployeesService = async (searchTerm: string) => {
     api + "Employee/UserEmployeeList",
     {
       params: { searchTerm },
-    }
+    },
   );
-
   return response.data;
 };
 
 export const GetUserListForTaskEmployeesService = async (
-  searchTerm: string
+  searchTerm: string,
 ) => {
   const response = await axios.get<EmployeeListGet[]>(
     api + "Employee/UserEmployeeListForTask",
     {
       params: { searchTerm },
-    }
+    },
   );
-
   return response.data;
 };
 
@@ -92,11 +88,11 @@ export const GetUserEmployeesForListService = async (searchTerm?: string) => {
 
 export const UpdateEmployeesService = async (
   id: string,
-  employeePost: EmployeePost
+  employeePost: EmployeePost,
 ) => {
   const response = await axios.put<EmployeePost>(
     `${api}Employee/${id}`,
-    employeePost
+    employeePost,
   );
   return response.data;
 };
