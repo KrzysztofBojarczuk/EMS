@@ -45,7 +45,10 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(reservation.LocalId, result.LocalId);
+            Assert.AreEqual(reservation.CheckInDate, result.CheckInDate);
+            Assert.AreEqual(reservation.CheckOutDate, result.CheckOutDate);
             Assert.AreEqual(reservation.AppUserId, result.AppUserId);
+            Assert.AreNotEqual(Guid.Empty, result.Id);
             Assert.AreEqual(1, reservationCount);
         }
 
