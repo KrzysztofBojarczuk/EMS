@@ -45,8 +45,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 query = query.Where(x => x.Amount >= amountFrom.Value && x.Amount <= amountTo.Value);
             }
 
-            Console.WriteLine($"SortOrder: {sortOrder}");
-
             if (!string.IsNullOrEmpty(sortOrder))
             {
                 switch (sortOrder)

@@ -19,7 +19,7 @@ export const GetUserVehiclesService = async (
   vehicleType?: string[],
   dateFrom?: Date | null,
   dateTo?: Date | null,
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ) => {
   const params = new URLSearchParams();
 
@@ -38,9 +38,8 @@ export const GetUserVehiclesService = async (
   if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedVehicleResponse>(
-    `${api}Vehicle/User?${params.toString()}`
+    `${api}Vehicle/User?${params.toString()}`,
   );
-
   return response.data;
 };
 
@@ -49,7 +48,7 @@ export const GetUserVehicleForTaskService = async (searchTerm?: string) => {
     api + "Vehicle/UserVehiclesForTask",
     {
       params: { searchTerm },
-    }
+    },
   );
 
   return response.data;
@@ -57,11 +56,11 @@ export const GetUserVehicleForTaskService = async (searchTerm?: string) => {
 
 export const UpdateVehicleService = async (
   id: string,
-  vehiclePost: VehiclePost
+  vehiclePost: VehiclePost,
 ) => {
   const response = await axios.put<VehiclePost>(
     `${api}Vehicle/${id}`,
-    vehiclePost
+    vehiclePost,
   );
   return response.data;
 };

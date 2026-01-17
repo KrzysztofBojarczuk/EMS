@@ -10,7 +10,7 @@ export const GetLogsService = async (
   searchTerm?: string,
   dateFrom?: Date | null,
   dateTo?: Date | null,
-  sortOrder?: string | null
+  sortOrder?: string | null,
 ) => {
   const params = new URLSearchParams();
 
@@ -25,8 +25,7 @@ export const GetLogsService = async (
   if (sortOrder) params.append("sortOrder", sortOrder);
 
   const response = await axios.get<PaginatedLogResponse>(
-    `${api}Logs?${params.toString()}`
+    `${api}Logs?${params.toString()}`,
   );
-
   return response.data;
 };

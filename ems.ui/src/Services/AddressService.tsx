@@ -15,15 +15,14 @@ export const PostAddressService = async (addressPost: AddressPost) => {
 export const GetUserAddressesService = async (
   pageNumber: number,
   pageSize: number,
-  searchTerm?: string
+  searchTerm?: string,
 ) => {
   const response = await axios.get<PaginatedAddressResponse>(
     api + "Address/User",
     {
       params: { pageNumber, pageSize, searchTerm },
-    }
+    },
   );
-
   return response.data;
 };
 
@@ -32,19 +31,18 @@ export const GetUserAddressesForTaskService = async (searchTerm?: string) => {
     api + "Address/UserAddressesForTask",
     {
       params: { searchTerm },
-    }
+    },
   );
-
   return response.data;
 };
 
 export const UpdateAddressService = async (
   id: string,
-  addressPost: AddressPost
+  addressPost: AddressPost,
 ) => {
   const response = await axios.put<AddressPost>(
     `${api}Address/${id}`,
-    addressPost
+    addressPost,
   );
   return response.data;
 };
