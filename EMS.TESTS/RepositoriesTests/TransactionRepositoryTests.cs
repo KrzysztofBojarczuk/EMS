@@ -188,6 +188,35 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetTransactionsByBudgetIdAsync_ByAmountRange_Returns_Transactions()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+            var amountFrom = 700m;
+            var amountTo = 800m;
+
+            var transactions = new List<TransactionEntity>
+            {
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 100, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreationDate = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreationDate = new DateTime(2011, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 700, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 5", CreationDate = new DateTime(2014, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 800, BudgetId = budgetId },
+             };
+
+            _context.Transactions.AddRange(transactions);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, amountFrom, amountTo, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.All(x => x.Amount >= amountFrom && x.Amount <= amountTo));
+        }
+
+        [TestMethod]
         public async Task DeleteTransactionsAsync_When_TransactionExists_Returns_True()
         {
             // Arrange
