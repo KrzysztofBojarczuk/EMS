@@ -31,8 +31,8 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             var expectedReservation = new ReservationEntity
             {
                 Description = "Reservation",
-                CheckInDate = DateTime.UtcNow,
-                CheckOutDate = DateTime.UtcNow.AddDays(2),
+                CheckInDate = new DateTime(2026, 1, 15, 10, 0, 0),
+                CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0),
                 LocalId = localId,
                 AppUserId = "user-id-123"
             };
@@ -65,8 +65,8 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             var expectedReservation = new ReservationEntity
             {
                 Description = "Reservation",
-                CheckInDate = DateTime.UtcNow,
-                CheckOutDate = DateTime.UtcNow.AddDays(2),
+                CheckInDate = new DateTime(2026, 1, 15, 10, 0, 0),
+                CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0),
                 LocalId = localId,
                 AppUserId = "user-id-123"
             };
@@ -105,8 +105,8 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             var reservation = new ReservationEntity
             {
                 Description = "Reservation",
-                CheckInDate = DateTime.UtcNow,
-                CheckOutDate = DateTime.UtcNow.AddDays(2),
+                CheckInDate = new DateTime(2026, 1, 15, 10, 0, 0),
+                CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0),
                 LocalId = localId,
                 AppUserId = "user-id-123"
             };
@@ -148,8 +148,8 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.CommandsTests
             var expectedReservation = new ReservationEntity
             {
                 Description = "Reservation",
-                CheckInDate = DateTime.UtcNow,
-                CheckOutDate = DateTime.UtcNow.AddDays(2),
+                CheckInDate = new DateTime(2026, 1, 15, 10, 0, 0),
+                CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0),
                 LocalId = localId,
                 AppUserId = "user-id-123"
             };

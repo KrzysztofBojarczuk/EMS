@@ -573,7 +573,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId = "user-id-123";
 
-            var employeeList = new List<EmployeeListsEntity> {
+            var employeeList = new List<EmployeeListsEntity>
+            {
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId }
@@ -597,7 +598,8 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
             var searchTerm = "test";
 
-            var employeeList = new List<EmployeeListsEntity> {
+            var employeeList = new List<EmployeeListsEntity>
+            {
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1 Test", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = "user-id-999" }
@@ -622,7 +624,8 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
-            var employeeList = new List<EmployeeListsEntity> {
+            var employeeList = new List<EmployeeListsEntity>
+            {
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = "user-id-999" }
@@ -645,7 +648,8 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId = "user-id-123";
 
-            var employeeList = new List<EmployeeListsEntity> {
+            var employeeList = new List<EmployeeListsEntity>
+            {
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId, TaskId = null },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId, TaskId = null },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId, TaskId = Guid.NewGuid() },
@@ -671,7 +675,8 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
             var searchTerm = "test";
 
-            var employeeList = new List<EmployeeListsEntity> {
+            var employeeList = new List<EmployeeListsEntity>
+            {
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1 Test", AppUserId = appUserId, TaskId = null },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2 Test", AppUserId = appUserId, TaskId = null},
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId, TaskId = null },
@@ -698,7 +703,8 @@ namespace EMS.TESTS.RepositoriesTests
             var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
-            var employeeList = new List<EmployeeListsEntity> {
+            var employeeList = new List<EmployeeListsEntity>
+            {
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId },

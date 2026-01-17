@@ -29,9 +29,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 16, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 18, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 19, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
@@ -62,9 +62,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1 Test", CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2 Test", CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3 Test", CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1 Test", CheckInDate = new DateTime(2026, 1, 16, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2 Test", CheckInDate = new DateTime(2026, 1, 18, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 19, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3 Test", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
@@ -120,9 +120,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 14, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 15, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 12, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 13, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 10, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 11, 10, 0, 0), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
@@ -153,9 +153,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 10, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 11, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 12, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 13, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 14, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 15, 10, 0, 0), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
@@ -186,9 +186,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 14, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 15, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 12, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 13, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 10, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 11, 10, 0, 0), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
@@ -219,9 +219,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 10, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 11, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 12, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 13, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 14, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 15, 10, 0, 0), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
@@ -252,9 +252,9 @@ namespace EMS.TESTS.FeaturesTests.ReservationTests.QueriesTests
 
             var expectedReservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = DateTime.UtcNow.AddDays(5), CheckOutDate = DateTime.UtcNow.AddDays(6), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = DateTime.UtcNow.AddDays(3), CheckOutDate = DateTime.UtcNow.AddDays(4), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = DateTime.UtcNow.AddDays(1), CheckOutDate = DateTime.UtcNow.AddDays(2), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 10, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 11, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 12, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 13, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 14, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 15, 10, 0, 0), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<ReservationEntity>(expectedReservations, expectedReservations.Count(), pageNumber, pageSize);
