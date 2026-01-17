@@ -11,7 +11,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
         public async Task<TransactionEntity> AddTransactionAsync(TransactionEntity entity)
         {
             entity.Id = Guid.NewGuid();
-            entity.CreationDate = DateTime.UtcNow;
+            entity.CreatedAt = DateTime.UtcNow;
             dbContext.Add(entity);
 
             await dbContext.SaveChangesAsync();
@@ -37,7 +37,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (dateFrom.HasValue && dateTo.HasValue)
             {
-                query = query.Where(x => x.CreationDate >= dateFrom.Value && x.CreationDate <= dateTo.Value);
+                query = query.Where(x => x.CreatedAt >= dateFrom.Value && x.CreatedAt <= dateTo.Value);
             }
 
             if (amountFrom.HasValue && amountTo.HasValue)
@@ -56,19 +56,19 @@ namespace EMS.INFRASTRUCTURE.Repositories
                         query = query.OrderByDescending(x => x.Amount);
                         break;
                     case "createdate_asc":
-                        query = query.OrderBy(x => x.CreationDate);
+                        query = query.OrderBy(x => x.CreatedAt);
                         break;
                     case "createdate_desc":
-                        query = query.OrderByDescending(x => x.CreationDate);
+                        query = query.OrderByDescending(x => x.CreatedAt);
                         break;
                     default:
-                        query = query.OrderByDescending(x => x.CreationDate);
+                        query = query.OrderByDescending(x => x.CreatedAt);
                         break;
                 }
             }
             else
             {
-                query = query.OrderByDescending(x => x.CreationDate);
+                query = query.OrderByDescending(x => x.CreatedAt);
             }
 
             return await query.ToListAsync();

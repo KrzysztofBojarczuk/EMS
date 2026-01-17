@@ -7,7 +7,7 @@ namespace EMS.CORE.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-        public DateTime CreationDate { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public CategoryType Category { get; set; }
         public decimal Amount { get; set; }
         public Guid BudgetId { get; set; }

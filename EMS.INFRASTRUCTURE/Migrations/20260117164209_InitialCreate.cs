@@ -299,7 +299,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BudgetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
@@ -439,8 +439,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8b59f942-a5e3-4111-b7a1-51a9b8a75d0e", null, "Admin", "ADMIN" },
-                    { "a0a9b018-06a6-4b64-9ece-48123d458367", null, "User", "USER" }
+                    { "25a28f9a-a4c3-4922-94c7-0cc471402c04", null, "Admin", "ADMIN" },
+                    { "b7bb25b5-6302-4eb1-b1f6-0cee9e0bf88b", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
