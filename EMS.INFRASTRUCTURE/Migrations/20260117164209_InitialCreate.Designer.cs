@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260115143057_InitialCreate")]
+    [Migration("20260117164209_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -402,7 +402,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreationDate")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
@@ -504,13 +504,13 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "8b59f942-a5e3-4111-b7a1-51a9b8a75d0e",
+                            Id = "25a28f9a-a4c3-4922-94c7-0cc471402c04",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a0a9b018-06a6-4b64-9ece-48123d458367",
+                            Id = "b7bb25b5-6302-4eb1-b1f6-0cee9e0bf88b",
                             Name = "User",
                             NormalizedName = "USER"
                         });

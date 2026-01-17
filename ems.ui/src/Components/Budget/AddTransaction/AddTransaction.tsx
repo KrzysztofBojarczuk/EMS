@@ -26,14 +26,14 @@ const AddTransaction: React.FC<Props> = ({
   } = useForm({
     defaultValues: {
       name: "",
-      creationDate: new Date().toISOString().split("T")[0],
+      createdAt: new Date().toISOString().split("T")[0],
       category: CategoryType.Income,
       amount: 0,
     },
   });
 
   const onSubmit = async (data: TransactionPost) => {
-    const payload = { ...data, creationDate: data.creationDate };
+    const payload = { ...data, creationDate: data.createdAt };
     await PostTransactionService(budgetId, payload);
     onAddSuccess();
     onClose();

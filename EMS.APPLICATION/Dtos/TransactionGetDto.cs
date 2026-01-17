@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Enums;
+using EMS.CORE.Enums;
 
 namespace EMS.APPLICATION.Dtos
 {
@@ -6,7 +6,7 @@ namespace EMS.APPLICATION.Dtos
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-        public DateTime CreationDate { get; set; }
+        public DateTime CreatedAt { get; set; }
         public CategoryType Category { get; set; }
         public decimal Amount { get; set; }
     }

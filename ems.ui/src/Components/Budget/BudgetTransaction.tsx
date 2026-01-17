@@ -80,7 +80,7 @@ const BudgetTransaction = ({}: Props) => {
         dateTo,
         amountFrom,
         amountTo,
-        sortOrderTransaction
+        sortOrderTransaction,
       );
       setTransaction(data);
       setConfirmVisible(false);
@@ -169,7 +169,7 @@ const BudgetTransaction = ({}: Props) => {
         <div
           className={classNames(
             "flex flex-column xl:flex-row xl:align-items-start p-4 gap-4",
-            { "border-top-1 surface-border": index !== 0 }
+            { "border-top-1 surface-border": index !== 0 },
           )}
         >
           <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
@@ -192,8 +192,8 @@ const BudgetTransaction = ({}: Props) => {
                 {transaction.category === 1
                   ? "+"
                   : transaction.category === 2
-                  ? "-"
-                  : ""}
+                    ? "-"
+                    : ""}
                 {transaction.amount}
                 <i className="pi pi-euro ml-2"></i>
                 <i
@@ -202,7 +202,7 @@ const BudgetTransaction = ({}: Props) => {
                   onClick={() => showDeleteConfirmation(transaction.id)}
                 ></i>
               </span>
-              <p>{formatDateTime(transaction.creationDate)}</p>
+              <p>{formatDateTime(transaction.createdAt)}</p>
             </div>
           </div>
         </div>
@@ -268,7 +268,7 @@ const BudgetTransaction = ({}: Props) => {
                   value={amountFrom != null ? amountFrom.toString() : ""}
                   onChange={(e) =>
                     setAmountFrom(
-                      e.target.value ? Number(e.target.value) : null
+                      e.target.value ? Number(e.target.value) : null,
                     )
                   }
                 />
