@@ -217,6 +217,35 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetTransactionsByBudgetIdAsync_SortedByAmountAscending_Returns_SortedTransactions()
+        {
+            // Arrange
+            var budgetId = Guid.NewGuid();
+            var sortOrder = "amount_asc";
+
+            var transactions = new List<TransactionEntity>
+            {
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 200, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 100, BudgetId = budgetId },
+            };
+
+            _context.Transactions.AddRange(transactions);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, sortOrder);
+            var sorted = result.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count());
+            Assert.AreEqual(transactions[0].Id, sorted[2].Id);
+            Assert.AreEqual(transactions[1].Id, sorted[1].Id);
+            Assert.AreEqual(transactions[2].Id, sorted[0].Id);
+        }
+
+        [TestMethod]
         public async Task DeleteTransactionsAsync_When_TransactionExists_Returns_True()
         {
             // Arrange
