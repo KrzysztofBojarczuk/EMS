@@ -33,6 +33,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
                         break;
                 }
             }
+            else
+            {
+                query = query.OrderByDescending(x => x.CreatedAt);
+            }
 
             return await PaginatedList<AppUserEntity>.CreateAsync(query, pageNumber, pageSize);
         }
