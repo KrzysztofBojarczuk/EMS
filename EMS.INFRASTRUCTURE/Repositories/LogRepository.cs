@@ -22,11 +22,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
             {
-                query = dbContext.Logs.Where(x => x.UserId.ToLower().Contains(searchTerm.ToLower())
-                                                  || x.Username.ToLower().Contains(searchTerm.ToLower())
-                                                  || x.Action.ToLower().Contains(searchTerm.ToLower())
-                                                  || x.RequestData.ToLower().Contains(searchTerm.ToLower())
-                                                  || x.Status.ToLower().Contains(searchTerm.ToLower()));
+                query = query.Where(x => x.UserId.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Username.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Action.ToLower().Contains(searchTerm.ToLower())
+                                      || x.RequestData.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Status.ToLower().Contains(searchTerm.ToLower()));
             }
 
             if (dateFrom.HasValue && dateTo.HasValue)
@@ -48,6 +48,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
                         query = query.OrderByDescending(x => x.CreatedAt);
                         break;
                 }
+            }
+            else
+            {
+                query = query.OrderByDescending(x => x.CreatedAt);
             }
 
             return PaginatedList<LogEntity>.CreateAsync(query, pageNumber, pageSize);
