@@ -10,7 +10,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<AddressEntity> AddAddressAsync(AddressEntity entity)
         {
-            entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            entity.Id = Guid.NewGuid();
             dbContext.Address.Add(entity);
 
             await dbContext.SaveChangesAsync();

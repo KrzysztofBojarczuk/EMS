@@ -1,6 +1,7 @@
 using EMS.CORE.Entities;
 using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
+using EMS.CORE.Stats;
 using EMS.INFRASTRUCTURE.Data;
 using EMS.INFRASTRUCTURE.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<VehicleEntity> AddVehicleAsync(VehicleEntity entity)
         {
-            entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            entity.Id = Guid.NewGuid();
             entity.DateOfProduction = entity.DateOfProduction.ToLocalTime();
             entity.InsuranceOcValidUntil = entity.InsuranceOcValidUntil.ToLocalTime();
             entity.TechnicalInspectionValidUntil = entity.TechnicalInspectionValidUntil.ToLocalTime();
@@ -103,6 +104,22 @@ namespace EMS.INFRASTRUCTURE.Repositories
             }
 
             return await query.ToListAsync();
+        }
+
+        public async Task<UserVehiclesStats> GetUserVehiclesStatsAsync(string appUserId)
+        {
+            var vehicles = await dbContext.Vehicles.Where(x => x.AppUserId == appUserId).ToListAsync();
+
+            var now = DateTime.UtcNow;
+
+            return new UserVehiclesStats
+            {
+                ActiveVehicles = vehicles.Count(x => x.IsAvailable),
+                InactiveVehicles = vehicles.Count(x => x.IsAvailable == false),
+                AverageVehicleAge = vehicles.Average(x => (now - x.DateOfProduction).TotalDays / 365.25),
+                TotalInsuranceCost = vehicles.Sum(x => x.InsuranceOcCost),
+                AverageInsuranceCost = vehicles.Average(x => x.InsuranceOcCost),
+            };
         }
 
         public async Task<VehicleEntity> UpdateVehicleAsync(Guid vehicleId, string appUserId, VehicleEntity entity)

@@ -1,8 +1,8 @@
-﻿namespace EMS.CORE.Entities
+namespace EMS.CORE.Entities
 {
     public class EmployeeListsEntity
     {
-        public Guid Id { get; set; } //unikalny identyfikator
+        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;

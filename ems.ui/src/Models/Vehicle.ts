@@ -35,3 +35,11 @@ export interface PaginatedVehicleResponse {
   totalPages: number;
   pageIndex: number;
 }
+
+export interface UserVehiclesStats {
+  activeVehicles: number;
+  inactiveVehicles: number;
+  averageVehicleAge: number;
+  totalInsuranceCost: number;
+  averageInsuranceCost: number;
+}
