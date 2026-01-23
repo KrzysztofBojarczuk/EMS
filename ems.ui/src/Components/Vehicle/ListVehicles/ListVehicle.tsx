@@ -1,8 +1,9 @@
 import React, { JSX, useEffect, useState } from "react";
-import { VehicleGet } from "../../../Models/Vehicle";
+import { UserVehiclesStats, VehicleGet } from "../../../Models/Vehicle";
 import {
   DeleteVehicleService,
   GetUserVehiclesService,
+  GetUserVehicleStatsService,
 } from "../../../Services/VehicleService";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { IconField } from "primereact/iconfield";
@@ -27,6 +28,7 @@ import AddVehicle from "../AddVehicle/AddVehicle";
 import UpdateVehicle from "../UpdateVehicle/UpdateVehicle";
 import { formatCurrency } from "../../Utils/Currency";
 import { sortOptionsVehicles } from "../../Utils/SortOptions";
+import VehicleStats from "./VehicleStats";
 
 interface VehicleTypeOption {
   name: string;
@@ -52,9 +54,12 @@ const ListVehicle = () => {
   const [visibleVehicle, setVisibleVehicle] = useState<boolean>(false);
 
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleGet | null>(
-    null
+    null,
   );
   const [updateVisible, setUpdateVisible] = useState(false);
+
+  const [userVehiclesStats, setUserVehiclesStats] =
+    useState<UserVehiclesStats | null>(null);
 
   const resetFilters = () => {
     setDateFrom(null);
@@ -65,7 +70,7 @@ const ListVehicle = () => {
   };
 
   const vehicleTypeOptions: VehicleTypeOption[] = Object.entries(
-    vehicleTypeToText as Record<VehicleType, string>
+    vehicleTypeToText as Record<VehicleType, string>,
   ).map(([key, value]) => ({
     name: value as string,
     value: Number(key) as VehicleType,
@@ -79,10 +84,11 @@ const ListVehicle = () => {
       vehicleType,
       dateFrom,
       dateTo,
-      sortOrder
+      sortOrder,
     );
     setVehicles(data.vehicleGet);
     setTotalVehicles(data.totalItems);
+    await fetchStats();
   };
 
   const goToPageVehicle = (page: number, rows: number) => {
@@ -108,6 +114,7 @@ const ListVehicle = () => {
   const handleDeleteVehicle = async () => {
     if (deleteVehicleId) {
       await DeleteVehicleService(deleteVehicleId);
+      await fetchStats();
 
       const totalAfterDelete = totalVehicles - 1;
       const maxPage = Math.ceil(totalAfterDelete / rowsVehicle);
@@ -139,10 +146,17 @@ const ListVehicle = () => {
     setUpdateVisible(true);
   };
 
-  const handleUpdateSuccess = () => {
+  const handleUpdateSuccess = async () => {
+    await fetchStats();
+
     const currentPage = Math.floor(firstVehicle / rowsVehicle) + 1;
     goToPageVehicle(currentPage, rowsVehicle);
     setUpdateVisible(false);
+  };
+
+  const fetchStats = async () => {
+    const data = await GetUserVehicleStatsService();
+    setUserVehiclesStats(data);
   };
 
   return (
@@ -266,6 +280,7 @@ const ListVehicle = () => {
           )}
         />
       </DataTable>
+
       <Paginator
         first={firstVehicle}
         rows={rowsVehicle}
@@ -274,6 +289,7 @@ const ListVehicle = () => {
         rowsPerPageOptions={[5, 10, 20, 30]}
         style={{ border: "none" }}
       />
+      <VehicleStats userVehiclesStats={userVehiclesStats} />
       <ConfirmationDialog
         visible={confirmVehicleVisible}
         header="Confirm Vehicle Deletion"

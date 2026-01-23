@@ -9,7 +9,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<LocalEntity> AddLocalAsync(LocalEntity entity)
         {
-            entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            entity.Id = Guid.NewGuid();
             dbContext.Locals.Add(entity);
 
             await dbContext.SaveChangesAsync();

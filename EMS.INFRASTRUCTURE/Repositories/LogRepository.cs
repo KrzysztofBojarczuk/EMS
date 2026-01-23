@@ -9,7 +9,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task AddAsync(LogEntity entity)
         {
-            entity.Id = Guid.NewGuid(); //s³u¿y do przypisania nowego, unikalnego identyfikatora
+            entity.Id = Guid.NewGuid();
             entity.CreatedAt = entity.CreatedAt.ToLocalTime();
             dbContext.Logs.Add(entity);
 

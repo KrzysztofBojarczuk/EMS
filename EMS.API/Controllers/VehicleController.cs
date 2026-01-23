@@ -74,6 +74,19 @@ namespace EMS.API.Controllers
             return Ok(vehicleGet);
         }
 
+        [HttpGet("UserVehiclesStats")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserVehiclesStats()
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var stats = await sender.Send(new GetUserVehiclesStatsQuery(appUser.Id));
+
+            return Ok(stats);
+        }
+
         [HttpPut("{vehicleId}")]
         [Authorize(Roles = "User")]
         public async Task<IActionResult> UpdateVehicleAsync([FromRoute] Guid vehicleId, [FromBody] VehicleCreateDto vehicleDto)

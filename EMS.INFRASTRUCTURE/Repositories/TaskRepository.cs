@@ -11,7 +11,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<TaskEntity> AddTaskAsync(TaskEntity entity, List<Guid> EmployeeListIds, List<Guid> VehicleIds)
         {
-            entity.Id = Guid.NewGuid(); // Przypisanie nowego identyfikatora
+            entity.Id = Guid.NewGuid();
             entity.StartDate = entity.StartDate.ToLocalTime();
             entity.EndDate = entity.EndDate.ToLocalTime();
 

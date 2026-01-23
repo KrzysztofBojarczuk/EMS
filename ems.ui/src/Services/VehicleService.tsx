@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   PaginatedVehicleResponse,
+  UserVehiclesStats,
   VehicleGet,
   VehiclePost,
 } from "../Models/Vehicle";
@@ -51,6 +52,13 @@ export const GetUserVehicleForTaskService = async (searchTerm?: string) => {
     },
   );
 
+  return response.data;
+};
+
+export const GetUserVehicleStatsService = async () => {
+  const response = await axios.get<UserVehiclesStats>(
+    api + "Vehicle/UserVehiclesStats",
+  );
   return response.data;
 };
 
