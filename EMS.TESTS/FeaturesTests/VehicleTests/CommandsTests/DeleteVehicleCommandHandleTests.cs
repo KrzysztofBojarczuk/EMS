@@ -38,5 +38,26 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
             Assert.IsTrue(result);
             _mockVehicleRepository.Verify(x => x.DeleteVehicleAsync(vehicleId, appUserId), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_ShouldReturnFalse_When_VehicleDeletionFails()
+        {
+            // Arrange
+            var vehicleId = Guid.NewGuid();
+            var expectedResult = false;
+            var appUserId = "user-id-123";
+
+            _mockVehicleRepository.Setup(x => x.DeleteVehicleAsync(vehicleId, appUserId))
+                .ReturnsAsync(expectedResult);
+
+            var command = new DeleteVehicleCommand(vehicleId, appUserId);
+
+            // Act
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            // Assert
+            Assert.IsFalse(result);
+            _mockVehicleRepository.Verify(x => x.DeleteVehicleAsync(vehicleId, appUserId), Times.Once);
+        }
     }
 }
