@@ -6,7 +6,7 @@ using Moq;
 namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
 {
     [TestClass]
-    public class DeleteVehicleCommandHandleTests
+    public class DeleteVehicleCommandHandlerTests
     {
         private Mock<IVehicleRepository> _mockVehicleRepository;
         private DeleteVehicleCommandHandler _handler;
