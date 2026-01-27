@@ -1,8 +1,12 @@
-﻿namespace EMS.APPLICATION.Dtos
+using System.ComponentModel.DataAnnotations;
+
+namespace EMS.APPLICATION.Dtos
 {
     public class LocalCreateDto
     {
-        public Guid Id { get; set; } //unikalny identyfikator
+        [Required]
+        [MinLength(3, ErrorMessage = "Description must be 3 characters")]
+        [MaxLength(280, ErrorMessage = "Description cannot be over 280 characters")]
         public string Description { get; set; } = null!;
         public int LocalNumber { get; set; }
         public double Surface { get; set; }

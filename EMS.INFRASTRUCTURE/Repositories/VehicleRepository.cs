@@ -116,9 +116,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 ActiveVehicles = vehicles.Count(x => x.IsAvailable),
                 InactiveVehicles = vehicles.Count(x => x.IsAvailable == false),
-                AverageVehicleAge = vehicles.Average(x => (now - x.DateOfProduction).TotalDays / 365.25),
+                AverageVehicleAge = vehicles.Any() ? vehicles.Average(x => (now - x.DateOfProduction).TotalDays / 365.25) : 0,
                 TotalInsuranceCost = vehicles.Sum(x => x.InsuranceOcCost),
-                AverageInsuranceCost = vehicles.Average(x => x.InsuranceOcCost),
+                AverageInsuranceCost = vehicles.Any() ? vehicles.Average(x => x.InsuranceOcCost) : 0,
             };
         }
 

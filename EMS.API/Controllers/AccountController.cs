@@ -1,4 +1,4 @@
-﻿using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Features.Account.Commands;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
@@ -17,7 +17,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var user = await userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 

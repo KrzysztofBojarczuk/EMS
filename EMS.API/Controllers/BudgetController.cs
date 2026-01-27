@@ -20,7 +20,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddBudgetAsync([FromBody] BudgetCreateDto createDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 

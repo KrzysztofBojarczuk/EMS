@@ -20,7 +20,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddReservationAsync([FromBody] ReservationCreateDto reservationDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 
@@ -33,7 +35,9 @@ namespace EMS.API.Controllers
             var result = await sender.Send(new AddReservationCommand(reservationEntity));
 
             if (result.IsFailure)
+            {
                 return BadRequest(result.Error);
+            }
 
             var reservationGet = mapper.Map<ReservationGetDto>(result.Value);
 
