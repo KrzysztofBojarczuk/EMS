@@ -20,7 +20,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddEmployeeAsync([FromBody] EmployeeCreateDto employeeDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 
@@ -42,7 +44,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddEmployeeListAsync([FromBody] EmployeeListsCreateDto employeeListsDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 
@@ -55,7 +59,9 @@ namespace EMS.API.Controllers
             var result = await sender.Send(new AddEmployeeListCommand(employeeListsEntity, employeeListsDto.EmployeeIds));
 
             if (result.IsFailure)
+            {
                 return BadRequest(result.Error);
+            }
 
             var employeeListsGet = mapper.Map<EmployeeListsGetDto>(result.Value);
 
@@ -183,7 +189,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> UpdateEmployeeAsync([FromRoute] Guid employeeId, [FromBody] EmployeeCreateDto updateEmployeeDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 

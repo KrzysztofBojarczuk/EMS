@@ -21,7 +21,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddTaskAsync([FromBody] TaskCreateDto taskDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 
@@ -81,7 +83,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> UpdateTaskAsync([FromRoute] Guid taskId, [FromBody] TaskCreateDto updateTaskDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 

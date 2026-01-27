@@ -20,7 +20,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddTransactionToUserAsync([FromRoute] Guid budgetId, [FromBody] TransactionCreateDto transactioDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var transactionEntity = mapper.Map<TransactionEntity>(transactioDto);
 

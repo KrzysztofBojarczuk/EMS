@@ -20,7 +20,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddLocalAsync([FromBody] LocalCreateDto localDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 
@@ -63,7 +65,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> UpdateLocalAsync([FromRoute] Guid localId, [FromBody] LocalCreateDto updateLocalDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 

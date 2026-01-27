@@ -21,7 +21,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> AddVehicleAsync([FromBody] VehicleCreateDto vehicleDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 
@@ -92,7 +94,9 @@ namespace EMS.API.Controllers
         public async Task<IActionResult> UpdateVehicleAsync([FromRoute] Guid vehicleId, [FromBody] VehicleCreateDto vehicleDto)
         {
             if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
+            }
 
             var username = User.GetUsername();
 
