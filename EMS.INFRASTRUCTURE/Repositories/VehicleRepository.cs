@@ -72,17 +72,17 @@ namespace EMS.INFRASTRUCTURE.Repositories
                     case "insurance_oc_desc":
                         query = query.OrderByDescending(x => x.InsuranceOcValidUntil);
                         break;
-                    case "inspection_asc":
-                        query = query.OrderBy(x => x.TechnicalInspectionValidUntil);
-                        break;
-                    case "inspection_desc":
-                        query = query.OrderByDescending(x => x.TechnicalInspectionValidUntil);
-                        break;
                     case "insurance_cost_asc":
                         query = query.OrderBy(x => x.InsuranceOcCost);
                         break;
                     case "insurance_cost_desc":
                         query = query.OrderByDescending(x => x.InsuranceOcCost);
+                        break;
+                    case "inspection_asc":
+                        query = query.OrderBy(x => x.TechnicalInspectionValidUntil);
+                        break;
+                    case "inspection_desc":
+                        query = query.OrderByDescending(x => x.TechnicalInspectionValidUntil);
                         break;
                     default:
                         query = query.OrderByDescending(x => x.DateOfProduction);
