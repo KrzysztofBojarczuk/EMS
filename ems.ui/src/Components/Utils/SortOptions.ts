@@ -44,13 +44,13 @@ export const sortOptionsVehicles = [
   { label: "Date Production ↓ (Newest first)", value: "date_desc" },
   { label: "OC Validity ↑ (Oldest first)", value: "insurance_oc_asc" },
   { label: "OC Validity ↓ (Newest first)", value: "insurance_oc_desc" },
+  { label: "Insurance Cost ↑ (Lowest first)", value: "insurance_cost_asc" },
+  { label: "Insurance Cost ↓ (Highest first)", value: "insurance_cost_desc" },
   { label: "Technical Inspection ↑ (Oldest first)", value: "inspection_asc" },
   {
     label: "Technical Inspection ↓ (Newest first)",
     value: "inspection_desc",
   },
-  { label: "Insurance Cost ↑ (Lowest first)", value: "insurance_cost_asc" },
-  { label: "Insurance Cost ↓ (Highest first)", value: "insurance_cost_desc" },
 ];
 
 export const sortOptionsReservations = [
@@ -63,8 +63,8 @@ export const sortOptionsReservations = [
 
 export const sortOptionsTransactions = [
   { label: "None", value: null },
-  { label: "Date ↑ (Oldest first)", value: "createdate_asc" },
-  { label: "Date ↓ (Newest first)", value: "createdate_desc" },
   { label: "Amount ↑ (Lowest first)", value: "amount_asc" },
   { label: "Amount ↓ (Highest first)", value: "amount_desc" },
+  { label: "Date ↑ (Oldest first)", value: "createdate_asc" },
+  { label: "Date ↓ (Newest first)", value: "createdate_desc" },
 ];
