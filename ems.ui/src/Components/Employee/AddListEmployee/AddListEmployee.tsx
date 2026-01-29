@@ -12,12 +12,12 @@ import {
 import { EmployeeListPost } from "../../../Models/EmployeeList";
 import { IconField } from "primereact/iconfield";
 
-type Props = {
+interface Props {
   onClose: () => void;
   onAddSuccess: () => void;
-};
+}
 
-const AddListEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
+const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const {

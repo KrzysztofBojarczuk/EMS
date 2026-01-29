@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -6,17 +5,13 @@ import { InputMask } from "primereact/inputmask";
 import { AddressGet, AddressPost } from "../../../Models/Address";
 import { UpdateAddressService } from "../../../Services/AddressService";
 
-interface UpdateAddressProps {
+interface Props {
   address: AddressGet;
   onClose: () => void;
   onUpdateSuccess: () => void;
 }
 
-const UpdateAddress: React.FC<UpdateAddressProps> = ({
-  address,
-  onClose,
-  onUpdateSuccess,
-}) => {
+const UpdateAddress = ({ address, onClose, onUpdateSuccess }: Props) => {
   const {
     control,
     handleSubmit,

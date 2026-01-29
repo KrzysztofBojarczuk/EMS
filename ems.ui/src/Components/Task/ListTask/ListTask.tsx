@@ -25,7 +25,6 @@ import {
 } from "../../../Services/TaskService";
 import { StatusOfTask } from "../../../Enum/StatusOfTask";
 import {
-  dateBodyTemplate,
   statusOfTaskBodyTemplate,
   taskTypeOptions,
   taskTypeToText,
@@ -34,10 +33,9 @@ import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import AddTask from "../AddTask/AddTask";
 import { SelectButton } from "primereact/selectbutton";
 import { Checkbox } from "primereact/checkbox";
+import { formatDate } from "../../Utils/DateUtils";
 
-type Props = {};
-
-const ListTask = (props: Props) => {
+const ListTask = () => {
   const [tasks, setTasks] = useState<TaskGet[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [visible, setVisible] = useState<boolean>(false);
@@ -79,7 +77,7 @@ const ListTask = (props: Props) => {
       size,
       searchTerm,
       statusOfTask,
-      sortOrder
+      sortOrder,
     );
     setTasks(data.taskGet);
     setTotalTasks(data.totalItems);
@@ -136,7 +134,7 @@ const ListTask = (props: Props) => {
   const rowExpansionTemplate = (data: TaskGet) => {
     const handleStatusChange = async (
       taskId: string,
-      newStatus: StatusOfTask
+      newStatus: StatusOfTask,
     ) => {
       await UpdateTaskStatusService(taskId, newStatus);
       // const updatedTasks = tasks.map((task) => {
@@ -292,12 +290,12 @@ const ListTask = (props: Props) => {
         <Column
           field="startDate"
           header="Start Date"
-          body={(rowData) => dateBodyTemplate(rowData, "startDate")}
+          body={(rowData) => formatDate(rowData.startDate)}
         ></Column>
         <Column
           field="endDate"
           header="End Date"
-          body={(rowData) => dateBodyTemplate(rowData, "endDate")}
+          body={(rowData) => formatDate(rowData.endDate)}
         ></Column>
         <Column
           field="status"

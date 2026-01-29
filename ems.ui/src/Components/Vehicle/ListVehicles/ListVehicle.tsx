@@ -14,8 +14,8 @@ import { DataTable } from "primereact/datatable";
 import { SelectButton } from "primereact/selectbutton";
 import { VehicleType } from "../../../Enum/VehicleType";
 import {
-  dateBodyTemplate,
   vehicleTypeBodyTemplate,
+  vehicleTypeOptions,
   vehicleTypeToText,
 } from "../../Utils/VehicleTemplates";
 import { formatDate } from "../../Utils/DateUtils";
@@ -29,11 +29,6 @@ import UpdateVehicle from "../UpdateVehicle/UpdateVehicle";
 import { formatCurrency } from "../../Utils/Currency";
 import { sortOptionsVehicles } from "../../Utils/SortOptions";
 import VehicleStats from "./VehicleStats";
-
-interface VehicleTypeOption {
-  name: string;
-  value: VehicleType;
-}
 
 const ListVehicle = () => {
   const [vehicle, setVehicles] = useState<VehicleGet[]>([]);
@@ -68,13 +63,6 @@ const ListVehicle = () => {
     setSearchVehicleTerm("");
     seVehicleType([]);
   };
-
-  const vehicleTypeOptions: VehicleTypeOption[] = Object.entries(
-    vehicleTypeToText as Record<VehicleType, string>,
-  ).map(([key, value]) => ({
-    name: value as string,
-    value: Number(key) as VehicleType,
-  }));
 
   const fetchVehicle = async (page: number, size: number) => {
     const data = await GetUserVehiclesService(
@@ -236,7 +224,7 @@ const ListVehicle = () => {
         <Column
           field="dateOfProduction"
           header="Date Of Production"
-          body={(rowData) => dateBodyTemplate(rowData, "dateOfProduction")}
+          body={(rowData) => formatDate(rowData.dateOfProduction)}
         ></Column>
         <Column
           field="insuranceOcValidUntil"

@@ -16,16 +16,14 @@ import AddAddress from "../AddAddress/AddAddress";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateAddress from "../UpdateAddress/UpdateAddress";
 
-type Props = {};
-
-const ListAddress = (props: Props) => {
+const ListAddress = () => {
   const [addresses, setAddresses] = useState<AddressGet[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [visible, setVisible] = useState<boolean>(false);
   const [selectedAddress, setSelectedAddress] = useState<AddressGet | null>(
-    null
+    null,
   );
   const [updateVisible, setUpdateVisible] = useState(false);
 

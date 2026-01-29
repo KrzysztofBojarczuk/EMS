@@ -1,8 +1,7 @@
-import React from "react";
 import { Dialog } from "primereact/dialog";
 import { Button } from "primereact/button";
 
-interface ConfirmationDialogProps {
+interface Props {
   visible: boolean;
   header: string;
   message: string;
@@ -10,13 +9,13 @@ interface ConfirmationDialogProps {
   onCancel: () => void;
 }
 
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+const ConfirmationDialog = ({
   visible,
   header,
   message,
   onConfirm,
   onCancel,
-}) => {
+}: Props) => {
   return (
     <Dialog
       header={header}

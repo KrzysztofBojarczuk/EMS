@@ -14,17 +14,17 @@ import { PostTaskService } from "../../../Services/TaskService";
 import { GetUserVehicleForTaskService } from "../../../Services/VehicleService";
 import { VehicleGet } from "../../../Models/Vehicle";
 
-type Props = {
+interface Props {
   onClose: () => void;
   onAddSuccess: () => void;
-};
+}
 
-const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
+const AddTask = ({ onClose, onAddSuccess }: Props) => {
   const [value, setValue] = useState("");
   const [items, setItems] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<AddressGet[]>([]);
   const [selectedListEmployees, setSelectedListEmployees] = useState<string[]>(
-    []
+    [],
   );
   const [employeesList, setEmployeesList] = useState<EmployeeListGet[]>([]);
   const [searchTermList, setSearchTermList] = useState("");
@@ -103,16 +103,16 @@ const AddTask: React.FC<Props> = ({ onClose, onAddSuccess }) => {
     const filtered = addresses.filter((item) =>
       `${item.city}, ${item.street}, ${item.zipCode}`
         .toLowerCase()
-        .includes(query.toLowerCase())
+        .includes(query.toLowerCase()),
     );
     setItems(
-      filtered.map((item) => `${item.city}, ${item.street}, ${item.zipCode}`)
+      filtered.map((item) => `${item.city}, ${item.street}, ${item.zipCode}`),
     );
   };
 
   const handleAddressChange = (event: any) => {
     const selected = addresses.find(
-      (item) => `${item.city}, ${item.street}, ${item.zipCode}` === event.value
+      (item) => `${item.city}, ${item.street}, ${item.zipCode}` === event.value,
     );
 
     if (selected) {

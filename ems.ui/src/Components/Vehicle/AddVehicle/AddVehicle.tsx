@@ -11,12 +11,12 @@ import { VehicleType } from "../../../Enum/VehicleType";
 import { Checkbox } from "primereact/checkbox";
 import { number } from "yup";
 
-type Props = {
+interface Props {
   onClose: () => void;
   onAddSuccess: () => void;
-};
+}
 
-const AddVehicle: React.FC<Props> = ({ onClose, onAddSuccess }) => {
+const AddVehicle = ({ onClose, onAddSuccess }: Props) => {
   const {
     control,
     handleSubmit,

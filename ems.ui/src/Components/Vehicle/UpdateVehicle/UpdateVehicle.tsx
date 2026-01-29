@@ -9,17 +9,13 @@ import { VehicleGet, VehiclePost } from "../../../Models/Vehicle";
 import { VehicleType } from "../../../Enum/VehicleType";
 import { UpdateVehicleService } from "../../../Services/VehicleService";
 
-type Props = {
+interface Props {
   vehicle: VehicleGet;
   onClose: () => void;
   onUpdateSuccess: () => void;
-};
+}
 
-const UpdateVehicle: React.FC<Props> = ({
-  vehicle,
-  onClose,
-  onUpdateSuccess,
-}) => {
+const UpdateVehicle = ({ vehicle, onClose, onUpdateSuccess }: Props) => {
   const {
     control,
     handleSubmit,

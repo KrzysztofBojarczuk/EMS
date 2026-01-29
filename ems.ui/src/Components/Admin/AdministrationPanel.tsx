@@ -19,7 +19,6 @@ import { GetAllEmployeesService } from "../../Services/EmployeeService";
 import { GetAllTasksService } from "../../Services/TaskService";
 import { Column } from "primereact/column";
 import {
-  dateBodyTemplate,
   statusOfTaskBodyTemplate,
   taskTypeOptions,
   taskTypeToText,
@@ -43,7 +42,7 @@ import {
   sortOptionsUsers,
 } from "../Utils/SortOptions";
 
-const AdministrationPanel: React.FC = (): JSX.Element => {
+const AdministrationPanel = () => {
   const [numberUser, setNumberUsers] = useState<number>(0);
   const [users, setUsers] = useState<UserGet[]>([]);
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
@@ -59,7 +58,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
   const [dateTo, setDateTo] = useState<Date | null>(null);
   const [sortOrderLogs, setSortOrderLog] = useState<string | null>(null);
   const [sortOrderEmployee, setSortOrderEmployee] = useState<string | null>(
-    null
+    null,
   );
   const [sortOrderTask, setSortOrderTask] = useState<string | null>(null);
   const [sortOrderUser, setSortOrderUser] = useState<string | null>(null);
@@ -133,7 +132,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       page,
       size,
       searchUserTerm,
-      sortOrderUser
+      sortOrderUser,
     );
     setUsers(data.userGet);
     setTotalUsers(data.totalItems);
@@ -154,7 +153,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       page,
       size,
       searchEmployeeTerm,
-      sortOrderEmployee
+      sortOrderEmployee,
     );
     setEmployees(data.employeeGet);
     setTotalEmployees(data.totalItems);
@@ -176,7 +175,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       size,
       searchTaskTerm,
       statusOfTask,
-      sortOrderTask
+      sortOrderTask,
     );
     setTasks(data.taskGet);
     setTotalTasks(data.totalItems);
@@ -199,7 +198,7 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
       searchLogTerm,
       dateFrom,
       dateTo,
-      sortOrderLogs
+      sortOrderLogs,
     );
     setLogs(data.logs);
     setTotalLog(data.totalItems);
@@ -430,14 +429,14 @@ const AdministrationPanel: React.FC = (): JSX.Element => {
             field="startDate"
             dataType="date"
             header="Start Date"
-            body={(rowData) => dateBodyTemplate(rowData, "startDate")}
+            body={(rowData) => formatDate(rowData.startDate)}
           ></Column>
 
           <Column
             field="endDate"
             dataType="date"
             header="End Date"
-            body={(rowData) => dateBodyTemplate(rowData, "endDate")}
+            body={(rowData) => formatDate(rowData.endDate)}
           ></Column>
           <Column
             field="status"
