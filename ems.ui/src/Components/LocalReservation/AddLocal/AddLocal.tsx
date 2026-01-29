@@ -8,20 +8,14 @@ import {
   InputNumberValueChangeEvent,
 } from "primereact/inputnumber";
 import { PostLocalService } from "../../../Services/LocalReservationService";
+import { LocalPost } from "../../../Models/Local";
 
-interface LocalPost {
-  description: string;
-  localNumber: number;
-  surface: number;
-  needsRepair: boolean;
-}
-
-type Props = {
+interface Props {
   onClose: () => void;
   onAddSuccess: () => void;
-};
+}
 
-const AddLocal: React.FC<Props> = ({ onClose, onAddSuccess }) => {
+const AddLocal = ({ onClose, onAddSuccess }: Props) => {
   const [value1, setValue1] = useState<number>(0);
   const [value2, setValue2] = useState<number>(0);
 

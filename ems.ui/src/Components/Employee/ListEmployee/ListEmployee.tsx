@@ -29,9 +29,7 @@ import { calculateAge, formatDate } from "../../Utils/DateUtils";
 import { formatCurrency } from "../../Utils/Currency";
 import { sortOptionsEmployees } from "../../Utils/SortOptions";
 
-interface Props {}
-
-const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
+const EmployeeList = () => {
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
   const [employeesList, setEmployeesList] = useState<EmployeeListGet[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,7 +43,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
     useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeGet | null>(
-    null
+    null,
   );
   const [updateVisible, setUpdateVisible] = useState(false);
 
@@ -69,7 +67,7 @@ const EmployeeList: React.FC<Props> = (props: Props): JSX.Element => {
       page,
       size,
       searchTerm,
-      sortOrder
+      sortOrder,
     );
     setEmployees(data.employeeGet);
     setTotalEmployees(data.totalItems);

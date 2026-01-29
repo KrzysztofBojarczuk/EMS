@@ -7,17 +7,13 @@ import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 import { UpdateLocalService } from "../../../Services/LocalReservationService";
 
-interface UpdateLocalProps {
+interface Props {
   local: LocalGet;
   onClose: () => void;
   onUpdateSuccess: () => void;
 }
 
-const UpdateLocal: React.FC<UpdateLocalProps> = ({
-  local,
-  onClose,
-  onUpdateSuccess,
-}) => {
+const UpdateLocal = ({ local, onClose, onUpdateSuccess }: Props) => {
   const {
     control,
     handleSubmit,

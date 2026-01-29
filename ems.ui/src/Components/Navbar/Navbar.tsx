@@ -4,9 +4,7 @@ import { MenuItem } from "primereact/menuitem";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Context/useAuth";
 
-type Props = {};
-
-const Navbar = (props: Props) => {
+const Navbar = () => {
   const navigate = useNavigate();
   const { isLoggedIn, user, logout } = useAuth();
 
@@ -52,7 +50,7 @@ const Navbar = (props: Props) => {
           label: "Addresses",
           icon: "pi pi-address-book",
           command: () => navigate("/Address"),
-        }
+        },
       );
     }
 
@@ -68,7 +66,7 @@ const Navbar = (props: Props) => {
           logout();
           navigate("/");
         },
-      }
+      },
     );
   } else {
     items.push(
@@ -81,7 +79,7 @@ const Navbar = (props: Props) => {
         label: "Signup",
         icon: "pi pi-user-plus",
         command: () => navigate("/register"),
-      }
+      },
     );
   }
 

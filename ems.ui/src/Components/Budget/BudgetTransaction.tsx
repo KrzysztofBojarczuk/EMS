@@ -29,9 +29,7 @@ import { sortOptionsTransactions } from "../Utils/SortOptions";
 import { Calendar } from "primereact/calendar";
 import { formatDate, formatDateTime } from "../Utils/DateUtils";
 
-type Props = {};
-
-const BudgetTransaction = ({}: Props) => {
+const BudgetTransaction = () => {
   const [budgetUser, setBudgetUser] = useState<BudgetGet | null>(null);
   const [transaction, setTransaction] = useState<TransactionGet[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");

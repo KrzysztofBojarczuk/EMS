@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -7,17 +6,13 @@ import { TransactionPost } from "../../../Models/Transaction";
 import { PostTransactionService } from "../../../Services/TransactionService";
 import { CategoryType } from "../../../Enum/CategoryType";
 
-type Props = {
+interface Props {
   budgetId: string;
   onClose: () => void;
   onAddSuccess: () => void;
-};
+}
 
-const AddTransaction: React.FC<Props> = ({
-  budgetId,
-  onClose,
-  onAddSuccess,
-}) => {
+const AddTransaction = ({ budgetId, onClose, onAddSuccess }: Props) => {
   const {
     control,
     handleSubmit,

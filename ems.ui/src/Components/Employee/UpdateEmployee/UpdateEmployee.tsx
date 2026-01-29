@@ -8,17 +8,13 @@ import { EmployeeGet, EmployeePost } from "../../../Models/Employee";
 import { UpdateEmployeesService } from "../../../Services/EmployeeService";
 import { Calendar } from "primereact/calendar";
 
-interface UpdateEmployeeProps {
+interface Props {
   employee: EmployeeGet;
   onClose: () => void;
   onUpdateSuccess: () => void;
 }
 
-const UpdateEmployee: React.FC<UpdateEmployeeProps> = ({
-  employee,
-  onClose,
-  onUpdateSuccess,
-}) => {
+const UpdateEmployee = ({ employee, onClose, onUpdateSuccess }: Props) => {
   const {
     control,
     handleSubmit,

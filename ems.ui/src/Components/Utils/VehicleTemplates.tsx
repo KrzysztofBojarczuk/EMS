@@ -1,7 +1,6 @@
 import { Tag } from "primereact/tag";
 import { VehicleType } from "../../Enum/VehicleType";
 import { VehicleGet } from "../../Models/Vehicle";
-import { formatDate } from "./DateUtils";
 
 export const vehicleTypeToText: Record<VehicleType, string> = {
   [VehicleType.Car]: "Car",
@@ -41,12 +40,12 @@ export const vehicleTypeBodyTemplate = (rowData: VehicleGet) => (
   <Tag
     value={vehicleTypeToText[rowData.vehicleType]}
     severity={getVehicleTypeSeverity(rowData)}
-  />
+  ></Tag>
 );
 
-export const dateBodyTemplate = (
-  rowData: VehicleGet,
-  field: "dateOfProduction"
-) => {
-  return formatDate(rowData[field]);
-};
+export const vehicleTypeOptions = Object.entries(vehicleTypeToText).map(
+  ([key, value]) => ({
+    name: value,
+    value: Number(key) as VehicleType,
+  }),
+);

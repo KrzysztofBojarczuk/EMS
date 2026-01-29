@@ -31,9 +31,7 @@ import UpdateLocal from "../UpdateLocal/UpdateLocal";
 import { Dropdown } from "primereact/dropdown";
 import { sortOptionsReservations } from "../../Utils/SortOptions";
 
-type Props = {};
-
-const LocalReservation = (props: Props) => {
+const LocalReservation = () => {
   const [local, setLocals] = useState<LocalGet[]>([]);
   const [reservations, setReservations] = useState<ReservationGet[]>([]);
 
@@ -42,7 +40,7 @@ const LocalReservation = (props: Props) => {
 
   const [deleteLocalId, setDeleteLocalId] = useState<string | null>(null);
   const [deleteReservationId, setDeleteReservationId] = useState<string | null>(
-    null
+    null,
   );
 
   const [selectedLocal, setSelectedLocal] = useState<LocalGet | null>(null);
@@ -109,7 +107,7 @@ const LocalReservation = (props: Props) => {
       page,
       size,
       searchReservationTerm,
-      sortOrder
+      sortOrder,
     );
     setReservations(data.reservationGet);
     setTotalReservations(data.totalItems);

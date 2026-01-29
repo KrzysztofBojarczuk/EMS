@@ -7,17 +7,13 @@ import { ReservationPost } from "../../../Models/Reservation";
 import { PostReservationService } from "../../../Services/LocalReservationService";
 import { InputText } from "primereact/inputtext";
 
-type Props = {
+interface Props {
   selectedLocalId: string;
   onClose: () => void;
   onAddSuccess: () => void;
-};
+}
 
-const AddReservation: React.FC<Props> = ({
-  selectedLocalId,
-  onClose,
-  onAddSuccess,
-}) => {
+const AddReservation = ({ selectedLocalId, onClose, onAddSuccess }: Props) => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const {

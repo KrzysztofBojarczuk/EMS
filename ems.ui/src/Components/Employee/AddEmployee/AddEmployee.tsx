@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
@@ -8,12 +7,12 @@ import { EmployeePost } from "../../../Models/Employee";
 import { PostEmployeesService } from "../../../Services/EmployeeService";
 import { Calendar } from "primereact/calendar";
 
-type Props = {
+interface Props {
   onClose: () => void;
   onAddSuccess: () => void;
-};
+}
 
-const AddEmployee: React.FC<Props> = ({ onClose, onAddSuccess }) => {
+const AddEmployee = ({ onClose, onAddSuccess }: Props) => {
   const {
     control,
     handleSubmit,

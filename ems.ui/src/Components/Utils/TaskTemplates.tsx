@@ -1,7 +1,6 @@
 import { Tag } from "primereact/tag";
 import { TaskGet } from "../../Models/Task";
 import { StatusOfTask } from "../../Enum/StatusOfTask";
-import { formatDate } from "./DateUtils";
 
 export const taskTypeToText: Record<StatusOfTask, string> = {
   [StatusOfTask.Active]: "Active",
@@ -29,16 +28,9 @@ export const statusOfTaskBodyTemplate = (rowData: TaskGet) => (
   ></Tag>
 );
 
-export const dateBodyTemplate = (
-  rowData: TaskGet,
-  field: "startDate" | "endDate"
-) => {
-  return formatDate(rowData[field]);
-};
-
 export const taskTypeOptions = Object.entries(taskTypeToText).map(
   ([key, value]) => ({
     name: value,
     value: Number(key) as StatusOfTask,
-  })
+  }),
 );

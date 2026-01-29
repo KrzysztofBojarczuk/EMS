@@ -367,5 +367,34 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
             Assert.AreEqual(vehicles[2].Id, sorted[2].Id);
         }
+
+        [TestMethod]
+        public async Task GetUserVehiclesAsync_SortedByInsuranceOcValidUntilAscending_Returns_SortedVehicles()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var sortOrder = "insurance_oc_asc";
+
+            var vehicles = new List<VehicleEntity>
+            {
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 3000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2022, 1, 1), InsuranceOcValidUntil = new DateTime(2022, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 2000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2021, 1, 1), InsuranceOcValidUntil = new DateTime(2021, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+            };
+
+            _context.Vehicles.AddRange(vehicles);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
+            var sorted = result.Items.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, sorted.Count());
+            Assert.AreEqual(vehicles[0].Id, sorted[2].Id);
+            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
+            Assert.AreEqual(vehicles[2].Id, sorted[0].Id);
+        }
     }
 }
