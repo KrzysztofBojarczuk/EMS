@@ -147,15 +147,30 @@ namespace EMS.API.Controllers
             return Ok(listEmployeeGet);
         }
 
-        [HttpGet("UserList")]
+        [HttpGet("UserListAdd")]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> GetUserEmployeesForListAsync([FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetUserEmployeesForListAddAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserEmployeesForListQuery(appUser.Id, searchTerm));
+            var result = await sender.Send(new GetUserEmployeesForListAddQuery(appUser.Id, searchTerm));
+
+            var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(result);
+
+            return Ok(employeeGet);
+        }
+
+        [HttpGet("UserListUpdate/{employeeListId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> GetUserEmployeesForListUpdateAsync([FromRoute] Guid employeeListId, [FromQuery] string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserEmployeesForListUpdateQuery(appUser.Id, employeeListId, searchTerm));
 
             var employeeGet = mapper.Map<IEnumerable<EmployeeGetDto>>(result);
 
@@ -204,6 +219,33 @@ namespace EMS.API.Controllers
             var employeeGet = mapper.Map<EmployeeGetDto>(result);
 
             return Ok(employeeGet);
+        }
+
+        [HttpPut("EmployeeList/{employeeListId}")]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> UpdateEmployeeList([FromRoute] Guid employeeListId, [FromBody] EmployeeListsCreateDto employeeListsDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var employeeListsEntity = mapper.Map<EmployeeListsEntity>(employeeListsDto);
+
+            var result = await sender.Send(new UpdateEmployeeListCommand(employeeListId, appUser.Id, employeeListsEntity, employeeListsDto.EmployeeIds));
+
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
+
+            var employeeListsGet = mapper.Map<EmployeeListsGetDto>(result.Value);
+
+            return Ok(employeeListsGet);
         }
 
         [HttpDelete("{employeeId}")]

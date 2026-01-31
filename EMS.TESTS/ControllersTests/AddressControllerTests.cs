@@ -379,9 +379,9 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(addressEntity);
 
             _mockSender.Setup(x => x.Send(It.Is<UpdateAddressCommand>(x =>
-                x.AddressId == addressId &&
+                x.addressId == addressId &&
                 x.appUserId == appUserId &&
-                x.Address == addressEntity),
+                x.address == addressEntity),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
 

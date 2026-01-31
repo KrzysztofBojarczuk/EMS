@@ -818,7 +818,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeesForListAsync_ReturnsOkResult_WithEmployeeDtos()
+        public async Task GetUserEmployeesForListAddAsync_ReturnsOkResult_WithEmployeeDtos()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -842,7 +842,7 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesForListQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesForListAddQuery>(x =>
                 x.appUserId == appUserId &&
                 x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
@@ -852,7 +852,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserEmployeesForListAsync(searchTerm);
+            var result = await _controller.GetUserEmployeesForListAddAsync(searchTerm);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -865,7 +865,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeesForListAsync_ReturnsOkResult_NotFound_WithEmptyList()
+        public async Task GetUserEmployeesForListAddAsync_ReturnsOkResult_NotFound_WithEmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -881,7 +881,7 @@ namespace EMS.TESTS.ControllersTests
             _mockUserManager.Setup(x => x.FindByNameAsync(username))
                 .ReturnsAsync(appUser);
 
-            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesForListQuery>(x =>
+            _mockSender.Setup(x => x.Send(It.Is<GetUserEmployeesForListAddQuery>(x =>
                 x.appUserId == appUserId &&
                 x.searchTerm == searchTerm),
                 It.IsAny<CancellationToken>()))
@@ -891,7 +891,7 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(expectedDtos);
 
             // Act
-            var result = await _controller.GetUserEmployeesForListAsync(searchTerm);
+            var result = await _controller.GetUserEmployeesForListAddAsync(searchTerm);
 
             // Assert
             var okResult = result as OkObjectResult;
@@ -964,9 +964,9 @@ namespace EMS.TESTS.ControllersTests
                 .Returns(employeeEntity);
 
             _mockSender.Setup(x => x.Send(It.Is<UpdateEmployeeCommand>(x =>
-                x.EmployeeId == employeeId &&
+                x.employeeId == employeeId &&
                 x.appUserId == appUserId &&
-                x.Employee == employeeEntity),
+                x.employee == employeeEntity),
                 It.IsAny<CancellationToken>()))
                 .ReturnsAsync(updatedEntity);
 

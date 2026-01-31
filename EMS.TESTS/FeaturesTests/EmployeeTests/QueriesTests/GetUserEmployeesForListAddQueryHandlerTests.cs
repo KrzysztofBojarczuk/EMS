@@ -8,15 +8,15 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
 {
     [TestClass]
-    public class GetUserEmployeesForListQueryHandlerTests
+    public class GetUserEmployeesForListAddQueryHandlerTests
     {
         private Mock<IEmployeeRepository> _mockEmployeeRepository;
-        private GetUserEmployeesForListQueryHandler _handler;
+        private GetUserEmployeesForListAddQueryHandler _handler;
 
-        public GetUserEmployeesForListQueryHandlerTests()
+        public GetUserEmployeesForListAddQueryHandlerTests()
         {
             _mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            _handler = new GetUserEmployeesForListQueryHandler(_mockEmployeeRepository.Object);
+            _handler = new GetUserEmployeesForListAddQueryHandler(_mockEmployeeRepository.Object);
         }
 
         [TestMethod]
@@ -32,10 +32,10 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2022, 3, 3), MedicalCheckValidUntil = new DateTime(2025, 3, 3) },
             };
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, null))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAddAsync(appUserId, null))
                 .ReturnsAsync(expectedEmployees);
 
-            var query = new GetUserEmployeesForListQuery(appUserId, null);
+            var query = new GetUserEmployeesForListAddQuery(appUserId, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -44,7 +44,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Count());
             CollectionAssert.AreEqual(expectedEmployees, result.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAsync(appUserId, null), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAddAsync(appUserId, null), Times.Once);
         }
 
         [TestMethod]
@@ -60,10 +60,10 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2 Test", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2) },
             };
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAddAsync(appUserId, searchTerm))
                 .ReturnsAsync(expectedEmployees);
 
-            var query = new GetUserEmployeesForListQuery(appUserId, searchTerm);
+            var query = new GetUserEmployeesForListAddQuery(appUserId, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -72,7 +72,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Count());
             CollectionAssert.AreEqual(expectedEmployees, result.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAddAsync(appUserId, searchTerm), Times.Once);
         }
 
         [TestMethod]
@@ -82,10 +82,10 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListAddAsync(appUserId, searchTerm))
                 .ReturnsAsync(new List<EmployeeEntity>());
 
-            var query = new GetUserEmployeesForListQuery(appUserId, searchTerm);
+            var query = new GetUserEmployeesForListAddQuery(appUserId, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -93,7 +93,7 @@ namespace EMS.TESTS.Features.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAsync(appUserId, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListAddAsync(appUserId, searchTerm), Times.Once);
         }
     }
 }
