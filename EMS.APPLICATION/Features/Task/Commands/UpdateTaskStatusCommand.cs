@@ -1,16 +1,16 @@
-﻿using EMS.CORE.Enums;
+using EMS.CORE.Enums;
 using EMS.CORE.Interfaces;
 using MediatR;
 
 namespace EMS.APPLICATION.Features.Task.Commands
 {
-    public record UpdateTaskStatusCommand(Guid TaskId, string appUserId, StatusOfTask newStatus) : IRequest<bool>;
+    public record UpdateTaskStatusCommand(Guid taskId, string appUserId, StatusOfTask newStatus) : IRequest<bool>;
 
     public class UpdateTaskStatusCommandHandler(ITaskRepository taskRepository) : IRequestHandler<UpdateTaskStatusCommand, bool>
     {
         public async Task<bool> Handle(UpdateTaskStatusCommand request, CancellationToken cancellationToken)
         {
-            return await taskRepository.UpdateTaskStatusAsync(request.TaskId, request.appUserId, request.newStatus);
+            return await taskRepository.UpdateTaskStatusAsync(request.taskId, request.appUserId, request.newStatus);
         }
     }
 }

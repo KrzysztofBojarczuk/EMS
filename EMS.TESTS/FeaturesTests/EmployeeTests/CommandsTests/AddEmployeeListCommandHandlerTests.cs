@@ -34,7 +34,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
 
             var expectedFailureMessage = "A list with that name already exists.";
 
-            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId))
+            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsForAddAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId))
                 .ReturnsAsync(true);
 
             var command = new AddEmployeeListCommand(expectedEmployeeList, employeeIds);
@@ -46,7 +46,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsSuccess);
             Assert.AreEqual(expectedFailureMessage, result.Error);
-            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsForAddAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
             _mockEmployeeRepository.Verify(x => x.AddEmployeeListsAsync(It.IsAny<EmployeeListsEntity>(), It.IsAny<List<Guid>>()), Times.Never);
         }
 
@@ -63,7 +63,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
 
             var employeeIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
 
-            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId))
+            _mockEmployeeRepository.Setup(x => x.EmployeeListExistsForAddAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId))
                 .ReturnsAsync(false);
 
             _mockEmployeeRepository.Setup(x => x.AddEmployeeListsAsync(expectedEmployeeList, employeeIds))
@@ -78,7 +78,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.CommandsTests
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsSuccess);
             Assert.AreEqual(expectedEmployeeList, result.Value);
-            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.EmployeeListExistsForAddAsync(expectedEmployeeList.Name, expectedEmployeeList.AppUserId), Times.Once);
             _mockEmployeeRepository.Verify(x => x.AddEmployeeListsAsync(expectedEmployeeList, employeeIds), Times.Once);
         }
     }

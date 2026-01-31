@@ -12,11 +12,14 @@ namespace EMS.CORE.Interfaces
         Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm, string sortOrder);
         Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm);
         Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskAsync(string appUserId, string searchTerm);
-        Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm);
-        Task<bool> EmployeeListExistsAsync(string name, string appUserId);
+        Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAddAsync(string appUserId, string searchTerm);
+        Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListUpdateAsync(string appUserId, Guid employeeListId, string searchTerm);
+        Task<bool> EmployeeListExistsForAddAsync(string name, string appUserId);
+        Task<bool> EmployeeListExistsForUpdateAsync(string name, string appUserId, Guid employeeListId);
         Task<int> GetUserNumberOfEmployeesAsync(string appUserId);
         Task<int> GetNumberOfEmployeesAsync();
         Task<EmployeeEntity> UpdateEmployeeAsync(Guid employId, string appUserId, EmployeeEntity entity);
+        Task<EmployeeListsEntity> UpdateEmployeeListAsync(Guid employeeListId, string appUserId, EmployeeListsEntity entity, List<Guid> employeeIds);
         Task<bool> DeleteEmployeeAsync(Guid employeeId, string appUserId);
         Task<bool> DeleteEmployeeListsAsync(Guid employeeListId, string appUserId);
     }

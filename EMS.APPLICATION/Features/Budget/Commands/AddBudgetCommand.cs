@@ -4,13 +4,13 @@ using MediatR;
 
 namespace EMS.APPLICATION.Features.Budget.Commands
 {
-    public record AddBudgetCommand(BudgetEntity Budget) : IRequest<BudgetEntity>;
+    public record AddBudgetCommand(BudgetEntity budget) : IRequest<BudgetEntity>;
 
     public class AddBudgetCommandHandler(IBudgetRepository budgetRepository) : IRequestHandler<AddBudgetCommand, BudgetEntity>
     {
         public async Task<BudgetEntity> Handle(AddBudgetCommand request, CancellationToken cancellationToken)
         {
-            return await budgetRepository.AddBudgetAsync(request.Budget);
+            return await budgetRepository.AddBudgetAsync(request.budget);
         }
     }
 }

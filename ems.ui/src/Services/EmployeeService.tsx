@@ -16,7 +16,7 @@ export const PostEmployeesService = async (employeePost: EmployeePost) => {
   return response.data;
 };
 
-export const PostListEmployeesService = async (
+export const PostEmployeeListService = async (
   employeeListPost: EmployeeListPost,
 ) => {
   const response = await axios.post<EmployeeListPost>(
@@ -78,11 +78,27 @@ export const GetUserListForTaskEmployeesService = async (
   return response.data;
 };
 
-export const GetUserEmployeesForListService = async (searchTerm?: string) => {
-  const response = await axios.get<EmployeeGet[]>(api + "Employee/UserList", {
-    params: { searchTerm },
-  });
+export const GetUserEmployeesForListAddService = async (
+  searchTerm?: string,
+) => {
+  const response = await axios.get<EmployeeGet[]>(
+    api + "Employee/UserListAdd",
+    {
+      params: { searchTerm },
+    },
+  );
 
+  return response.data;
+};
+
+export const GetUserEmployeesForListUpdateService = async (
+  id: string,
+  searchTerm: string,
+) => {
+  const response = await axios.get<EmployeeGet[]>(
+    api + `Employee/UserListUpdate/${id}`,
+    { params: { searchTerm } },
+  );
   return response.data;
 };
 
@@ -93,6 +109,17 @@ export const UpdateEmployeesService = async (
   const response = await axios.put<EmployeePost>(
     `${api}Employee/${id}`,
     employeePost,
+  );
+  return response.data;
+};
+
+export const UpdateEmployeeListService = async (
+  id: string,
+  employeeListPost: EmployeeListPost,
+) => {
+  const response = await axios.put(
+    `${api}Employee/EmployeeList/${id}`,
+    employeeListPost,
   );
   return response.data;
 };

@@ -26,7 +26,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             entity.Id = Guid.NewGuid();
             dbContext.EmployeeLists.Add(entity);
 
-            var employees = await dbContext.Employees.Where(e => employeeIds.Contains(e.Id)).ToListAsync();
+            var employees = await dbContext.Employees.Where(x => employeeIds.Contains(x.Id)).ToListAsync();
 
             entity.EmployeesEntities = employees;
 
@@ -156,7 +156,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAsync(string appUserId, string searchTerm)
+        public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAddAsync(string appUserId, string searchTerm)
         {
             var query = dbContext.Employees.Where(x => x.AppUserId == appUserId && x.EmployeeListId == null);
 
@@ -168,9 +168,26 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<bool> EmployeeListExistsAsync(string name, string appUserId)
+        public async Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListUpdateAsync(string appUserId, Guid employeeListId, string searchTerm)
+        {
+            var query = dbContext.Employees.Where(x => x.AppUserId == appUserId && (x.EmployeeListId == null || x.EmployeeListId == employeeListId));
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<bool> EmployeeListExistsForAddAsync(string name, string appUserId)
         {
             return await dbContext.EmployeeLists.AnyAsync(x => x.Name.ToLower() == name.ToLower() && x.AppUserId == appUserId);
+        }
+
+        public async Task<bool> EmployeeListExistsForUpdateAsync(string name, string appUserId, Guid employeeListId)
+        {
+            return await dbContext.EmployeeLists.AnyAsync(x => x.Name.ToLower() == name.ToLower() && x.AppUserId == appUserId && x.Id != employeeListId);
         }
 
         public async Task<int> GetUserNumberOfEmployeesAsync(string appUserId)
@@ -200,6 +217,31 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 await dbContext.SaveChangesAsync();
 
                 return employee;
+            }
+
+            return entity;
+        }
+
+        public async Task<EmployeeListsEntity> UpdateEmployeeListAsync(Guid employeeListId, string appUserId, EmployeeListsEntity entity, List<Guid> employeeIds)
+        {
+            var employeeList = await dbContext.EmployeeLists.Include(x => x.EmployeesEntities).FirstOrDefaultAsync(x => x.Id == employeeListId && x.AppUserId == appUserId);
+
+            if (employeeList is not null)
+            {
+                employeeList.Name = entity.Name;
+
+                var employees = await dbContext.Employees.Where(x => employeeIds.Contains(x.Id)).ToListAsync();
+
+                employeeList.EmployeesEntities.Clear();
+
+                foreach (var emp in employees)
+                {
+                    employeeList.EmployeesEntities.Add(emp);
+                }
+
+                await dbContext.SaveChangesAsync();
+
+                return employeeList;
             }
 
             return entity;

@@ -11,7 +11,7 @@ namespace EMS.APPLICATION.Features.Employee.Commands
     {
         public async Task<Result<EmployeeListsEntity>> Handle(AddEmployeeListCommand request, CancellationToken cancellationToken)
         {
-            var exists = await employeeRepository.EmployeeListExistsAsync(request.employeeList.Name, request.employeeList.AppUserId);
+            var exists = await employeeRepository.EmployeeListExistsForAddAsync(request.employeeList.Name, request.employeeList.AppUserId);
 
             if (exists)
             {

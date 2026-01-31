@@ -21,13 +21,15 @@ import {
   GetUserListEmployeesService,
 } from "../../../Services/EmployeeService";
 import AddEmployee from "../AddEmployee/AddEmployee";
-import AddListEmployee from "../AddListEmployee/AddListEmployee";
+import AddListEmployee from "../AddListEmployee/AddEmployeeList";
 import ConfirmationDialog from "../../Confirmation/ConfirmationDialog";
 import UpdateEmployee from "../UpdateEmployee/UpdateEmployee";
 import { Dropdown } from "primereact/dropdown";
 import { calculateAge, formatDate } from "../../Utils/DateUtils";
 import { formatCurrency } from "../../Utils/Currency";
 import { sortOptionsEmployees } from "../../Utils/SortOptions";
+import UpdateListEmployee from "../UpdateListEmployee/UpdateEmployeeList";
+import AddEmployeeList from "../AddListEmployee/AddEmployeeList";
 
 const EmployeeList = () => {
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
@@ -35,17 +37,22 @@ const EmployeeList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTermList, setSearchTermList] = useState("");
   const [visible, setVisible] = useState<boolean>(false);
-  const [visibleListEmploeyee, setVisibleListEmploeyee] =
+  const [visibleListEmploeyee, setVisibleListEmployee] =
     useState<boolean>(false);
   const [confirmEmployeeVisible, setConfirmEmployeeVisible] =
     useState<boolean>(false);
-  const [confirmListEmployeeVisible, setConfirmListEmployeeVisible] =
+  const [confirmEmployeeListVisible, setConfirmEmployeeListVisible] =
     useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeGet | null>(
     null,
   );
-  const [updateVisible, setUpdateVisible] = useState(false);
+  const [updateEmployeeVisible, setUpdateEmployeeVisible] = useState(false);
+
+  const [updateEmployeeListVisible, setUpdateEmployeeListVisible] =
+    useState(false);
+  const [selectedEmployeeList, setSelectedEmployeeList] =
+    useState<EmployeeListGet | null>(null);
 
   const [firstEmployee, setFirstEmployee] = useState(0);
   const [rowsEmployee, setRowsEmployee] = useState(10);
@@ -100,7 +107,7 @@ const EmployeeList = () => {
 
   const showDeleteListEmployeeConfirmation = (id: string) => {
     setDeleteId(id);
-    setConfirmListEmployeeVisible(true);
+    setConfirmEmployeeListVisible(true);
   };
 
   const handleConfirmDeleteEmployee = async () => {
@@ -129,7 +136,7 @@ const EmployeeList = () => {
   const handleUpdateSuccess = () => {
     const currentPage = Math.floor(firstEmployee / rowsEmployee) + 1;
     goToPage(currentPage, rowsEmployee);
-    setUpdateVisible(false);
+    setUpdateEmployeeVisible(false);
   };
 
   const handleConfirmDeleteListEmployee = async () => {
@@ -137,13 +144,18 @@ const EmployeeList = () => {
       await DeleteEmployeesListService(deleteId);
       fetchEmployeesList();
     }
-    setConfirmListEmployeeVisible(false);
+    setConfirmEmployeeListVisible(false);
     setDeleteId(null);
   };
 
-  const showUpdateDialog = (employee: EmployeeGet) => {
+  const showUpdateEmployeeDialog = (employee: EmployeeGet) => {
     setSelectedEmployee(employee);
-    setUpdateVisible(true);
+    setUpdateEmployeeVisible(true);
+  };
+
+  const showUpdateListEmployeeDialog = (employeeList: EmployeeListGet) => {
+    setSelectedEmployeeList(employeeList);
+    setUpdateEmployeeListVisible(true);
   };
 
   const allowExpansion = (rowData: EmployeeListGet) => {
@@ -268,7 +280,7 @@ const EmployeeList = () => {
                   cursor: "pointer",
                   marginRight: "10px",
                 }}
-                onClick={() => showUpdateDialog(rowData)}
+                onClick={() => showUpdateEmployeeDialog(rowData)}
               ></i>
               <i
                 className="pi pi-trash"
@@ -290,10 +302,10 @@ const EmployeeList = () => {
       <Dialog
         header="Add List Employees"
         visible={visibleListEmploeyee}
-        onHide={() => setVisibleListEmploeyee(false)}
+        onHide={() => setVisibleListEmployee(false)}
       >
-        <AddListEmployee
-          onClose={() => setVisibleListEmploeyee(false)}
+        <AddEmployeeList
+          onClose={() => setVisibleListEmployee(false)}
           onAddSuccess={fetchEmployeesList}
         />
       </Dialog>
@@ -308,7 +320,7 @@ const EmployeeList = () => {
         </IconField>
         <Button
           label="Add List Employees"
-          onClick={() => setVisibleListEmploeyee(true)}
+          onClick={() => setVisibleListEmployee(true)}
         />
       </div>
       <DataTable
@@ -330,6 +342,15 @@ const EmployeeList = () => {
           body={(rowData) => (
             <>
               <i
+                className="pi pi-pencil"
+                style={{
+                  fontSize: "1.5rem",
+                  cursor: "pointer",
+                  marginRight: "10px",
+                }}
+                onClick={() => showUpdateListEmployeeDialog(rowData)}
+              ></i>
+              <i
                 className="pi pi-trash"
                 style={{ fontSize: "1.5rem", cursor: "pointer" }}
                 onClick={() => showDeleteListEmployeeConfirmation(rowData.id)}
@@ -339,11 +360,11 @@ const EmployeeList = () => {
         ></Column>
       </DataTable>
       <ConfirmationDialog
-        visible={confirmListEmployeeVisible}
+        visible={confirmEmployeeListVisible}
         header="Confirm Deletion of List Employees"
         message="Are you sure you want to delete this List employees?"
         onConfirm={handleConfirmDeleteListEmployee}
-        onCancel={() => setConfirmListEmployeeVisible(false)}
+        onCancel={() => setConfirmEmployeeListVisible(false)}
       />
       <ConfirmationDialog
         visible={confirmEmployeeVisible}
@@ -354,14 +375,27 @@ const EmployeeList = () => {
       />
       <Dialog
         header="Update Employee"
-        visible={updateVisible}
-        onHide={() => setUpdateVisible(false)}
+        visible={updateEmployeeVisible}
+        onHide={() => setUpdateEmployeeVisible(false)}
       >
         {selectedEmployee && (
           <UpdateEmployee
             employee={selectedEmployee}
-            onClose={() => setUpdateVisible(false)}
+            onClose={() => setUpdateEmployeeVisible(false)}
             onUpdateSuccess={handleUpdateSuccess}
+          />
+        )}
+      </Dialog>
+      <Dialog
+        header="Update List Employees"
+        visible={updateEmployeeListVisible}
+        onHide={() => setUpdateEmployeeListVisible(false)}
+      >
+        {selectedEmployeeList && (
+          <UpdateListEmployee
+            employeeList={selectedEmployeeList}
+            onClose={() => setUpdateEmployeeListVisible(false)}
+            onUpdateSuccess={fetchEmployeesList}
           />
         )}
       </Dialog>

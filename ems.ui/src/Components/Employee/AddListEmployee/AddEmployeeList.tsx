@@ -6,8 +6,8 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { InputIcon } from "primereact/inputicon";
 import {
-  GetUserEmployeesForListService,
-  PostListEmployeesService,
+  GetUserEmployeesForListAddService,
+  PostEmployeeListService,
 } from "../../../Services/EmployeeService";
 import { EmployeeListPost } from "../../../Models/EmployeeList";
 import { IconField } from "primereact/iconfield";
@@ -17,8 +17,11 @@ interface Props {
   onAddSuccess: () => void;
 }
 
-const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
+const AddEmployeeList = ({ onClose, onAddSuccess }: Props) => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [employees, setEmployees] = useState<EmployeeGet[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
 
   const {
     control,
@@ -31,10 +34,6 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
       employeeIds: [],
     },
   });
-
-  const [employees, setEmployees] = useState<EmployeeGet[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedEmployees, setSelectedEmployees] = useState<string[]>([]);
 
   const onSelectedEmployee = (e: CheckboxChangeEvent) => {
     let _selectedEmployees = [...selectedEmployees];
@@ -49,7 +48,7 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
   };
 
   const fetchEmployees = async () => {
-    const data = await GetUserEmployeesForListService(searchTerm);
+    const data = await GetUserEmployeesForListAddService(searchTerm);
     setEmployees(data);
   };
 
@@ -64,7 +63,7 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
     };
 
     try {
-      await PostListEmployeesService(postData);
+      await PostEmployeeListService(postData);
       onAddSuccess();
       onClose();
       reset();
@@ -132,4 +131,4 @@ const AddListEmployee = ({ onClose, onAddSuccess }: Props) => {
   );
 };
 
-export default AddListEmployee;
+export default AddEmployeeList;
