@@ -870,7 +870,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task EmployeeListExistsForUpdateAsync_When_ListExists_Returns_True()
+        public async Task EmployeeListExistsForUpdateAsync_When_ListExistsButDifferentId_Returns_True()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -897,6 +897,37 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public async Task EmployeeListExistsForUpdateAsync_When_ListExistsButSameId_Returns_False()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var employeeLisId = Guid.NewGuid();
+
+            var existingList = new EmployeeListsEntity
+            {
+                Id = employeeLisId,
+                Name = "EmployeeList",
+                AppUserId = appUserId
+            };
+
+            _context.EmployeeLists.Add(existingList);
+            await _context.SaveChangesAsync();
+
+            var employeeList = new EmployeeListsEntity
+            {
+                Id = employeeLisId,
+                Name = "EmployeeList",
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.EmployeeListExistsForUpdateAsync(employeeList.Name, appUserId, employeeList.Id);
+
+            // Assert
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -1080,8 +1111,9 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId = "user-id-123";
 
-            var employeeList = new List<EmployeeListsEntity> {
-                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId,  },
+            var employeeList = new List<EmployeeListsEntity>
+            {
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId },
                 new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId },
             };
