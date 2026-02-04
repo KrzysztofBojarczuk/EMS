@@ -230,13 +230,13 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 employeeList.Name = entity.Name;
 
-                var employees = await dbContext.Employees.Where(x => employeeIds.Contains(x.Id)).ToListAsync();
-
                 employeeList.EmployeesEntities.Clear();
 
-                foreach (var emp in employees)
+                var employees = await dbContext.Employees.Where(x => employeeIds.Contains(x.Id)).ToListAsync();
+
+                foreach (var employee in employees)
                 {
-                    employeeList.EmployeesEntities.Add(emp);
+                    employeeList.EmployeesEntities.Add(employee);
                 }
 
                 await dbContext.SaveChangesAsync();

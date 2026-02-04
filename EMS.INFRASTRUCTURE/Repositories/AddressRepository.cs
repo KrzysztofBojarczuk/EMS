@@ -78,9 +78,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (address is not null)
             {
-                var tasksWithAddress = await dbContext.Tasks.Where(x => x.AddressId == addressId).ToListAsync();
+                var tasks = await dbContext.Tasks.Where(x => x.AddressId == addressId).ToListAsync();
 
-                foreach (var task in tasksWithAddress)
+                foreach (var task in tasks)
                 {
                     task.AddressId = null;
                 }

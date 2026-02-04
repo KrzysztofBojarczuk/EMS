@@ -17,22 +17,22 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             var employeeLists = await dbContext.EmployeeLists.Where(x => EmployeeListIds.Contains(x.Id)).ToListAsync();
 
-            foreach (var item in employeeLists)
+            foreach (var employeeList in employeeLists)
             {
-                item.TaskId = entity.Id;
+                employeeList.TaskId = entity.Id;
             }
 
             var vehicles = await dbContext.Vehicles.Where(x => VehicleIds.Contains(x.Id)).ToListAsync();
 
-            foreach (var item in vehicles)
+            foreach (var vehicle in vehicles)
             {
-                item.TaskId = entity.Id;
+                vehicle.TaskId = entity.Id;
             }
-
 
             dbContext.Tasks.Add(entity);
 
             await dbContext.SaveChangesAsync();
+
             return entity;
         }
 
@@ -152,18 +152,18 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (task is not null)
             {
-                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+                var employeeLists = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
-                foreach (var item in employeeListsEntities)
+                foreach (var employeeList in employeeLists)
                 {
-                    item.TaskId = null;
+                    employeeList.TaskId = null;
                 }
 
-                var vehiclesEntities = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+                var vehicles = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
-                foreach (var item in vehiclesEntities)
+                foreach (var vehicle in vehicles)
                 {
-                    item.TaskId = null;
+                    vehicle.TaskId = null;
                 }
 
                 task.Status = newStatus;
@@ -180,18 +180,18 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (task is not null)
             {
-                var employeeListsEntities = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+                var employeeLists = await dbContext.EmployeeLists.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
-                foreach (var item in employeeListsEntities)
+                foreach (var employeeList in employeeLists)
                 {
-                    item.TaskId = null;
+                    employeeList.TaskId = null;
                 }
 
-                var vehiclesEntities = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
+                var vehicles = await dbContext.Vehicles.Where(x => x.TaskId == taskId && x.AppUserId == appUserId).ToListAsync();
 
-                foreach (var item in vehiclesEntities)
+                foreach (var vehicle in vehicles)
                 {
-                    item.TaskId = null;
+                    vehicle.TaskId = null;
                 }
 
                 dbContext.Tasks.Remove(task);
