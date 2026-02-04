@@ -193,7 +193,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var updatedLocal = new LocalEntity
             {
-                Description = "Test New",
+                Description = "Local Test",
                 LocalNumber = 2,
                 Surface = 200.0,
                 NeedsRepair = false,

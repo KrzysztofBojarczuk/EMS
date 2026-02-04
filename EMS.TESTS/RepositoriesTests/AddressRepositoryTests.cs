@@ -269,8 +269,8 @@ namespace EMS.TESTS.RepositoriesTests
 
             var updatedAddress = new AddressEntity
             {
-                City = "Test New",
-                Street = "Test New",
+                City = "Address Test",
+                Street = "Address",
                 Number = "1",
                 ZipCode = "00-001",
                 AppUserId = appUserId
