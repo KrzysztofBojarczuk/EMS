@@ -1008,7 +1008,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task UpdateEmployeeAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Employee()
+        public async Task UpdateEmployeeAsync_When_EmployeeExists_Returns_Employee()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -1083,6 +1083,49 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(updatedEmployee.DateOfBirth, result.DateOfBirth);
             Assert.AreEqual(updatedEmployee.EmploymentDate, result.EmploymentDate);
             Assert.AreEqual(updatedEmployee.MedicalCheckValidUntil, result.MedicalCheckValidUntil);
+        }
+
+        [TestMethod]
+        public async Task UpdateEmployeeListAsync_When_EmployeeListExists_Returns_EmployeeList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1", Email = "employee1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 4", Email = "employee4@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1993, 1, 1), EmploymentDate = new DateTime(2024, 1, 1), MedicalCheckValidUntil = new DateTime(2024, 1, 1), AppUserId = appUserId },
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            var employeeList = new EmployeeListsEntity
+            {
+                Name = "EmployeeList",
+                AppUserId = appUserId,
+                EmployeesEntities = new List<EmployeeEntity> { employees[0], employees[1] }
+            };
+
+            _context.EmployeeLists.Add(employeeList);
+            await _context.SaveChangesAsync();
+
+            var updatedEmployeeList = new EmployeeListsEntity
+            {
+                Name = "EmployeeList Test",
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.UpdateEmployeeListAsync(employeeList.Id, appUserId, updatedEmployeeList, new List<Guid> { employees[0].Id, employees[1].Id, employees[2].Id, employees[3].Id });
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(employeeList.Id, result.Id);
+            Assert.AreEqual(employeeList.Name, result.Name);
+            Assert.AreEqual(4, result.EmployeesEntities.Count());
         }
 
         [TestMethod]
@@ -1179,7 +1222,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeListsAsync_When_EmployeeListsDoesNotExist__Returns_False()
+        public async Task DeleteEmployeeListsAsync_When_EmployeeListsDoesNotExist_Returns_False()
         {
             // Arrange
             var appUserId = "user-id-123";
