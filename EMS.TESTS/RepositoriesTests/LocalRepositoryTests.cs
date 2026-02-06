@@ -173,7 +173,7 @@ namespace EMS.TESTS.RepositoriesTests
 
 
         [TestMethod]
-        public async Task UpdateLocalAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Local()
+        public async Task UpdateLocalAsync_When_LocalExists_Returns_Local()
         {
             // Arrange
             var appUserId = "user-id-123";

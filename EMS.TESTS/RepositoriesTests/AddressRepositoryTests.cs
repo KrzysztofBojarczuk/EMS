@@ -249,7 +249,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task UpdateAddressAsync_When_EntityIsNotNullAndExists_UpdatesAnd_Returns_Address()
+        public async Task UpdateAddressAsync_When_AddressExists_Returns_Address()
         {
             // Arrange
             var appUserId = "user-id-123";
