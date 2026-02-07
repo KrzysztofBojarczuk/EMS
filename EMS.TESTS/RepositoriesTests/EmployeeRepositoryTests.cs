@@ -1129,6 +1129,27 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task UpdateEmployeeListAsync_When_EmployeeListDoesNotExist_Returns_Entity()
+        {
+            // Arrange
+            var nonExistentId = Guid.NewGuid();
+            var appUserId = "user-id-123";
+
+            var updatedEmployeeList = new EmployeeListsEntity
+            {
+                Name = "EmployeeList",
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.UpdateEmployeeListAsync(nonExistentId, appUserId, updatedEmployeeList, new List<Guid>());
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(updatedEmployeeList.Name, result.Name);
+        }
+
+        [TestMethod]
         public async Task DeleteEmployeeAsync_When_EmployeeExists_Returns_True()
         {
             // Arrange
