@@ -38,9 +38,9 @@ Budget:
 ![24](https://github.com/user-attachments/assets/6f4abdf8-0dc0-4cab-bd59-00ffaaca2b98)
 
 Locals and Reservations:
-![25](https://github.com/user-attachments/assets/a61cabb8-b830-4eea-99ba-ce59a6e7a416)
-![26](https://github.com/user-attachments/assets/5802c68d-853a-4a05-b913-722c07c5d746)
-![27](https://github.com/user-attachments/assets/3ddf8ccb-42dd-495a-8e76-32ec90db4eff)
+![25](https://github.com/user-attachments/assets/4c639aaf-bbf5-4380-a7b6-64cc56146335)
+![26](https://github.com/user-attachments/assets/5fc8c340-62c2-4f41-a601-f49570470c63)
+![27](https://github.com/user-attachments/assets/ec8ba4e0-d5d7-4304-b9b3-8ed45a9a178d)
 
 Addresses:
 ![28](https://github.com/user-attachments/assets/df853a23-cf5c-4524-b898-1dcdf54fc43f)
