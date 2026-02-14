@@ -64,7 +64,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 dbContext.Reservations.RemoveRange(local.ReservationsEntities);
                 dbContext.Locals.Remove(local);
 
-                return await dbContext.SaveChangesAsync() > 0; //Jeœli usuniêcie siê powiod³o: SaveChangesAsync() zwróci liczbê wiêksz¹ od 0, wiêc metoda zwróci true.
+                return await dbContext.SaveChangesAsync() > 0;
             }
 
             return false;
