@@ -222,13 +222,10 @@ const LocalReservation = () => {
                   className="flex flex-column m-2"
                   style={{ border: "2px solid #81c784" }}
                 >
-                  <p className="text-green-400">
-                    Reservation ID: {reservation.id}
-                  </p>
+                  <p>Reservation Id: {reservation.id}</p>
+                  <p>Description: {reservation.description}</p>
                   <p>Check-in: {formatDateTime(reservation.checkInDate)}</p>
-                  <span>
-                    Check-out: {formatDateTime(reservation.checkOutDate)}
-                  </span>
+                  <p>Check-out: {formatDateTime(reservation.checkOutDate)}</p>
                 </Card>
               </div>
             ))}

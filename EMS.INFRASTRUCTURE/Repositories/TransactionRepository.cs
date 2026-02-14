@@ -97,27 +97,28 @@ namespace EMS.INFRASTRUCTURE.Repositories
         {
             var transaction = await dbContext.Transactions.FirstOrDefaultAsync(x => x.Id == transactionId);
 
-            if (transaction is null)
+            if (transaction is not null)
             {
-                return false;
+                var budget = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == transaction.BudgetId);
+
+                if (budget is not null)
+                {
+                    if (transaction.Category == CategoryType.Income)
+                    {
+                        budget.Budget -= transaction.Amount;
+                    }
+                    else if (transaction.Category == CategoryType.Expense)
+                    {
+                        budget.Budget += transaction.Amount;
+                    }
+                }
+
+                dbContext.Transactions.Remove(transaction);
+
+                return await dbContext.SaveChangesAsync() > 0;
             }
 
-            var budget = await dbContext.Budgets.FirstOrDefaultAsync(x => x.Id == transaction.BudgetId);
-
-            if (budget is not null)
-            {
-                if (transaction.Category == CategoryType.Income)
-                {
-                    budget.Budget -= transaction.Amount;
-                }
-                else if (transaction.Category == CategoryType.Expense)
-                {
-                    budget.Budget += transaction.Amount;
-                }
-            }
-
-            dbContext.Transactions.Remove(transaction);
-            return await dbContext.SaveChangesAsync() > 0;
+            return false;
         }
     }
 }

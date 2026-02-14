@@ -66,13 +66,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
         public async Task<bool> IsLocalBusyAsync(Guid localId, DateTime? checkIn, DateTime? checkOut)
         {
-            return await dbContext.Reservations
-                .Where(x => x.LocalId == localId)
-                .AnyAsync(x =>
-                    (checkIn >= x.CheckInDate && checkIn < x.CheckOutDate) || // zaczyna siê w trakcie
-                    (checkOut > x.CheckInDate && checkOut <= x.CheckOutDate) || // koñczy siê w trakcie
-                    (checkIn <= x.CheckInDate && checkOut >= x.CheckOutDate)    // obejmuje ca³¹ istniej¹c¹ rezerwacj
-                );
+            return await dbContext.Reservations.Where(x => x.LocalId == localId)
+                                               .AnyAsync(x => (checkIn >= x.CheckInDate && checkIn < x.CheckOutDate)
+                                                           || (checkOut > x.CheckInDate && checkOut <= x.CheckOutDate)
+                                                           || (checkIn <= x.CheckInDate && checkOut >= x.CheckOutDate));
         }
 
         public async Task<bool> DeleteReservationAsync(Guid reservationId, string appUserId)
@@ -82,6 +79,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             if (reservation is not null)
             {
                 dbContext.Reservations.Remove(reservation);
+
                 return await dbContext.SaveChangesAsync() > 0;
             }
 

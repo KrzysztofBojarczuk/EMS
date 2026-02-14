@@ -195,6 +195,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
                 }
 
                 dbContext.Tasks.Remove(task);
+
                 return await dbContext.SaveChangesAsync() > 0;
             }
 

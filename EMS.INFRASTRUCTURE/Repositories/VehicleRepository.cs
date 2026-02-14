@@ -99,7 +99,9 @@ namespace EMS.INFRASTRUCTURE.Repositories
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())
+                query = query.Where(x => x.Brand.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Model.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Name.ToLower().Contains(searchTerm.ToLower())
                                       || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
             }
 
@@ -156,10 +158,10 @@ namespace EMS.INFRASTRUCTURE.Repositories
             {
                 dbContext.Vehicles.Remove(vehicle);
 
-                return await dbContext.SaveChangesAsync() > 0;  //Jeœli usuniêcie siê powiod³o: SaveChangesAsync() zwróci liczbê wiêksz¹ od 0, wiêc metoda zwróci true.
+                return await dbContext.SaveChangesAsync() > 0;
             }
 
-            return true;
+            return false;
         }
     }
 }
