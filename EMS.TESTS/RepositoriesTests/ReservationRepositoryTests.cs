@@ -97,20 +97,23 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserReservationsAsync_Returns_AllReservations()
         {
             // Arrange
-            var appUserId = "user-id-123";
+            var appUserId1 = "user-id-123";
+            var appUserId2 = "user-id-1234";
 
             var reservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 16, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 18, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 19, 10, 0, 0), AppUserId = appUserId },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId }
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 16, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0), AppUserId = appUserId1 },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 18, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 19, 10, 0, 0), AppUserId = appUserId1 },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId1 },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 4", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId2 },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 5", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId2 },
             };
 
             _context.Reservations.AddRange(reservations);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, null);
+            var result = await _repository.GetUserReservationsAsync(appUserId1, 1, 10, null, null);
 
             // Assert
             Assert.IsNotNull(result);

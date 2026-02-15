@@ -98,20 +98,23 @@ namespace EMS.TESTS.RepositoriesTests
         public async Task GetUserLocalAsync_Returns_AllLocals()
         {
             // Arrange
-            var appUserId = "user-id-123";
+            var appUserId1 = "user-id-123";
+            var appUserId2 = "user-id-1234";
 
             var locals = new List<LocalEntity>
             {
-                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId },
-                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId }
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 1", LocalNumber = 1, Surface = 100.0, NeedsRepair = false, AppUserId = appUserId1 },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 2", LocalNumber = 2, Surface = 150.0, NeedsRepair = false, AppUserId = appUserId1 },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 3", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId1 },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 4", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId2 },
+                new LocalEntity { Id = Guid.NewGuid(), Description = "Local 5", LocalNumber = 3, Surface = 200.0, NeedsRepair = false, AppUserId = appUserId2 }
             };
 
             _context.Locals.AddRange(locals);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserLocalAsync(appUserId, 1, 10, null);
+            var result = await _repository.GetUserLocalAsync(appUserId1, 1, 10, null);
 
             // Assert
             Assert.IsNotNull(result);
