@@ -153,7 +153,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeesAsync_Returns_AllEmployees()
+        public async Task GetUserEmployeesAsync_Returns_AllUserEmployees()
         {
             // Arrange
             var appUserId1 = "user-id-123";
@@ -571,23 +571,26 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeeListsAsync_Returns_AllEmployeeList()
+        public async Task GetUserEmployeeListsAsync_Returns_AllUserEmployeeList()
         {
             // Arrange
-            var appUserId = "user-id-123";
+            var appUserId1 = "user-id-123";
+            var appUserId2 = "user-id-1234";
 
             var employeeList = new List<EmployeeListsEntity>
             {
-                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId },
-                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId },
-                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId }
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 4", AppUserId = appUserId2 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 5", AppUserId = appUserId2 }
             };
 
             _context.EmployeeLists.AddRange(employeeList);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeeListsAsync(appUserId, null);
+            var result = await _repository.GetUserEmployeeListsAsync(appUserId1, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -981,7 +984,7 @@ namespace EMS.TESTS.RepositoriesTests
             var count = await _repository.GetUserNumberOfEmployeesAsync(appUserId1);
 
             // Assert
-            Assert.AreEqual(employees.Where(x => x.AppUserId == appUserId1).Count(), count);
+            Assert.AreEqual(2, count);
         }
 
         [TestMethod]
@@ -1004,7 +1007,7 @@ namespace EMS.TESTS.RepositoriesTests
             var count = await _repository.GetNumberOfEmployeesAsync();
 
             // Assert
-            Assert.AreEqual(employees.Count(), count);
+            Assert.AreEqual(3, count);
         }
 
         [TestMethod]

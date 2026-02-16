@@ -96,7 +96,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserAddressesAsync_Returns_AllAddresses()
+        public async Task GetUserAddressesAsync_Returns_AllUserAddresses()
         {
             // Arrange
             var appUserId1 = "user-id-123";

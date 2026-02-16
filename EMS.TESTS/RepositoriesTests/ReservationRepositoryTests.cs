@@ -94,7 +94,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserReservationsAsync_Returns_AllReservations()
+        public async Task GetUserReservationsAsync_Returns_AllUserReservations()
         {
             // Arrange
             var appUserId1 = "user-id-123";
