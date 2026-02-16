@@ -124,7 +124,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserVehiclesAsync_Returns_AllVehicles()
+        public async Task GetUserVehiclesAsync_Returns_AllUserVehicles()
         {
             // Arrange
             var appUserId1 = "user-id-123";
@@ -653,6 +653,37 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
+        }
+
+        [TestMethod]
+        public async Task GetUserVehiclesStatsAsync_Returns_CorrectStats()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var appUserId2 = "user-id-1234";
+
+            var vehicles = new List<VehicleEntity>
+            {
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = DateTime.UtcNow.AddYears(-2), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = DateTime.UtcNow.AddYears(-2), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = DateTime.UtcNow.AddYears(-2), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = DateTime.UtcNow.AddYears(-2), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 5", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = DateTime.UtcNow.AddYears(-2), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId2 },
+            };
+
+            _context.Vehicles.AddRange(vehicles);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserVehiclesStatsAsync(appUserId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.ActiveVehicles);
+            Assert.AreEqual(1, result.InactiveVehicles);
+            Assert.IsTrue(result.AverageVehicleAge > 2.0 && result.AverageVehicleAge < 4.0);
+            Assert.AreEqual(4000, result.TotalInsuranceCost);
+            Assert.AreEqual(1000, result.AverageInsuranceCost);
         }
     }
 }
