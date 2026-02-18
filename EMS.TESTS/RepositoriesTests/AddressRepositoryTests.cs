@@ -174,6 +174,20 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserAddressesAsync_When_UserHasNoAddresses_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.GetUserAddressesAsync(appUserId, 1, 10, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserAddressesForTaskAsync_Returns_AllAddresses()
         {
             // Arrange
