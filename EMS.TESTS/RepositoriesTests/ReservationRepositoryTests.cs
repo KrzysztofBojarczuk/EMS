@@ -172,6 +172,20 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserReservationsAsync_When_UserHasNoReservation_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserReservationsAsync_SortedByCheckInDateAscending_Returns_SortedReservations()
         {
             // Arrange
