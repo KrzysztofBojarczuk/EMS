@@ -22,7 +22,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await dbContext.Locals.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<PaginatedList<LocalEntity>> GetUserLocalAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
+        public async Task<PaginatedList<LocalEntity>> GetUserLocalsAsync(string appUserId, int pageNumber, int pageSize, string searchTerm)
         {
             var query = dbContext.Locals.Include(x => x.ReservationsEntities).Where(x => x.AppUserId == appUserId);
 

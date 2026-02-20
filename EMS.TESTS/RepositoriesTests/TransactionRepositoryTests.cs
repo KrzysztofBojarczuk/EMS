@@ -108,7 +108,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetTransactionsByBudgetIdAsync_When_TransactionDoesNotExist_Returns_EmptyList()
+        public async Task GetTransactionsByBudgetIdAsync_When_TransactionsDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var budgetId = Guid.NewGuid();

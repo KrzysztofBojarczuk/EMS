@@ -95,7 +95,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserLocalAsync_Returns_AllUserLocals()
+        public async Task GetUserLocalsAsync_Returns_AllUserLocals()
         {
             // Arrange
             var appUserId1 = "user-id-123";
@@ -114,7 +114,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserLocalAsync(appUserId1, 1, 10, null);
+            var result = await _repository.GetUserLocalsAsync(appUserId1, 1, 10, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -122,7 +122,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserLocalAsync_BySearchTerm_Returns_Locals()
+        public async Task GetUserLocalsAsync_BySearchTerm_Returns_Locals()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -141,7 +141,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserLocalAsync(appUserId, 1, 10, searchTerm);
+            var result = await _repository.GetUserLocalsAsync(appUserId, 1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -150,7 +150,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserLocalAsync_When_LocalDoesNotExist_Returns_EmptyList()
+        public async Task GetUserLocalsAsync_When_LocalsDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -167,13 +167,26 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserLocalAsync(appUserId, 1, 10, searchTerm);
+            var result = await _repository.GetUserLocalsAsync(appUserId, 1, 10, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count());
         }
 
+        [TestMethod]
+        public async Task GetUserLocalsAsync_When_UserHasNoLocals_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.GetUserLocalsAsync(appUserId, 1, 10, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
 
         [TestMethod]
         public async Task UpdateLocalAsync_When_LocalExists_Returns_Local()

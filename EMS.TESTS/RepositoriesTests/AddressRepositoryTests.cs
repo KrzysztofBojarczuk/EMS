@@ -149,7 +149,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserAddressesAsync_When_AddressDoesNotExist_Returns_EmptyList()
+        public async Task GetUserAddressesAsync_When_AddressesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -240,7 +240,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserAddressesForTaskAsync_When_AddressDoesNotExist_Returns_EmptyList()
+        public async Task GetUserAddressesForTaskAsync_When_AddressesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";

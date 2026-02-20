@@ -11,7 +11,7 @@ namespace EMS.APPLICATION.Features.Local.Queries
     {
         public async Task<PaginatedList<LocalEntity>> Handle(GetUserLocalsQuery request, CancellationToken cancellationToken)
         {
-            return await localRepository.GetUserLocalAsync(request.appUserId, request.pageNumber, request.pageSize, request.searchTerm);
+            return await localRepository.GetUserLocalsAsync(request.appUserId, request.pageNumber, request.pageSize, request.searchTerm);
         }
     }
 }

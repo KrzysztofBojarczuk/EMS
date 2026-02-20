@@ -177,7 +177,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserVehiclesAsync_When_VehicleDoesNotExist_Returns_EmptyList()
+        public async Task GetUserVehiclesAsync_When_VehiclesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
