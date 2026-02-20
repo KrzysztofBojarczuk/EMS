@@ -6,7 +6,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
     public interface ILocalRepository
     {
         Task<LocalEntity> AddLocalAsync(LocalEntity entity);
-        Task<PaginatedList<LocalEntity>> GetUserLocalAsync(string appUserId, int pageNumber, int pageSize, string searchTerm);
+        Task<PaginatedList<LocalEntity>> GetUserLocalsAsync(string appUserId, int pageNumber, int pageSize, string searchTerm);
         Task<LocalEntity> GetLocalByIdAsync(Guid id);
         Task<LocalEntity> UpdateLocalAsync(Guid localId, string appUserId, LocalEntity entity);
         Task<bool> DeleteLocalAsync(Guid localId, string appUserId);

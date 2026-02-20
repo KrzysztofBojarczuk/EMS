@@ -78,7 +78,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetAllUsersAsync_NotFound_Returns_EmptyList()
+        public async Task GetAllUsersAsync_When_UsersDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var searchTerm = "nonexistent";

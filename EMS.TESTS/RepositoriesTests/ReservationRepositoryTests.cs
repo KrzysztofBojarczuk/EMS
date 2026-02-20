@@ -147,7 +147,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserReservationsAsync_When_ReservationDoesNotExist_Returns_EmptyList()
+        public async Task GetUserReservationsAsync_When_ReservationsDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -172,7 +172,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserReservationsAsync_When_UserHasNoReservation_Returns_EmptyList()
+        public async Task GetUserReservationsAsync_When_UserHasNoReservations_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
