@@ -231,6 +231,20 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeesAsync_When_UserHasNoEmployees_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeesAsync_SortedBySalaryAscending_Returns_SortedEmployees()
         {
             // Arrange
@@ -492,7 +506,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetEmployeesAsync_Returns_AllEmployees()
+        public async Task GetAllEmployeesAsync_Returns_AllEmployees()
         {
             // Arrange
             var appUserId1 = "user-id-123";
@@ -512,7 +526,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, null, null);
+            var result = await _repository.GetAllEmployeesAsync(1, 10, null, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -520,7 +534,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetEmployeesAsync_BySearchTerm_Returns_Employees()
+        public async Task GetAllEmployeesAsync_BySearchTerm_Returns_Employees()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -537,7 +551,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm, null);
+            var result = await _repository.GetAllEmployeesAsync(1, 10, searchTerm, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -546,7 +560,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetEmployeesAsync_When_EmployeesDoesNotExist_Returns_EmptyList()
+        public async Task GetAllEmployeesAsync_When_EmployeesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -563,7 +577,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetEmployeesAsync(1, 10, searchTerm, null);
+            var result = await _repository.GetAllEmployeesAsync(1, 10, searchTerm, null);
 
             // Assert
             Assert.IsNotNull(result);
