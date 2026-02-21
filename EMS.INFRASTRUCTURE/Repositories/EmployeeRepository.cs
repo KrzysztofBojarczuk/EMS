@@ -86,7 +86,7 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<EmployeeEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<PaginatedList<EmployeeEntity>> GetEmployeesAsync(int pageNumber, int pageSize, string searchTerm, string sortOrder)
+        public async Task<PaginatedList<EmployeeEntity>> GetAllEmployeesAsync(int pageNumber, int pageSize, string searchTerm, string sortOrder)
         {
             var query = dbContext.Employees.AsQueryable();
 

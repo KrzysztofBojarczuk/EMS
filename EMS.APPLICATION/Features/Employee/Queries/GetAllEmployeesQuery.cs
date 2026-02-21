@@ -11,7 +11,7 @@ namespace EMS.APPLICATION.Features.Employee.Queries
     {
         public async Task<PaginatedList<EmployeeEntity>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
         {
-            return await employeeRepository.GetEmployeesAsync(request.pageNumber, request.pageSize, request.searchTerm, request.sortOrder);
+            return await employeeRepository.GetAllEmployeesAsync(request.pageNumber, request.pageSize, request.searchTerm, request.sortOrder);
         }
     }
 }

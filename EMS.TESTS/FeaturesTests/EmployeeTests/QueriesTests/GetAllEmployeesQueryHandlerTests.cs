@@ -35,7 +35,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(pageNumber, pageSize, null, null))
+            _mockEmployeeRepository.Setup(x => x.GetAllEmployeesAsync(pageNumber, pageSize, null, null))
                 .ReturnsAsync(paginatedList);
 
             var query = new GetAllEmployeesQuery(pageNumber, pageSize, null, null);
@@ -47,7 +47,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
             CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(pageNumber, pageSize, null, null), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetAllEmployeesAsync(pageNumber, pageSize, null, null), Times.Once);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm, null))
+            _mockEmployeeRepository.Setup(x => x.GetAllEmployeesAsync(pageNumber, pageSize, searchTerm, null))
                 .ReturnsAsync(paginatedList);
 
             var query = new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm, null);
@@ -78,7 +78,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployees.Count(), result.Items.Count());
             CollectionAssert.AreEqual(expectedEmployees, result.Items.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm, null), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetAllEmployeesAsync(pageNumber, pageSize, searchTerm, null), Times.Once);
         }
 
         [TestMethod]
@@ -91,7 +91,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 
             var paginatedList = new PaginatedList<EmployeeEntity>(new List<EmployeeEntity>(), 0, pageNumber, pageSize);
 
-            _mockEmployeeRepository.Setup(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm, null))
+            _mockEmployeeRepository.Setup(x => x.GetAllEmployeesAsync(pageNumber, pageSize, searchTerm, null))
                 .ReturnsAsync(paginatedList);
 
             var query = new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm, null);
@@ -102,7 +102,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Items.Count());
-            _mockEmployeeRepository.Verify(x => x.GetEmployeesAsync(pageNumber, pageSize, searchTerm, null), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetAllEmployeesAsync(pageNumber, pageSize, searchTerm, null), Times.Once);
         }
     }
 }
