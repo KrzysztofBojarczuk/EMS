@@ -585,6 +585,17 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetAllEmployeesAsync_When_NoEmployees_Returns_EmptyList()
+        {
+            // Act
+            var result = await _repository.GetAllEmployeesAsync(1, 10, null, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Items.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeeListsAsync_Returns_AllUserEmployeeList()
         {
             // Arrange
