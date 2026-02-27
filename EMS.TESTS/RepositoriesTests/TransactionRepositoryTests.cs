@@ -235,14 +235,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, sortOrder);
-            var sorted = result.ToList();
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual(transactions[0].Id, sorted[2].Id);
-            Assert.AreEqual(transactions[1].Id, sorted[1].Id);
-            Assert.AreEqual(transactions[2].Id, sorted[0].Id);
+            CollectionAssert.AreEqual(transactions.OrderBy(x => x.Amount).ToList(), result.ToList());
         }
 
         [TestMethod]
@@ -264,14 +261,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, sortOrder);
-            var sorted = result.ToList();
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual(transactions[0].Id, sorted[0].Id);
-            Assert.AreEqual(transactions[1].Id, sorted[1].Id);
-            Assert.AreEqual(transactions[2].Id, sorted[2].Id);
+            CollectionAssert.AreEqual(transactions.OrderByDescending(x => x.Amount).ToList(), result.ToList());
         }
 
         [TestMethod]
@@ -293,14 +287,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, sortOrder);
-            var sorted = result.ToList();
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual(transactions[0].Id, sorted[0].Id);
-            Assert.AreEqual(transactions[1].Id, sorted[1].Id);
-            Assert.AreEqual(transactions[2].Id, sorted[2].Id);
+            CollectionAssert.AreEqual(transactions.OrderBy(x => x.CreatedAt).ToList(), result.ToList());
         }
 
         [TestMethod]
@@ -322,14 +313,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, sortOrder);
-            var sorted = result.ToList();
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual(transactions[0].Id, sorted[2].Id);
-            Assert.AreEqual(transactions[1].Id, sorted[1].Id);
-            Assert.AreEqual(transactions[2].Id, sorted[0].Id);
+            CollectionAssert.AreEqual(transactions.OrderByDescending(x => x.CreatedAt).ToList(), result.ToList());
         }
 
         [TestMethod]
@@ -351,14 +339,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetTransactionsByBudgetIdAsync(budgetId, null, null, null, null, null, null, sortOrder);
-            var sorted = result.ToList();
 
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual(transactions[0].Id, sorted[2].Id);
-            Assert.AreEqual(transactions[1].Id, sorted[1].Id);
-            Assert.AreEqual(transactions[2].Id, sorted[0].Id);
+            CollectionAssert.AreEqual(transactions.OrderByDescending(x => x.CreatedAt).ToList(), result.ToList());
         }
 
         [TestMethod]

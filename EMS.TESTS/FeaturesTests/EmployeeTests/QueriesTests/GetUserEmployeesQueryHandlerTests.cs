@@ -58,12 +58,12 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var pageNumber = 1;
             var pageSize = 10;
-            var searchTerm = "John";
+            var searchTerm = "test";
 
             var expectedEmployees = new List<EmployeeEntity>
             {
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1", Email = "employee1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1 Test", Email = "employee1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2 Test", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId }
             };
 
             var paginatedList = new PaginatedList<EmployeeEntity>(expectedEmployees, expectedEmployees.Count(), pageNumber, pageSize);
