@@ -204,14 +204,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[0].Id, sorted[2].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(reservations.OrderBy(x => x.CheckInDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -233,14 +230,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[0].Id, sorted[2].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(reservations.OrderByDescending(x => x.CheckInDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -262,14 +256,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[0].Id, sorted[2].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(reservations.OrderBy(x => x.CheckOutDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -291,14 +282,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[0].Id, sorted[2].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(reservations.OrderByDescending(x => x.CheckOutDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -320,14 +308,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserReservationsAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(reservations[0].Id, sorted[2].Id);
-            Assert.AreEqual(reservations[1].Id, sorted[1].Id);
-            Assert.AreEqual(reservations[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(reservations.OrderByDescending(x => x.CheckOutDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]

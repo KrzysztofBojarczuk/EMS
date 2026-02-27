@@ -263,14 +263,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[2].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderBy(x => x.Salary).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -283,8 +280,8 @@ namespace EMS.TESTS.RepositoriesTests
             var employees = new List<EmployeeEntity>
             {
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1", Email = "employee1@example.com", Phone = "123-456-789", Salary = 3000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 2000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 2000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId }
             };
 
             _context.Employees.AddRange(employees);
@@ -292,14 +289,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[0].Id);
-            Assert.AreEqual(employees[1].Id, sorted[2].Id);
-            Assert.AreEqual(employees[2].Id, sorted[1].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderByDescending(x => x.Salary).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -321,14 +315,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[0].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderBy(x => x.DateOfBirth).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -350,14 +341,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[2].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderByDescending(x => x.DateOfBirth).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -379,14 +367,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[0].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderBy(x => x.EmploymentDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -408,14 +393,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[2].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderByDescending(x => x.EmploymentDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -437,14 +419,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[0].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderBy(x => x.MedicalCheckValidUntil).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -466,14 +445,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[2].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderByDescending(x => x.MedicalCheckValidUntil).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -495,14 +471,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserEmployeesAsync(appUserId, 1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[2].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderByDescending(x => x.EmploymentDate).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -615,14 +588,38 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetAllEmployeesAsync(1, 10, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(employees[0].Id, sorted[2].Id);
-            Assert.AreEqual(employees[1].Id, sorted[1].Id);
-            Assert.AreEqual(employees[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderBy(x => x.Salary).ToList(), result.Items.ToList());
+        }
+
+        [TestMethod]
+        public async Task GetAllEmployeesAsync_SortedBySalaryDescending_Returns_SortedEmployees()
+        {
+            // Arrange
+            var appUserId1 = "user-id-123";
+            var appUserId2 = "user-id-1234";
+            var sortOrder = "salary_desc";
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1", Email = "employee1@example.com", Phone = "123-456-789", Salary = 3000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId1 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 2000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId1 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 1000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId2 }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetAllEmployeesAsync(1, 10, null, sortOrder);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(employees.OrderByDescending(x => x.Salary).ToList(), result.Items.ToList());
         }
 
         [TestMethod]

@@ -288,14 +288,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[2].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderBy(x => x.Mileage).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -317,14 +314,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[0].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderByDescending(x => x.Mileage).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -346,14 +340,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[2].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderBy(x => x.DateOfProduction).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -375,14 +366,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[0].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderByDescending(x => x.DateOfProduction).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -404,14 +392,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[2].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderBy(x => x.InsuranceOcValidUntil).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -433,14 +418,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[0].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderByDescending(x => x.InsuranceOcValidUntil).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -462,14 +444,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[2].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderBy(x => x.InsuranceOcCost).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -491,14 +470,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[0].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderByDescending(x => x.InsuranceOcCost).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -520,14 +496,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[2].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[0].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderBy(x => x.TechnicalInspectionValidUntil).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -549,14 +522,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[0].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderByDescending(x => x.TechnicalInspectionValidUntil).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
@@ -578,14 +548,11 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Act
             var result = await _repository.GetUserVehiclesAsync(appUserId, 1, 10, null, null, null, null, sortOrder);
-            var sorted = result.Items.ToList();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(3, sorted.Count());
-            Assert.AreEqual(vehicles[0].Id, sorted[0].Id);
-            Assert.AreEqual(vehicles[1].Id, sorted[1].Id);
-            Assert.AreEqual(vehicles[2].Id, sorted[2].Id);
+            Assert.AreEqual(3, result.Items.Count());
+            CollectionAssert.AreEqual(vehicles.OrderByDescending(x => x.DateOfProduction).ToList(), result.Items.ToList());
         }
 
         [TestMethod]
