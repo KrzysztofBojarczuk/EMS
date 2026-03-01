@@ -1018,7 +1018,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
+        public async Task DeleteEmployeeAsync_ReturnsNotFoundResult_WithFalse_When_DeletionFails()
         {
             // Arrange
             var employeeId = Guid.NewGuid();
@@ -1038,10 +1038,10 @@ namespace EMS.TESTS.ControllersTests
             var result = await _controller.DeleteEmployeeAsync(employeeId);
 
             // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(expectedResult, okResult.Value);
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.AreEqual(expectedResult, notFoundResult.Value);
         }
 
         [TestMethod]
@@ -1072,7 +1072,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteEmployeeListAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
+        public async Task DeleteEmployeeListAsync_ReturnsNotFoundResult_WithFalse_When_DeletionFails()
         {
             // Arrange
             var employeeListId = Guid.NewGuid();
@@ -1092,10 +1092,10 @@ namespace EMS.TESTS.ControllersTests
             var result = await _controller.DeleteEmployeeListAsync(employeeListId);
 
             // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(expectedResult, okResult.Value);
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.AreEqual(expectedResult, notFoundResult.Value);
         }
     }
 }

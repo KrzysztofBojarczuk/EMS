@@ -18,6 +18,10 @@ namespace EMS.API.Controllers
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TaskGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddTaskAsync([FromBody] TaskCreateDto taskDto)
         {
             if (!ModelState.IsValid)
@@ -42,6 +46,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("User")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserTaskssAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] List<StatusOfTask> statusOfTask = null, [FromQuery] string sortOrder = null)
         {
             var username = User.GetUsername();
@@ -63,6 +70,9 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAllTaskAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] List<StatusOfTask> statusOfTask = null, [FromQuery] string sortOrder = null)
         {
             var paginatedTasks = await sender.Send(new GetAllTasksQuery(pageNumber, pageSize, searchTerm, statusOfTask, sortOrder));
@@ -80,6 +90,10 @@ namespace EMS.API.Controllers
 
         [HttpPut("{taskId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TaskGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateTaskAsync([FromRoute] Guid taskId, [FromBody] TaskCreateDto updateTaskDto)
         {
             if (!ModelState.IsValid)
@@ -102,6 +116,10 @@ namespace EMS.API.Controllers
 
         [HttpPatch("{taskId}/status")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateTaskStatusAsync([FromRoute] Guid taskId, [FromBody] StatusOfTask newStatus)
         {
             var username = User.GetUsername();
@@ -110,11 +128,15 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new UpdateTaskStatusCommand(taskId, appUser.Id, newStatus));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
 
         [HttpDelete("{taskId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteTaskAsync([FromRoute] Guid taskId)
         {
             var username = User.GetUsername();
@@ -123,7 +145,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new DeleteTaskCommand(taskId, appUser.Id));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
     }
 }

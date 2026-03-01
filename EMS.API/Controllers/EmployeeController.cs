@@ -17,6 +17,10 @@ namespace EMS.API.Controllers
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EmployeeGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddEmployeeAsync([FromBody] EmployeeCreateDto employeeDto)
         {
             if (!ModelState.IsValid)
@@ -41,6 +45,10 @@ namespace EMS.API.Controllers
 
         [HttpPost("AddEmployeeList")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EmployeeListsGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddEmployeeListAsync([FromBody] EmployeeListsCreateDto employeeListsDto)
         {
             if (!ModelState.IsValid)
@@ -70,6 +78,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("{employeeId}")]
         [Authorize(Roles = "User, Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetEmployeeByIdAsync([FromRoute] Guid employeeId)
         {
             var result = await sender.Send(new GetEmployeeByIdQuery(employeeId));
@@ -81,6 +92,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("User")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrder = null)
         {
             var username = User.GetUsername();
@@ -102,6 +116,9 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAllEmployeesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrder = null)
         {
             var paginatedEmployees = await sender.Send(new GetAllEmployeesQuery(pageNumber, pageSize, searchTerm, sortOrder));
@@ -119,6 +136,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserEmployeeList")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserEmployeeListAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -134,6 +154,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserEmployeeListForTask")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserEmployeeListForTaskAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -149,6 +172,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserListAdd")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserEmployeesForListAddAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -164,6 +190,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserListUpdate/{employeeListId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserEmployeesForListUpdateAsync([FromRoute] Guid employeeListId, [FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -179,6 +208,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("GetUserNumberOfEmployee")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserNumberOfEmployeesAsync()
         {
             var username = User.GetUsername();
@@ -192,6 +224,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("GetNumberOfEmployee")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetNumberOfEmployeesAsync()
         {
             var result = await sender.Send(new GetNumberOfEmployeesQuery());
@@ -201,6 +236,10 @@ namespace EMS.API.Controllers
 
         [HttpPut("{employeeId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EmployeeGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateEmployeeAsync([FromRoute] Guid employeeId, [FromBody] EmployeeCreateDto updateEmployeeDto)
         {
             if (!ModelState.IsValid)
@@ -223,6 +262,10 @@ namespace EMS.API.Controllers
 
         [HttpPut("EmployeeList/{employeeListId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EmployeeListsGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateEmployeeList([FromRoute] Guid employeeListId, [FromBody] EmployeeListsCreateDto employeeListsDto)
         {
             if (!ModelState.IsValid)
@@ -250,6 +293,10 @@ namespace EMS.API.Controllers
 
         [HttpDelete("{employeeId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEmployeeAsync([FromRoute] Guid employeeId)
         {
             var username = User.GetUsername();
@@ -258,11 +305,15 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new DeleteEmployeeCommand(employeeId, appUser.Id));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
 
         [HttpDelete("EmployeeList/{employeeListId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteEmployeeListAsync([FromRoute] Guid employeeListId)
         {
             var username = User.GetUsername();
@@ -271,7 +322,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new DeleteEmployeeListCommand(employeeListId, appUser.Id));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
     }
 }

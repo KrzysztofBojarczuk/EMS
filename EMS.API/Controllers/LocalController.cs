@@ -17,6 +17,10 @@ namespace EMS.API.Controllers
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LocalGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddLocalAsync([FromBody] LocalCreateDto localDto)
         {
             if (!ModelState.IsValid)
@@ -41,6 +45,9 @@ namespace EMS.API.Controllers
 
         [HttpGet()]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserLocalsAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -62,6 +69,10 @@ namespace EMS.API.Controllers
 
         [HttpPut("{localId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LocalGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateLocalAsync([FromRoute] Guid localId, [FromBody] LocalCreateDto updateLocalDto)
         {
             if (!ModelState.IsValid)
@@ -84,6 +95,10 @@ namespace EMS.API.Controllers
 
         [HttpDelete("{localId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteLocalAsync([FromRoute] Guid localId)
         {
             var username = User.GetUsername();
@@ -92,7 +107,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new DeleteLocalCommand(localId, appUser.Id));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
     }
 }
