@@ -155,7 +155,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteUserAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
+        public async Task DeleteUserAsync_ReturnsNotFoundResult_WithFalse_When_DeletionFails()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -168,10 +168,10 @@ namespace EMS.TESTS.ControllersTests
             var result = await _controller.DeleteUserAsync(appUserId);
 
             // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(expectedResult, okResult.Value);
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.AreEqual(expectedResult, notFoundResult.Value);
         }
     }
 }

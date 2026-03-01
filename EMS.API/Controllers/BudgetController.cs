@@ -17,6 +17,10 @@ namespace EMS.API.Controllers
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BudgetGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddBudgetAsync([FromBody] BudgetCreateDto createDto)
         {
             if (!ModelState.IsValid)
@@ -41,6 +45,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("User")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserBudgetAsync()
         {
             var username = User.GetUsername();
@@ -56,6 +63,10 @@ namespace EMS.API.Controllers
 
         [HttpDelete("{budgetId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteBudgetAsync([FromRoute] Guid budgetId)
         {
             var username = User.GetUsername();
@@ -64,7 +75,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new DeleteBudgetCommand(budgetId, appUser.Id));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
     }
 }

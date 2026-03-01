@@ -12,6 +12,9 @@ namespace EMS.API.Controllers
     {
         [HttpGet("GetAllUser")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAllUserAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] string sortOrder = null)
         {
             var result = await sender.Send(new GetAllUsersQuery(pageNumber, pageSize, searchTerm, sortOrder));
@@ -27,6 +30,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("GetNumberOfUsers")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetNumberOfUsersAsync()
         {
             var result = await sender.Send(new GetNumberOfUsersQuery());
@@ -36,11 +42,15 @@ namespace EMS.API.Controllers
 
         [HttpDelete("{appUserId}")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUserAsync([FromRoute] string appUserId)
         {
             var result = await sender.Send(new DeleteUserCommand(appUserId));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
     }
 }

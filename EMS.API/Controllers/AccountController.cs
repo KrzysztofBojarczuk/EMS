@@ -14,6 +14,9 @@ namespace EMS.API.Controllers
     public class AccountController(UserManager<AppUserEntity> userManager, ITokenService tokenService, SignInManager<AppUserEntity> signinManager, ISender sender) : ControllerBase
     {
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(NewUserDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
             if (!ModelState.IsValid)
@@ -49,6 +52,8 @@ namespace EMS.API.Controllers
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             try

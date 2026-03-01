@@ -18,6 +18,10 @@ namespace EMS.API.Controllers
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VehicleGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> AddVehicleAsync([FromBody] VehicleCreateDto vehicleDto)
         {
             if (!ModelState.IsValid)
@@ -42,6 +46,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("User")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] List<VehicleType> vehicleType = null, [FromQuery] DateTime? dateFrom = null, [FromQuery] DateTime? dateTo = null, [FromQuery] string sortOrder = null)
         {
             var username = User.GetUsername();
@@ -63,6 +70,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserVehiclesForTask")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesForTaskAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
@@ -78,6 +88,9 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserVehiclesStats")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesStats()
         {
             var username = User.GetUsername();
@@ -91,6 +104,10 @@ namespace EMS.API.Controllers
 
         [HttpPut("{vehicleId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VehicleGetDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UpdateVehicleAsync([FromRoute] Guid vehicleId, [FromBody] VehicleCreateDto vehicleDto)
         {
             if (!ModelState.IsValid)
@@ -113,6 +130,10 @@ namespace EMS.API.Controllers
 
         [HttpDelete("{vehicleId}")]
         [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteVehicleAsync([FromRoute] Guid vehicleId)
         {
             var username = User.GetUsername();
@@ -121,7 +142,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new DeleteVehicleCommand(vehicleId, appUser.Id));
 
-            return Ok(result);
+            return result ? Ok(result) : NotFound(result);
         }
     }
 }

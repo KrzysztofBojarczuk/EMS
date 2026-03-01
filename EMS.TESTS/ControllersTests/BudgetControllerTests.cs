@@ -157,7 +157,7 @@ namespace EMS.TESTS.ControllersTests
         {
             // Arrange
             var budgetId = Guid.NewGuid();
-            var expectedResult = false;
+            var expectedResult = true;
             var appUserId = "user-id-123";
             var username = "testuser";
 
@@ -180,7 +180,7 @@ namespace EMS.TESTS.ControllersTests
         }
 
         [TestMethod]
-        public async Task DeleteBudgetAsync_ReturnsOkResult_WithFalse_When_DeletionFails()
+        public async Task DeleteBudgetAsync_ReturnsNotFoundResult_WithFalse_When_DeletionFails()
         {
             // Arrange
             var budgetId = Guid.NewGuid();
@@ -200,10 +200,10 @@ namespace EMS.TESTS.ControllersTests
             var result = await _controller.DeleteBudgetAsync(budgetId);
 
             // Assert
-            var okResult = result as OkObjectResult;
-            Assert.IsNotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
-            Assert.AreEqual(expectedResult, okResult.Value);
+            var notFoundResult = result as NotFoundObjectResult;
+            Assert.IsNotNull(notFoundResult);
+            Assert.AreEqual(404, notFoundResult.StatusCode);
+            Assert.AreEqual(expectedResult, notFoundResult.Value);
         }
     }
 }
