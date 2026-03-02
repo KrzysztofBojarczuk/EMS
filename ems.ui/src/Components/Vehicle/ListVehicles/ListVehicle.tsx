@@ -268,7 +268,6 @@ const ListVehicle = () => {
           )}
         />
       </DataTable>
-
       <Paginator
         first={firstVehicle}
         rows={rowsVehicle}

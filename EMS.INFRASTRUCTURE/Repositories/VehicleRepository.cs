@@ -93,9 +93,24 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<VehicleEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<IEnumerable<VehicleEntity>> GetUserVehiclesForTaskAsync(string appUserId, string searchTerm)
+        public async Task<IEnumerable<VehicleEntity>> GetUserVehiclesForTaskAddAsync(string appUserId, string searchTerm)
         {
             var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId && x.TaskId == null && x.IsAvailable == true);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Brand.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Model.ToLower().Contains(searchTerm.ToLower())
+                                      || x.Name.ToLower().Contains(searchTerm.ToLower())
+                                      || x.RegistrationNumber.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<VehicleEntity>> GetUserVehiclesForTaskUpdateAsync(string appUserId, Guid taskId, string searchTerm)
+        {
+            var query = dbContext.Vehicles.Where(x => x.AppUserId == appUserId && x.IsAvailable == true && (x.TaskId == null || x.TaskId == taskId));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

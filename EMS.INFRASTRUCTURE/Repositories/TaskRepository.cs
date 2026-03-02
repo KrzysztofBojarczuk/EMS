@@ -129,14 +129,35 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await PaginatedList<TaskEntity>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task<TaskEntity> UpdateTaskAsync(Guid id, string appUserId, TaskEntity entity)
+        public async Task<TaskEntity> UpdateTaskAsync(Guid id, string appUserId, TaskEntity entity, List<Guid> employeeListIds, List<Guid> vehicleIds)
         {
-            var task = await dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == appUserId);
+            var task = await dbContext.Tasks.Include(x => x.EmployeeListsEntities).Include(x => x.VehicleEntities).FirstOrDefaultAsync(x => x.Id == id && x.AppUserId == appUserId);
 
             if (task is not null)
             {
                 task.Name = entity.Name;
                 task.Description = entity.Description;
+                task.StartDate = entity.StartDate.ToLocalTime();
+                task.EndDate = entity.EndDate.ToLocalTime();
+                task.AddressId = entity.AddressId;
+
+                task.EmployeeListsEntities.Clear();
+
+                var employeeLists = await dbContext.EmployeeLists.Where(x => employeeListIds.Contains(x.Id)).ToListAsync();
+
+                foreach (var employeeList in employeeLists)
+                {
+                    task.EmployeeListsEntities.Add(employeeList);
+                }
+
+                task.VehicleEntities.Clear();
+
+                var vehicles = await dbContext.Vehicles.Where(x => vehicleIds.Contains(x.Id)).ToListAsync();
+
+                foreach (var vehicle in vehicles)
+                {
+                    task.VehicleEntities.Add(vehicle);
+                }
 
                 await dbContext.SaveChangesAsync();
 

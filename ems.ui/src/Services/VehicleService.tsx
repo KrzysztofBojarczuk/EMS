@@ -44,9 +44,23 @@ export const GetUserVehiclesService = async (
   return response.data;
 };
 
-export const GetUserVehicleForTaskService = async (searchTerm?: string) => {
+export const GetUserVehicleForTaskAddService = async (searchTerm?: string) => {
   const response = await axios.get<VehicleGet[]>(
-    api + "Vehicle/UserVehiclesForTask",
+    api + "Vehicle/UserVehiclesForTaskAdd",
+    {
+      params: { searchTerm },
+    },
+  );
+
+  return response.data;
+};
+
+export const GetUserVehicleForTaskUpdateService = async (
+  id: string,
+  searchTerm?: string,
+) => {
+  const response = await axios.get<VehicleGet[]>(
+    `${api}Vehicle/UserVehiclesForTaskUpdate/${id}`,
     {
       params: { searchTerm },
     },

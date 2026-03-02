@@ -36,6 +36,7 @@ const UpdateEmployee = ({ employee, onClose, onUpdateSuccess }: Props) => {
     await UpdateEmployeesService(employee.id, data);
     onUpdateSuccess();
     onClose();
+    reset();
   };
 
   useEffect(() => {

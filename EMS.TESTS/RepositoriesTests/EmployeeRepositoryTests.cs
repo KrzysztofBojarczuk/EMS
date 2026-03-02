@@ -744,7 +744,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeeListsForTaskAsync_Returns_OnlyEmployeeListsWithoutTask()
+        public async Task GetUserEmployeeListsForTaskAddAsync_Returns_OnlyEmployeeListsWithoutTask()
         {
             // Arrange
             var appUserId1 = "user-id-123";
@@ -762,7 +762,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId1, null);
+            var result = await _repository.GetUserEmployeeListsForTaskAddAsync(appUserId1, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -771,7 +771,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeeListsForTaskAsync_BySearchTerm_Returns_EmployeeLists()
+        public async Task GetUserEmployeeListsForTaskAddAsync_BySearchTerm_Returns_EmployeeLists()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -789,7 +789,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm);
+            var result = await _repository.GetUserEmployeeListsForTaskAddAsync(appUserId, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -799,7 +799,7 @@ namespace EMS.TESTS.RepositoriesTests
 
 
         [TestMethod]
-        public async Task GetUserEmployeeListsForTaskAsync_When_EmployeeListsDoesNotExist_Returns_EmptyList()
+        public async Task GetUserEmployeeListsForTaskAddAsync_When_EmployeeListsDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId1 = "user-id-123";
@@ -818,7 +818,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId1, searchTerm);
+            var result = await _repository.GetUserEmployeeListsForTaskAddAsync(appUserId1, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -826,13 +826,13 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserEmployeeListsForTaskAsync_When_UserHasNoEmployeeLists_Returns_EmptyList()
+        public async Task GetUserEmployeeListsForTaskAddAsync_When_UserHasNoEmployeeLists_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
 
             // Act
-            var result = await _repository.GetUserEmployeeListsForTaskAsync(appUserId, null);
+            var result = await _repository.GetUserEmployeeListsForTaskAddAsync(appUserId, null);
 
             // Assert
             Assert.IsNotNull(result);

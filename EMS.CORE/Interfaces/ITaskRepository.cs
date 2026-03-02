@@ -10,7 +10,7 @@ namespace EMS.CORE.Interfaces
         Task<TaskEntity> GetTaskByIdAsync(Guid id);
         Task<PaginatedList<TaskEntity>> GetUserTasksAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, List<StatusOfTask> statusOfTask, string sortOrder);
         Task<PaginatedList<TaskEntity>> GetAllTasksAsync(int pageNumber, int pageSize, string searchTerm, List<StatusOfTask> statusOfTask, string sortOrder);
-        Task<TaskEntity> UpdateTaskAsync(Guid taskId, string appUserId, TaskEntity entity);
+        Task<TaskEntity> UpdateTaskAsync(Guid taskId, string appUserId, TaskEntity entity, List<Guid> employeeListIds, List<Guid> vehicleIds);
         Task<bool> UpdateTaskStatusAsync(Guid taskId, string appUserId, StatusOfTask Status);
         Task<bool> DeleteTaskAsync(Guid taskId, string appUserId);
     }

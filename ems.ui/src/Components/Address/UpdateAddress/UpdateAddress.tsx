@@ -4,6 +4,7 @@ import { InputText } from "primereact/inputtext";
 import { InputMask } from "primereact/inputmask";
 import { AddressGet, AddressPost } from "../../../Models/Address";
 import { UpdateAddressService } from "../../../Services/AddressService";
+import { useEffect } from "react";
 
 interface Props {
   address: AddressGet;
@@ -32,6 +33,15 @@ const UpdateAddress = ({ address, onClose, onUpdateSuccess }: Props) => {
     onClose();
     reset();
   };
+
+  useEffect(() => {
+    reset({
+      city: address.city,
+      street: address.street,
+      number: address.number,
+      zipCode: address.zipCode,
+    });
+  }, [address, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

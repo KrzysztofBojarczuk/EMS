@@ -66,11 +66,24 @@ export const GetUserListEmployeesService = async (searchTerm: string) => {
   return response.data;
 };
 
-export const GetUserListForTaskEmployeesService = async (
+export const GetUserListForTaskAddEmployeesService = async (
   searchTerm: string,
 ) => {
   const response = await axios.get<EmployeeListGet[]>(
-    api + "Employee/UserEmployeeListForTask",
+    api + "Employee/UserEmployeeListForTaskAdd",
+    {
+      params: { searchTerm },
+    },
+  );
+  return response.data;
+};
+
+export const GetUserListForTaskUpdateEmployeesService = async (
+  id: string,
+  searchTerm: string,
+) => {
+  const response = await axios.get<EmployeeListGet[]>(
+    `${api}Employee/UserEmployeeListForTaskUpdate/${id}`,
     {
       params: { searchTerm },
     },

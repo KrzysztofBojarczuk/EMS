@@ -32,6 +32,7 @@ const UpdateLocal = ({ local, onClose, onUpdateSuccess }: Props) => {
     await UpdateLocalService(local.id, data);
     onUpdateSuccess();
     onClose();
+    reset();
   };
 
   useEffect(() => {

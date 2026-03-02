@@ -144,9 +144,21 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskAsync(string appUserId, string searchTerm)
+        public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskAddAsync(string appUserId, string searchTerm)
         {
-            var query = dbContext.EmployeeLists.Include(x => x.EmployeesEntities).Where(x => x.AppUserId == appUserId && x.TaskId == null);
+            var query = dbContext.EmployeeLists.Where(x => x.AppUserId == appUserId && x.TaskId == null);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskUpdateAsync(string appUserId, Guid taskId, string searchTerm)
+        {
+            var query = dbContext.EmployeeLists.Where(x => x.AppUserId == appUserId && (x.TaskId == null || x.TaskId == taskId));
 
             if (!string.IsNullOrEmpty(searchTerm))
             {

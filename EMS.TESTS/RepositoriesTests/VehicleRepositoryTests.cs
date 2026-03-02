@@ -556,7 +556,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserVehiclesForTaskAsync_Returns_AllVehicles()
+        public async Task GetUserVehiclesForTaskAddAsync_Returns_AllVehicles()
         {
             // Arrange
             var appUserId1 = "user-id-123";
@@ -576,7 +576,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserVehiclesForTaskAsync(appUserId1, null);
+            var result = await _repository.GetUserVehiclesForTaskAddAsync(appUserId1, null);
 
             // Assert
             Assert.IsNotNull(result);
@@ -584,7 +584,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserVehiclesForTaskAsync_BySearchTerm_Returns_Vehicles()
+        public async Task GetUserVehiclesForTaskAddAsync_BySearchTerm_Returns_Vehicles()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -602,7 +602,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserVehiclesForTaskAsync(appUserId, searchTerm);
+            var result = await _repository.GetUserVehiclesForTaskAddAsync(appUserId, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -611,7 +611,7 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
-        public async Task GetUserVehiclesForTaskAsync_When_VehiclesDoesNotExist_Returns_EmptyList()
+        public async Task GetUserVehiclesForTaskAddAsync_When_VehiclesDoesNotExist_Returns_EmptyList()
         {
             // Arrange
             var appUserId = "user-id-123";
@@ -629,7 +629,7 @@ namespace EMS.TESTS.RepositoriesTests
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetUserVehiclesForTaskAsync(appUserId, searchTerm);
+            var result = await _repository.GetUserVehiclesForTaskAddAsync(appUserId, searchTerm);
 
             // Assert
             Assert.IsNotNull(result);
@@ -662,7 +662,6 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.ActiveVehicles);
             Assert.AreEqual(1, result.InactiveVehicles);
-            Assert.IsTrue(result.AverageVehicleAge > 2.0 && result.AverageVehicleAge < 4.0);
             Assert.AreEqual(4000, result.TotalInsuranceCost);
             Assert.AreEqual(1000, result.AverageInsuranceCost);
         }

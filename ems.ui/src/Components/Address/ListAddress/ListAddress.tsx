@@ -115,7 +115,6 @@ const ListAddress = () => {
           />
         </Dialog>
       </div>
-
       <DataTable value={addresses} tableStyle={{ minWidth: "50rem" }}>
         <Column field="id" header="Id"></Column>
         <Column field="city" header="City"></Column>
@@ -144,7 +143,6 @@ const ListAddress = () => {
           )}
         ></Column>
       </DataTable>
-
       <Paginator
         first={firstAddress}
         rows={rowsAddress}
@@ -153,7 +151,6 @@ const ListAddress = () => {
         rowsPerPageOptions={[5, 10, 20, 30]}
         style={{ border: "none" }}
       />
-
       <ConfirmationDialog
         visible={confirmVisible}
         header="Confirm Deletion of Address"
@@ -161,7 +158,6 @@ const ListAddress = () => {
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmVisible(false)}
       />
-
       <Dialog
         header="Update Address"
         visible={updateVisible}
