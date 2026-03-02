@@ -7,15 +7,15 @@ using Moq;
 namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
 {
     [TestClass]
-    public class GetUserEmployeeListsForTaskQueryHandlerTests
+    public class GetUserEmployeeListsForTaskAddQueryHandlerTests
     {
         private Mock<IEmployeeRepository> _mockEmployeeRepository;
-        private GetUserEmployeeListsForTaskQueryHandler _handler;
+        private GetUserEmployeeListsForTaskAddQueryHandler _handler;
 
-        public GetUserEmployeeListsForTaskQueryHandlerTests()
+        public GetUserEmployeeListsForTaskAddQueryHandlerTests()
         {
             _mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            _handler = new GetUserEmployeeListsForTaskQueryHandler(_mockEmployeeRepository.Object);
+            _handler = new GetUserEmployeeListsForTaskAddQueryHandler(_mockEmployeeRepository.Object);
         }
 
         [TestMethod]
@@ -59,10 +59,10 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 }
             };
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAsync(appUserId, null))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAddAsync(appUserId, null))
                 .ReturnsAsync(expectedEmployeeLists);
 
-            var query = new GetUserEmployeeListsForTaskQuery(appUserId, null);
+            var query = new GetUserEmployeeListsForTaskAddQuery(appUserId, null);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -71,7 +71,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployeeLists.Count(), result.Count());
             CollectionAssert.AreEqual(expectedEmployeeLists, result.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAsync(appUserId, null), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAddAsync(appUserId, null), Times.Once);
         }
 
         [TestMethod]
@@ -106,10 +106,10 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
                 }
             };
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAddAsync(appUserId, searchTerm))
                 .ReturnsAsync(expectedEmployeeLists);
 
-            var query = new GetUserEmployeeListsForTaskQuery(appUserId, searchTerm);
+            var query = new GetUserEmployeeListsForTaskAddQuery(appUserId, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -118,7 +118,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedEmployeeLists.Count(), result.Count());
             CollectionAssert.AreEqual(expectedEmployeeLists, result.ToList());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAddAsync(appUserId, searchTerm), Times.Once);
         }
 
         [TestMethod]
@@ -128,10 +128,10 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             var appUserId = "user-id-123";
             var searchTerm = "nonexistent";
 
-            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm))
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeeListsForTaskAddAsync(appUserId, searchTerm))
                 .ReturnsAsync(new List<EmployeeListsEntity>());
 
-            var query = new GetUserEmployeeListsForTaskQuery(appUserId, searchTerm);
+            var query = new GetUserEmployeeListsForTaskAddQuery(appUserId, searchTerm);
 
             // Act
             var result = await _handler.Handle(query, CancellationToken.None);
@@ -139,7 +139,7 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
-            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAsync(appUserId, searchTerm), Times.Once);
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeeListsForTaskAddAsync(appUserId, searchTerm), Times.Once);
         }
     }
 }

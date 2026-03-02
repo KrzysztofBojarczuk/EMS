@@ -11,7 +11,8 @@ namespace EMS.CORE.Interfaces
         Task<PaginatedList<EmployeeEntity>> GetUserEmployeesAsync(string appUserId, int pageNumber, int pageSize, string searchTerm, string sortOrder);
         Task<PaginatedList<EmployeeEntity>> GetAllEmployeesAsync(int pageNumber, int pageSize, string searchTerm, string sortOrder);
         Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsAsync(string appUserId, string searchTerm);
-        Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskAsync(string appUserId, string searchTerm);
+        Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskAddAsync(string appUserId, string searchTerm);
+        Task<IEnumerable<EmployeeListsEntity>> GetUserEmployeeListsForTaskUpdateAsync(string appUserId, Guid taskId, string searchTerm);
         Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListAddAsync(string appUserId, string searchTerm);
         Task<IEnumerable<EmployeeEntity>> GetUserEmployeesForListUpdateAsync(string appUserId, Guid employeeListId, string searchTerm);
         Task<bool> EmployeeListExistsForAddAsync(string name, string appUserId);

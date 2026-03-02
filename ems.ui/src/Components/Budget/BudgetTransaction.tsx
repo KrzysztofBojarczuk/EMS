@@ -344,7 +344,6 @@ const BudgetTransaction = () => {
           />
         </div>
       )}
-
       <ConfirmationDialog
         visible={confirmVisible}
         header="Confirm Deletion of Transaction"
@@ -352,7 +351,6 @@ const BudgetTransaction = () => {
         onConfirm={handleConfirmDeleteTransaction}
         onCancel={() => setConfirmVisible(false)}
       />
-
       <ConfirmationDialog
         visible={isDialogVisible}
         header="Confirm Deletion"

@@ -6,65 +6,68 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { AutoComplete } from "primereact/autocomplete";
 import { Calendar } from "primereact/calendar";
 import { MultiSelect } from "primereact/multiselect";
-import { AddressGet } from "../../../Models/Address";
+import { TaskGet, TaskPost } from "../../../Models/Task";
 import { EmployeeListGet } from "../../../Models/EmployeeList";
-import { GetUserListForTaskAddEmployeesService } from "../../../Services/EmployeeService";
-import { GetUserAddressesForTaskService } from "../../../Services/AddressService";
-import { PostTaskService } from "../../../Services/TaskService";
-import { GetUserVehicleForTaskAddService } from "../../../Services/VehicleService";
+import { AddressGet } from "../../../Models/Address";
 import { VehicleGet } from "../../../Models/Vehicle";
+import { GetUserListForTaskUpdateEmployeesService } from "../../../Services/EmployeeService";
+import { GetUserVehicleForTaskUpdateService } from "../../../Services/VehicleService";
+import { GetUserAddressesForTaskService } from "../../../Services/AddressService";
+import { UpdateTaskService } from "../../../Services/TaskService";
 
 interface Props {
+  task: TaskGet;
   onClose: () => void;
-  onAddSuccess: () => void;
+  onUpdateSuccess: () => void;
 }
 
-const AddTask = ({ onClose, onAddSuccess }: Props) => {
+const UpdateTask = ({ task, onClose, onUpdateSuccess }: Props) => {
   const [value, setValue] = useState("");
   const [items, setItems] = useState<string[]>([]);
   const [addresses, setAddresses] = useState<AddressGet[]>([]);
   const [employeesList, setEmployeesList] = useState<EmployeeListGet[]>([]);
-  const [selectedListEmployees, setSelectedListEmployees] = useState<string[]>(
-    [],
-  );
   const [searchEmployeeListTerm, setSearchEmployeeListTerm] = useState("");
   const [vehicles, setVehicles] = useState<VehicleGet[]>([]);
-  const [selectedVehicles, setSelectedVehicles] = useState<string[]>([]);
   const [searchVehicleTerm, setSearchVehicleTerm] = useState("");
 
-  // const onSelectedListEmployee = (e: CheckboxChangeEvent) => {
-  //   let _selectedListEmployees = [...selectedListEmployees];
-
-  //   if (e.checked) {
-  //     _selectedListEmployees.push(e.value.id);
-  //   } else {
-  //     _selectedListEmployees = _selectedListEmployees.filter(
-  //       (id) => id !== e.value.id
-  //     );
-  //   }
-
-  //   setSelectedListEmployees(_selectedListEmployees);
-  // };
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue: setFormValue,
+  } = useForm({
+    defaultValues: {
+      name: task.name,
+      description: task.description,
+      employeeListIds: task.employeeLists.map((e) => e.id),
+      vehicleIds: task.vehicles.map((v) => v.id),
+      startDate: new Date(task.startDate),
+      endDate: new Date(task.endDate),
+      address: {
+        id: task.address?.id || "",
+        city: task.address?.city || "",
+        street: task.address?.street || "",
+        number: task.address?.number || "",
+        zipCode: task.address?.zipCode || "",
+      },
+    },
+  });
 
   const fetchEmployeesList = async () => {
-    const data = await GetUserListForTaskAddEmployeesService(
+    const data = await GetUserListForTaskUpdateEmployeesService(
+      task.id,
       searchEmployeeListTerm,
     );
     setEmployeesList(data);
   };
 
   const fetchVehicles = async () => {
-    const data = await GetUserVehicleForTaskAddService(searchVehicleTerm);
+    const data = await GetUserVehicleForTaskUpdateService(
+      task.id,
+      searchVehicleTerm,
+    );
     setVehicles(data);
   };
-
-  useEffect(() => {
-    fetchVehicles();
-  }, [searchVehicleTerm]);
-
-  useEffect(() => {
-    fetchEmployeesList();
-  }, [searchEmployeeListTerm]);
 
   const fetchAddresses = async () => {
     const data = await GetUserAddressesForTaskService();
@@ -72,40 +75,26 @@ const AddTask = ({ onClose, onAddSuccess }: Props) => {
   };
 
   useEffect(() => {
+    fetchEmployeesList();
+  }, [searchEmployeeListTerm]);
+
+  useEffect(() => {
+    fetchVehicles();
+  }, [searchVehicleTerm]);
+
+  useEffect(() => {
     fetchAddresses();
   }, []);
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setValue: setFormValue,
-  } = useForm({
-    defaultValues: {
-      name: "",
-      description: "",
-      employeeListIds: [],
-      vehicleIds: [],
-      startDate: null,
-      endDate: null,
-      address: {
-        id: "",
-        city: "",
-        street: "",
-        number: "",
-        zipCode: "",
-      },
-    },
-  });
+  const searchAddress = (event: any) => {
+    const query = event.query.toLowerCase();
 
-  const searchAddress = async (event: any) => {
-    const query = event.query;
     const filtered = addresses.filter((item) =>
       `${item.city}, ${item.street}, ${item.zipCode}`
         .toLowerCase()
-        .includes(query.toLowerCase()),
+        .includes(query),
     );
+
     setItems(
       filtered.map((item) => `${item.city}, ${item.street}, ${item.zipCode}`),
     );
@@ -122,29 +111,25 @@ const AddTask = ({ onClose, onAddSuccess }: Props) => {
       setFormValue("address.street", selected.street);
       setFormValue("address.number", selected.number);
       setFormValue("address.zipCode", selected.zipCode);
-    } else {
-      setFormValue("address.id", "");
-      setFormValue("address.city", "");
-      setFormValue("address.street", "");
-      setFormValue("address.number", "");
-      setFormValue("address.zipCode", "");
     }
+
     setValue(event.value);
   };
 
   const onSubmit = async (data: any) => {
-    await PostTaskService({
+    const payload: TaskPost = {
       name: data.name,
       description: data.description,
-      employeeListIds: selectedListEmployees,
-      vehicleIds: selectedVehicles,
+      employeeListIds: data.employeeListIds,
+      vehicleIds: data.vehicleIds,
       startDate: data.startDate,
       endDate: data.endDate,
-      addressId: data.address.id || undefined,
-    });
-    onAddSuccess();
+      addressId: data.address.id,
+    };
+
+    await UpdateTaskService(task.id, payload);
+    onUpdateSuccess();
     onClose();
-    reset();
   };
 
   return (
@@ -193,13 +178,7 @@ const AddTask = ({ onClose, onAddSuccess }: Props) => {
                 <div className="inline-flex flex-column gap-2">
                   <MultiSelect
                     {...field}
-                    id="listemployeeIds"
-                    value={selectedListEmployees}
                     options={employeesList}
-                    onChange={(e) => {
-                      setSelectedListEmployees(e.value);
-                      field.onChange(e.value);
-                    }}
                     onFilter={(e) => setSearchEmployeeListTerm(e.filter)}
                     optionLabel="name"
                     optionValue="id"
@@ -220,24 +199,16 @@ const AddTask = ({ onClose, onAddSuccess }: Props) => {
               render={({ field }) => (
                 <MultiSelect
                   {...field}
-                  name="vehicleIds"
-                  value={selectedVehicles}
                   options={vehicles}
-                  onChange={(e) => {
-                    setSelectedVehicles(e.value);
-                    field.onChange(e.value);
-                  }}
                   onFilter={(e) => setSearchVehicleTerm(e.filter)}
                   optionLabel="name"
                   optionValue="id"
                   filter
                   placeholder="Select Vehicles"
                   itemTemplate={(option) => (
-                    <div>
-                      <strong>
-                        {option.brand} {option.model} {option.name}
-                      </strong>
-                    </div>
+                    <strong>
+                      {option.brand} {option.model} {option.name}
+                    </strong>
                   )}
                 />
               )}
@@ -343,7 +314,7 @@ const AddTask = ({ onClose, onAddSuccess }: Props) => {
               )}
             />
             <div className="inline-flex flex-column gap-2 mt-8">
-              <Button label="Submit" type="submit" />
+              <Button label="Update" type="submit" />
             </div>
           </div>
         </div>
@@ -352,4 +323,4 @@ const AddTask = ({ onClose, onAddSuccess }: Props) => {
   );
 };
 
-export default AddTask;
+export default UpdateTask;

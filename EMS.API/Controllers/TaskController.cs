@@ -107,7 +107,7 @@ namespace EMS.API.Controllers
 
             var taskEntity = mapper.Map<TaskEntity>(updateTaskDto);
 
-            var result = await sender.Send(new UpdateTaskCommand(taskId, appUser.Id, taskEntity));
+            var result = await sender.Send(new UpdateTaskCommand(taskId, appUser.Id, taskEntity, updateTaskDto.EmployeeListIds, updateTaskDto.VehicleIds));
 
             var taskGet = mapper.Map<TaskGetDto>(result);
 

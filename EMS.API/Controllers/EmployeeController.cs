@@ -152,18 +152,36 @@ namespace EMS.API.Controllers
             return Ok(listEmployeeGet);
         }
 
-        [HttpGet("UserEmployeeListForTask")]
+        [HttpGet("UserEmployeeListForTaskAdd")]
         [Authorize(Roles = "User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> GetUserEmployeeListForTaskAsync([FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetUserEmployeeListForTaskAddAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserEmployeeListsForTaskQuery(appUser.Id, searchTerm));
+            var result = await sender.Send(new GetUserEmployeeListsForTaskAddQuery(appUser.Id, searchTerm));
+
+            var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
+
+            return Ok(listEmployeeGet);
+        }
+
+        [HttpGet("UserEmployeeListForTaskUpdate/{taskId}")]
+        [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetUserEmployeeListForTaskUpdateAsync([FromRoute] Guid taskId, [FromQuery] string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserEmployeeListsForTaskUpdateQuery(appUser.Id, taskId, searchTerm));
 
             var listEmployeeGet = mapper.Map<IEnumerable<EmployeeListsGetDto>>(result);
 

@@ -63,7 +63,7 @@ export const GetAllTasksService = async (
   return response.data;
 };
 
-export const UpdateTaskService = async (taskPost: TaskPost, id: string) => {
+export const UpdateTaskService = async (id: string, taskPost: TaskPost) => {
   const response = await axios.put<TaskPost>(`${api}Task/${id}`, taskPost);
   return response.data;
 };

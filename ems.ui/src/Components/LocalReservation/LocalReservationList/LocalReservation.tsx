@@ -408,7 +408,6 @@ const LocalReservation = () => {
         onConfirm={handleDeleteReservation}
         onCancel={() => setConfirmReservationVisible(false)}
       />
-
       <Dialog
         header="Update Local"
         visible={updateVisible}

@@ -34,6 +34,7 @@ import AddTask from "../AddTask/AddTask";
 import { SelectButton } from "primereact/selectbutton";
 import { Checkbox } from "primereact/checkbox";
 import { formatDate } from "../../Utils/DateUtils";
+import UpdateTask from "../UpdateTask/UpdateTask";
 
 const ListTask = () => {
   const [tasks, setTasks] = useState<TaskGet[]>([]);
@@ -41,6 +42,8 @@ const ListTask = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<TaskGet | null>(null);
+  const [updateVisible, setUpdateVisible] = useState(false);
 
   const [firstTask, setFirstTask] = useState(0);
   const [rowsTask, setRowsTask] = useState(10);
@@ -120,9 +123,20 @@ const ListTask = () => {
     setDeleteId(null);
   };
 
+  const showUpdateDialog = (task: TaskGet) => {
+    setSelectedTask(task);
+    setUpdateVisible(true);
+  };
+
   const handleAddSuccess = () => {
     const currentPage = Math.floor(firstTask / rowsTask) + 1;
     goToPage(currentPage, rowsTask);
+  };
+
+  const handleUpdateSuccess = () => {
+    const currentPage = Math.floor(firstTask / rowsTask) + 1;
+    goToPage(currentPage, rowsTask);
+    setUpdateVisible(false);
   };
 
   const onPageChangeTasks = (event: any) => {
@@ -306,6 +320,17 @@ const ListTask = () => {
           header="Action"
           body={(rowData) => (
             <>
+              {rowData.status === 1 && (
+                <i
+                  className="pi pi-pencil"
+                  style={{
+                    fontSize: "1.5rem",
+                    cursor: "pointer",
+                    marginRight: "10px",
+                  }}
+                  onClick={() => showUpdateDialog(rowData)}
+                ></i>
+              )}
               <i
                 className="pi pi-trash"
                 style={{ fontSize: "1.5rem", cursor: "pointer" }}
@@ -330,6 +355,19 @@ const ListTask = () => {
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmVisible(false)}
       />
+      <Dialog
+        header="Update Task"
+        visible={updateVisible}
+        onHide={() => setUpdateVisible(false)}
+      >
+        {selectedTask && (
+          <UpdateTask
+            task={selectedTask}
+            onClose={() => setUpdateVisible(false)}
+            onUpdateSuccess={handleUpdateSuccess}
+          />
+        )}
+      </Dialog>
     </div>
   );
 };

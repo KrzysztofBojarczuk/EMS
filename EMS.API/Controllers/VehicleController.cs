@@ -68,18 +68,36 @@ namespace EMS.API.Controllers
             });
         }
 
-        [HttpGet("UserVehiclesForTask")]
+        [HttpGet("UserVehiclesForTaskAdd")]
         [Authorize(Roles = "User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> GetUserVehiclesForTaskAsync([FromQuery] string searchTerm = null)
+        public async Task<IActionResult> GetUserVehiclesForTaskAddAsync([FromQuery] string searchTerm = null)
         {
             var username = User.GetUsername();
 
             var appUser = await userManager.FindByNameAsync(username);
 
-            var result = await sender.Send(new GetUserVehiclesForTaskQuery(appUser.Id, searchTerm));
+            var result = await sender.Send(new GetUserVehiclesForTaskAddQuery(appUser.Id, searchTerm));
+
+            var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(result);
+
+            return Ok(vehicleGet);
+        }
+
+        [HttpGet("UserVehiclesForTaskUpdate/{taskId}")]
+        [Authorize(Roles = "User")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> GetUserVehiclesForTaskUpdateAsync([FromRoute] Guid taskId, [FromQuery] string searchTerm = null)
+        {
+            var username = User.GetUsername();
+
+            var appUser = await userManager.FindByNameAsync(username);
+
+            var result = await sender.Send(new GetUserVehiclesForTaskUpdateQuery(appUser.Id, taskId, searchTerm));
 
             var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(result);
 
