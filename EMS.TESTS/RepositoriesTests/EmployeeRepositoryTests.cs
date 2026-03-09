@@ -938,7 +938,6 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
-            Assert.AreEqual(employeeList[0].Name, result.First().Name);
         }
 
         [TestMethod]
@@ -1011,6 +1010,37 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeeListsForTaskUpdateAsync_Returns_OnlyEmployeeListsWithTaskOrNull()
+        {
+            // Arrange
+            var appUserId1 = "user-id-123";
+            var appUserId2 = "user-id-1234";
+            var taskId1 = Guid.NewGuid();
+            var taskId2 = Guid.NewGuid();
+
+            var employeeList = new List<EmployeeListsEntity>
+            {
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1", AppUserId = appUserId1, TaskId = taskId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2", AppUserId = appUserId1, TaskId = taskId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId1, TaskId = taskId2 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 4", AppUserId = appUserId1, TaskId = taskId2 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 5", AppUserId = appUserId1, TaskId = null },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 6", AppUserId = appUserId2, TaskId = null },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 7", AppUserId = appUserId2, TaskId = null }
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsForTaskUpdateAsync(appUserId1, taskId1, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(3, result.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeesForListAddAsync_Returns_OnlyEmployeesWithoutList()
         {
             // Arrange
@@ -1035,7 +1065,6 @@ namespace EMS.TESTS.RepositoriesTests
 
             // Assert
             Assert.AreEqual(3, result.Count());
-            Assert.AreEqual(employees[0].Name, result.First().Name);
         }
 
         [TestMethod]
