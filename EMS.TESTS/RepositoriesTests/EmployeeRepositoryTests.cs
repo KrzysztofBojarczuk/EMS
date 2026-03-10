@@ -967,7 +967,6 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(employeeList[0].Name, result.First().Name);
         }
 
-
         [TestMethod]
         public async Task GetUserEmployeeListsForTaskAddAsync_When_EmployeeListsDoesNotExist_Returns_EmptyList()
         {
@@ -1038,6 +1037,36 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count());
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeeListsForTaskUpdateAsync_BySearchTerm_Returns_EmployeeLists()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var searchTerm = "test";
+            var taskId1 = Guid.NewGuid();
+            var taskId2 = Guid.NewGuid();
+
+            var employeeList = new List<EmployeeListsEntity>
+            {
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 1 Test", AppUserId = appUserId, TaskId = taskId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 2 Test", AppUserId = appUserId, TaskId = taskId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3 Test", AppUserId = appUserId, TaskId = taskId2 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 4", AppUserId = appUserId, TaskId = taskId1 },
+                new EmployeeListsEntity { Id = Guid.NewGuid(), Name = "EmployeeList 3", AppUserId = appUserId, TaskId = null },
+            };
+
+            _context.EmployeeLists.AddRange(employeeList);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsForTaskUpdateAsync(appUserId, taskId1, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(employeeList[0].Name, result.First().Name);
         }
 
         [TestMethod]
