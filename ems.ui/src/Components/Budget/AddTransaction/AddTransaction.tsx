@@ -18,7 +18,7 @@ const AddTransaction = ({ budgetId, onClose, onAddSuccess }: Props) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<TransactionPost>({
     defaultValues: {
       name: "",
       createdAt: new Date().toISOString().split("T")[0],

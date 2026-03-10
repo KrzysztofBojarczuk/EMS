@@ -28,7 +28,7 @@ const AddEmployeeList = ({ onClose, onAddSuccess }: Props) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<EmployeeListPost>({
     defaultValues: {
       name: "",
       employeeIds: [],

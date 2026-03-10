@@ -18,7 +18,7 @@ const AddEmployee = ({ onClose, onAddSuccess }: Props) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<EmployeePost>({
     defaultValues: {
       name: "",
       email: "",

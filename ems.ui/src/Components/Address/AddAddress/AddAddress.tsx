@@ -16,7 +16,7 @@ const AddAddress = ({ onClose, onAddSuccess }: Props) => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<AddressPost>({
     defaultValues: {
       city: "",
       street: "",

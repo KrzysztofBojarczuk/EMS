@@ -21,10 +21,6 @@ interface Props {
   onUpdateSuccess: () => void;
 }
 
-type FormValues = {
-  name: string;
-};
-
 const UpdateEmployeeList = ({
   employeeList,
   onClose,
@@ -39,7 +35,7 @@ const UpdateEmployeeList = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<EmployeeListPost>({
     defaultValues: { name: employeeList.name },
   });
 
@@ -67,7 +63,7 @@ const UpdateEmployeeList = ({
     );
   };
 
-  const onSubmit = async (data: FormValues) => {
+  const onSubmit = async (data: EmployeeListPost) => {
     const payload: EmployeeListPost = {
       name: data.name,
       employeeIds: selectedEmployees,
