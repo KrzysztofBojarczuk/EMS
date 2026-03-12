@@ -1099,6 +1099,21 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserEmployeeListsForTaskUpdateAsync_When_UserHasNoEmployeeLists_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var taskId = Guid.NewGuid();
+
+            // Act
+            var result = await _repository.GetUserEmployeeListsForTaskUpdateAsync(appUserId, taskId, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserEmployeesForListAddAsync_Returns_OnlyEmployeesWithoutList()
         {
             // Arrange
