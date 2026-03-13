@@ -1044,9 +1044,9 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "test";
             var taskId1 = Guid.NewGuid();
             var taskId2 = Guid.NewGuid();
+            var searchTerm = "test";
 
             var employeeList = new List<EmployeeListsEntity>
             {
@@ -1074,9 +1074,9 @@ namespace EMS.TESTS.RepositoriesTests
         {
             // Arrange
             var appUserId = "user-id-123";
-            var searchTerm = "nonexistent";
             var taskId1 = Guid.NewGuid();
             var taskId2 = Guid.NewGuid();
+            var searchTerm = "nonexistent";
 
             var employeeList = new List<EmployeeListsEntity>
             {
@@ -1119,15 +1119,15 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId1 = "user-id-123";
             var appUserId2 = "user-id-1234";
-            var listId = Guid.NewGuid();
+            var employeeListId = Guid.NewGuid();
 
             var employees = new List<EmployeeEntity>
             {
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1", Email = "employee1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 4", Email = "employee4@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1993, 1, 1), EmploymentDate = new DateTime(2024, 1, 1), MedicalCheckValidUntil = new DateTime(2024, 1, 1), AppUserId = appUserId1, EmployeeListId = listId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 5", Email = "employee5@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1994, 1, 1), EmploymentDate = new DateTime(2025, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId2, EmployeeListId =  null  }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 4", Email = "employee4@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1993, 1, 1), EmploymentDate = new DateTime(2024, 1, 1), MedicalCheckValidUntil = new DateTime(2024, 1, 1), AppUserId = appUserId1, EmployeeListId = employeeListId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 5", Email = "employee5@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1994, 1, 1), EmploymentDate = new DateTime(2025, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId2, EmployeeListId = null }
             };
 
             _context.Employees.AddRange(employees);
@@ -1146,7 +1146,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId1 = "user-id-123";
             var appUserId2 = "user-id-1234";
-            var listId = Guid.NewGuid();
+            var employeeListId = Guid.NewGuid();
             var searchTerm = "test";
 
             var employees = new List<EmployeeEntity>
@@ -1155,8 +1155,8 @@ namespace EMS.TESTS.RepositoriesTests
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2 Test", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 4", Email = "employee4@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1993, 1, 1), EmploymentDate = new DateTime(2024, 1, 1), MedicalCheckValidUntil = new DateTime(2024, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 5", Email = "employee5@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1994, 1, 1), EmploymentDate = new DateTime(2025, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId1, EmployeeListId = listId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 6", Email = "employee6@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1995, 1, 1), EmploymentDate = new DateTime(2026, 1, 1), MedicalCheckValidUntil = new DateTime(2026, 1, 1), AppUserId = appUserId2, EmployeeListId =  null  }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 5", Email = "employee5@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1994, 1, 1), EmploymentDate = new DateTime(2025, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId1, EmployeeListId = employeeListId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 6", Email = "employee6@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1995, 1, 1), EmploymentDate = new DateTime(2026, 1, 1), MedicalCheckValidUntil = new DateTime(2026, 1, 1), AppUserId = appUserId2, EmployeeListId = null }
             };
 
             _context.Employees.AddRange(employees);
@@ -1177,7 +1177,7 @@ namespace EMS.TESTS.RepositoriesTests
             // Arrange
             var appUserId1 = "user-id-123";
             var appUserId2 = "user-id-1234";
-            var listId = Guid.NewGuid();
+            var employeeListId = Guid.NewGuid();
             var searchTerm = "nonexistent";
 
             var employees = new List<EmployeeEntity>
@@ -1186,8 +1186,8 @@ namespace EMS.TESTS.RepositoriesTests
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
                 new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 4", Email = "employee4@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1993, 1, 1), EmploymentDate = new DateTime(2024, 1, 1), MedicalCheckValidUntil = new DateTime(2024, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 5", Email = "employee5@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1994, 1, 1), EmploymentDate = new DateTime(2025, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId1, EmployeeListId = listId },
-                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 6", Email = "employee6@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1995, 1, 1), EmploymentDate = new DateTime(2026, 1, 1), MedicalCheckValidUntil = new DateTime(2026, 1, 1), AppUserId = appUserId2, EmployeeListId =  null  }
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 5", Email = "employee5@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1994, 1, 1), EmploymentDate = new DateTime(2025, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId1, EmployeeListId = employeeListId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 6", Email = "employee6@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1995, 1, 1), EmploymentDate = new DateTime(2026, 1, 1), MedicalCheckValidUntil = new DateTime(2026, 1, 1), AppUserId = appUserId2, EmployeeListId = null }
             };
 
             _context.Employees.AddRange(employees);
@@ -1213,6 +1213,34 @@ namespace EMS.TESTS.RepositoriesTests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count());
+        }
+
+        [TestMethod]
+        public async Task GetUserEmployeesForListUpdateAsync_Returns_OnlyEmployeeWithListkOrNull()
+        {
+            // Arrange
+            var appUserId1 = "user-id-123";
+            var appUserId2 = "user-id-1234";
+            var employeeListId1 = Guid.NewGuid();
+            var employeeListId2 = Guid.NewGuid();
+
+            var employees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1", Email = "employee1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2021, 1, 1), MedicalCheckValidUntil = new DateTime(2021, 1, 1), AppUserId = appUserId1, EmployeeListId = null },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2022, 1, 1), AppUserId = appUserId1, EmployeeListId = employeeListId1 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 3", Email = "employee3@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1992, 1, 1), EmploymentDate = new DateTime(2023, 1, 1), MedicalCheckValidUntil = new DateTime(2023, 1, 1), AppUserId = appUserId1, EmployeeListId = employeeListId1 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 4", Email = "employee4@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1993, 1, 1), EmploymentDate = new DateTime(2024, 1, 1), MedicalCheckValidUntil = new DateTime(2024, 1, 1), AppUserId = appUserId1, EmployeeListId = employeeListId2 },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 5", Email = "employee5@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1994, 1, 1), EmploymentDate = new DateTime(2025, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), AppUserId = appUserId2, EmployeeListId = null }
+            };
+
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserEmployeesForListUpdateAsync(appUserId1, employeeListId1, null);
+
+            // Assert
+            Assert.AreEqual(3, result.Count());
         }
 
         [TestMethod]
