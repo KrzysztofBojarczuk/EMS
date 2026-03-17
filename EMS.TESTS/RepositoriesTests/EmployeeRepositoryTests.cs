@@ -1495,6 +1495,19 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserNumberOfEmployeesAsync_When_UserHasNoEmployees_Returns_Zero()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var count = await _repository.GetUserNumberOfEmployeesAsync(appUserId);
+
+            // Assert
+            Assert.AreEqual(0, count);
+        }
+
+        [TestMethod]
         public async Task GetNumberOfEmployeesAsync_Returns_TotalCount()
         {
             // Arrange
