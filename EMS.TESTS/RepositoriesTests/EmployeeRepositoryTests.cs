@@ -1531,6 +1531,16 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetNumberOfEmployeesAsync_When_NoEmployees_Returns_Zero()
+        {
+            // Act
+            var count = await _repository.GetNumberOfEmployeesAsync();
+
+            // Assert
+            Assert.AreEqual(0, count);
+        }
+
+        [TestMethod]
         public async Task UpdateEmployeeAsync_When_EmployeeExists_Returns_Employee()
         {
             // Arrange
