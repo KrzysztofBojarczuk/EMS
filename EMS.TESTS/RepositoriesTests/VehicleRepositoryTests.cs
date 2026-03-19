@@ -665,5 +665,22 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(4000, result.TotalInsuranceCost);
             Assert.AreEqual(1000, result.AverageInsuranceCost);
         }
+
+        [TestMethod]
+        public async Task GetUserVehiclesStatsAsync_When_UserHasNoVehicles_Returns_CorrectStats()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.GetUserVehiclesStatsAsync(appUserId);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.ActiveVehicles);
+            Assert.AreEqual(0, result.InactiveVehicles);
+            Assert.AreEqual(0, result.TotalInsuranceCost);
+            Assert.AreEqual(0, result.AverageInsuranceCost);
+        }
     }
 }
