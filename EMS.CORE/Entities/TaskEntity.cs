@@ -1,4 +1,4 @@
-﻿using EMS.CORE.Enums;
+using EMS.CORE.Enums;
 
 namespace EMS.CORE.Entities
 {
@@ -8,12 +8,12 @@ namespace EMS.CORE.Entities
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; } 
+        public DateTime EndDate { get; set; }
         public StatusOfTask Status { get; set; } = StatusOfTask.Active;
         public string AppUserId { get; set; } = null!;
         public AppUserEntity AppUserEntity { get; set; } = null!;
         public Guid? AddressId { get; set; }
-        public AddressEntity AddressEntity { get; set; } = null!;
+        public AddressEntity? AddressEntity { get; set; }
         public ICollection<EmployeeListsEntity> EmployeeListsEntities { get; set; } = new List<EmployeeListsEntity>();
         public ICollection<VehicleEntity> VehicleEntities { get; set; } = new List<VehicleEntity>();
     }

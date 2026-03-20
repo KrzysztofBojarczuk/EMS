@@ -261,8 +261,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                         name: "FK_Tasks_Address_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Address",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tasks_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
@@ -439,8 +438,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "25a28f9a-a4c3-4922-94c7-0cc471402c04", null, "Admin", "ADMIN" },
-                    { "b7bb25b5-6302-4eb1-b1f6-0cee9e0bf88b", null, "User", "USER" }
+                    { "8901116d-05a4-458f-be6c-9bedad3d8053", "e2a4988e-3959-47bd-a89d-0005c6184c43", "User", "USER" },
+                    { "c7bed9af-b4c7-4666-a32a-d76cfd6d6227", "b14c314c-d0e8-4ced-9fd2-a6dc8f2c0b6a", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
