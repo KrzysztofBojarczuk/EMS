@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260117164209_InitialCreate")]
+    [Migration("20260319150024_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "10.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -504,13 +504,15 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "25a28f9a-a4c3-4922-94c7-0cc471402c04",
+                            Id = "c7bed9af-b4c7-4666-a32a-d76cfd6d6227",
+                            ConcurrencyStamp = "b14c314c-d0e8-4ced-9fd2-a6dc8f2c0b6a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b7bb25b5-6302-4eb1-b1f6-0cee9e0bf88b",
+                            Id = "8901116d-05a4-458f-be6c-9bedad3d8053",
+                            ConcurrencyStamp = "e2a4988e-3959-47bd-a89d-0005c6184c43",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -723,8 +725,7 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 {
                     b.HasOne("EMS.CORE.Entities.AddressEntity", "AddressEntity")
                         .WithMany("TaskEntities")
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("AddressId");
 
                     b.HasOne("EMS.CORE.Entities.AppUserEntity", "AppUserEntity")
                         .WithMany("TaskEntity")

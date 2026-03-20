@@ -83,18 +83,6 @@ namespace EMS.INFRASTRUCTURE.Data
                 .HasForeignKey<BudgetEntity>(x => x.AppUserId)
                 .IsRequired();
 
-            builder.Entity<TaskEntity>()
-                .HasOne(x => x.AddressEntity)
-                .WithMany(x => x.TaskEntities)
-                .HasForeignKey(x => x.AddressId)
-                .OnDelete(DeleteBehavior.Restrict)
-                .IsRequired(false);
-
-            builder.Entity<TaskEntity>()
-                .HasMany(x => x.EmployeeListsEntities)
-                .WithOne(x => x.TaskEntities)
-                .HasForeignKey(x => x.TaskId);
-
             builder.Entity<AppUserEntity>()
                 .HasMany(x => x.EmployeeListsEntities)
                 .WithOne(x => x.AppUserEntity)
@@ -111,6 +99,18 @@ namespace EMS.INFRASTRUCTURE.Data
                 .WithOne(x => x.AppUserEntity)
                 .HasForeignKey(x => x.AppUserId)
                 .IsRequired();
+
+            builder.Entity<TaskEntity>()
+                .HasOne(x => x.AddressEntity)
+                .WithMany(x => x.TaskEntities)
+                .HasForeignKey(x => x.AddressId)
+                .IsRequired(false);
+
+            builder.Entity<TaskEntity>()
+                .HasMany(x => x.EmployeeListsEntities)
+                .WithOne(x => x.TaskEntities)
+                .HasForeignKey(x => x.TaskId)
+                .IsRequired(false);
 
             builder.Entity<TaskEntity>()
                 .HasMany(x => x.VehicleEntities)
