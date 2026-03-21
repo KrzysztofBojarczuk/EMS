@@ -742,5 +742,47 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(updatedVehicle.TechnicalInspectionValidUntil.Date, result.TechnicalInspectionValidUntil.Date);
             Assert.AreEqual(updatedVehicle.IsAvailable, result.IsAvailable);
         }
+
+        [TestMethod]
+        public async Task UpdateVehicleAsync_When_VehicleDoesNotExist_Returns_Entity()
+        {
+            // Arrange
+            var nonExistentId = Guid.NewGuid();
+            var appUserId = "user-id-123";
+
+            var updatedVehicle = new VehicleEntity
+            {
+                Id = Guid.NewGuid(),
+                Brand = "Vehicle",
+                Model = "Vehicle",
+                Name = "Vehicle",
+                RegistrationNumber = "ABC1111",
+                Mileage = 2000,
+                VehicleType = VehicleType.Car,
+                DateOfProduction = new DateTime(2020, 1, 1),
+                InsuranceOcValidUntil = new DateTime(2020, 1, 1),
+                InsuranceOcCost = 2000,
+                TechnicalInspectionValidUntil = new DateTime(2020, 1, 1),
+                IsAvailable = true,
+                AppUserId = appUserId
+            };
+
+            // Act
+            var result = await _repository.UpdateVehicleAsync(nonExistentId, appUserId, updatedVehicle);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(updatedVehicle.Brand, result.Brand);
+            Assert.AreEqual(updatedVehicle.Model, result.Model);
+            Assert.AreEqual(updatedVehicle.Name, result.Name);
+            Assert.AreEqual(updatedVehicle.RegistrationNumber, result.RegistrationNumber);
+            Assert.AreEqual(updatedVehicle.Mileage, result.Mileage);
+            Assert.AreEqual(updatedVehicle.VehicleType, result.VehicleType);
+            Assert.AreEqual(updatedVehicle.DateOfProduction.Date, result.DateOfProduction.Date);
+            Assert.AreEqual(updatedVehicle.InsuranceOcValidUntil.Date, result.InsuranceOcValidUntil.Date);
+            Assert.AreEqual(updatedVehicle.InsuranceOcCost, result.InsuranceOcCost);
+            Assert.AreEqual(updatedVehicle.TechnicalInspectionValidUntil.Date, result.TechnicalInspectionValidUntil.Date);
+            Assert.AreEqual(updatedVehicle.IsAvailable, result.IsAvailable);
+        }
     }
 }
