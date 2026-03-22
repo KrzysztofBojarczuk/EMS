@@ -784,5 +784,46 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.AreEqual(updatedVehicle.TechnicalInspectionValidUntil.Date, result.TechnicalInspectionValidUntil.Date);
             Assert.AreEqual(updatedVehicle.IsAvailable, result.IsAvailable);
         }
+
+        [TestMethod]
+        public async Task DeleteVehicleAsync_When_VehicleExists_Returns_True()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            var vehicle = new VehicleEntity
+            {
+                Id = Guid.NewGuid(),
+                Brand = "Vehicle",
+                Model = "Vehicle",
+                Name = "Vehicle",
+                RegistrationNumber = "ABC1111",
+                Mileage = 2000,
+                VehicleType = VehicleType.Car,
+                DateOfProduction = new DateTime(2020, 1, 1),
+                InsuranceOcValidUntil = new DateTime(2020, 1, 1),
+                InsuranceOcCost = 2000,
+                TechnicalInspectionValidUntil = new DateTime(2020, 1, 1),
+                IsAvailable = true,
+                AppUserId = appUserId
+            };
+
+            _context.Vehicles.Add(vehicle);
+            await _context.SaveChangesAsync();
+
+            var vehicleCountBefore = await _context.Vehicles.CountAsync();
+
+            // Act
+            var result = await _repository.DeleteVehicleAsync(vehicle.Id, appUserId);
+
+            var deletedVehicle = await _context.Vehicles.FirstOrDefaultAsync(x => x.Id == vehicle.Id && x.AppUserId == appUserId);
+
+            var vehicleCountAfter = await _context.Vehicles.CountAsync();
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsNull(deletedVehicle);
+            Assert.AreEqual(vehicleCountBefore - 1, vehicleCountAfter);
+        }
     }
 }
