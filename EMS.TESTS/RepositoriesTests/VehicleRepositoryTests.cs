@@ -564,12 +564,12 @@ namespace EMS.TESTS.RepositoriesTests
 
             var vehicles = new List<VehicleEntity>
             {
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId1 },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId1 },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId1 },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId1 },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 5", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId2 },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 6", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId2 },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId1, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId1, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId1, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId1, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 5", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId2, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 6", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId2, TaskId = null },
             };
 
             _context.Vehicles.AddRange(vehicles);
@@ -592,10 +592,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var vehicles = new List<VehicleEntity>
             {
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId, TaskId = null },
             };
 
             _context.Vehicles.AddRange(vehicles);
@@ -619,10 +619,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var vehicles = new List<VehicleEntity>
             {
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId },
-                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = null },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = false, AppUserId = appUserId, TaskId = null },
             };
 
             _context.Vehicles.AddRange(vehicles);
@@ -824,6 +824,19 @@ namespace EMS.TESTS.RepositoriesTests
             Assert.IsTrue(result);
             Assert.IsNull(deletedVehicle);
             Assert.AreEqual(vehicleCountBefore - 1, vehicleCountAfter);
+        }
+
+        [TestMethod]
+        public async Task DeleteVehicleAsync_When_VehicleDoesNotExist_Returns_False()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+
+            // Act
+            var result = await _repository.DeleteVehicleAsync(Guid.NewGuid(), appUserId);
+
+            // Assert
+            Assert.IsFalse(result);
         }
     }
 }
