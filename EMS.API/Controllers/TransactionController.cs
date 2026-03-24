@@ -41,7 +41,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("{budgetId}")]
         [Authorize(Roles = "User")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<TransactionGetDto>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetTransactionsByBudgetId([FromRoute] Guid budgetId, [FromQuery] string? searchTerm = null, [FromQuery] List<CategoryType>? category = null, [FromQuery] DateTime? dateFrom = null, [FromQuery] DateTime? dateTo = null, [FromQuery] decimal? amountFrom = null, [FromQuery] decimal? amountTo = null, [FromQuery] string? sortOrder = null)
@@ -55,7 +55,7 @@ namespace EMS.API.Controllers
 
         [HttpDelete("{transactionId}")]
         [Authorize(Roles = "User")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
