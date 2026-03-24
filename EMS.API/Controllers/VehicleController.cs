@@ -70,7 +70,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserVehiclesForTaskAdd")]
         [Authorize(Roles = "User")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VehicleGetDto>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesForTaskAddAsync([FromQuery] string searchTerm = null)
@@ -88,7 +88,7 @@ namespace EMS.API.Controllers
 
         [HttpGet("UserVehiclesForTaskUpdate/{taskId}")]
         [Authorize(Roles = "User")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<VehicleGetDto>))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesForTaskUpdateAsync([FromRoute] Guid taskId, [FromQuery] string searchTerm = null)
@@ -148,7 +148,7 @@ namespace EMS.API.Controllers
 
         [HttpDelete("{vehicleId}")]
         [Authorize(Roles = "User")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
