@@ -669,6 +669,37 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserVehiclesForTasUpdateAsync_BySearchTerm_Returns_Vehicles()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var taskId1 = Guid.NewGuid();
+            var taskId2 = Guid.NewGuid();
+            var searchTerm = "test";
+
+            var vehicles = new List<VehicleEntity>
+            {
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 1 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = taskId1 },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 2 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = taskId1 },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 3 Test", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = taskId2 },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 4", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = taskId1 },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 5", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = taskId2 },
+                new VehicleEntity { Id = Guid.NewGuid(), Brand = "Vehicle 6", Model = "Vehicle", Name = "Vehicle", RegistrationNumber = "ABC1111", Mileage = 1000, VehicleType = VehicleType.Car, DateOfProduction = new DateTime(2020, 1, 1), InsuranceOcValidUntil = new DateTime(2020, 1, 1), InsuranceOcCost = 1000, TechnicalInspectionValidUntil = new DateTime(2020, 1, 1), IsAvailable = true, AppUserId = appUserId, TaskId = null },
+            };
+
+            _context.Vehicles.AddRange(vehicles);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetUserVehiclesForTaskUpdateAsync(appUserId, taskId1, searchTerm);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(vehicles[0].Name, result.First().Name);
+        }
+
+        [TestMethod]
         public async Task GetUserVehiclesStatsAsync_Returns_CorrectStats()
         {
             // Arrange
