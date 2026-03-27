@@ -155,7 +155,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var reservations = new List<ReservationEntity>
             {
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1", CheckInDate = new DateTime(2026, 1, 16, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0), AppUserId = appUserId },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 1 Test", CheckInDate = new DateTime(2026, 1, 16, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 17, 10, 0, 0), AppUserId = appUserId },
                 new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 18, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 19, 10, 0, 0), AppUserId = appUserId },
                 new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId }
             };

@@ -85,7 +85,7 @@ namespace EMS.TESTS.RepositoriesTests
 
             var users = new List<AppUserEntity>
             {
-                new AppUserEntity { UserName = "User 1", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
+                new AppUserEntity { UserName = "User 1 Test", Email = "user1@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
                 new AppUserEntity { UserName = "User 2", Email = "user2@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) },
                 new AppUserEntity { UserName = "User 3", Email = "user3@example.com", CreatedAt = new DateTime(2026, 1, 10, 14, 30, 0) }
             };

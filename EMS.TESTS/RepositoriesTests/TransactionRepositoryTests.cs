@@ -116,9 +116,10 @@ namespace EMS.TESTS.RepositoriesTests
 
             var transactions = new List<TransactionEntity>
             {
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 100, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
-                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Expense, Amount = 20, BudgetId = budgetId }
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 1 Test", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 100, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 2 Test", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 100, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 3", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Income, Amount = 500, BudgetId = budgetId },
+                new TransactionEntity { Id = Guid.NewGuid(), Name = "Transaction 4", CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0), Category = CategoryType.Expense, Amount = 20, BudgetId = budgetId }
             };
 
             _context.Transactions.AddRange(transactions);
