@@ -730,6 +730,21 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetUserVehiclesForTasUpdateAsync_When_UserHasNoVehicles_Returns_EmptyList()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var taskId = Guid.NewGuid();
+
+            // Act
+            var result = await _repository.GetUserVehiclesForTaskUpdateAsync(appUserId, taskId, null);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(0, result.Count());
+        }
+
+        [TestMethod]
         public async Task GetUserVehiclesStatsAsync_Returns_CorrectStats()
         {
             // Arrange
