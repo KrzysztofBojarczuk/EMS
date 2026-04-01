@@ -46,5 +46,34 @@ namespace EMS.TESTS.FeaturesTests.EmployeeTests.QueriesTests
             CollectionAssert.AreEqual(expectedEmployees, result.ToList());
             _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListUpdateAsync(appUserId, employeeListId, null), Times.Once);
         }
+
+        [TestMethod]
+        public async Task Handle_Returns_BySearchTerm_Employees()
+        {
+            // Arrange
+            var appUserId = "user-id-123";
+            var employeeListId = Guid.NewGuid();
+            var searchTerm = "test";
+
+            var expectedEmployees = new List<EmployeeEntity>
+            {
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 1 Test", Email = "employee1@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1990, 1, 1), EmploymentDate = new DateTime(2022, 1, 1), MedicalCheckValidUntil = new DateTime(2025, 1, 1), EmployeeListId = employeeListId },
+                new EmployeeEntity { Id = Guid.NewGuid(), Name = "Employee 2 Test", Email = "employee2@example.com", Phone = "123-456-789", Salary = 5000, DateOfBirth = new DateTime(1991, 1, 1), EmploymentDate = new DateTime(2022, 2, 2), MedicalCheckValidUntil = new DateTime(2025, 2, 2), EmployeeListId = employeeListId },
+            };
+
+            _mockEmployeeRepository.Setup(x => x.GetUserEmployeesForListUpdateAsync(appUserId, employeeListId, null))
+                .ReturnsAsync(expectedEmployees);
+
+            var query = new GetUserEmployeesForListUpdateQuery(appUserId, employeeListId, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedEmployees.Count(), result.Count());
+            CollectionAssert.AreEqual(expectedEmployees, result.ToList());
+            _mockEmployeeRepository.Verify(x => x.GetUserEmployeesForListUpdateAsync(appUserId, employeeListId, null), Times.Once);
+        }
     }
 }
