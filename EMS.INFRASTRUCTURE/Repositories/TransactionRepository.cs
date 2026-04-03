@@ -21,6 +21,11 @@ namespace EMS.INFRASTRUCTURE.Repositories
             return entity;
         }
 
+        public async Task<TransactionEntity> GetTransactionByIdAsync(Guid id)
+        {
+            return await dbContext.Transactions.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<IEnumerable<TransactionEntity>> GetTransactionsByBudgetIdAsync(Guid id, string searchTerm, List<CategoryType> category, DateTime? dateFrom, DateTime? dateTo, decimal? amountFrom, decimal? amountTo, string sortOrder)
         {
             var query = dbContext.Transactions.Where(x => x.BudgetId == id);
