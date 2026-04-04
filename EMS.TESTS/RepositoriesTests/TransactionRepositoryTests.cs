@@ -56,6 +56,35 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetTransactionByIdAsync_When_TransactionExists_Returns_Transaction()
+        {
+            // Arrange
+            var transaction = new TransactionEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "Transaction",
+                CreatedAt = new DateTime(2026, 1, 15, 10, 0, 0),
+                Category = CategoryType.Expense,
+                Amount = 250.75m,
+                BudgetId = Guid.NewGuid()
+            };
+
+            _context.Transactions.Add(transaction);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var result = await _repository.GetTransactionByIdAsync(transaction.Id);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(transaction.Name, result.Name);
+            Assert.AreEqual(transaction.CreatedAt, result.CreatedAt);
+            Assert.AreEqual(transaction.Category, result.Category);
+            Assert.AreEqual(transaction.Amount, result.Amount);
+            Assert.AreEqual(transaction.BudgetId, result.BudgetId);
+        }
+
+        [TestMethod]
         public async Task GetTransactionsByBudgetIdAsync_Returns_AllTransactions()
         {
             // Arrange
