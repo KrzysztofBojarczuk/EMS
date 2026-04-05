@@ -85,6 +85,16 @@ namespace EMS.TESTS.RepositoriesTests
         }
 
         [TestMethod]
+        public async Task GetTransactionByIdAsync_When_TransactionDoesNotExist_Returns_Null()
+        {
+            // Act
+            var result = await _repository.GetTransactionByIdAsync(Guid.NewGuid());
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
         public async Task GetTransactionsByBudgetIdAsync_Returns_AllTransactions()
         {
             // Arrange
