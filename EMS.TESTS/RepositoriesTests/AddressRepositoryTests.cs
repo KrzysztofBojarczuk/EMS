@@ -108,7 +108,7 @@ namespace EMS.TESTS.RepositoriesTests
                 new AddressEntity { Id = Guid.NewGuid(), City = "Address 2", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId1 },
                 new AddressEntity { Id = Guid.NewGuid(), City = "Address 3", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId1 },
                 new AddressEntity { Id = Guid.NewGuid(), City = "Address 4", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId2 },
-                new AddressEntity { Id = Guid.NewGuid(), City = "Address 5", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId2 },
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 5", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId2 }
             };
 
             _context.Address.AddRange(addresses);
@@ -133,7 +133,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 new AddressEntity { Id = Guid.NewGuid(), City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId},
                 new AddressEntity { Id = Guid.NewGuid(), City = "Address 2", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId},
-                new AddressEntity { Id = Guid.NewGuid(), City = "Address 3", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId},
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 3", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId}
             };
 
             _context.Address.AddRange(addresses);
@@ -159,7 +159,7 @@ namespace EMS.TESTS.RepositoriesTests
             {
                 new AddressEntity { Id = Guid.NewGuid(), City = "Address 1 Test", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId},
                 new AddressEntity { Id = Guid.NewGuid(), City = "Address 2", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId},
-                new AddressEntity { Id = Guid.NewGuid(), City = "Address 3", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId},
+                new AddressEntity { Id = Guid.NewGuid(), City = "Address 3", Street = "Address", Number = "1", ZipCode = "00-001", AppUserId = appUserId}
             };
 
             _context.Address.AddRange(addresses);

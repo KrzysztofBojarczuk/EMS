@@ -106,7 +106,7 @@ namespace EMS.TESTS.RepositoriesTests
                 new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 2", CheckInDate = new DateTime(2026, 1, 18, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 19, 10, 0, 0), AppUserId = appUserId1 },
                 new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 3", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId1 },
                 new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 4", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId2 },
-                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 5", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId2 },
+                new ReservationEntity { Id = Guid.NewGuid(), Description = "Reservation 5", CheckInDate = new DateTime(2026, 1, 20, 10, 0, 0), CheckOutDate = new DateTime(2026, 1, 21, 10, 0, 0), AppUserId = appUserId2 }
             };
 
             _context.Reservations.AddRange(reservations);
