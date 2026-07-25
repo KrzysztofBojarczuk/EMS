@@ -47,7 +47,6 @@ const AdministrationPanel = () => {
   const [users, setUsers] = useState<UserGet[]>([]);
   const [employees, setEmployees] = useState<EmployeeGet[]>([]);
   const [tasks, setTasks] = useState<TaskGet[]>([]);
-  const [logs, setLogs] = useState<LogGet[]>([]);
 
   const [searchUserTerm, setSearchUserTerm] = useState("");
   const [searchEmployeeTerm, setSearchEmployeeTerm] = useState("");
@@ -56,7 +55,6 @@ const AdministrationPanel = () => {
 
   const [dateFrom, setDateFrom] = useState<Date | null>(null);
   const [dateTo, setDateTo] = useState<Date | null>(null);
-  const [sortOrderLogs, setSortOrderLog] = useState<string | null>(null);
   const [sortOrderEmployee, setSortOrderEmployee] = useState<string | null>(
     null,
   );
@@ -114,7 +112,6 @@ const AdministrationPanel = () => {
   const resetFiltersLogs = () => {
     setDateFrom(null);
     setDateTo(null);
-    setSortOrderLog(null);
     setSearchLogTerm("");
   };
 
@@ -191,29 +188,6 @@ const AdministrationPanel = () => {
     goToPageTasks(1, rowsTask);
   }, [searchTaskTerm, statusOfTask, sortOrderTask]);
 
-  const fetchLogs = async (page: number, size: number) => {
-    const data = await GetLogsService(
-      page,
-      size,
-      searchLogTerm,
-      dateFrom,
-      dateTo,
-      sortOrderLogs,
-    );
-    setLogs(data.logs);
-    setTotalLog(data.totalItems);
-  };
-
-  const goToPageLogs = (page: number, rows: number) => {
-    const newFirst = (page - 1) * rows;
-    setFirstLog(newFirst);
-    fetchLogs(page, rows);
-  };
-
-  useEffect(() => {
-    goToPageLogs(1, rowsLog);
-  }, [searchLogTerm, dateFrom, dateTo, sortOrderLogs]);
-
   const showUserDeleteConfirmation = (id: string) => {
     setDeleteUserId(id);
     setConfirmUserVisible(true);
@@ -236,12 +210,6 @@ const AdministrationPanel = () => {
     }
     setConfirmUserVisible(false);
     setDeleteUserId(null);
-  };
-
-  const onPageChangeLogs = (event: PaginatorPageChangeEvent) => {
-    setFirstLog(event.first);
-    setRowsLog(event.rows);
-    fetchLogs(event.page + 1, event.rows);
   };
 
   const onPageChangeEmployees = (event: PaginatorPageChangeEvent) => {
@@ -449,71 +417,6 @@ const AdministrationPanel = () => {
           rows={rowsTask}
           totalRecords={totalTasks}
           onPageChange={onPageChangeTasks}
-          rowsPerPageOptions={[5, 10, 20, 30]}
-          style={{ border: "none" }}
-        />
-      </Panel>
-      <Panel ref={userPanelRef} header="Logs" toggleable collapsed>
-        <div className="flex justify-content-start xl:flex-row lg:flex-row md:flex-column sm:flex-column gap-3 my-4">
-          <IconField iconPosition="left">
-            <InputIcon className="pi pi-search" />
-            <InputText
-              value={searchLogTerm}
-              onChange={(e) => setSearchLogTerm(e.target.value)}
-              placeholder="Search"
-            />
-          </IconField>
-          <Calendar
-            value={dateFrom}
-            onChange={(e) => setDateFrom(e.value as Date)}
-            placeholder="Date created from"
-            showIcon
-            dateFormat="dd/mm/yy"
-          />
-          <Calendar
-            value={dateTo}
-            onChange={(e) => setDateTo(e.value as Date)}
-            placeholder="Date created to"
-            showIcon
-            dateFormat="dd/mm/yy"
-          />
-          <Dropdown
-            value={sortOrderLogs}
-            options={sortOptionsLogs}
-            onChange={(e) => setSortOrderLog(e.value)}
-            placeholder="Sorting"
-          />
-          <Button
-            label="Reset Filters"
-            icon="pi pi-refresh"
-            onClick={resetFiltersLogs}
-          />
-        </div>
-        <DataTable
-          value={logs}
-          expandedRows={expandedRows}
-          onRowToggle={(e) => setExpandedRows(e.data)}
-          rowExpansionTemplate={rowExpansionTemplate}
-          dataKey="id"
-          tableStyle={{ minWidth: "50rem" }}
-        >
-          <Column expander={allowExpansion} style={{ width: "5rem" }} />
-          <Column field="id" header="Id"></Column>
-          <Column field="username" header="Username" />
-          <Column field="action" header="Action" />
-          <Column field="status" header="Status" />
-          <Column field="ipAddress" header="IP Address" />
-          <Column
-            field="createdAt"
-            header="Created At"
-            body={(rowData) => formatDateTime(rowData.createdAt)}
-          />
-        </DataTable>
-        <Paginator
-          first={firstLog}
-          rows={rowsLog}
-          totalRecords={totalLog}
-          onPageChange={onPageChangeLogs}
           rowsPerPageOptions={[5, 10, 20, 30]}
           style={{ border: "none" }}
         />

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260319150024_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260725053459_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -249,44 +249,6 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.ToTable("Locals");
                 });
 
-            modelBuilder.Entity("EMS.CORE.Entities.LogEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RequestData")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserAgent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Logs");
-                });
-
             modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -504,15 +466,15 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c7bed9af-b4c7-4666-a32a-d76cfd6d6227",
-                            ConcurrencyStamp = "b14c314c-d0e8-4ced-9fd2-a6dc8f2c0b6a",
+                            Id = "fe0950d0-5fb2-4882-b963-6483be26fa30",
+                            ConcurrencyStamp = "71d91b0e-c640-455a-afd3-e4e7146c40a3",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8901116d-05a4-458f-be6c-9bedad3d8053",
-                            ConcurrencyStamp = "e2a4988e-3959-47bd-a89d-0005c6184c43",
+                            Id = "f4846f4c-3ff4-49a7-8d0b-3d99a2e4c0f5",
+                            ConcurrencyStamp = "07c85be1-f059-421b-afc1-de5203c9a2ff",
                             Name = "User",
                             NormalizedName = "USER"
                         });

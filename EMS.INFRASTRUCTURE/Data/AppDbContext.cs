@@ -25,7 +25,6 @@ namespace EMS.INFRASTRUCTURE.Data
         public DbSet<LocalEntity> Locals { get; set; }
         public DbSet<ReservationEntity> Reservations { get; set; }
         public DbSet<VehicleEntity> Vehicles { get; set; }
-        public DbSet<LogEntity> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
