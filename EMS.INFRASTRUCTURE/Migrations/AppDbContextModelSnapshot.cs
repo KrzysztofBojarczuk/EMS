@@ -246,6 +246,30 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.ToTable("Locals");
                 });
 
+            modelBuilder.Entity("EMS.CORE.Entities.LogEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
+                });
+
             modelBuilder.Entity("EMS.CORE.Entities.PlannedExpenseEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -463,15 +487,15 @@ namespace EMS.INFRASTRUCTURE.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fe0950d0-5fb2-4882-b963-6483be26fa30",
-                            ConcurrencyStamp = "71d91b0e-c640-455a-afd3-e4e7146c40a3",
+                            Id = "43441b31-61a3-4d65-96e8-f5385e2db21c",
+                            ConcurrencyStamp = "290066ff-73c0-4708-848e-607b6510388e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f4846f4c-3ff4-49a7-8d0b-3d99a2e4c0f5",
-                            ConcurrencyStamp = "07c85be1-f059-421b-afc1-de5203c9a2ff",
+                            Id = "4b0aefe0-4f4e-40ca-96bb-6fdb32915fa5",
+                            ConcurrencyStamp = "7bd1bc36-29c0-4b0d-aabb-d5dbbabb4658",
                             Name = "User",
                             NormalizedName = "USER"
                         });

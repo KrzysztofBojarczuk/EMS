@@ -12,10 +12,6 @@ namespace EMS.INFRASTRUCTURE.Repositories
     {
         public async Task<VehicleEntity> AddVehicleAsync(VehicleEntity entity)
         {
-            entity.Id = Guid.NewGuid();
-            entity.DateOfProduction = entity.DateOfProduction.ToLocalTime();
-            entity.InsuranceOcValidUntil = entity.InsuranceOcValidUntil.ToLocalTime();
-            entity.TechnicalInspectionValidUntil = entity.TechnicalInspectionValidUntil.ToLocalTime();
             dbContext.Vehicles.Add(entity);
 
             await dbContext.SaveChangesAsync();

@@ -28,6 +28,7 @@ namespace EMS.INFRASTRUCTURE
             services.AddScoped<ILocalRepository, LocalRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<ILogsRepository, LogRepository>();
 
             return services;
         }

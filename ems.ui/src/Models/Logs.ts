@@ -3,10 +3,6 @@ export interface LogGet {
   userId?: string;
   username?: string;
   action: string;
-  requestData: string;
-  ipAddress?: string;
-  userAgent?: string;
-  status: string;
   createdAt: string;
 }
 

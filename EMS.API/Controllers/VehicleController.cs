@@ -31,17 +31,9 @@ namespace EMS.API.Controllers
 
             var username = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new AddVehicleCommand(vehicleDto, username));
 
-            var vehicleEntity = mapper.Map<VehicleEntity>(vehicleDto);
-
-            vehicleEntity.AppUserId = appUser.Id;
-
-            var result = await sender.Send(new AddVehicleCommand(vehicleEntity));
-
-            var vehicleGet = mapper.Map<VehicleGetDto>(result);
-
-            return Ok(vehicleGet);
+            return Ok(result.Value);
         }
 
         [HttpGet("User")]
@@ -135,15 +127,9 @@ namespace EMS.API.Controllers
 
             var username = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new UpdateVehicleCommand(vehicleId, username, vehicleDto));
 
-            var vehicleEntity = mapper.Map<VehicleEntity>(vehicleDto);
-
-            var result = await sender.Send(new UpdateVehicleCommand(vehicleId, appUser.Id, vehicleEntity));
-
-            var vehicleGet = mapper.Map<VehicleGetDto>(result);
-
-            return Ok(vehicleGet);
+            return Ok(result.Value);
         }
 
         [HttpDelete("{vehicleId}")]

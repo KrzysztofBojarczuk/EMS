@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EMS.INFRASTRUCTURE.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,6 +51,21 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -419,8 +434,8 @@ namespace EMS.INFRASTRUCTURE.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "f4846f4c-3ff4-49a7-8d0b-3d99a2e4c0f5", "07c85be1-f059-421b-afc1-de5203c9a2ff", "User", "USER" },
-                    { "fe0950d0-5fb2-4882-b963-6483be26fa30", "71d91b0e-c640-455a-afd3-e4e7146c40a3", "Admin", "ADMIN" }
+                    { "43441b31-61a3-4d65-96e8-f5385e2db21c", "290066ff-73c0-4708-848e-607b6510388e", "Admin", "ADMIN" },
+                    { "4b0aefe0-4f4e-40ca-96bb-6fdb32915fa5", "7bd1bc36-29c0-4b0d-aabb-d5dbbabb4658", "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -559,6 +574,9 @@ namespace EMS.INFRASTRUCTURE.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "PlannedExpenses");
