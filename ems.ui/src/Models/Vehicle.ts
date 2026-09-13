@@ -29,11 +29,13 @@ export interface VehiclePost {
   isAvailable?: boolean;
 }
 
-export interface PaginatedVehicleResponse {
-  vehicleGet: VehicleGet[];
+export interface PaginatedList<T> {
   totalItems: number;
-  totalPages: number;
   pageIndex: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  items: T[];
 }
 
 export interface UserVehiclesStats {

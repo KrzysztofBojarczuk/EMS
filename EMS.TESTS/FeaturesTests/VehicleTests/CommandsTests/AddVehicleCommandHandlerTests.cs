@@ -22,10 +22,8 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
         {
             _mockVehicleRepository = new Mock<IVehicleRepository>();
             _mockLogsRepository = new Mock<ILogsRepository>();
-
             var store = new Mock<IUserStore<AppUserEntity>>();
             _mockUserManager = new Mock<UserManager<AppUserEntity>>(store.Object, null, null, null, null, null, null, null, null);
-
             _handler = new AddVehicleCommandHandler(_mockVehicleRepository.Object, _mockUserManager.Object, _mockLogsRepository.Object);
         }
 

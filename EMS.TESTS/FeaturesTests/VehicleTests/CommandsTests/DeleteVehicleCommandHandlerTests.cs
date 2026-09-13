@@ -1,5 +1,7 @@
 using EMS.APPLICATION.Features.Vehicle.Commands;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -9,13 +11,18 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
     public class DeleteVehicleCommandHandlerTests
     {
         private Mock<IVehicleRepository> _mockVehicleRepository;
+        private Mock<UserManager<AppUserEntity>> _mockUserManager;
+        private Mock<ILogsRepository> _mockLogsRepository;
         private DeleteVehicleCommandHandler _handler;
 
         [TestInitialize]
         public void Setup()
         {
             _mockVehicleRepository = new Mock<IVehicleRepository>();
-            _handler = new DeleteVehicleCommandHandler(_mockVehicleRepository.Object);
+            _mockLogsRepository = new Mock<ILogsRepository>();
+            var store = new Mock<IUserStore<AppUserEntity>>();
+            _mockUserManager = new Mock<UserManager<AppUserEntity>>(store.Object, null, null, null, null, null, null, null, null);
+            _handler = new DeleteVehicleCommandHandler(_mockVehicleRepository.Object, _mockUserManager.Object, _mockLogsRepository.Object);
         }
 
         [TestMethod]
@@ -23,13 +30,23 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
         {
             // Arrange
             var vehicleId = Guid.NewGuid();
-            var expectedResult = true;
+            var username = "Tomasz";
             var appUserId = "user-id-123";
+            var expectedResult = true;
+
+            var appUser = new AppUserEntity
+            {
+                Id = appUserId,
+                UserName = username
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
 
             _mockVehicleRepository.Setup(x => x.DeleteVehicleAsync(vehicleId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteVehicleCommand(vehicleId, appUserId);
+            var command = new DeleteVehicleCommand(vehicleId, username);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -44,13 +61,23 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
         {
             // Arrange
             var vehicleId = Guid.NewGuid();
-            var expectedResult = false;
+            var username = "Tomasz";
             var appUserId = "user-id-123";
+            var expectedResult = false;
+
+            var appUser = new AppUserEntity
+            {
+                Id = appUserId,
+                UserName = username
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
 
             _mockVehicleRepository.Setup(x => x.DeleteVehicleAsync(vehicleId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteVehicleCommand(vehicleId, appUserId);
+            var command = new DeleteVehicleCommand(vehicleId, username);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);

@@ -1,10 +1,11 @@
 import axios from "axios";
 import {
-  PaginatedVehicleResponse,
+  PaginatedList,
   UserVehiclesStats,
   VehicleGet,
   VehiclePost,
 } from "../Models/Vehicle";
+import { Result } from "../Models/Result";
 
 const api = "https://localhost:7256/api/";
 
@@ -38,9 +39,10 @@ export const GetUserVehiclesService = async (
 
   if (sortOrder) params.append("sortOrder", sortOrder);
 
-  const response = await axios.get<PaginatedVehicleResponse>(
+  const response = await axios.get<Result<PaginatedList<VehicleGet>>>(
     `${api}Vehicle/User?${params.toString()}`,
   );
+
   return response.data;
 };
 

@@ -74,8 +74,9 @@ const ListVehicle = () => {
       dateTo,
       sortOrder,
     );
-    setVehicles(data.vehicleGet);
-    setTotalVehicles(data.totalItems);
+    setVehicles(data.value.items);
+    setTotalVehicles(data.value.totalItems);
+
     await fetchStats();
   };
 
