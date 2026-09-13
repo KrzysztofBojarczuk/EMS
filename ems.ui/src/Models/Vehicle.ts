@@ -29,15 +29,6 @@ export interface VehiclePost {
   isAvailable?: boolean;
 }
 
-export interface PaginatedList<T> {
-  totalItems: number;
-  pageIndex: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  items: T[];
-}
-
 export interface UserVehiclesStats {
   activeVehicles: number;
   inactiveVehicles: number;

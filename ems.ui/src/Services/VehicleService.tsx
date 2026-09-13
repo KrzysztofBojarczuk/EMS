@@ -1,11 +1,7 @@
 import axios from "axios";
-import {
-  PaginatedList,
-  UserVehiclesStats,
-  VehicleGet,
-  VehiclePost,
-} from "../Models/Vehicle";
+import { UserVehiclesStats, VehicleGet, VehiclePost } from "../Models/Vehicle";
 import { Result } from "../Models/Result";
+import { PaginatedList } from "../Models/PaginatedList";
 
 const api = "https://localhost:7256/api/";
 
