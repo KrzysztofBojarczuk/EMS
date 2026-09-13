@@ -45,19 +45,9 @@ namespace EMS.API.Controllers
         {
             var username = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new GetUserVehiclesQuery(username, pageNumber, pageSize, searchTerm, vehicleType, dateFrom, dateTo, sortOrder));
 
-            var paginatedVehicles = await sender.Send(new GetUserVehiclesQuery(appUser.Id, pageNumber, pageSize, searchTerm, vehicleType, dateFrom, dateTo, sortOrder));
-
-            var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(paginatedVehicles.Items);
-
-            return Ok(new
-            {
-                VehicleGet = vehicleGet,
-                paginatedVehicles.TotalItems,
-                paginatedVehicles.TotalPages,
-                paginatedVehicles.PageIndex
-            });
+            return Ok(result);
         }
 
         [HttpGet("UserVehiclesForTaskAdd")]
@@ -142,9 +132,7 @@ namespace EMS.API.Controllers
         {
             var username = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var result = await sender.Send(new DeleteVehicleCommand(vehicleId, appUser.Id));
+            var result = await sender.Send(new DeleteVehicleCommand(vehicleId, username));
 
             return result ? Ok(result) : NotFound(result);
         }

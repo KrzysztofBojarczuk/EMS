@@ -3,15 +3,23 @@ using EMS.CORE.Common;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Commands
 {
-    public record UpdateVehicleCommand(Guid vehicleId, string appUserId, VehicleCreateDto vehicle) : IRequest<Result<VehicleGetDto>>;
+    public record UpdateVehicleCommand(Guid vehicleId, string username, VehicleCreateDto vehicle) : IRequest<Result<VehicleGetDto>>;
 
-    public class UpdateVehicleCommandHandler(IVehicleRepository vehicleRepository) : IRequestHandler<UpdateVehicleCommand, Result<VehicleGetDto>>
+    public class UpdateVehicleCommandHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager, ILogsRepository logsRepository) : IRequestHandler<UpdateVehicleCommand, Result<VehicleGetDto>>
     {
         public async Task<Result<VehicleGetDto>> Handle(UpdateVehicleCommand request, CancellationToken cancellationToken)
         {
+            var appUser = await userManager.FindByNameAsync(request.username);
+
+            if (appUser == null)
+            {
+                return Result<VehicleGetDto>.Failure("User not found.");
+            }
+
             var vehicle = new VehicleEntity
             {
                 Brand = request.vehicle.Brand,
@@ -27,12 +35,9 @@ namespace EMS.APPLICATION.Features.Vehicle.Commands
                 IsAvailable = request.vehicle.IsAvailable
             };
 
-            var result = await vehicleRepository.UpdateVehicleAsync(request.vehicleId, request.appUserId, vehicle);
+            var result = await vehicleRepository.UpdateVehicleAsync(request.vehicleId, appUser.Id, vehicle);
 
-            if (result == null)
-            {
-                return Result<VehicleGetDto>.Failure("Vehicle not found.");
-            }
+            await logsRepository.AddAsync(new LogEntity { UserId = appUser.Id, Username = appUser.UserName, Action = $"Updated vehicle {vehicle.RegistrationNumber}" });
 
             var vehicleDto = new VehicleGetDto
             {

@@ -29,13 +29,6 @@ export interface VehiclePost {
   isAvailable?: boolean;
 }
 
-export interface PaginatedVehicleResponse {
-  vehicleGet: VehicleGet[];
-  totalItems: number;
-  totalPages: number;
-  pageIndex: number;
-}
-
 export interface UserVehiclesStats {
   activeVehicles: number;
   inactiveVehicles: number;
