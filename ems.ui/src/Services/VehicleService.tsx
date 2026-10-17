@@ -18,7 +18,7 @@ export const GetUserVehiclesService = async (
   dateFrom?: Date | null,
   dateTo?: Date | null,
   sortOrder?: string | null,
-) => {
+): Promise<PaginatedList<VehicleGet>> => {
   const params = new URLSearchParams();
 
   params.append("pageNumber", pageNumber.toString());
@@ -35,7 +35,7 @@ export const GetUserVehiclesService = async (
 
   if (sortOrder) params.append("sortOrder", sortOrder);
 
-  const response = await axios.get<Result<PaginatedList<VehicleGet>>>(
+  const response = await axios.get<PaginatedList<VehicleGet>>(
     `${api}Vehicle/User?${params.toString()}`,
   );
 

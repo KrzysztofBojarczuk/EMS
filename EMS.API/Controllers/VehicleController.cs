@@ -33,7 +33,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new AddVehicleCommand(vehicleDto, username));
 
-            return Ok(result.Value);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpGet("User")]
@@ -47,7 +47,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new GetUserVehiclesQuery(username, pageNumber, pageSize, searchTerm, vehicleType, dateFrom, dateTo, sortOrder));
 
-            return Ok(result);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpGet("UserVehiclesForTaskAdd")]
@@ -59,13 +59,9 @@ namespace EMS.API.Controllers
         {
             var username = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new GetUserVehiclesForTaskAddQuery(username, searchTerm));
 
-            var result = await sender.Send(new GetUserVehiclesForTaskAddQuery(appUser.Id, searchTerm));
-
-            var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(result);
-
-            return Ok(vehicleGet);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpGet("UserVehiclesForTaskUpdate/{taskId}")]
@@ -77,13 +73,9 @@ namespace EMS.API.Controllers
         {
             var username = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new GetUserVehiclesForTaskUpdateQuery(username, taskId, searchTerm));
 
-            var result = await sender.Send(new GetUserVehiclesForTaskUpdateQuery(appUser.Id, taskId, searchTerm));
-
-            var vehicleGet = mapper.Map<IEnumerable<VehicleGetDto>>(result);
-
-            return Ok(vehicleGet);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpGet("UserVehiclesStats")]
@@ -119,7 +111,7 @@ namespace EMS.API.Controllers
 
             var result = await sender.Send(new UpdateVehicleCommand(vehicleId, username, vehicleDto));
 
-            return Ok(result.Value);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
 
         [HttpDelete("{vehicleId}")]
