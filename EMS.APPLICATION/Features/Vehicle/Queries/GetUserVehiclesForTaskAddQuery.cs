@@ -1,16 +1,46 @@
+using EMS.APPLICATION.Dtos;
+using EMS.CORE.Common;
 using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Queries
 {
-    public record GetUserVehiclesForTaskAddQuery(string appUserId, string searchTerm) : IRequest<IEnumerable<VehicleEntity>>;
+    public record GetUserVehiclesForTaskAddQuery(string username, string searchTerm) : IRequest<Result<IEnumerable<VehicleGetDto>>>;
 
-    public class GetUserVehiclesForTaskAddQueryHandler(IVehicleRepository vehicleRepository) : IRequestHandler<GetUserVehiclesForTaskAddQuery, IEnumerable<VehicleEntity>>
+    public class GetUserVehiclesForTaskAddQueryHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager) : IRequestHandler<GetUserVehiclesForTaskAddQuery, Result<IEnumerable<VehicleGetDto>>>
     {
-        public async Task<IEnumerable<VehicleEntity>> Handle(GetUserVehiclesForTaskAddQuery request, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<VehicleGetDto>>> Handle(
+            GetUserVehiclesForTaskAddQuery request,
+            CancellationToken cancellationToken)
         {
-            return await vehicleRepository.GetUserVehiclesForTaskAddAsync(request.appUserId, request.searchTerm);
+            var appUser = await userManager.FindByNameAsync(request.username);
+
+            if (appUser == null)
+            {
+                return Result<IEnumerable<VehicleGetDto>>.Failure("User not found.");
+            }
+
+            var vehicles = await vehicleRepository.GetUserVehiclesForTaskAddAsync(appUser.Id, request.searchTerm);
+
+            var vehicleDtos = vehicles.Select(vehicle => new VehicleGetDto
+            {
+                Id = vehicle.Id,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Name = vehicle.Name,
+                RegistrationNumber = vehicle.RegistrationNumber,
+                Mileage = vehicle.Mileage,
+                VehicleType = vehicle.VehicleType,
+                DateOfProduction = vehicle.DateOfProduction,
+                InsuranceOcValidUntil = vehicle.InsuranceOcValidUntil,
+                InsuranceOcCost = vehicle.InsuranceOcCost,
+                TechnicalInspectionValidUntil = vehicle.TechnicalInspectionValidUntil,
+                IsAvailable = vehicle.IsAvailable
+            }).ToList();
+
+            return Result<IEnumerable<VehicleGetDto>>.Success(vehicleDtos);
         }
     }
 }
