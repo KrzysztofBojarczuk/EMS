@@ -1,5 +1,6 @@
 using AutoMapper;
 using EMS.APPLICATION.Dtos;
+using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Transaction.Commands;
 using EMS.APPLICATION.Features.Transaction.Queries;
 using EMS.CORE.Entities;
@@ -21,22 +22,18 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> AddTransactionToUserAsync([FromRoute] Guid budgetId, [FromBody] TransactionCreateDto transactioDto)
+        public async Task<IActionResult> AddTransactionAsync([FromRoute] Guid budgetId, [FromBody] TransactionCreateDto transactionDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var transactionEntity = mapper.Map<TransactionEntity>(transactioDto);
+            var username = User.GetUsername();
 
-            transactionEntity.BudgetId = budgetId;
+            var result = await sender.Send(new AddTransactionCommand(transactionDto, budgetId, username));
 
-            var result = await sender.Send(new AddTransactionCommand(transactionEntity));
-
-            var transactionGet = mapper.Map<TransactionGetDto>(result);
-
-            return Ok(transactionGet);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpGet("{budgetId}")]
