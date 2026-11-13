@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Commands
 {
-    public record DeleteVehicleCommand(Guid vehicleId, string username) : IRequest<bool>;
+    public record DeleteVehicleCommand(Guid vehicleId, string userName) : IRequest<bool>;
 
     public class DeleteVehicleCommandHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager, ILogsRepository logsRepository) : IRequestHandler<DeleteVehicleCommand, bool>
     {
         public async Task<bool> Handle(DeleteVehicleCommand request, CancellationToken cancellationToken)
         {
-            var appUser = await userManager.FindByNameAsync(request.username);
+            var appUser = await userManager.FindByNameAsync(request.userName);
 
             var result = await vehicleRepository.DeleteVehicleAsync(request.vehicleId, appUser.Id);
 

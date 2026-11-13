@@ -25,6 +25,80 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.QueriesTests
             _handler = new GetUserVehiclesQueryHandler(_mockVehicleRepository.Object, _mockUserManager.Object);
         }
 
+        [TestMethod]
+        public async Task Handle_Returns_AllVehicles()
+        {
+            // Arrange
+            var username = "test-user";
+            var appUserId = "user-id-123";
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var appUser = new AppUserEntity
+            {
+                Id = appUserId,
+                UserName = username
+            };
+
+            var expectedVehicles = new List<VehicleEntity>
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Brand = "Vehicle 1",
+                    Model = "Model 1",
+                    Name = "Vehicle",
+                    RegistrationNumber = "ABC1111",
+                    Mileage = 1000,
+                    VehicleType = VehicleType.Car,
+                    DateOfProduction = new DateTime(2020, 1, 1),
+                    InsuranceOcValidUntil = new DateTime(2020, 1, 1),
+                    InsuranceOcCost = 1000,
+                    TechnicalInspectionValidUntil = new DateTime(2020, 1, 1),
+                    IsAvailable = true,
+                    AppUserId = appUserId
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Brand = "Vehicle 2",
+                    Model = "Model 2",
+                    Name = "Vehicle",
+                    RegistrationNumber = "ABC1112",
+                    Mileage = 2000,
+                    VehicleType = VehicleType.Car,
+                    DateOfProduction = new DateTime(2020, 1, 1),
+                    InsuranceOcValidUntil = new DateTime(2020, 1, 1),
+                    InsuranceOcCost = 1000,
+                    TechnicalInspectionValidUntil = new DateTime(2020, 1, 1),
+                    IsAvailable = true,
+                    AppUserId = appUserId
+                }
+            };
+
+            var paginatedList = new PaginatedList<VehicleEntity>(expectedVehicles, expectedVehicles.Count(), pageNumber, pageSize);
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(username))
+                .ReturnsAsync(appUser);
+
+            _mockVehicleRepository.Setup(x => x.GetUserVehiclesAsync(appUserId, pageNumber, pageSize, null, null, null, null, null))
+                .ReturnsAsync(paginatedList);
+
+            var query = new GetUserVehiclesQuery(username, pageNumber, pageSize, null, null, null, null, null);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.IsSuccess);
+            Assert.IsFalse(result.IsFailure);
+            Assert.IsNull(result.Error);
+            Assert.IsNotNull(result.Value);
+            Assert.AreEqual(expectedVehicles.Count(), result.Value.Items.Count());
+            _mockUserManager.Verify(x => x.FindByNameAsync(username), Times.Once);
+            _mockVehicleRepository.Verify(x => x.GetUserVehiclesAsync(appUserId, pageNumber, pageSize, null, null, null, null, null), Times.Once);
+        }
 
         [TestMethod]
         public async Task Handle_Returns_Vehicles_BySearchTerm()

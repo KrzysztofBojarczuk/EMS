@@ -30,23 +30,23 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
         {
             // Arrange
             var vehicleId = Guid.NewGuid();
-            var username = "Tomasz";
+            var userName = "John";
             var appUserId = "user-id-123";
             var expectedResult = true;
 
-            var appUser = new AppUserEntity
+            var user = new AppUserEntity
             {
                 Id = appUserId,
-                UserName = username
+                UserName = userName
             };
 
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
+            _mockUserManager.Setup(x => x.FindByNameAsync(userName))
+                .ReturnsAsync(user);
 
             _mockVehicleRepository.Setup(x => x.DeleteVehicleAsync(vehicleId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteVehicleCommand(vehicleId, username);
+            var command = new DeleteVehicleCommand(vehicleId, userName);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -61,23 +61,23 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
         {
             // Arrange
             var vehicleId = Guid.NewGuid();
-            var username = "Tomasz";
+            var userName = "John";
             var appUserId = "user-id-123";
             var expectedResult = false;
 
-            var appUser = new AppUserEntity
+            var user = new AppUserEntity
             {
                 Id = appUserId,
-                UserName = username
+                UserName = userName
             };
 
-            _mockUserManager.Setup(x => x.FindByNameAsync(username))
-                .ReturnsAsync(appUser);
+            _mockUserManager.Setup(x => x.FindByNameAsync(userName))
+                .ReturnsAsync(user);
 
             _mockVehicleRepository.Setup(x => x.DeleteVehicleAsync(vehicleId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteVehicleCommand(vehicleId, username);
+            var command = new DeleteVehicleCommand(vehicleId, userName);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);

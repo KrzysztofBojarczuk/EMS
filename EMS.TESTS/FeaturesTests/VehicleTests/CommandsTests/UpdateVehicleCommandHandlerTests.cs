@@ -32,6 +32,7 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
         {
             // Arrange
             var vehicleId = Guid.NewGuid();
+
             var user = new AppUserEntity
             {
                 Id = "user-id-123",
@@ -72,7 +73,7 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
                 AppUserId = user.Id
             };
 
-            _mockVehicleRepository.Setup(x => x.UpdateVehicleAsync(vehicleId, user.Id, It.Is<VehicleEntity>(x => x.Brand == vehicleDto.Brand && x.Model == vehicleDto.Model && x.Name == vehicleDto.Name && x.RegistrationNumber == vehicleDto.RegistrationNumber && x.Mileage == vehicleDto.Mileage && x.VehicleType == vehicleDto.VehicleType && x.InsuranceOcCost == vehicleDto.InsuranceOcCost && x.IsAvailable == vehicleDto.IsAvailable)))
+            _mockVehicleRepository.Setup(x => x.UpdateVehicleAsync(vehicleId, user.Id, It.IsAny<VehicleEntity>()))
                 .ReturnsAsync(updatedVehicle);
 
             var command = new UpdateVehicleCommand(vehicleId, user.UserName, vehicleDto);

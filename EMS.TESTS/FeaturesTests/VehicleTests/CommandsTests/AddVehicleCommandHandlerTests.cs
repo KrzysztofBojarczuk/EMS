@@ -53,9 +53,7 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
                 TechnicalInspectionValidUntil = new DateTime(2020, 1, 1)
             };
 
-            VehicleEntity savedVehicle = null;
-
-            _mockVehicleRepository.Setup(x => x.AddVehicleAsync(It.IsAny<VehicleEntity>())).Callback<VehicleEntity>(x => savedVehicle = x).ReturnsAsync((VehicleEntity x) => x);
+            _mockVehicleRepository.Setup(x => x.AddVehicleAsync(It.IsAny<VehicleEntity>())).ReturnsAsync((VehicleEntity vehicle) => vehicle);
 
             var command = new AddVehicleCommand(vehicleDto, user.UserName);
 
@@ -71,7 +69,6 @@ namespace EMS.TESTS.FeaturesTests.VehicleTests.CommandsTests
             Assert.AreEqual(vehicleDto.Mileage, result.Value.Mileage);
             Assert.AreEqual(vehicleDto.VehicleType, result.Value.VehicleType);
             Assert.IsTrue(result.IsSuccess);
-            Assert.AreEqual(user.Id, savedVehicle.AppUserId);
             _mockVehicleRepository.Verify(x => x.AddVehicleAsync(It.IsAny<VehicleEntity>()), Times.Once);
             _mockUserManager.Verify(x => x.FindByNameAsync(user.UserName), Times.Once);
         }

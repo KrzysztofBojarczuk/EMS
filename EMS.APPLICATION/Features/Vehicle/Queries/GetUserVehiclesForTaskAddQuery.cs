@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Queries
 {
-    public record GetUserVehiclesForTaskAddQuery(string username, string searchTerm) : IRequest<Result<IEnumerable<VehicleGetDto>>>;
+    public record GetUserVehiclesForTaskAddQuery(string userName, string searchTerm) : IRequest<Result<IEnumerable<VehicleGetDto>>>;
 
     public class GetUserVehiclesForTaskAddQueryHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager) : IRequestHandler<GetUserVehiclesForTaskAddQuery, Result<IEnumerable<VehicleGetDto>>>
     {
@@ -15,7 +15,7 @@ namespace EMS.APPLICATION.Features.Vehicle.Queries
             GetUserVehiclesForTaskAddQuery request,
             CancellationToken cancellationToken)
         {
-            var appUser = await userManager.FindByNameAsync(request.username);
+            var appUser = await userManager.FindByNameAsync(request.userName);
 
             if (appUser == null)
             {

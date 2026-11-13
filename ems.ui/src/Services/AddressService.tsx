@@ -1,9 +1,6 @@
 import axios from "axios";
-import {
-  AddressGet,
-  AddressPost,
-  PaginatedAddressResponse,
-} from "../Models/Address";
+import { AddressGet, AddressPost } from "../Models/Address";
+import { PaginatedList } from "../Models/PaginatedList";
 
 const api = "https://localhost:7256/api/";
 
@@ -16,8 +13,8 @@ export const GetUserAddressesService = async (
   pageNumber: number,
   pageSize: number,
   searchTerm?: string,
-) => {
-  const response = await axios.get<PaginatedAddressResponse>(
+): Promise<PaginatedList<AddressGet>> => {
+  const response = await axios.get<PaginatedList<AddressGet>>(
     api + "Address/User",
     {
       params: { pageNumber, pageSize, searchTerm },

@@ -1,19 +1,16 @@
-using AutoMapper;
 using EMS.APPLICATION.Dtos;
 using EMS.APPLICATION.Extensions;
 using EMS.APPLICATION.Features.Address.Commands;
 using EMS.APPLICATION.Features.Address.Queries;
-using EMS.CORE.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMS.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AddressController(ISender sender, UserManager<AppUserEntity> userManager, IMapper mapper) : ControllerBase
+    public class AddressController(ISender sender) : ControllerBase
     {
         [HttpPost()]
         [Authorize(Roles = "User")]
@@ -28,19 +25,11 @@ namespace EMS.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new AddAddressCommand(addressDto, userName));
 
-            var addressEntity = mapper.Map<AddressEntity>(addressDto);
-
-            addressEntity.AppUserId = appUser.Id;
-
-            var result = await sender.Send(new AddAddressCommand(addressEntity));
-
-            var addressGet = mapper.Map<AddressGetDto>(result);
-
-            return Ok(addressGet);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpGet("User")]
@@ -50,21 +39,11 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserAddressesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null)
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new GetUserAddressesQuery(userName, pageNumber, pageSize, searchTerm));
 
-            var paginatedAddresses = await sender.Send(new GetUserAddressesQuery(appUser.Id, pageNumber, pageSize, searchTerm));
-
-            var addressGet = mapper.Map<IEnumerable<AddressGetDto>>(paginatedAddresses.Items);
-
-            return Ok(new
-            {
-                AddressGet = addressGet,
-                paginatedAddresses.TotalItems,
-                paginatedAddresses.TotalPages,
-                paginatedAddresses.PageIndex
-            });
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpGet("UserAddressesForTask")]
@@ -74,15 +53,11 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserAddressesForTaskAsync([FromQuery] string searchTerm = null)
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new GetUserAddressesForTaskQuery(userName, searchTerm));
 
-            var result = await sender.Send(new GetUserAddressesForTaskQuery(appUser.Id, searchTerm));
-
-            var addressGet = mapper.Map<IEnumerable<AddressGetDto>>(result);
-
-            return Ok(addressGet);
+            return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
 
         [HttpPut("{addressId}")]
@@ -98,17 +73,11 @@ namespace EMS.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var result = await sender.Send(new UpdateAddressCommand(addressId, userName, updateAddressDto));
 
-            var addressEntity = mapper.Map<AddressEntity>(updateAddressDto);
-
-            var result = await sender.Send(new UpdateAddressCommand(addressId, appUser.Id, addressEntity));
-
-            var addressGet = mapper.Map<AddressGetDto>(result);
-
-            return Ok(addressGet);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
 
         [HttpDelete("{addressId}")]
@@ -119,11 +88,9 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteAddressAsync([FromRoute] Guid addressId)
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
-
-            var result = await sender.Send(new DeleteAddressCommand(addressId, appUser.Id));
+            var result = await sender.Send(new DeleteAddressCommand(addressId, userName));
 
             return result ? Ok(result) : NotFound(result);
         }

@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Commands
 {
-    public record AddVehicleCommand(VehicleCreateDto vehicle, string username) : IRequest<Result<VehicleGetDto>>;
+    public record AddVehicleCommand(VehicleCreateDto vehicle, string userName) : IRequest<Result<VehicleGetDto>>;
 
     public class AddVehicleCommandHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager, ILogsRepository logsRepository) : IRequestHandler<AddVehicleCommand, Result<VehicleGetDto>>
     {
         public async Task<Result<VehicleGetDto>> Handle(AddVehicleCommand request, CancellationToken cancellationToken)
         {
-            var appUser = await userManager.FindByNameAsync(request.username);
+            var appUser = await userManager.FindByNameAsync(request.userName);
 
             if (appUser == null)
             {
@@ -39,7 +39,7 @@ namespace EMS.APPLICATION.Features.Vehicle.Commands
 
             var result = await vehicleRepository.AddVehicleAsync(vehicle);
 
-            await logsRepository.AddAsync(new LogEntity { UserId = appUser.Id, Username = appUser.UserName, Action = $"Added vehicle {vehicle.RegistrationNumber}" });
+            await logsRepository.AddAsync(new LogEntity { UserId = appUser.Id, Username = appUser.UserName, Action = $"Added vehicle {vehicle.Id}" });
 
             return Result<VehicleGetDto>.Success(new VehicleGetDto
             {
