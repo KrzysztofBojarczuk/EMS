@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Commands
 {
-    public record UpdateVehicleCommand(Guid vehicleId, string username, VehicleCreateDto vehicle) : IRequest<Result<VehicleGetDto>>;
+    public record UpdateVehicleCommand(Guid vehicleId, string userName, VehicleCreateDto vehicle) : IRequest<Result<VehicleGetDto>>;
 
     public class UpdateVehicleCommandHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager, ILogsRepository logsRepository) : IRequestHandler<UpdateVehicleCommand, Result<VehicleGetDto>>
     {
         public async Task<Result<VehicleGetDto>> Handle(UpdateVehicleCommand request, CancellationToken cancellationToken)
         {
-            var appUser = await userManager.FindByNameAsync(request.username);
+            var appUser = await userManager.FindByNameAsync(request.userName);
 
             if (appUser == null)
             {
@@ -37,9 +37,9 @@ namespace EMS.APPLICATION.Features.Vehicle.Commands
 
             var result = await vehicleRepository.UpdateVehicleAsync(request.vehicleId, appUser.Id, vehicle);
 
-            await logsRepository.AddAsync(new LogEntity { UserId = appUser.Id, Username = appUser.UserName, Action = $"Updated vehicle {vehicle.RegistrationNumber}" });
+            await logsRepository.AddAsync(new LogEntity { UserId = appUser.Id, Username = appUser.UserName, Action = $"Updated vehicle {vehicle.Id}" });
 
-            var vehicleDto = new VehicleGetDto
+            return Result<VehicleGetDto>.Success(new VehicleGetDto
             {
                 Id = result.Id,
                 Brand = result.Brand,
@@ -53,9 +53,7 @@ namespace EMS.APPLICATION.Features.Vehicle.Commands
                 InsuranceOcCost = result.InsuranceOcCost,
                 TechnicalInspectionValidUntil = result.TechnicalInspectionValidUntil,
                 IsAvailable = result.IsAvailable
-            };
-
-            return Result<VehicleGetDto>.Success(vehicleDto);
+            });
         }
     }
 }

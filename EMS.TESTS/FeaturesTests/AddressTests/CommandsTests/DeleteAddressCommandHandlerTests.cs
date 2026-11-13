@@ -1,5 +1,7 @@
-﻿using EMS.APPLICATION.Features.Address.Commands;
+using EMS.APPLICATION.Features.Address.Commands;
+using EMS.CORE.Entities;
 using EMS.CORE.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -9,13 +11,18 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
     public class DeleteAddressCommandHandlerTests
     {
         private Mock<IAddressRepository> _mockAddressRepository;
+        private Mock<UserManager<AppUserEntity>> _mockUserManager;
+        private Mock<ILogsRepository> _mockLogsRepository;
         private DeleteAddressCommandHandler _handler;
 
         [TestInitialize]
         public void Setup()
         {
             _mockAddressRepository = new Mock<IAddressRepository>();
-            _handler = new DeleteAddressCommandHandler(_mockAddressRepository.Object);
+            _mockLogsRepository = new Mock<ILogsRepository>();
+            var store = new Mock<IUserStore<AppUserEntity>>();
+            _mockUserManager = new Mock<UserManager<AppUserEntity>>(store.Object, null, null, null, null, null, null, null, null);
+            _handler = new DeleteAddressCommandHandler(_mockAddressRepository.Object, _mockUserManager.Object, _mockLogsRepository.Object);
         }
 
         [TestMethod]
@@ -23,13 +30,23 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
-            var expectedResult = true;
+            var userName = "test-user";
             var appUserId = "user-id-123";
+            var expectedResult = true;
+
+            var user = new AppUserEntity
+            {
+                Id = appUserId,
+                UserName = userName
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(userName))
+                .ReturnsAsync(user);
 
             _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteAddressCommand(addressId, appUserId);
+            var command = new DeleteAddressCommand(addressId, userName);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
@@ -44,13 +61,23 @@ namespace EMS.TESTS.Features.AddressTests.CommandsTests
         {
             // Arrange
             var addressId = Guid.NewGuid();
-            var expectedResult = false;
+            var userName = "test-user";
             var appUserId = "user-id-123";
+            var expectedResult = false;
+
+            var user = new AppUserEntity
+            {
+                Id = appUserId,
+                UserName = userName
+            };
+
+            _mockUserManager.Setup(x => x.FindByNameAsync(userName))
+                .ReturnsAsync(user);
 
             _mockAddressRepository.Setup(x => x.DeleteAddressAsync(addressId, appUserId))
                 .ReturnsAsync(expectedResult);
 
-            var command = new DeleteAddressCommand(addressId, appUserId);
+            var command = new DeleteAddressCommand(addressId, userName);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);

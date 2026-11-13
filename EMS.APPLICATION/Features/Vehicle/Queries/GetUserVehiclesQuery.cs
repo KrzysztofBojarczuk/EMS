@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Queries
 {
-    public record GetUserVehiclesQuery(string username, int pageNumber, int pageSize, string searchTerm, List<VehicleType> vehicleType, DateTime? dateFrom, DateTime? dateTo, string sortOrder) : IRequest<Result<PaginatedList<VehicleGetDto>>>;
+    public record GetUserVehiclesQuery(string userName, int pageNumber, int pageSize, string searchTerm, List<VehicleType> vehicleType, DateTime? dateFrom, DateTime? dateTo, string sortOrder) : IRequest<Result<PaginatedList<VehicleGetDto>>>;
 
     public class GetUserVehiclesQueryHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager) : IRequestHandler<GetUserVehiclesQuery, Result<PaginatedList<VehicleGetDto>>>
     {
         public async Task<Result<PaginatedList<VehicleGetDto>>> Handle(GetUserVehiclesQuery request, CancellationToken cancellationToken)
         {
-            var appUser = await userManager.FindByNameAsync(request.username);
+            var appUser = await userManager.FindByNameAsync(request.userName);
 
             if (appUser == null)
             {

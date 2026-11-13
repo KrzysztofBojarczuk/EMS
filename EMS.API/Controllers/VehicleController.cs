@@ -29,9 +29,9 @@ namespace EMS.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var result = await sender.Send(new AddVehicleCommand(vehicleDto, username));
+            var result = await sender.Send(new AddVehicleCommand(vehicleDto, userName));
 
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
@@ -43,9 +43,9 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string searchTerm = null, [FromQuery] List<VehicleType> vehicleType = null, [FromQuery] DateTime? dateFrom = null, [FromQuery] DateTime? dateTo = null, [FromQuery] string sortOrder = null)
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var result = await sender.Send(new GetUserVehiclesQuery(username, pageNumber, pageSize, searchTerm, vehicleType, dateFrom, dateTo, sortOrder));
+            var result = await sender.Send(new GetUserVehiclesQuery(userName, pageNumber, pageSize, searchTerm, vehicleType, dateFrom, dateTo, sortOrder));
 
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
@@ -57,9 +57,9 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesForTaskAddAsync([FromQuery] string searchTerm = null)
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var result = await sender.Send(new GetUserVehiclesForTaskAddQuery(username, searchTerm));
+            var result = await sender.Send(new GetUserVehiclesForTaskAddQuery(userName, searchTerm));
 
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
@@ -71,9 +71,9 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesForTaskUpdateAsync([FromRoute] Guid taskId, [FromQuery] string searchTerm = null)
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var result = await sender.Send(new GetUserVehiclesForTaskUpdateQuery(username, taskId, searchTerm));
+            var result = await sender.Send(new GetUserVehiclesForTaskUpdateQuery(userName, taskId, searchTerm));
 
             return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error);
         }
@@ -85,9 +85,9 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetUserVehiclesStats()
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var appUser = await userManager.FindByNameAsync(username);
+            var appUser = await userManager.FindByNameAsync(userName);
 
             var stats = await sender.Send(new GetUserVehiclesStatsQuery(appUser.Id));
 
@@ -107,9 +107,9 @@ namespace EMS.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var result = await sender.Send(new UpdateVehicleCommand(vehicleId, username, vehicleDto));
+            var result = await sender.Send(new UpdateVehicleCommand(vehicleId, userName, vehicleDto));
 
             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
@@ -122,9 +122,9 @@ namespace EMS.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteVehicleAsync([FromRoute] Guid vehicleId)
         {
-            var username = User.GetUsername();
+            var userName = User.GetUsername();
 
-            var result = await sender.Send(new DeleteVehicleCommand(vehicleId, username));
+            var result = await sender.Send(new DeleteVehicleCommand(vehicleId, userName));
 
             return result ? Ok(result) : NotFound(result);
         }

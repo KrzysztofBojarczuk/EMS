@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EMS.APPLICATION.Features.Vehicle.Queries
 {
-    public record GetUserVehiclesForTaskUpdateQuery(string username, Guid taskId, string searchTerm) : IRequest<Result<IEnumerable<VehicleGetDto>>>;
+    public record GetUserVehiclesForTaskUpdateQuery(string userName, Guid taskId, string searchTerm) : IRequest<Result<IEnumerable<VehicleGetDto>>>;
 
     public class GetUserVehiclesForTaskUpdateQueryHandler(IVehicleRepository vehicleRepository, UserManager<AppUserEntity> userManager) : IRequestHandler<GetUserVehiclesForTaskUpdateQuery, Result<IEnumerable<VehicleGetDto>>>
     {
         public async Task<Result<IEnumerable<VehicleGetDto>>> Handle(GetUserVehiclesForTaskUpdateQuery request, CancellationToken cancellationToken)
         {
-            var appUser = await userManager.FindByNameAsync(request.username);
+            var appUser = await userManager.FindByNameAsync(request.userName);
 
             if (appUser == null)
             {
